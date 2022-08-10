@@ -1,0 +1,43 @@
+config:
+  warningsAsErrors: true
+
+complexity:
+  LongMethod:
+    ignoreAnnotated: [ 'Composable' ]
+  LongParameterList:
+    functionThreshold: 10
+    ignoreDefaultParameters: true
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: [ 'Composable' ]
+  TopLevelPropertyNaming:
+    constantPattern: '[A-Z][_A-Za-z0-9]*'
+
+style:
+  MagicNumber:
+    ignorePropertyDeclaration: true
+  UnnecessaryAbstractClass:
+    ignoreAnnotated: [ 'Database', 'Module' ]
+  UnusedPrivateMember:
+    ignoreAnnotated: [ 'Preview' ]
+
+compose:
+  ReusedModifierInstance:
+    active: true
+  UnnecessaryEventHandlerParameter:
+    active: true
+  ComposableEventParameterNaming:
+    active: true
+  ComposableParametersOrdering:
+    active: true
+  ModifierHeightWithText:
+    active: true
+  ModifierParameterPosition:
+    active: true
+  ModifierDefaultValue:
+    active: true
+  MissingModifierDefaultValue:
+    active: true
+  PublicComposablePreview:
+    active: true
