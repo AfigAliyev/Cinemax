@@ -15,7 +15,7 @@
  */
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
 
@@ -23,16 +23,15 @@ android {
     compileSdk = 32
 
     defaultConfig {
-        applicationId = "com.maximillianleonov.cinemax"
         minSdk = 21
         targetSdk = 32
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -57,20 +56,14 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
-    packagingOptions {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    lint {
-        warningsAsErrors = true
-        abortOnError = true
-        checkDependencies = true
-    }
 }
 
 dependencies {
-    implementation(project(":core:core-presentation"))
+    api(libs.androidx.core.ktx)
+    api(libs.bundles.androidx.compose)
+    api(libs.bundles.androidx.lifecycle)
+
+    debugApi(libs.bundles.debug)
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
