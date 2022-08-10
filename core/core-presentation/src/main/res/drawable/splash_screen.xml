@@ -14,10 +14,10 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-
-    <style name="Theme.Cinemax" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/primaryDark</item>
-        <item name="android:windowBackground">@drawable/splash_screen</item>
-    </style>
-</resources>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+    <item android:drawable="@color/primaryDark" />
+    <item
+        android:drawable="@drawable/ic_logo"
+        android:gravity="center" />
+</layer-list>
