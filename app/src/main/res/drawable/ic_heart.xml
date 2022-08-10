@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2022 Maximillian Leonov
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M12,21C11.868,21.001 11.738,20.976 11.616,20.926C11.494,20.876 11.384,20.803 11.29,20.71L3.52,12.93C2.545,11.945 1.999,10.616 1.999,9.23C1.999,7.844 2.545,6.515 3.52,5.53C4.502,4.55 5.833,4 7.22,4C8.607,4 9.938,4.55 10.92,5.53L12,6.61L13.08,5.53C14.062,4.55 15.393,4 16.78,4C18.167,4 19.498,4.55 20.48,5.53C21.455,6.515 22.001,7.844 22.001,9.23C22.001,10.616 21.455,11.945 20.48,12.93L12.71,20.71C12.617,20.803 12.506,20.876 12.384,20.926C12.262,20.976 12.132,21.001 12,21Z" />
+</vector>

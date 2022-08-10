@@ -19,13 +19,20 @@ package com.maximillianleonov.cinemax
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Surface
+import androidx.compose.ui.Modifier
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.presentation.main.MainScreen
 
 class CinemaxActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CinemaxTheme {
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    MainScreen()
+                }
             }
         }
     }
