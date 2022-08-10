@@ -1,6 +1,8 @@
 [versions]
 kotlin = "1.7.10"
 android-gradle-plugin = "7.2.2"
+detekt = "1.21.0"
+kode-detekt-rules-compose = "1.1.0"
 
 androidx-compose = "1.2.0"
 androidx-compose-compiler = "1.3.0-rc02"
@@ -25,6 +27,9 @@ androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "a
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
 junit = { module = "junit:junit", version.ref = "junit" }
 
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+kode-detekt-rules-compose = { module = "ru.kode:detekt-rules-compose", version.ref = "kode-detekt-rules-compose" }
+
 [bundles]
 androidx-compose = [
     "androidx-activity-compose",
@@ -41,3 +46,4 @@ debug = ["androidx-compose-ui-tooling", "androidx-compose-ui-test-manifest"]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
