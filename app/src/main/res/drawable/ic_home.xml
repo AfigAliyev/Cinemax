@@ -14,11 +14,12 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-    <string name="app_name">Cinemax</string>
-
-    <string name="home">Home</string>
-    <string name="search">Search</string>
-    <string name="wishlist">Wishlist</string>
-    <string name="settings">Settings</string>
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M10,19V14H14V19C14,19.55 14.45,20 15,20H18C18.55,20 19,19.55 19,19V12H20.7C21.16,12 21.38,11.43 21.03,11.13L12.67,3.6C12.29,3.26 11.71,3.26 11.33,3.6L2.97,11.13C2.63,11.43 2.84,12 3.3,12H5V19C5,19.55 5.45,20 6,20H9C9.55,20 10,19.55 10,19Z" />
+</vector>
