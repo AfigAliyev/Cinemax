@@ -72,6 +72,8 @@ android {
 dependencies {
     implementation(project(":core:core-presentation"))
 
+    implementation(libs.androidx.navigation.compose)
+
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
 }
