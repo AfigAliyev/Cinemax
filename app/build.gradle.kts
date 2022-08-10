@@ -15,8 +15,8 @@
  */
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -55,7 +55,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.0-rc02"
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
     packagingOptions {
         resources {
@@ -65,16 +65,10 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.compose.ui:ui:1.2.0")
-    implementation("androidx.compose.material:material:1.2.0")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.2.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.5.1")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.0")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.2.0")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.bundles.androidx.compose)
+    implementation(libs.bundles.androidx.lifecycle)
+    testImplementation(libs.bundles.test)
+    androidTestImplementation(libs.bundles.android.test)
+    debugImplementation(libs.bundles.debug)
 }
