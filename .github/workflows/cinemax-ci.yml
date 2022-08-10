@@ -28,6 +28,8 @@ jobs:
           distribution: temurin
           java-version: 11
           cache: gradle
+      - name: Run lint
+        run: ./gradlew :app:lint
   tests:
     needs: analyze-code
     name: Tests
