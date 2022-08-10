@@ -32,4 +32,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Cinemax"
 
-include(":app")
+include(":app", ":core:core-presentation")
