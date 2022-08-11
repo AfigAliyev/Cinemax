@@ -59,6 +59,8 @@ android {
 }
 
 dependencies {
+    api(project(":core:core-data"))
+
     api(libs.androidx.core.ktx)
     api(libs.bundles.androidx.compose)
     api(libs.bundles.androidx.lifecycle)
