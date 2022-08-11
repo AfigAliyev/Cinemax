@@ -59,6 +59,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            packagingOptions {
+                resources.excludes += "DebugProbesKt.bin"
+            }
         }
     }
     compileOptions {
