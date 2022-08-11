@@ -62,6 +62,7 @@ dependencies {
     api(libs.androidx.core.ktx)
     api(libs.bundles.androidx.compose)
     api(libs.bundles.androidx.lifecycle)
+    api(libs.androidx.hilt.navigation.compose)
 
     debugApi(libs.bundles.debug)
 
