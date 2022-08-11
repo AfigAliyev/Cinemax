@@ -14,16 +14,10 @@
  * limitations under the License.
  */
 
-plugins {
-    alias(libs.plugins.kotlin.jvm)
-    id(libs.plugins.java.library.get().pluginId)
-}
+package com.maximillianleonov.cinemax.core.domain.result
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-dependencies {
-    api(project(":core:core-domain"))
+interface HttpResponse {
+    val statusCode: Int
+    val statusMessage: String?
+    val url: String?
 }

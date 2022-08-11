@@ -36,5 +36,6 @@ include(
     ":app",
     ":core:core-data",
     ":core:core-data:data-remote",
+    ":core:core-domain",
     ":core:core-presentation"
 )

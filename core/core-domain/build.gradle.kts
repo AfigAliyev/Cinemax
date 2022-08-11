@@ -25,5 +25,5 @@ java {
 }
 
 dependencies {
-    api(project(":core:core-domain"))
+    testImplementation(libs.bundles.test)
 }
