@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.data.util
+package com.maximillianleonov.cinemax.core.data.remote.util
 
-object Constants {
-    object Remote {
-        const val API_URL = "https://api.themoviedb.org/3/"
-        const val API_KEY_QUERY_PARAM = "api_key"
-    }
-}
+import okhttp3.MediaType.Companion.toMediaType
+
+internal val MIMETYPE_JSON = "application/json".toMediaType()
