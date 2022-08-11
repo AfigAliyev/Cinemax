@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.dagger.hilt.android)
+}
+
+val localProperties = Properties()
+val localPropertiesFile = File(rootDir, "local.properties")
+if (localPropertiesFile.exists() && localPropertiesFile.isFile) {
+    localPropertiesFile.inputStream().use { input ->
+        localProperties.load(input)
+    }
 }
 
 android {
@@ -35,6 +45,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val cinemaxApiKey = checkNotNull(
+            localProperties.getProperty("cinemax.apikey") ?: System.getenv("CINEMAX_API_KEY")
+        )
+        buildConfigField("String", "CINEMAX_API_KEY", "\"$cinemaxApiKey\"")
     }
 
     buildTypes {
