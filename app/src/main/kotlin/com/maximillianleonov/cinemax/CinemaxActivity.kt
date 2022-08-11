@@ -24,7 +24,9 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.presentation.main.MainScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CinemaxActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
