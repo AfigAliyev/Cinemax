@@ -14,27 +14,19 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
+package com.maximillianleonov.cinemax.di
+
+import com.maximillianleonov.cinemax.BuildConfig
+import com.maximillianleonov.cinemax.core.data.remote.api.CinemaxApiKeyProvider
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
+@[Module InstallIn(SingletonComponent::class)]
+object DataModule {
+    @Provides
+    fun provideCinemaxApiKeyProvider() = object : CinemaxApiKeyProvider {
+        override val apiKey: String = BuildConfig.CINEMAX_API_KEY
     }
 }
-
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "Cinemax"
-
-include(
-    ":app",
-    ":core:core-data",
-    ":core:core-data:data-remote",
-    ":core:core-presentation"
-)

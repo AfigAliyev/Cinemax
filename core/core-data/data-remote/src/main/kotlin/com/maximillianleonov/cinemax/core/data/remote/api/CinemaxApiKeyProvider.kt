@@ -14,27 +14,10 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
+package com.maximillianleonov.cinemax.core.data.remote.api
+
+interface CinemaxApiKeyProvider {
+    val apiKey: String?
 }
 
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "Cinemax"
-
-include(
-    ":app",
-    ":core:core-data",
-    ":core:core-data:data-remote",
-    ":core:core-presentation"
-)
+internal fun CinemaxApiKeyProvider.requireApiKey() = checkNotNull(apiKey)
