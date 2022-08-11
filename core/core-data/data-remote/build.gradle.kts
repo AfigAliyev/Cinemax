@@ -27,5 +27,7 @@ java {
 dependencies {
     api(project(":core:core-data"))
 
+    api(libs.kotlinx.coroutines.core)
+
     testImplementation(libs.bundles.test)
 }
