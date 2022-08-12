@@ -22,7 +22,34 @@ object Constants {
         const val API_KEY_QUERY_PARAM = "api_key"
     }
 
+    object Fields {
+        const val ID = "id"
+
+        const val PAGE = "page"
+        const val TOTAL_PAGES = "total_pages"
+        const val RESULTS = "results"
+        const val TOTAL_RESULTS = "total_results"
+        const val DATES = "dates"
+        const val TITLE = "title"
+        const val NAME = "name"
+        const val OVERVIEW = "overview"
+        const val POPULARITY = "popularity"
+        const val RELEASE_DATE = "release_date"
+        const val ADULT = "adult"
+        const val GENRE_IDS = "genre_ids"
+        const val ORIGINAL_TITLE = "original_title"
+        const val ORIGINAL_LANGUAGE = "original_language"
+        const val VOTE_AVERAGE = "vote_average"
+        const val VOTE_COUNT = "vote_count"
+        const val POSTER_PATH = "poster_path"
+        const val BACKDROP_PATH = "backdrop_path"
+        const val VIDEO = "video"
+        const val MAXIMUM = "maximum"
+        const val MINIMUM = "minimum"
+    }
+
     object Messages {
         const val UNHANDLED_STATE = "Unhandled state."
+        const val INVALID_GENRE_ID = "Invalid genre id."
     }
 }
