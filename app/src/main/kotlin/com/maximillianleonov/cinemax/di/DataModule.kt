@@ -18,13 +18,18 @@ package com.maximillianleonov.cinemax.di
 
 import com.maximillianleonov.cinemax.BuildConfig
 import com.maximillianleonov.cinemax.core.data.remote.api.CinemaxApiKeyProvider
+import com.maximillianleonov.cinemax.data.remote.api.CinemaxApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
 object DataModule {
+    @[Provides Singleton]
+    fun provideCinemaxApi(apiKeyProvider: CinemaxApiKeyProvider) = CinemaxApi(apiKeyProvider)
+
     @Provides
     fun provideCinemaxApiKeyProvider() = object : CinemaxApiKeyProvider {
         override val apiKey: String = BuildConfig.CINEMAX_API_KEY
