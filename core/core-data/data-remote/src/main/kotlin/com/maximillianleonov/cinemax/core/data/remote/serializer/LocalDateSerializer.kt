@@ -33,9 +33,8 @@ class LocalDateSerializer : KSerializer<LocalDate> {
         kind = PrimitiveKind.STRING
     )
 
-    override fun serialize(encoder: Encoder, value: LocalDate) {
+    override fun serialize(encoder: Encoder, value: LocalDate) =
         encoder.encodeString(value.toString())
-    }
 
     override fun deserialize(decoder: Decoder): LocalDate = try {
         decoder.decodeString().toLocalDate()
