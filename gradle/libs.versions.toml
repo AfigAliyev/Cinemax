@@ -16,6 +16,7 @@ androidx-core = "1.8.0"
 androidx-activity = "1.5.1"
 androidx-lifecycle = "2.5.1"
 androidx-navigation = "2.5.1"
+androidx-room = "2.4.3"
 androidx-hilt = "1.0.0"
 androidx-customview = "1.1.0"
 androidx-customview-poolingcontainer = "1.0.0"
@@ -49,6 +50,11 @@ androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtim
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt" }
 
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "androidx-room" }
+
 androidx-customview = { module = "androidx.customview:customview", version.ref = "androidx-customview" }
 androidx-customview-poolingcontainer = { module = "androidx.customview:customview-poolingcontainer", version.ref = "androidx-customview-poolingcontainer" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext" }
@@ -81,6 +87,7 @@ androidx-compose = [
     "androidx-compose-ui-util"
 ]
 androidx-lifecycle = ["androidx-lifecycle-runtime-ktx"]
+androidx-room = ["androidx-room-runtime", "androidx-room-ktx", "androidx-room-paging"]
 retrofit = ["okhttp", "retrofit", "retrofit-kotlinx-serialization-converter"]
 test = ["junit", "mockk"]
 android-test = ["androidx-test-ext-junit", "androidx-test-espresso-core", "androidx-compose-ui-test-junit4"]

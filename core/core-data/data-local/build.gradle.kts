@@ -51,6 +51,8 @@ android {
 dependencies {
     api(project(":core:core-data:data-remote"))
 
+    api(libs.bundles.androidx.room)
+
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
 }
