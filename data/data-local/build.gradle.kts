@@ -50,6 +50,7 @@ android {
 
 dependencies {
     implementation(project(":core:core-data:data-local"))
+    implementation(project(":data:data-remote"))
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)

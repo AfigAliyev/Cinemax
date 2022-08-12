@@ -14,31 +14,18 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id(libs.plugins.java.library.get().pluginId)
 }
 
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-rootProject.name = "Cinemax"
+dependencies {
+    implementation(project(":core:core-data:data-remote"))
 
-include(
-    ":app",
-    ":core:core-data",
-    ":core:core-data:data-local",
-    ":core:core-data:data-remote",
-    ":core:core-domain",
-    ":core:core-presentation",
-    ":data:data-local",
-    ":data:data-remote"
-)
+    testImplementation(libs.bundles.test)
+}
