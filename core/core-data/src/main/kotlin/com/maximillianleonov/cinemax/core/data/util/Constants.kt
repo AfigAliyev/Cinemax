@@ -22,8 +22,14 @@ object Constants {
         const val API_KEY_QUERY_PARAM = "api_key"
     }
 
+    object Tables {
+        const val UPCOMING_MOVIES_TABLE = "upcoming_movies"
+        const val UPCOMING_MOVIES_REMOTE_KEYS_TABLE = "upcoming_movies_remote_keys"
+    }
+
     object Fields {
         const val ID = "id"
+        const val REMOTE_ID = "remote_id"
 
         const val PAGE = "page"
         const val TOTAL_PAGES = "total_pages"
@@ -46,6 +52,9 @@ object Constants {
         const val VIDEO = "video"
         const val MAXIMUM = "maximum"
         const val MINIMUM = "minimum"
+
+        const val PREV_PAGE = "prev_page"
+        const val NEXT_PAGE = "next_page"
     }
 
     object Messages {
