@@ -35,6 +35,7 @@ rootProject.name = "Cinemax"
 include(
     ":app",
     ":core:core-data",
+    ":core:core-data:data-local",
     ":core:core-data:data-remote",
     ":core:core-domain",
     ":core:core-presentation"
