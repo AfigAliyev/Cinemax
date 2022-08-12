@@ -68,6 +68,8 @@ dependencies {
 
     debugApi(libs.bundles.debug)
 
+    implementation(libs.androidx.paging.common)
+
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
 }
