@@ -99,6 +99,7 @@ dependencies {
     implementation(project(":core:core-presentation"))
 
     implementation(project(":data:data-local"))
+    implementation(project(":data:data-remote"))
 
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
