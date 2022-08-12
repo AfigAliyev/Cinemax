@@ -25,6 +25,7 @@ mockk = "1.12.5"
 
 kotlinx-coroutines = "1.6.4"
 kotlinx-serialization = "1.4.0-RC"
+kotlinx-datetime = "0.4.0"
 
 dagger = "2.43.2"
 okhttp = "4.10.0"
@@ -57,6 +58,7 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
