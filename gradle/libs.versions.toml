@@ -17,6 +17,8 @@ androidx-activity = "1.5.1"
 androidx-lifecycle = "2.5.1"
 androidx-navigation = "2.5.1"
 androidx-room = "2.4.3"
+androidx-paging = "3.1.1"
+androidx-paging-compose = "1.0.0-alpha16"
 androidx-hilt = "1.0.0"
 androidx-customview = "1.1.0"
 androidx-customview-poolingcontainer = "1.0.0"
@@ -54,6 +56,10 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "androidx-room" }
+
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidx-paging" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging-compose" }
 
 androidx-customview = { module = "androidx.customview:customview", version.ref = "androidx-customview" }
 androidx-customview-poolingcontainer = { module = "androidx.customview:customview-poolingcontainer", version.ref = "androidx-customview-poolingcontainer" }
