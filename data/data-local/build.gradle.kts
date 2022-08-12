@@ -17,6 +17,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -51,6 +52,8 @@ android {
 dependencies {
     implementation(project(":core:core-data:data-local"))
     implementation(project(":data:data-remote"))
+
+    ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)

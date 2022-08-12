@@ -5,6 +5,7 @@ android-targetSdk = "32"
 
 kotlin = "1.7.10"
 android-gradle-plugin = "7.2.2"
+ksp = "1.7.10-1.0.6"
 spotless = "6.9.1"
 detekt = "1.21.0"
 kode-detekt-rules-compose = "1.1.0"
@@ -111,6 +112,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 java-library = { id = "java-library" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
