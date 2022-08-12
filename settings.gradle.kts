@@ -41,5 +41,6 @@ include(
     ":core:core-presentation",
     ":data:data-local",
     ":data:data-remote",
-    ":domain"
+    ":domain",
+    ":features:feature-home:presentation"
 )
