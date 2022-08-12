@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.maximillianleonov.cinemax.feature.home.presentation.HomeScreen
 
 @Suppress("ForbiddenComment")
 @Composable
@@ -36,7 +37,7 @@ fun CinemaxNavHost(
         navController = navController,
         startDestination = Screen.Home.route
     ) {
-        composable(route = Screen.Home.route) { /* TODO: Not yet implemented. */ }
+        composable(route = Screen.Home.route) { HomeScreen() }
         composable(route = Screen.Search.route) { /* TODO: Not yet implemented. */ }
         composable(route = Screen.Wishlist.route) { /* TODO: Not yet implemented. */ }
         composable(route = Screen.Settings.route) { /* TODO: Not yet implemented. */ }
