@@ -16,7 +16,7 @@
 
 package com.maximillianleonov.cinemax.core.data.local.common
 
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 interface Entity {
     val id: Int
