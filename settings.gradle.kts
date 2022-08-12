@@ -38,5 +38,6 @@ include(
     ":core:core-data:data-local",
     ":core:core-data:data-remote",
     ":core:core-domain",
-    ":core:core-presentation"
+    ":core:core-presentation",
+    ":data:data-local"
 )
