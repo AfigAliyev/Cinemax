@@ -16,17 +16,28 @@
 
 package com.maximillianleonov.cinemax.di
 
+import android.content.Context
+import androidx.room.Room
 import com.maximillianleonov.cinemax.BuildConfig
 import com.maximillianleonov.cinemax.core.data.remote.api.CinemaxApiKeyProvider
+import com.maximillianleonov.cinemax.data.local.db.CinemaxDatabase
 import com.maximillianleonov.cinemax.data.remote.api.CinemaxApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
 object DataModule {
+    @[Provides Singleton]
+    fun provideCinemaxDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
+        context,
+        CinemaxDatabase::class.java,
+        CinemaxDatabase.CINEMAX_DATABASE
+    ).build()
+
     @[Provides Singleton]
     fun provideCinemaxApi(apiKeyProvider: CinemaxApiKeyProvider) = CinemaxApi(apiKeyProvider)
 
