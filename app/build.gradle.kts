@@ -101,6 +101,8 @@ dependencies {
     implementation(project(":data:data-local"))
     implementation(project(":data:data-remote"))
 
+    implementation(project(":domain"))
+
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
     implementation(libs.androidx.navigation.compose)
