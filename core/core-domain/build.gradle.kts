@@ -25,5 +25,7 @@ java {
 }
 
 dependencies {
+    api(libs.javax.inject)
+
     testImplementation(libs.bundles.test)
 }

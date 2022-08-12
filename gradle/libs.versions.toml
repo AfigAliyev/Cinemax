@@ -37,6 +37,8 @@ okhttp = "4.10.0"
 retrofit = "2.9.0"
 retrofit-kotlinx-serialization-converter = "0.8.0"
 
+javax-inject = "1"
+
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -80,6 +82,8 @@ dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-kotlinx-serialization-converter" }
+
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 kode-detekt-rules-compose = { module = "ru.kode:detekt-rules-compose", version.ref = "kode-detekt-rules-compose" }
