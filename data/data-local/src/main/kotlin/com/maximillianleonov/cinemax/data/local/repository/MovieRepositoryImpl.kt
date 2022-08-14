@@ -16,13 +16,31 @@
 
 package com.maximillianleonov.cinemax.data.local.repository
 
+import com.maximillianleonov.cinemax.core.data.remote.common.networkBoundResource
+import com.maximillianleonov.cinemax.core.domain.result.Result
+import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEntity
+import com.maximillianleonov.cinemax.data.local.mapper.listMap
+import com.maximillianleonov.cinemax.data.local.mapper.toMovieModel
+import com.maximillianleonov.cinemax.data.local.mapper.toUpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.source.MovieLocalDataSource
+import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
 import com.maximillianleonov.cinemax.data.remote.source.MovieRemoteDataSource
+import com.maximillianleonov.cinemax.domain.model.MovieModel
 import com.maximillianleonov.cinemax.domain.repository.MovieRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-@Suppress("UnusedPrivateMember")
 class MovieRepositoryImpl @Inject constructor(
-    localDataSource: MovieLocalDataSource,
-    remoteDataSource: MovieRemoteDataSource
-) : MovieRepository
+    private val localDataSource: MovieLocalDataSource,
+    private val remoteDataSource: MovieRemoteDataSource
+) : MovieRepository {
+    override fun getUpcomingMovies(): Flow<Result<List<MovieModel>>> = networkBoundResource(
+        query = { localDataSource.getUpcomingMovies().listMap(UpcomingMovieEntity::toMovieModel) },
+        fetch = { remoteDataSource.getUpcomingMovies() },
+        saveFetchResult = { response ->
+            localDataSource.deleteAndInsertUpcomingMovies(
+                response.results.map(MovieDto::toUpcomingMovieEntity)
+            )
+        }
+    )
+}

@@ -16,4 +16,10 @@
 
 package com.maximillianleonov.cinemax.domain.repository
 
-interface MovieRepository
+import com.maximillianleonov.cinemax.core.domain.result.Result
+import com.maximillianleonov.cinemax.domain.model.MovieModel
+import kotlinx.coroutines.flow.Flow
+
+interface MovieRepository {
+    fun getUpcomingMovies(): Flow<Result<List<MovieModel>>>
+}
