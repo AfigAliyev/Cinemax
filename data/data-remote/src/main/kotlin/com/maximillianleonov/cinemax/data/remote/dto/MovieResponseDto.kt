@@ -18,7 +18,6 @@ package com.maximillianleonov.cinemax.data.remote.dto
 
 import com.maximillianleonov.cinemax.core.data.remote.common.ResponseDto
 import com.maximillianleonov.cinemax.core.data.util.Constants
-import com.maximillianleonov.cinemax.data.remote.dto.movie.DatesDto
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
