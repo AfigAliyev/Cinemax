@@ -41,3 +41,5 @@ compose:
     active: true
   PublicComposablePreview:
     active: true
+  TopLevelComposableFunctions:
+    active: true
