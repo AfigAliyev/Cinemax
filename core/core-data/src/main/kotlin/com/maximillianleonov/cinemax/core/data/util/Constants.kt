@@ -19,6 +19,7 @@ package com.maximillianleonov.cinemax.core.data.util
 object Constants {
     object Remote {
         const val API_URL = "https://api.themoviedb.org/3/"
+        const val IMAGE_URL = "https://image.tmdb.org/t/p/w500"
         const val API_KEY_QUERY_PARAM = "api_key"
         const val DEFAULT_PAGE = 1
     }
