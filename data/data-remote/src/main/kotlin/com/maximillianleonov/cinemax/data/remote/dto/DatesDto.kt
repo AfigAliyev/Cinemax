@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.data.remote.dto.movie
+package com.maximillianleonov.cinemax.data.remote.dto
 
 import com.maximillianleonov.cinemax.core.data.util.Constants
 import kotlinx.serialization.SerialName
