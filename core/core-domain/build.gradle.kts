@@ -26,6 +26,7 @@ java {
 
 dependencies {
     api(libs.javax.inject)
+    api(libs.kotlinx.coroutines.core)
     api(libs.kotlinx.datetime)
 
     testImplementation(libs.bundles.test)
