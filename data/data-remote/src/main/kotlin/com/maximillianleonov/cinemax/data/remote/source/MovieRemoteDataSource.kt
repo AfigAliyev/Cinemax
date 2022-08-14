@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.data.remote.api.service
+package com.maximillianleonov.cinemax.data.remote.source
 
 import com.maximillianleonov.cinemax.core.data.util.Constants
-import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
-import retrofit2.http.GET
-import retrofit2.http.Query
+import com.maximillianleonov.cinemax.data.remote.api.CinemaxApi
+import javax.inject.Inject
 
-interface MovieService {
-    @GET("movie/upcoming")
+class MovieRemoteDataSource @Inject constructor(api: CinemaxApi) {
+    private val movieService = api.movieService
+
     suspend fun getUpcomingMovies(
-        @Query("page") page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<MovieResponseDto>
+        page: Int = Constants.Remote.DEFAULT_PAGE
+    ) = movieService.getUpcomingMovies(page)
 }
