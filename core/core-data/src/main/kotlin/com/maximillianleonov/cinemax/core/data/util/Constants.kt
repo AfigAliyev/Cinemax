@@ -20,6 +20,7 @@ object Constants {
     object Remote {
         const val API_URL = "https://api.themoviedb.org/3/"
         const val API_KEY_QUERY_PARAM = "api_key"
+        const val DEFAULT_PAGE = 1
     }
 
     object Tables {

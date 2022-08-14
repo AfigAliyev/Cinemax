@@ -16,4 +16,15 @@
 
 package com.maximillianleonov.cinemax.data.remote.api.service
 
-interface MovieService
+import com.maximillianleonov.cinemax.core.data.util.Constants
+import com.maximillianleonov.cinemax.core.domain.result.Result
+import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface MovieService {
+    @GET("movie/upcoming")
+    suspend fun getUpcomingMovies(
+        @Query("page") page: Int = Constants.Remote.DEFAULT_PAGE
+    ): Result<MovieResponseDto>
+}
