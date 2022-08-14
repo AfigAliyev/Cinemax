@@ -19,6 +19,7 @@ package com.maximillianleonov.cinemax.presentation.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.maximillianleonov.cinemax.R
+import com.maximillianleonov.cinemax.feature.home.presentation.navigation.HomeDestination
 
 enum class BottomNavigationSection(
     val route: String,
@@ -26,22 +27,22 @@ enum class BottomNavigationSection(
     @DrawableRes val drawableResourceId: Int
 ) {
     Home(
-        route = Screen.Home.route,
+        route = HomeDestination.route,
         stringResourceId = R.string.home,
         drawableResourceId = R.drawable.ic_home
     ),
     Search(
-        route = Screen.Search.route,
+        route = "search",
         stringResourceId = R.string.search,
         drawableResourceId = R.drawable.ic_search
     ),
     Wishlist(
-        route = Screen.Wishlist.route,
+        route = "wishlist",
         stringResourceId = R.string.wishlist,
         drawableResourceId = R.drawable.ic_heart
     ),
     Settings(
-        route = Screen.Settings.route,
+        route = "settings",
         stringResourceId = R.string.settings,
         drawableResourceId = R.drawable.ic_settings
     )

@@ -25,12 +25,12 @@ import androidx.compose.ui.Modifier
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 
 @Composable
-fun HomeScreen() {
-    HomeContent()
+fun HomeRoute(modifier: Modifier = Modifier) {
+    HomeScreen(modifier = modifier)
 }
 
 @Composable
-private fun HomeContent(modifier: Modifier = Modifier) {
+internal fun HomeScreen(modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium),

@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.presentation.navigation
+package com.maximillianleonov.cinemax.feature.home.presentation.navigation
 
-sealed class Screen(val route: String) {
-    object Home : Screen(route = "home")
-    object Search : Screen(route = "search")
-    object Wishlist : Screen(route = "wishlist")
-    object Settings : Screen(route = "settings")
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import com.maximillianleonov.cinemax.core.presentation.navigation.CinemaxNavigationDestination
+import com.maximillianleonov.cinemax.feature.home.presentation.HomeRoute
 
-    object List : Screen(route = "list")
-    object Details : Screen(route = "details")
+object HomeDestination : CinemaxNavigationDestination {
+    override val route = "home_route"
+    override val destination = "home_destination"
 }
+
+fun NavGraphBuilder.homeGraph() = composable(route = HomeDestination.route) { HomeRoute() }
