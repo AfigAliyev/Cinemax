@@ -27,7 +27,6 @@ java {
 dependencies {
     api(project(":core:core-data"))
 
-    api(libs.kotlinx.coroutines.core)
     api(libs.kotlinx.serialization.json)
     api(libs.bundles.retrofit)
 
