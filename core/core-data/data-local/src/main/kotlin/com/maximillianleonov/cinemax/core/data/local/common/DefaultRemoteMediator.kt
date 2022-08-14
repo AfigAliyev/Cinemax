@@ -20,8 +20,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import androidx.room.RoomDatabase
-import androidx.room.withTransaction
 import com.maximillianleonov.cinemax.core.data.remote.common.ContentDto
 import com.maximillianleonov.cinemax.core.data.remote.common.ResponseDto
 import com.maximillianleonov.cinemax.core.data.util.Constants
@@ -31,32 +29,32 @@ import com.maximillianleonov.cinemax.core.domain.result.isFailure
 import com.maximillianleonov.cinemax.core.domain.result.isSuccess
 import java.io.IOException
 
-@OptIn(ExperimentalPagingApi::class)
-abstract class DefaultRemoteMediator<
-    EntityType : ContentEntity,
-    RemoteKeyEntityType : RemoteKeyEntity,
-    DaoType : ContentDao<EntityType>,
-    RemoteKeyDaoType : RemoteKeyDao<RemoteKeyEntityType>,
-    DtoType : ContentDto,
-    ResponseDtoType : ResponseDto<DtoType>
-    >(
-    private val db: RoomDatabase,
-    private val dao: DaoType,
-    private val remoteKeyDao: RemoteKeyDaoType
-) : RemoteMediator<Int, EntityType>() {
+interface DefaultRemoteMediatorCallback {
+    suspend fun getRemoteKeyById(id: Int): RemoteKeyEntity
+    suspend fun deleteAndInsertAll(
+        isLoadTypeRefresh: Boolean,
+        remoteKeys: List<RemoteKeyEntity>,
+        data: List<ContentEntity>
+    )
+}
 
-    protected abstract suspend fun getDataFromService(page: Int): Result<ResponseDtoType>
-    protected abstract fun dtoToEntity(dto: DtoType): EntityType
+@OptIn(ExperimentalPagingApi::class)
+abstract class DefaultRemoteMediator(
+    private val callback: DefaultRemoteMediatorCallback
+) : RemoteMediator<Int, ContentEntity>() {
+
+    protected abstract suspend fun getDataFromService(page: Int): Result<ResponseDto<ContentDto>>
+    protected abstract fun dtoToEntity(dto: ContentDto): ContentEntity
     protected abstract fun entityToRemoteKey(
         id: Int,
         prevPage: Int?,
         nextPage: Int?
-    ): RemoteKeyEntityType
+    ): RemoteKeyEntity
 
-    @Suppress("ReturnCount", "ComplexMethod")
+    @Suppress("ReturnCount")
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, EntityType>
+        state: PagingState<Int, ContentEntity>
     ): MediatorResult {
         return try {
             val currentPage = when (loadType) {
@@ -90,21 +88,19 @@ abstract class DefaultRemoteMediator<
                     val prevPage = if (currentPage == 1) null else currentPage - 1
                     val nextPage = if (endOfPaginationReached) null else currentPage + 1
 
-                    db.withTransaction {
-                        if (loadType == LoadType.REFRESH) {
-                            dao.deleteAll()
-                            remoteKeyDao.deleteAll()
-                        }
-                        val remoteKeys = data.map { entity ->
-                            entityToRemoteKey(
-                                id = entity.remoteId,
-                                prevPage = prevPage,
-                                nextPage = nextPage
-                            )
-                        }
-                        remoteKeyDao.insertAll(remoteKeys)
-                        dao.insertAll(data)
+                    val remoteKeys = data.map { entity ->
+                        entityToRemoteKey(
+                            id = entity.remoteId,
+                            prevPage = prevPage,
+                            nextPage = nextPage
+                        )
                     }
+
+                    callback.deleteAndInsertAll(
+                        isLoadTypeRefresh = loadType == LoadType.REFRESH,
+                        remoteKeys = remoteKeys,
+                        data = data
+                    )
 
                     MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
                 }
@@ -121,26 +117,26 @@ abstract class DefaultRemoteMediator<
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, EntityType>
-    ): RemoteKeyEntityType? = state.anchorPosition?.let { position ->
+        state: PagingState<Int, ContentEntity>
+    ): RemoteKeyEntity? = state.anchorPosition?.let { position ->
         state.closestItemToPosition(position)?.let { entity ->
-            remoteKeyDao.getById(id = entity.remoteId)
+            callback.getRemoteKeyById(id = entity.remoteId)
         }
     }
 
     private suspend fun getRemoteKeyForFirstItem(
-        state: PagingState<Int, EntityType>
-    ): RemoteKeyEntityType? = state.pages.firstOrNull {
+        state: PagingState<Int, ContentEntity>
+    ): RemoteKeyEntity? = state.pages.firstOrNull {
         it.data.isNotEmpty()
     }?.data?.firstOrNull()?.let { entity ->
-        remoteKeyDao.getById(id = entity.remoteId)
+        callback.getRemoteKeyById(id = entity.remoteId)
     }
 
     private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, EntityType>
-    ): RemoteKeyEntityType? = state.pages.lastOrNull {
+        state: PagingState<Int, ContentEntity>
+    ): RemoteKeyEntity? = state.pages.lastOrNull {
         it.data.isNotEmpty()
     }?.data?.lastOrNull()?.let { entity ->
-        remoteKeyDao.getById(id = entity.remoteId)
+        callback.getRemoteKeyById(id = entity.remoteId)
     }
 }
