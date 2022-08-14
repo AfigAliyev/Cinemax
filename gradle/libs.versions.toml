@@ -8,7 +8,7 @@ android-gradle-plugin = "7.2.2"
 ksp = "1.7.10-1.0.6"
 spotless = "6.9.1"
 detekt = "1.21.0"
-kode-detekt-rules-compose = "1.2.0"
+kode-detekt-rules-compose = "1.2.1"
 desugar-jdk-libs = "1.1.6"
 
 androidx-compose = "1.2.1"
