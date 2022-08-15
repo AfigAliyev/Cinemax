@@ -18,12 +18,8 @@ package com.maximillianleonov.cinemax.core.presentation.mapper
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.maximillianleonov.cinemax.core.presentation.util.MapperFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-
-fun <T : Any, R : Any> Flow<PagingData<T>>.pagingDomainMap(): Flow<PagingData<R>> =
-    pagingMap(transform = MapperFactory.domainMapper())
 
 fun <T : Any, R : Any> Flow<PagingData<T>>.pagingMap(
     transform: (T) -> R
