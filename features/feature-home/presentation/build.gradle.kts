@@ -66,6 +66,9 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
 
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
 }
