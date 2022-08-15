@@ -60,6 +60,7 @@ android {
 
 dependencies {
     api(project(":core:core-data"))
+    api(project(":domain"))
 
     api(libs.androidx.core.ktx)
     api(libs.bundles.androidx.compose)
