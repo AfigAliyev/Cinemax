@@ -39,6 +39,8 @@ retrofit-kotlinx-serialization-converter = "0.8.0"
 
 javax-inject = "1"
 
+coil = "2.1.0"
+
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -87,6 +89,8 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 retrofit-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-kotlinx-serialization-converter" }
 
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
+
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 kode-detekt-rules-compose = { module = "ru.kode:detekt-rules-compose", version.ref = "kode-detekt-rules-compose" }
