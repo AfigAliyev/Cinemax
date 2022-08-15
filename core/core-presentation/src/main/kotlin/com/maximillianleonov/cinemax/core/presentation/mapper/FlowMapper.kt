@@ -22,15 +22,9 @@ import com.maximillianleonov.cinemax.core.presentation.util.MapperFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-interface FlowPagingMapper {
-    fun <T : Any, R : Any> Flow<PagingData<T>>.pagingMap(): Flow<PagingData<R>>
-}
+fun <T : Any, R : Any> Flow<PagingData<T>>.pagingDomainMap(): Flow<PagingData<R>> =
+    pagingMap(transform = MapperFactory.domainMapper())
 
-class FlowPagingMapperImpl : FlowPagingMapper {
-    override fun <T : Any, R : Any> Flow<PagingData<T>>.pagingMap(): Flow<PagingData<R>> =
-        pagingMap(transform = MapperFactory.domainMapper())
-}
-
-private fun <T : Any, R : Any> Flow<PagingData<T>>.pagingMap(
+fun <T : Any, R : Any> Flow<PagingData<T>>.pagingMap(
     transform: (T) -> R
 ): Flow<PagingData<R>> = map { it.map(transform) }
