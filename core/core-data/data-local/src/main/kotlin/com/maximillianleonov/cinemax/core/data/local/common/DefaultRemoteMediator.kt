@@ -29,32 +29,29 @@ import com.maximillianleonov.cinemax.core.domain.result.isFailure
 import com.maximillianleonov.cinemax.core.domain.result.isSuccess
 import java.io.IOException
 
-interface DefaultRemoteMediatorCallback {
-    suspend fun getRemoteKeyById(id: Int): RemoteKeyEntity
-    suspend fun deleteAndInsertAll(
-        isLoadTypeRefresh: Boolean,
-        remoteKeys: List<RemoteKeyEntity>,
-        data: List<ContentEntity>
-    )
-}
-
 @OptIn(ExperimentalPagingApi::class)
-abstract class DefaultRemoteMediator(
-    private val callback: DefaultRemoteMediatorCallback
-) : RemoteMediator<Int, ContentEntity>() {
+abstract class DefaultRemoteMediator<EntityType : ContentEntity,
+    RemoteKeyEntityType : RemoteKeyEntity> : RemoteMediator<Int, EntityType>() {
 
     protected abstract suspend fun getDataFromService(page: Int): Result<ResponseDto<ContentDto>>
-    protected abstract fun dtoToEntity(dto: ContentDto): ContentEntity
+    protected abstract fun dtoToEntity(dto: ContentDto): EntityType
     protected abstract fun entityToRemoteKey(
         id: Int,
         prevPage: Int?,
         nextPage: Int?
-    ): RemoteKeyEntity
+    ): RemoteKeyEntityType
+
+    protected abstract suspend fun getRemoteKeyById(id: Int): RemoteKeyEntityType
+    protected abstract suspend fun deleteAndInsertAll(
+        isLoadTypeRefresh: Boolean,
+        remoteKeys: List<RemoteKeyEntityType>,
+        data: List<EntityType>
+    )
 
     @Suppress("ReturnCount")
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, ContentEntity>
+        state: PagingState<Int, EntityType>
     ): MediatorResult {
         return try {
             val currentPage = when (loadType) {
@@ -96,7 +93,7 @@ abstract class DefaultRemoteMediator(
                         )
                     }
 
-                    callback.deleteAndInsertAll(
+                    deleteAndInsertAll(
                         isLoadTypeRefresh = loadType == LoadType.REFRESH,
                         remoteKeys = remoteKeys,
                         data = data
@@ -117,26 +114,26 @@ abstract class DefaultRemoteMediator(
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, ContentEntity>
-    ): RemoteKeyEntity? = state.anchorPosition?.let { position ->
+        state: PagingState<Int, EntityType>
+    ): RemoteKeyEntityType? = state.anchorPosition?.let { position ->
         state.closestItemToPosition(position)?.let { entity ->
-            callback.getRemoteKeyById(id = entity.remoteId)
+            getRemoteKeyById(id = entity.remoteId)
         }
     }
 
     private suspend fun getRemoteKeyForFirstItem(
-        state: PagingState<Int, ContentEntity>
-    ): RemoteKeyEntity? = state.pages.firstOrNull {
+        state: PagingState<Int, EntityType>
+    ): RemoteKeyEntityType? = state.pages.firstOrNull {
         it.data.isNotEmpty()
     }?.data?.firstOrNull()?.let { entity ->
-        callback.getRemoteKeyById(id = entity.remoteId)
+        getRemoteKeyById(id = entity.remoteId)
     }
 
     private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, ContentEntity>
-    ): RemoteKeyEntity? = state.pages.lastOrNull {
+        state: PagingState<Int, EntityType>
+    ): RemoteKeyEntityType? = state.pages.lastOrNull {
         it.data.isNotEmpty()
     }?.data?.lastOrNull()?.let { entity ->
-        callback.getRemoteKeyById(id = entity.remoteId)
+        getRemoteKeyById(id = entity.remoteId)
     }
 }
