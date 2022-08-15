@@ -20,6 +20,7 @@ import com.maximillianleonov.cinemax.core.domain.result.Result
 import com.maximillianleonov.cinemax.core.domain.result.isFailure
 import com.maximillianleonov.cinemax.core.domain.result.isLoading
 import com.maximillianleonov.cinemax.core.domain.result.isSuccess
+import kotlinx.coroutines.flow.Flow
 
 fun <T> Result<T>.handle(
     onLoading: (T?) -> Unit,
@@ -30,4 +31,16 @@ fun <T> Result<T>.handle(
     isSuccess() -> onSuccess(value)
     isFailure() -> onFailure(error)
     else -> error("{${Constants.Messages.UNHANDLED_STATE} $this}")
+}
+
+suspend fun <T> Flow<Result<T>>.handle(
+    onLoading: (T?) -> Unit,
+    onSuccess: (T) -> Unit,
+    onFailure: (Throwable) -> Unit
+) = collect { result ->
+    result.handle(
+        onLoading = onLoading,
+        onSuccess = onSuccess,
+        onFailure = onFailure
+    )
 }
