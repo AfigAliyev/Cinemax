@@ -66,6 +66,7 @@ dependencies {
     api(libs.bundles.androidx.compose)
     api(libs.bundles.androidx.lifecycle)
     api(libs.androidx.hilt.navigation.compose)
+    api(libs.accompanist.placeholder.material)
     api(libs.coil.compose)
 
     debugApi(libs.bundles.debug)
