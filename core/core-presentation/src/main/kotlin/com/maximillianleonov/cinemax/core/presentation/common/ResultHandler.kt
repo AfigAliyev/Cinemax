@@ -16,89 +16,57 @@
 
 package com.maximillianleonov.cinemax.core.presentation.common
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.maximillianleonov.cinemax.core.domain.result.Result
 import com.maximillianleonov.cinemax.core.domain.result.isFailure
 import com.maximillianleonov.cinemax.core.domain.result.isLoading
 import com.maximillianleonov.cinemax.core.domain.result.isSuccess
 import com.maximillianleonov.cinemax.core.presentation.util.Constants
-import com.maximillianleonov.cinemax.core.presentation.util.MapperFactory
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 interface ResultHandler {
-    fun <T, R, S : State> Result<T>.handleResult(
-        onLoading: (S, R?) -> S,
-        onSuccess: (S, R) -> S,
-        onFailure: (S, Throwable) -> S,
-        updateUiState: ((S) -> S) -> Unit
+    fun <T> Result<T>.handleResult(
+        onLoading: (T?) -> Unit,
+        onSuccess: (T) -> Unit,
+        onFailure: (Throwable) -> Unit
     )
 
-    fun <T, R, S : State> Result<List<T>>.handleResultList(
-        onLoading: (S, List<R>) -> S,
-        onSuccess: (S, List<R>) -> S,
-        onFailure: (S, Throwable) -> S,
-        updateUiState: ((S) -> S) -> Unit
+    fun <T> Flow<Result<T>>.handleResult(
+        onLoading: (T?) -> Unit,
+        onSuccess: (T) -> Unit,
+        onFailure: (Throwable) -> Unit
     )
 }
 
 fun ResultHandler(): ResultHandler = ResultHandlerImpl()
 
 private class ResultHandlerImpl : ResultHandler {
-    override fun <T, R, S : State> Result<T>.handleResult(
-        onLoading: (S, R?) -> S,
-        onSuccess: (S, R) -> S,
-        onFailure: (S, Throwable) -> S,
-        updateUiState: ((S) -> S) -> Unit,
-    ) = updateUiState { currentState ->
-        handleResult(
-            currentState = currentState,
-            onLoading = onLoading,
-            onSuccess = onSuccess,
-            onFailure = onFailure
-        )
+    override fun <T> Result<T>.handleResult(
+        onLoading: (T?) -> Unit,
+        onSuccess: (T) -> Unit,
+        onFailure: (Throwable) -> Unit
+    ) = when {
+        isLoading() -> onLoading(value)
+        isSuccess() -> onSuccess(value)
+        isFailure() -> onFailure(error)
+        else -> error("{${Constants.Messages.UNHANDLED_STATE} $this}")
     }
 
-    override fun <T, R, S : State> Result<List<T>>.handleResultList(
-        onLoading: (S, List<R>) -> S,
-        onSuccess: (S, List<R>) -> S,
-        onFailure: (S, Throwable) -> S,
-        updateUiState: ((S) -> S) -> Unit
+    override fun <T> Flow<Result<T>>.handleResult(
+        onLoading: (T?) -> Unit,
+        onSuccess: (T) -> Unit,
+        onFailure: (Throwable) -> Unit
     ) {
-        updateUiState { currentState ->
-            handleResultList(
-                currentState = currentState,
+        require(this is ViewModel) { "${Constants.Messages.UNHANDLED_STATE} $this" }
+        onEach { result ->
+            result.handleResult(
                 onLoading = onLoading,
                 onSuccess = onSuccess,
                 onFailure = onFailure
             )
-        }
-    }
-}
-
-private fun <T, R, S : State> Result<T>.handleResult(
-    currentState: S,
-    onLoading: (S, R?) -> S,
-    onSuccess: (S, R) -> S,
-    onFailure: (S, Throwable) -> S
-): S {
-    val transform: (T) -> R = MapperFactory.domainMapper()
-    return when {
-        isLoading() -> onLoading(currentState, value?.let(transform))
-        isSuccess() -> onSuccess(currentState, value.let(transform))
-        isFailure() -> onFailure(currentState, error)
-        else -> error("{${Constants.Messages.UNHANDLED_STATE} $this}")
-    }
-}
-
-private fun <T, R, S : State> Result<List<T>>.handleResultList(
-    currentState: S,
-    onLoading: (S, List<R>) -> S,
-    onSuccess: (S, List<R>) -> S,
-    onFailure: (S, Throwable) -> S
-): S {
-    val transform: (T) -> R = MapperFactory.domainMapper()
-    return when {
-        isLoading() -> onLoading(currentState, value?.map(transform).orEmpty())
-        isSuccess() -> onSuccess(currentState, value.map(transform))
-        isFailure() -> onFailure(currentState, error)
-        else -> error("{${Constants.Messages.UNHANDLED_STATE} $this}")
+        }.launchIn(viewModelScope)
     }
 }
