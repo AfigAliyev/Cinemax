@@ -21,20 +21,42 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.feature.home.presentation.components.UpcomingMoviesContainer
 
 @Composable
-fun HomeRoute(modifier: Modifier = Modifier) {
-    HomeScreen(modifier = modifier)
+fun HomeRoute(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    HomeScreen(
+        uiState = uiState,
+        modifier = modifier
+    )
 }
 
 @Composable
-internal fun HomeScreen(modifier: Modifier = Modifier) {
+internal fun HomeScreen(
+    uiState: HomeUiState,
+    modifier: Modifier = Modifier
+) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium),
         contentPadding = PaddingValues(vertical = CinemaxTheme.spacing.extraMedium)
     ) {
+        item {
+            @Suppress("ForbiddenComment")
+            UpcomingMoviesContainer(
+                movies = uiState.upcomingMovies,
+                isMoviesLoading = uiState.isUpcomingMoviesLoading,
+                onSeeAllClick = { /* TODO: Not yet implemented. */ }
+            )
+        }
     }
 }
