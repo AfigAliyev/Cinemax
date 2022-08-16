@@ -22,7 +22,7 @@ import androidx.room.PrimaryKey
 import com.maximillianleonov.cinemax.core.data.local.common.RemoteKeyEntity
 import com.maximillianleonov.cinemax.core.data.util.Constants
 
-@Entity(tableName = Constants.Tables.UPCOMING_MOVIES_REMOTE_KEYS_TABLE)
+@Entity(tableName = Constants.Tables.UPCOMING_MOVIES_REMOTE_KEYS)
 data class UpcomingMovieRemoteKeyEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = Constants.Fields.ID)

@@ -26,8 +26,8 @@ object Constants {
     }
 
     object Tables {
-        const val UPCOMING_MOVIES_TABLE = "upcoming_movies"
-        const val UPCOMING_MOVIES_REMOTE_KEYS_TABLE = "upcoming_movies_remote_keys"
+        const val UPCOMING_MOVIES = "upcoming_movies"
+        const val UPCOMING_MOVIES_REMOTE_KEYS = "upcoming_movies_remote_keys"
     }
 
     object Fields {

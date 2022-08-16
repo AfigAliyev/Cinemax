@@ -21,17 +21,17 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.maximillianleonov.cinemax.core.data.local.common.RemoteKeyDao
-import com.maximillianleonov.cinemax.core.data.util.Constants.Tables.UPCOMING_MOVIES_REMOTE_KEYS_TABLE
+import com.maximillianleonov.cinemax.core.data.util.Constants.Tables.UPCOMING_MOVIES_REMOTE_KEYS
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRemoteKeyEntity
 
 @Dao
 interface UpcomingMovieRemoteKeyDao : RemoteKeyDao<UpcomingMovieRemoteKeyEntity> {
-    @Query("SELECT * FROM $UPCOMING_MOVIES_REMOTE_KEYS_TABLE WHERE id = :id")
+    @Query("SELECT * FROM $UPCOMING_MOVIES_REMOTE_KEYS WHERE id = :id")
     override suspend fun getById(id: Int): UpcomingMovieRemoteKeyEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     override suspend fun insertAll(entities: List<UpcomingMovieRemoteKeyEntity>)
 
-    @Query("DELETE FROM $UPCOMING_MOVIES_REMOTE_KEYS_TABLE")
+    @Query("DELETE FROM $UPCOMING_MOVIES_REMOTE_KEYS")
     override suspend fun deleteAll()
 }
