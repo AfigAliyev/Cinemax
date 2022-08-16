@@ -17,7 +17,6 @@
 package com.maximillianleonov.cinemax.presentation.navigation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -71,14 +70,7 @@ private fun NavHostController.navigateOnce(route: String) = navigate(route = rou
     restoreState = true
 }
 
-private const val BottomBarAnimationSpecDuration = 1000
-private val BottomBarEnterTransition = fadeIn() + expandVertically(
-    animationSpec = tween(durationMillis = BottomBarAnimationSpecDuration),
-    expandFrom = Alignment.Top
-)
-private val BottomBarExitTransition = shrinkVertically(
-    animationSpec = tween(durationMillis = BottomBarAnimationSpecDuration),
-    shrinkTowards = Alignment.Top
-) + fadeOut()
+private val BottomBarEnterTransition = fadeIn() + expandVertically(expandFrom = Alignment.Top)
+private val BottomBarExitTransition = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
 
 private const val MESSAGE_CURRENT_ROUTE_IS_NULL = "Current route is null."
