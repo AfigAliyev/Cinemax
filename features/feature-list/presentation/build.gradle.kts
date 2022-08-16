@@ -14,42 +14,26 @@
  * limitations under the License.
  */
 
-import java.util.Properties
-
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.dagger.hilt.android)
-}
-
-val localProperties = Properties()
-val localPropertiesFile = File(rootDir, "local.properties")
-if (localPropertiesFile.exists() && localPropertiesFile.isFile) {
-    localPropertiesFile.inputStream().use { input ->
-        localProperties.load(input)
-    }
 }
 
 android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.maximillianleonov.cinemax"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
 
-        val cinemaxApiKey = checkNotNull(
-            localProperties.getProperty("cinemax.apikey") ?: System.getenv("CINEMAX_API_KEY")
-        )
-        buildConfigField("String", "CINEMAX_API_KEY", "\"$cinemaxApiKey\"")
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -59,14 +43,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-            packagingOptions {
-                resources.excludes += "DebugProbesKt.bin"
-            }
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -79,39 +58,14 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
-    packagingOptions {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    lint {
-        warningsAsErrors = true
-        abortOnError = true
-        checkDependencies = true
-    }
 }
 
 dependencies {
-    implementation(project(":core:core-data"))
-    implementation(project(":core:core-data:data-local"))
-    implementation(project(":core:core-data:data-remote"))
-    implementation(project(":core:core-domain"))
     implementation(project(":core:core-presentation"))
-
-    implementation(project(":data:data-local"))
-    implementation(project(":data:data-remote"))
-
-    implementation(project(":domain"))
-
-    implementation(project(":features:feature-home:presentation"))
-    implementation(project(":features:feature-list:presentation"))
 
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
-    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
-
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
