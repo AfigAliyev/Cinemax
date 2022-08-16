@@ -16,6 +16,7 @@
 
 package com.maximillianleonov.cinemax.presentation.main
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
@@ -50,7 +51,10 @@ private fun MainContent(
             bottomBar = { CinemaxBottomNavigation(navController = navController) },
             snackbarHost = { CinemaxSnackbarHost(it) }
         ) { innerPadding ->
-            CinemaxNavHost(navController = navController, innerPadding = innerPadding)
+            CinemaxNavHost(
+                navController = navController,
+                modifier = Modifier.padding(paddingValues = innerPadding)
+            )
         }
     }
 }
