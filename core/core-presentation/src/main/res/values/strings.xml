@@ -17,4 +17,6 @@
 <resources>
     <string name="movie">Movie</string>
     <string name="see_all">See All</string>
+    <string name="no_internet_connection">No internet connection.</string>
+    <string name="unknown_error">An unknown error has occurred.</string>
 </resources>

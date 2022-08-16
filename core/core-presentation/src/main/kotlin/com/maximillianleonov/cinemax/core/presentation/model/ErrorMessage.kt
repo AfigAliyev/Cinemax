@@ -17,8 +17,14 @@
 package com.maximillianleonov.cinemax.core.presentation.model
 
 import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.presentation.util.Utils
 
 data class ErrorMessage(
     val error: Throwable,
     @StringRes val messageResourceId: Int
+)
+
+fun Throwable.toErrorMessage() = ErrorMessage(
+    error = this,
+    messageResourceId = Utils.getMessageFromThrowable(this)
 )
