@@ -47,31 +47,37 @@ class HomeViewModel @Inject constructor(
 
     private fun loadUpcomingMovies() = viewModelScope.launch {
         getUpcomingMoviesUseCase().handle(
-            onLoading = { upcomingMovies ->
-                _uiState.update {
-                    it.copy(
-                        upcomingMovies = upcomingMovies?.map(MovieModel::toMovie).orEmpty(),
-                        isUpcomingMoviesLoading = true
-                    )
-                }
-            },
-            onSuccess = { upcomingMovies ->
-                _uiState.update {
-                    it.copy(
-                        upcomingMovies = upcomingMovies.map(MovieModel::toMovie),
-                        isUpcomingMoviesLoading = false
-                    )
-                }
-            },
-            onFailure = { throwable ->
-                _uiState.update {
-                    it.copy(
-                        error = throwable.toErrorMessage(),
-                        isUpcomingMoviesLoading = false
-                    )
-                }
-            }
+            onLoading = ::handleUpcomingMoviesLoading,
+            onSuccess = ::handleUpcomingMoviesSuccess,
+            onFailure = ::handleUpcomingMoviesFailure
         )
+    }
+
+    private fun handleUpcomingMoviesLoading(upcomingMovies: List<MovieModel>?) {
+        _uiState.update {
+            it.copy(
+                upcomingMovies = upcomingMovies?.map(MovieModel::toMovie).orEmpty(),
+                isUpcomingMoviesLoading = true
+            )
+        }
+    }
+
+    private fun handleUpcomingMoviesSuccess(upcomingMovies: List<MovieModel>) {
+        _uiState.update {
+            it.copy(
+                upcomingMovies = upcomingMovies.map(MovieModel::toMovie),
+                isUpcomingMoviesLoading = false
+            )
+        }
+    }
+
+    private fun handleUpcomingMoviesFailure(throwable: Throwable) {
+        _uiState.update {
+            it.copy(
+                error = throwable.toErrorMessage(),
+                isUpcomingMoviesLoading = false
+            )
+        }
     }
 
     private fun onRefresh() {
