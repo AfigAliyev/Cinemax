@@ -52,12 +52,11 @@ import com.maximillianleonov.cinemax.feature.home.presentation.R
 @Composable
 internal fun UpcomingMoviesContainer(
     movies: List<Movie>,
-    isMoviesLoading: Boolean,
     onSeeAllClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState()
-    val shouldShowPlaceholder = isMoviesLoading && movies.isEmpty()
+    val shouldShowPlaceholder = movies.isEmpty()
     val count = if (shouldShowPlaceholder) {
         UpcomingMoviesContainerPagerPlaceholderCount
     } else {
