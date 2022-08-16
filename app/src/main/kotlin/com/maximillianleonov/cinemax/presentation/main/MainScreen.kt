@@ -17,10 +17,15 @@
 package com.maximillianleonov.cinemax.presentation.main
 
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.maximillianleonov.cinemax.core.presentation.components.CinemaxSnackbarHost
+import com.maximillianleonov.cinemax.core.presentation.components.LocalSnackbarHostState
 import com.maximillianleonov.cinemax.presentation.navigation.CinemaxBottomNavigation
 import com.maximillianleonov.cinemax.presentation.navigation.CinemaxNavHost
 
@@ -29,15 +34,23 @@ fun MainScreen() {
     MainContent()
 }
 
+@Suppress("ReusedModifierInstance")
 @Composable
 private fun MainContent(
     modifier: Modifier = Modifier,
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
     navController: NavHostController = rememberNavController()
 ) {
-    Scaffold(
-        modifier = modifier,
-        bottomBar = { CinemaxBottomNavigation(navController = navController) }
-    ) { innerPadding ->
-        CinemaxNavHost(navController = navController, innerPadding = innerPadding)
+    CompositionLocalProvider(
+        LocalSnackbarHostState provides scaffoldState.snackbarHostState
+    ) {
+        Scaffold(
+            modifier = modifier,
+            scaffoldState = scaffoldState,
+            bottomBar = { CinemaxBottomNavigation(navController = navController) },
+            snackbarHost = { CinemaxSnackbarHost(it) }
+        ) { innerPadding ->
+            CinemaxNavHost(navController = navController, innerPadding = innerPadding)
+        }
     }
 }

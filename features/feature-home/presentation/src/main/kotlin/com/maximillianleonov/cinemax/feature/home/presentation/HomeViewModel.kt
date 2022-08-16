@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maximillianleonov.cinemax.core.presentation.common.EventHandler
 import com.maximillianleonov.cinemax.core.presentation.mapper.toMovie
+import com.maximillianleonov.cinemax.core.presentation.model.toErrorMessage
 import com.maximillianleonov.cinemax.core.presentation.util.handle
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 import com.maximillianleonov.cinemax.domain.usecase.GetUpcomingMoviesUseCase
@@ -37,10 +38,12 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
-    @Suppress("UnusedPrivateMember")
     private var upcomingMoviesJob = loadUpcomingMovies()
 
-    override fun onEvent(event: HomeEvent) = Unit
+    override fun onEvent(event: HomeEvent) = when (event) {
+        HomeEvent.Retry -> onRefresh()
+        HomeEvent.ClearError -> onClearError()
+    }
 
     private fun loadUpcomingMovies() = viewModelScope.launch {
         getUpcomingMoviesUseCase().handle(
@@ -63,11 +66,19 @@ class HomeViewModel @Inject constructor(
             onFailure = { throwable ->
                 _uiState.update {
                     it.copy(
-                        error = throwable,
+                        error = throwable.toErrorMessage(),
                         isUpcomingMoviesLoading = false
                     )
                 }
             }
         )
     }
+
+    private fun onRefresh() {
+        _uiState.update { it.copy(upcomingMovies = emptyList()) }
+        upcomingMoviesJob.cancel()
+        upcomingMoviesJob = loadUpcomingMovies()
+    }
+
+    private fun onClearError() = _uiState.update { it.copy(error = null) }
 }

@@ -17,10 +17,11 @@
 package com.maximillianleonov.cinemax.feature.home.presentation
 
 import com.maximillianleonov.cinemax.core.presentation.common.State
+import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
 
 data class HomeUiState(
     val upcomingMovies: List<Movie> = emptyList(),
     val isUpcomingMoviesLoading: Boolean = false,
-    val error: Throwable? = null
+    val error: ErrorMessage? = null
 ) : State

@@ -18,4 +18,7 @@ package com.maximillianleonov.cinemax.feature.home.presentation
 
 import com.maximillianleonov.cinemax.core.presentation.common.Event
 
-sealed class HomeEvent : Event
+sealed class HomeEvent : Event {
+    object Retry : HomeEvent()
+    object ClearError : HomeEvent()
+}

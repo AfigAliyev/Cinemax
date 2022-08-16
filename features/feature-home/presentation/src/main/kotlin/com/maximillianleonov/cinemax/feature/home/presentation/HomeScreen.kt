@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.maximillianleonov.cinemax.core.presentation.components.SnackbarErrorHandler
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.feature.home.presentation.components.UpcomingMoviesContainer
 
@@ -36,15 +37,24 @@ fun HomeRoute(
     val uiState by viewModel.uiState.collectAsState()
     HomeScreen(
         uiState = uiState,
-        modifier = modifier
+        modifier = modifier,
+        onRetry = { viewModel.onEvent(HomeEvent.Retry) },
+        onDismiss = { viewModel.onEvent(HomeEvent.ClearError) }
     )
 }
 
 @Composable
 internal fun HomeScreen(
     uiState: HomeUiState,
+    onRetry: () -> Unit,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    SnackbarErrorHandler(
+        errorMessage = uiState.error,
+        onRetry = onRetry,
+        onDismiss = onDismiss
+    )
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium),
@@ -54,7 +64,6 @@ internal fun HomeScreen(
             @Suppress("ForbiddenComment")
             UpcomingMoviesContainer(
                 movies = uiState.upcomingMovies,
-                isMoviesLoading = uiState.isUpcomingMoviesLoading,
                 onSeeAllClick = { /* TODO: Not yet implemented. */ }
             )
         }
