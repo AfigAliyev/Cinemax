@@ -22,21 +22,21 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.maximillianleonov.cinemax.core.data.local.common.ContentDao
-import com.maximillianleonov.cinemax.core.data.util.Constants.Tables.UPCOMING_MOVIES_TABLE
+import com.maximillianleonov.cinemax.core.data.util.Constants.Tables.UPCOMING_MOVIES
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UpcomingMovieDao : ContentDao<UpcomingMovieEntity> {
-    @Query("SELECT * FROM $UPCOMING_MOVIES_TABLE")
+    @Query("SELECT * FROM $UPCOMING_MOVIES")
     override fun getAll(): Flow<List<UpcomingMovieEntity>>
 
-    @Query("SELECT * FROM $UPCOMING_MOVIES_TABLE")
+    @Query("SELECT * FROM $UPCOMING_MOVIES")
     override fun getAllPaging(): PagingSource<Int, UpcomingMovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     override suspend fun insertAll(entities: List<UpcomingMovieEntity>)
 
-    @Query("DELETE FROM $UPCOMING_MOVIES_TABLE")
+    @Query("DELETE FROM $UPCOMING_MOVIES")
     override suspend fun deleteAll()
 }

@@ -75,6 +75,7 @@ fun CinemaxBottomNavigationBar(
         color = color
     ) {
         val animationSpec = BottomNavigationLayoutAnimationSpec
+
         BottomNavigationLayout(
             selectedIndex = currentSection.ordinal,
             itemCount = routes.size,
@@ -157,7 +158,7 @@ private fun BottomNavigationLayout(
             Box(modifier = Modifier.layoutId(IndicatorLayoutId), content = indicator)
         }
     ) { measurables, constraints ->
-        check(itemCount == (measurables.size - 1))
+        require(itemCount == (measurables.size - 1))
 
         val unselectedWidth = constraints.maxWidth / (itemCount + 1)
         val selectedWidth = 2 * unselectedWidth

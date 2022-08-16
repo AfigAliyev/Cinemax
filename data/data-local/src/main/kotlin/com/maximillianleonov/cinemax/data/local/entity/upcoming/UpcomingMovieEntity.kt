@@ -23,7 +23,7 @@ import com.maximillianleonov.cinemax.core.data.local.common.MovieEntity
 import com.maximillianleonov.cinemax.core.data.util.Constants
 import kotlinx.datetime.LocalDate
 
-@Entity(tableName = Constants.Tables.UPCOMING_MOVIES_TABLE)
+@Entity(tableName = Constants.Tables.UPCOMING_MOVIES)
 data class UpcomingMovieEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = Constants.Fields.ID)

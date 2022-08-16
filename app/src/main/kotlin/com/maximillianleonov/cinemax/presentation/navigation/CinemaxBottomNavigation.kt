@@ -42,6 +42,7 @@ fun CinemaxBottomNavigation(
 
     val bottomNavigationSections = BottomNavigationSection.values()
     val bottomNavigationRoutes = bottomNavigationSections.map(BottomNavigationSection::route)
+
     AnimatedVisibility(
         visible = currentRoute in bottomNavigationRoutes,
         enter = BottomBarEnterTransition,
@@ -49,7 +50,7 @@ fun CinemaxBottomNavigation(
     ) {
         CinemaxBottomNavigationBar(
             tabs = bottomNavigationSections,
-            currentRoute = checkNotNull(currentRoute) { MESSAGE_CURRENT_ROUTE_IS_NULL },
+            currentRoute = checkNotNull(currentRoute) { MESSAGE_CURRENT_ROUTE_NULL },
             onSelect = { route -> navController.navigateOnce(route = route) },
             modifier = modifier
         )
@@ -73,4 +74,4 @@ private fun NavHostController.navigateOnce(route: String) = navigate(route = rou
 private val BottomBarEnterTransition = fadeIn() + expandVertically(expandFrom = Alignment.Top)
 private val BottomBarExitTransition = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
 
-private const val MESSAGE_CURRENT_ROUTE_IS_NULL = "Current route is null."
+private const val MESSAGE_CURRENT_ROUTE_NULL = "Current route is null."
