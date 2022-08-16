@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.domain.repository
+package com.maximillianleonov.cinemax.core.data.local.common
 
-import androidx.paging.PagingData
-import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.domain.model.MovieModel
-import kotlinx.coroutines.flow.Flow
+import androidx.paging.PagingConfig
+import com.maximillianleonov.cinemax.core.data.util.Constants
 
-interface MovieRepository {
-    fun getUpcomingMovies(): Flow<Result<List<MovieModel>>>
-    fun getUpcomingMoviesPaging(): Flow<PagingData<MovieModel>>
-}
+val defaultPagingConfig: PagingConfig
+    get() = PagingConfig(pageSize = Constants.Remote.PAGE_SIZE)
