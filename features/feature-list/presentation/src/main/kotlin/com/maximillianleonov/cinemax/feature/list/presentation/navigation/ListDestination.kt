@@ -16,14 +16,34 @@
 
 package com.maximillianleonov.cinemax.feature.list.presentation.navigation
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.list.presentation.ListRoute
 
 object ListDestination : CinemaxNavigationDestination {
     override val route = "list_route"
     override val destination = "list_destination"
+
+    const val contentTypeArgument = "contentType"
+    val routeWithArgument = "$route/{$contentTypeArgument}"
+
+    fun createNavigationRoute(contentType: ContentType) = "$route/${contentType.value}"
+
+    fun fromSavedStateHandle(savedStateHandle: SavedStateHandle) = ContentType[
+        checkNotNull(savedStateHandle[contentTypeArgument]) { CONTENT_TYPE_NULL_MESSAGE }
+    ]
 }
 
-fun NavGraphBuilder.listGraph() = composable(route = ListDestination.route) { ListRoute() }
+fun NavGraphBuilder.listGraph() = composable(
+    route = ListDestination.routeWithArgument,
+    arguments = listOf(
+        navArgument(ListDestination.contentTypeArgument) { type = NavType.StringType }
+    )
+) { ListRoute() }
+
+private const val CONTENT_TYPE_NULL_MESSAGE = "Content type is null."

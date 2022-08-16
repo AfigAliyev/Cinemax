@@ -19,15 +19,28 @@ package com.maximillianleonov.cinemax.feature.list.presentation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun ListRoute(modifier: Modifier = Modifier) {
-    ListScreen(modifier = modifier)
+fun ListRoute(
+    viewModel: ListViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    ListScreen(
+        uiState = uiState,
+        modifier = modifier
+    )
 }
 
 @Composable
-internal fun ListScreen(modifier: Modifier = Modifier) {
+internal fun ListScreen(
+    uiState: ListUiState,
+    modifier: Modifier = Modifier
+) {
     LazyColumn(modifier = modifier.fillMaxSize()) {
     }
 }
