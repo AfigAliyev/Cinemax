@@ -16,12 +16,18 @@
 
 package com.maximillianleonov.cinemax.data.local.repository
 
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingData
+import com.maximillianleonov.cinemax.core.data.local.common.defaultPagingConfig
 import com.maximillianleonov.cinemax.core.data.remote.common.networkBoundResource
 import com.maximillianleonov.cinemax.core.domain.result.Result
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.mapper.listMap
+import com.maximillianleonov.cinemax.data.local.mapper.pagingMap
 import com.maximillianleonov.cinemax.data.local.mapper.toMovieModel
 import com.maximillianleonov.cinemax.data.local.mapper.toUpcomingMovieEntity
+import com.maximillianleonov.cinemax.data.local.paging.UpcomingMovieRemoteMediator
 import com.maximillianleonov.cinemax.data.local.source.MovieLocalDataSource
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
 import com.maximillianleonov.cinemax.data.remote.source.MovieRemoteDataSource
@@ -43,4 +49,11 @@ class MovieRepositoryImpl @Inject constructor(
             )
         }
     )
+
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getUpcomingMoviesPaging(): Flow<PagingData<MovieModel>> = Pager(
+        config = defaultPagingConfig,
+        remoteMediator = UpcomingMovieRemoteMediator(localDataSource, remoteDataSource),
+        pagingSourceFactory = { localDataSource.getUpcomingMoviesPaging() }
+    ).flow.pagingMap(UpcomingMovieEntity::toMovieModel)
 }

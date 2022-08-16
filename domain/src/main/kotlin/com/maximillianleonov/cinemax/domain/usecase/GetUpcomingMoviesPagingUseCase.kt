@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.domain.repository
+package com.maximillianleonov.cinemax.domain.usecase
 
-import androidx.paging.PagingData
-import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.domain.model.MovieModel
-import kotlinx.coroutines.flow.Flow
+import com.maximillianleonov.cinemax.domain.repository.MovieRepository
+import javax.inject.Inject
 
-interface MovieRepository {
-    fun getUpcomingMovies(): Flow<Result<List<MovieModel>>>
-    fun getUpcomingMoviesPaging(): Flow<PagingData<MovieModel>>
+class GetUpcomingMoviesPagingUseCase @Inject constructor(
+    private val movieRepository: MovieRepository
+) {
+    operator fun invoke() = movieRepository.getUpcomingMoviesPaging()
 }

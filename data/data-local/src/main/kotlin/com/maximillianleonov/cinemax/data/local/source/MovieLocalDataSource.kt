@@ -19,16 +19,33 @@ package com.maximillianleonov.cinemax.data.local.source
 import androidx.room.withTransaction
 import com.maximillianleonov.cinemax.data.local.db.CinemaxDatabase
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEntity
+import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRemoteKeyEntity
 import javax.inject.Inject
 
 class MovieLocalDataSource @Inject constructor(private val db: CinemaxDatabase) {
     private val upcomingMovieDao = db.upcomingMovieDao
+    private val upcomingMovieRemoteKeyDao = db.upcomingMovieRemoteKeyDao
 
     fun getUpcomingMovies() = upcomingMovieDao.getAll()
     fun getUpcomingMoviesPaging() = upcomingMovieDao.getAllPaging()
+    suspend fun getUpcomingMovieRemoteKeyById(id: Int) = upcomingMovieRemoteKeyDao.getById(id = id)
+    suspend fun insertUpcomingMoviesAndRemoteKeys(
+        data: List<UpcomingMovieEntity>,
+        remoteKeys: List<UpcomingMovieRemoteKeyEntity>
+    ) = db.withTransaction {
+        upcomingMovieRemoteKeyDao.insertAll(entities = remoteKeys)
+        upcomingMovieDao.insertAll(entities = data)
+    }
     suspend fun deleteAndInsertUpcomingMovies(entities: List<UpcomingMovieEntity>) =
         db.withTransaction {
             upcomingMovieDao.deleteAll()
             upcomingMovieDao.insertAll(entities)
         }
+
+    suspend fun deleteUpcomingMoviesAndRemoteKeys() = db.withTransaction {
+        upcomingMovieDao.deleteAll()
+        upcomingMovieRemoteKeyDao.deleteAll()
+    }
+
+    suspend fun withTransaction(block: suspend () -> Unit) = db.withTransaction(block)
 }

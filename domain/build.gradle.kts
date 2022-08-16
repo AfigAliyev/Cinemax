@@ -27,5 +27,7 @@ java {
 dependencies {
     implementation(project(":core:core-domain"))
 
+    implementation(libs.androidx.paging.common)
+
     testImplementation(libs.bundles.test)
 }
