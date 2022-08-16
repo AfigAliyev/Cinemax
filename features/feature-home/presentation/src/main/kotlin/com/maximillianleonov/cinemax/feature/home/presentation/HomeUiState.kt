@@ -16,11 +16,13 @@
 
 package com.maximillianleonov.cinemax.feature.home.presentation
 
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.common.State
 import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
 
 data class HomeUiState(
+    val navigateToListDestination: ContentType? = null,
     val upcomingMovies: List<Movie> = emptyList(),
     val isUpcomingMoviesLoading: Boolean = false,
     val error: ErrorMessage? = null

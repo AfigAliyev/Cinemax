@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.maximillianleonov.cinemax.feature.home.presentation.navigation.HomeDestination
 import com.maximillianleonov.cinemax.feature.home.presentation.navigation.homeGraph
+import com.maximillianleonov.cinemax.feature.list.presentation.navigation.ListDestination
 import com.maximillianleonov.cinemax.feature.list.presentation.navigation.listGraph
 
 @Suppress("ForbiddenComment")
@@ -37,7 +38,11 @@ fun CinemaxNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        homeGraph()
+        homeGraph(
+            onNavigateToListDestination = { contentType ->
+                navController.navigate(ListDestination.createNavigationRoute(contentType))
+            }
+        )
         listGraph()
 
         composable(route = "search") { /* TODO: Not yet implemented. */ }

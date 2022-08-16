@@ -16,9 +16,12 @@
 
 package com.maximillianleonov.cinemax.feature.home.presentation
 
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.common.Event
 
 sealed class HomeEvent : Event {
+    data class NavigateToListDestination(val contentType: ContentType) : HomeEvent()
+    object ClearNavigateToListDestination : HomeEvent()
     object Retry : HomeEvent()
     object ClearError : HomeEvent()
 }

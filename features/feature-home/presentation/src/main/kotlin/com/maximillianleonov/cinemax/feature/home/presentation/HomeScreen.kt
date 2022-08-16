@@ -25,12 +25,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.components.SnackbarErrorHandler
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.feature.home.presentation.components.UpcomingMoviesContainer
 
 @Composable
 fun HomeRoute(
+    onNavigateToListDestination: (ContentType) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -38,14 +40,20 @@ fun HomeRoute(
     HomeScreen(
         uiState = uiState,
         modifier = modifier,
+        onNavigateToListDestination = { viewModel.onEvent(HomeEvent.NavigateToListDestination(it)) },
         onRetry = { viewModel.onEvent(HomeEvent.Retry) },
         onDismiss = { viewModel.onEvent(HomeEvent.ClearError) }
     )
+    uiState.navigateToListDestination?.let { contentType ->
+        onNavigateToListDestination(contentType)
+        viewModel.onEvent(HomeEvent.ClearNavigateToListDestination)
+    }
 }
 
 @Composable
 internal fun HomeScreen(
     uiState: HomeUiState,
+    onNavigateToListDestination: (ContentType) -> Unit,
     onRetry: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
@@ -61,10 +69,9 @@ internal fun HomeScreen(
         contentPadding = PaddingValues(vertical = CinemaxTheme.spacing.extraMedium)
     ) {
         item {
-            @Suppress("ForbiddenComment")
             UpcomingMoviesContainer(
                 movies = uiState.upcomingMovies,
-                onSeeAllClick = { /* TODO: Not yet implemented. */ }
+                onSeeAllClick = { onNavigateToListDestination(ContentType.Upcoming) }
             )
         }
     }
