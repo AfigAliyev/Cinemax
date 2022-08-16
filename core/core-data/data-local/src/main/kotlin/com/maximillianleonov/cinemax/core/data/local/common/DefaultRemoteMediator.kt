@@ -31,10 +31,12 @@ import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 abstract class DefaultRemoteMediator<EntityType : ContentEntity,
-    RemoteKeyEntityType : RemoteKeyEntity> : RemoteMediator<Int, EntityType>() {
+    RemoteKeyEntityType : RemoteKeyEntity,
+    DtoType : ContentDto,
+    ResponseDtoType : ResponseDto<DtoType>> : RemoteMediator<Int, EntityType>() {
 
-    protected abstract suspend fun getDataFromService(page: Int): Result<ResponseDto<ContentDto>>
-    protected abstract fun dtoToEntity(dto: ContentDto): EntityType
+    protected abstract suspend fun getDataFromService(page: Int): Result<ResponseDtoType>
+    protected abstract fun dtoToEntity(dto: DtoType): EntityType
     protected abstract fun entityToRemoteKey(
         id: Int,
         prevPage: Int?,
