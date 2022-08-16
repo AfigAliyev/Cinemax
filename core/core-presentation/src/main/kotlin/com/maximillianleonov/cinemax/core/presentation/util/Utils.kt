@@ -16,9 +16,18 @@
 
 package com.maximillianleonov.cinemax.core.presentation.util
 
+import com.maximillianleonov.cinemax.core.presentation.R
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toJavaLocalDate
+import java.io.IOException
 import java.time.format.DateTimeFormatter
+
+internal object Utils {
+    internal fun getMessageFromThrowable(error: Throwable) = when (error) {
+        is IOException -> R.string.no_internet_connection
+        else -> R.string.unknown_error
+    }
+}
 
 fun LocalDate.format(pattern: String): String =
     toJavaLocalDate().format(DateTimeFormatter.ofPattern(pattern))
