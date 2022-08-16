@@ -16,8 +16,6 @@
 
 package com.maximillianleonov.cinemax.presentation.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -30,12 +28,11 @@ import com.maximillianleonov.cinemax.feature.home.presentation.navigation.homeGr
 @Composable
 fun CinemaxNavHost(
     navController: NavHostController,
-    innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
     startDestination: String = HomeDestination.route
 ) {
     NavHost(
-        modifier = modifier.padding(paddingValues = innerPadding),
+        modifier = modifier,
         navController = navController,
         startDestination = startDestination
     ) {

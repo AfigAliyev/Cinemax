@@ -16,6 +16,7 @@
 
 package com.maximillianleonov.cinemax.core.presentation.components
 
+import androidx.annotation.StringRes
 import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
@@ -25,6 +26,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import com.maximillianleonov.cinemax.core.presentation.R
 import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
@@ -33,7 +36,11 @@ import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 @Composable
 fun CinemaxSnackbarHost(
     snackbarHostState: SnackbarHostState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    shape: Shape = CinemaxTheme.shapes.small,
+    backgroundColor: Color = CinemaxTheme.colors.primarySoft,
+    contentColor: Color = CinemaxTheme.colors.secondaryRed,
+    actionColor: Color = CinemaxTheme.colors.primaryBlue
 ) {
     SnackbarHost(
         hostState = snackbarHostState,
@@ -41,10 +48,10 @@ fun CinemaxSnackbarHost(
     ) { snackbarData ->
         Snackbar(
             snackbarData = snackbarData,
-            shape = CinemaxTheme.shapes.small,
-            backgroundColor = CinemaxTheme.colors.primarySoft,
-            contentColor = CinemaxTheme.colors.secondaryRed,
-            actionColor = CinemaxTheme.colors.primaryBlue
+            shape = shape,
+            backgroundColor = backgroundColor,
+            contentColor = contentColor,
+            actionColor = actionColor
         )
     }
 }
@@ -54,16 +61,20 @@ fun SnackbarErrorHandler(
     errorMessage: ErrorMessage?,
     onRetry: () -> Unit,
     onDismiss: () -> Unit,
-    snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current
+    snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current,
+    duration: SnackbarDuration = SnackbarDuration.Indefinite,
+    @StringRes actionLabelResourceId: Int = R.string.retry
 ) {
     if (errorMessage == null) return
+
     val message = stringResource(id = errorMessage.messageResourceId)
-    val actionLabel = stringResource(id = R.string.retry)
+    val actionLabel = stringResource(id = actionLabelResourceId)
+
     LaunchedEffect(key1 = snackbarHostState) {
         val snackbarResult = snackbarHostState.showSnackbar(
             message = message,
             actionLabel = actionLabel,
-            duration = SnackbarDuration.Indefinite
+            duration = duration
         )
         onDismiss()
         if (snackbarResult == SnackbarResult.ActionPerformed) {
