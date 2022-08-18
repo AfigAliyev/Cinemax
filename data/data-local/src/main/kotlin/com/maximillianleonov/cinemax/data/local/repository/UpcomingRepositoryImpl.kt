@@ -32,15 +32,15 @@ import com.maximillianleonov.cinemax.data.local.source.MovieLocalDataSource
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
 import com.maximillianleonov.cinemax.data.remote.source.MovieRemoteDataSource
 import com.maximillianleonov.cinemax.domain.model.MovieModel
-import com.maximillianleonov.cinemax.domain.repository.MovieRepository
+import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MovieRepositoryImpl @Inject constructor(
+class UpcomingRepositoryImpl @Inject constructor(
     private val localDataSource: MovieLocalDataSource,
     private val remoteDataSource: MovieRemoteDataSource
-) : MovieRepository {
-    override fun getUpcomingMovies(): Flow<Result<List<MovieModel>>> = networkBoundResource(
+) : UpcomingRepository {
+    override fun getMovies(): Flow<Result<List<MovieModel>>> = networkBoundResource(
         query = { localDataSource.getUpcomingMovies().listMap(UpcomingMovieEntity::toMovieModel) },
         fetch = { remoteDataSource.getUpcomingMovies() },
         saveFetchResult = { response ->
@@ -51,7 +51,7 @@ class MovieRepositoryImpl @Inject constructor(
     )
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getUpcomingMoviesPaging(): Flow<PagingData<MovieModel>> = Pager(
+    override fun getMoviesPaging(): Flow<PagingData<MovieModel>> = Pager(
         config = defaultPagingConfig,
         remoteMediator = UpcomingMovieRemoteMediator(localDataSource, remoteDataSource),
         pagingSourceFactory = { localDataSource.getUpcomingMoviesPaging() }

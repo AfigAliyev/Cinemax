@@ -16,11 +16,11 @@
 
 package com.maximillianleonov.cinemax.domain.usecase
 
-import com.maximillianleonov.cinemax.domain.repository.MovieRepository
+import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
 import javax.inject.Inject
 
 class GetUpcomingMoviesPagingUseCase @Inject constructor(
-    private val movieRepository: MovieRepository
+    private val upcomingRepository: UpcomingRepository
 ) {
-    operator fun invoke() = movieRepository.getUpcomingMoviesPaging()
+    operator fun invoke() = upcomingRepository.getMoviesPaging()
 }
