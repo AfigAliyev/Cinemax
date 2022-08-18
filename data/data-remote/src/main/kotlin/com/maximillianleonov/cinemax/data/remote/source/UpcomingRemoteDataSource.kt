@@ -20,10 +20,10 @@ import com.maximillianleonov.cinemax.core.data.util.Constants
 import com.maximillianleonov.cinemax.data.remote.api.CinemaxApi
 import javax.inject.Inject
 
-class MovieRemoteDataSource @Inject constructor(api: CinemaxApi) {
+class UpcomingRemoteDataSource @Inject constructor(api: CinemaxApi) {
     private val movieService = api.movieService
 
-    suspend fun getUpcomingMovies(
+    suspend fun getMovies(
         page: Int = Constants.Remote.DEFAULT_PAGE
     ) = movieService.getUpcomingMovies(page)
 }

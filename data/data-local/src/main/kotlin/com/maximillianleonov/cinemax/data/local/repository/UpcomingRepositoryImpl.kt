@@ -30,7 +30,7 @@ import com.maximillianleonov.cinemax.data.local.mapper.toUpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.paging.UpcomingMovieRemoteMediator
 import com.maximillianleonov.cinemax.data.local.source.UpcomingLocalDataSource
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
-import com.maximillianleonov.cinemax.data.remote.source.MovieRemoteDataSource
+import com.maximillianleonov.cinemax.data.remote.source.UpcomingRemoteDataSource
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
 import kotlinx.coroutines.flow.Flow
@@ -38,11 +38,11 @@ import javax.inject.Inject
 
 class UpcomingRepositoryImpl @Inject constructor(
     private val localDataSource: UpcomingLocalDataSource,
-    private val remoteDataSource: MovieRemoteDataSource
+    private val remoteDataSource: UpcomingRemoteDataSource
 ) : UpcomingRepository {
     override fun getMovies(): Flow<Result<List<MovieModel>>> = networkBoundResource(
         query = { localDataSource.getMovies().listMap(UpcomingMovieEntity::toMovieModel) },
-        fetch = { remoteDataSource.getUpcomingMovies() },
+        fetch = { remoteDataSource.getMovies() },
         saveFetchResult = { response ->
             localDataSource.deleteAndInsertMovies(
                 response.results.map(MovieDto::toUpcomingMovieEntity)
