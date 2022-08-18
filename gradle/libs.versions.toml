@@ -29,7 +29,7 @@ junit = "4.13.2"
 mockk = "1.12.5"
 
 kotlinx-coroutines = "1.6.4"
-kotlinx-serialization = "1.4.0-RC"
+kotlinx-serialization = "1.4.0"
 kotlinx-datetime = "0.4.0"
 
 dagger = "2.43.2"
