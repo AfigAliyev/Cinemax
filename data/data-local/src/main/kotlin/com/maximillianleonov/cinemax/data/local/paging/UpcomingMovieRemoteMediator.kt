@@ -20,21 +20,20 @@ import com.maximillianleonov.cinemax.core.data.local.common.DefaultRemoteMediato
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toUpcomingMovieEntity
-import com.maximillianleonov.cinemax.data.local.source.MovieLocalDataSource
+import com.maximillianleonov.cinemax.data.local.source.UpcomingLocalDataSource
 import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
-import com.maximillianleonov.cinemax.data.remote.source.MovieRemoteDataSource
+import com.maximillianleonov.cinemax.data.remote.source.UpcomingRemoteDataSource
 
 class UpcomingMovieRemoteMediator(
-    private val localDataSource: MovieLocalDataSource,
-    private val remoteDataSource: MovieRemoteDataSource
+    private val localDataSource: UpcomingLocalDataSource,
+    private val remoteDataSource: UpcomingRemoteDataSource
 ) : DefaultRemoteMediator<UpcomingMovieEntity,
     UpcomingMovieRemoteKeyEntity,
     MovieDto,
     MovieResponseDto>() {
 
-    override suspend fun getDataFromService(page: Int) =
-        remoteDataSource.getUpcomingMovies(page = page)
+    override suspend fun getDataFromService(page: Int) = remoteDataSource.getMovies(page = page)
 
     override fun dtoToEntity(dto: MovieDto) = dto.toUpcomingMovieEntity()
 
@@ -48,8 +47,7 @@ class UpcomingMovieRemoteMediator(
         nextPage = nextPage
     )
 
-    override suspend fun getRemoteKeyById(id: Int) =
-        localDataSource.getUpcomingMovieRemoteKeyById(id = id)
+    override suspend fun getRemoteKeyById(id: Int) = localDataSource.getMovieRemoteKeyById(id = id)
 
     override suspend fun deleteAndInsertAll(
         isLoadTypeRefresh: Boolean,
@@ -57,8 +55,8 @@ class UpcomingMovieRemoteMediator(
         data: List<UpcomingMovieEntity>
     ) = localDataSource.withTransaction {
         if (isLoadTypeRefresh) {
-            localDataSource.deleteUpcomingMoviesAndRemoteKeys()
+            localDataSource.deleteMoviesAndRemoteKeys()
         }
-        localDataSource.insertUpcomingMoviesAndRemoteKeys(data = data, remoteKeys = remoteKeys)
+        localDataSource.insertMoviesAndRemoteKeys(data = data, remoteKeys = remoteKeys)
     }
 }

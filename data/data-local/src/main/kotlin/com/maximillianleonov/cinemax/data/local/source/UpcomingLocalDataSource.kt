@@ -22,29 +22,30 @@ import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEnt
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRemoteKeyEntity
 import javax.inject.Inject
 
-class MovieLocalDataSource @Inject constructor(private val db: CinemaxDatabase) {
-    private val upcomingMovieDao = db.upcomingMovieDao
-    private val upcomingMovieRemoteKeyDao = db.upcomingMovieRemoteKeyDao
+class UpcomingLocalDataSource @Inject constructor(private val db: CinemaxDatabase) {
+    private val movieDao = db.upcomingMovieDao
+    private val movieRemoteKeyDao = db.upcomingMovieRemoteKeyDao
 
-    fun getUpcomingMovies() = upcomingMovieDao.getAll()
-    fun getUpcomingMoviesPaging() = upcomingMovieDao.getAllPaging()
-    suspend fun getUpcomingMovieRemoteKeyById(id: Int) = upcomingMovieRemoteKeyDao.getById(id = id)
-    suspend fun insertUpcomingMoviesAndRemoteKeys(
+    fun getMovies() = movieDao.getAll()
+    fun getMoviesPaging() = movieDao.getAllPaging()
+    suspend fun getMovieRemoteKeyById(id: Int) = movieRemoteKeyDao.getById(id = id)
+
+    suspend fun insertMoviesAndRemoteKeys(
         data: List<UpcomingMovieEntity>,
         remoteKeys: List<UpcomingMovieRemoteKeyEntity>
     ) = db.withTransaction {
-        upcomingMovieRemoteKeyDao.insertAll(entities = remoteKeys)
-        upcomingMovieDao.insertAll(entities = data)
+        movieRemoteKeyDao.insertAll(entities = remoteKeys)
+        movieDao.insertAll(entities = data)
     }
-    suspend fun deleteAndInsertUpcomingMovies(entities: List<UpcomingMovieEntity>) =
-        db.withTransaction {
-            upcomingMovieDao.deleteAll()
-            upcomingMovieDao.insertAll(entities)
-        }
 
-    suspend fun deleteUpcomingMoviesAndRemoteKeys() = db.withTransaction {
-        upcomingMovieDao.deleteAll()
-        upcomingMovieRemoteKeyDao.deleteAll()
+    suspend fun deleteAndInsertMovies(entities: List<UpcomingMovieEntity>) = db.withTransaction {
+        movieDao.deleteAll()
+        movieDao.insertAll(entities)
+    }
+
+    suspend fun deleteMoviesAndRemoteKeys() = db.withTransaction {
+        movieDao.deleteAll()
+        movieRemoteKeyDao.deleteAll()
     }
 
     suspend fun withTransaction(block: suspend () -> Unit) = db.withTransaction(block)

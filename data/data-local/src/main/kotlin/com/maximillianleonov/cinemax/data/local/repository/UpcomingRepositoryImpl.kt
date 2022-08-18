@@ -28,32 +28,32 @@ import com.maximillianleonov.cinemax.data.local.mapper.pagingMap
 import com.maximillianleonov.cinemax.data.local.mapper.toMovieModel
 import com.maximillianleonov.cinemax.data.local.mapper.toUpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.paging.UpcomingMovieRemoteMediator
-import com.maximillianleonov.cinemax.data.local.source.MovieLocalDataSource
+import com.maximillianleonov.cinemax.data.local.source.UpcomingLocalDataSource
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
-import com.maximillianleonov.cinemax.data.remote.source.MovieRemoteDataSource
+import com.maximillianleonov.cinemax.data.remote.source.UpcomingRemoteDataSource
 import com.maximillianleonov.cinemax.domain.model.MovieModel
-import com.maximillianleonov.cinemax.domain.repository.MovieRepository
+import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class MovieRepositoryImpl @Inject constructor(
-    private val localDataSource: MovieLocalDataSource,
-    private val remoteDataSource: MovieRemoteDataSource
-) : MovieRepository {
-    override fun getUpcomingMovies(): Flow<Result<List<MovieModel>>> = networkBoundResource(
-        query = { localDataSource.getUpcomingMovies().listMap(UpcomingMovieEntity::toMovieModel) },
-        fetch = { remoteDataSource.getUpcomingMovies() },
+class UpcomingRepositoryImpl @Inject constructor(
+    private val localDataSource: UpcomingLocalDataSource,
+    private val remoteDataSource: UpcomingRemoteDataSource
+) : UpcomingRepository {
+    override fun getMovies(): Flow<Result<List<MovieModel>>> = networkBoundResource(
+        query = { localDataSource.getMovies().listMap(UpcomingMovieEntity::toMovieModel) },
+        fetch = { remoteDataSource.getMovies() },
         saveFetchResult = { response ->
-            localDataSource.deleteAndInsertUpcomingMovies(
+            localDataSource.deleteAndInsertMovies(
                 response.results.map(MovieDto::toUpcomingMovieEntity)
             )
         }
     )
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getUpcomingMoviesPaging(): Flow<PagingData<MovieModel>> = Pager(
+    override fun getMoviesPaging(): Flow<PagingData<MovieModel>> = Pager(
         config = defaultPagingConfig,
         remoteMediator = UpcomingMovieRemoteMediator(localDataSource, remoteDataSource),
-        pagingSourceFactory = { localDataSource.getUpcomingMoviesPaging() }
+        pagingSourceFactory = { localDataSource.getMoviesPaging() }
     ).flow.pagingMap(UpcomingMovieEntity::toMovieModel)
 }

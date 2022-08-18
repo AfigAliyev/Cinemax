@@ -21,7 +21,7 @@ import com.maximillianleonov.cinemax.core.domain.result.Result
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 import kotlinx.coroutines.flow.Flow
 
-interface MovieRepository {
-    fun getUpcomingMovies(): Flow<Result<List<MovieModel>>>
-    fun getUpcomingMoviesPaging(): Flow<PagingData<MovieModel>>
+interface UpcomingRepository {
+    fun getMovies(): Flow<Result<List<MovieModel>>>
+    fun getMoviesPaging(): Flow<PagingData<MovieModel>>
 }

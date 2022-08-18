@@ -16,8 +16,8 @@
 
 package com.maximillianleonov.cinemax.di
 
-import com.maximillianleonov.cinemax.data.local.repository.MovieRepositoryImpl
-import com.maximillianleonov.cinemax.domain.repository.MovieRepository
+import com.maximillianleonov.cinemax.data.local.repository.UpcomingRepositoryImpl
+import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -26,5 +26,5 @@ import dagger.hilt.android.components.ViewModelComponent
 @[Module InstallIn(ViewModelComponent::class)]
 interface RepositoryModule {
     @Binds
-    fun bindMovieRepository(movieRepositoryImpl: MovieRepositoryImpl): MovieRepository
+    fun bindUpcomingRepository(upcomingRepositoryImpl: UpcomingRepositoryImpl): UpcomingRepository
 }
