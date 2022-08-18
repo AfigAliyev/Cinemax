@@ -40,7 +40,7 @@ retrofit-kotlinx-serialization-converter = "0.8.0"
 javax-inject = "1"
 
 accompanist = "0.25.1"
-coil = "2.1.0"
+coil = "2.2.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
