@@ -39,6 +39,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -68,7 +69,8 @@ fun CinemaxBottomNavigationBar(
     color: Color = CinemaxTheme.colors.primaryDark
 ) {
     val routes = remember { tabs.map(BottomNavigationSection::route) }
-    val currentSection by remember { mutableStateOf(tabs.first { it.route == currentRoute }) }
+    var currentSection by remember { mutableStateOf(tabs.first { it.route == currentRoute }) }
+    tabs.firstOrNull { it.route == currentRoute }?.let { currentSection = it }
 
     Surface(
         modifier = modifier,

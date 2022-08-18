@@ -37,8 +37,7 @@ fun CinemaxBottomNavigation(
     modifier: Modifier = Modifier
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-    val currentRoute = currentDestination?.route
+    val currentRoute = navBackStackEntry?.destination?.route
 
     val bottomNavigationSections = BottomNavigationSection.values()
     val bottomNavigationRoutes = bottomNavigationSections.map(BottomNavigationSection::route)
