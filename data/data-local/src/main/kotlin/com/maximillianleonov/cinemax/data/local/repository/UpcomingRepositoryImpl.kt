@@ -28,7 +28,7 @@ import com.maximillianleonov.cinemax.data.local.mapper.pagingMap
 import com.maximillianleonov.cinemax.data.local.mapper.toMovieModel
 import com.maximillianleonov.cinemax.data.local.mapper.toUpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.paging.UpcomingMovieRemoteMediator
-import com.maximillianleonov.cinemax.data.local.source.MovieLocalDataSource
+import com.maximillianleonov.cinemax.data.local.source.UpcomingLocalDataSource
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
 import com.maximillianleonov.cinemax.data.remote.source.MovieRemoteDataSource
 import com.maximillianleonov.cinemax.domain.model.MovieModel
@@ -37,14 +37,14 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class UpcomingRepositoryImpl @Inject constructor(
-    private val localDataSource: MovieLocalDataSource,
+    private val localDataSource: UpcomingLocalDataSource,
     private val remoteDataSource: MovieRemoteDataSource
 ) : UpcomingRepository {
     override fun getMovies(): Flow<Result<List<MovieModel>>> = networkBoundResource(
-        query = { localDataSource.getUpcomingMovies().listMap(UpcomingMovieEntity::toMovieModel) },
+        query = { localDataSource.getMovies().listMap(UpcomingMovieEntity::toMovieModel) },
         fetch = { remoteDataSource.getUpcomingMovies() },
         saveFetchResult = { response ->
-            localDataSource.deleteAndInsertUpcomingMovies(
+            localDataSource.deleteAndInsertMovies(
                 response.results.map(MovieDto::toUpcomingMovieEntity)
             )
         }
@@ -54,6 +54,6 @@ class UpcomingRepositoryImpl @Inject constructor(
     override fun getMoviesPaging(): Flow<PagingData<MovieModel>> = Pager(
         config = defaultPagingConfig,
         remoteMediator = UpcomingMovieRemoteMediator(localDataSource, remoteDataSource),
-        pagingSourceFactory = { localDataSource.getUpcomingMoviesPaging() }
+        pagingSourceFactory = { localDataSource.getMoviesPaging() }
     ).flow.pagingMap(UpcomingMovieEntity::toMovieModel)
 }

@@ -20,13 +20,13 @@ import com.maximillianleonov.cinemax.core.data.local.common.DefaultRemoteMediato
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toUpcomingMovieEntity
-import com.maximillianleonov.cinemax.data.local.source.MovieLocalDataSource
+import com.maximillianleonov.cinemax.data.local.source.UpcomingLocalDataSource
 import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
 import com.maximillianleonov.cinemax.data.remote.source.MovieRemoteDataSource
 
 class UpcomingMovieRemoteMediator(
-    private val localDataSource: MovieLocalDataSource,
+    private val localDataSource: UpcomingLocalDataSource,
     private val remoteDataSource: MovieRemoteDataSource
 ) : DefaultRemoteMediator<UpcomingMovieEntity,
     UpcomingMovieRemoteKeyEntity,
@@ -49,7 +49,7 @@ class UpcomingMovieRemoteMediator(
     )
 
     override suspend fun getRemoteKeyById(id: Int) =
-        localDataSource.getUpcomingMovieRemoteKeyById(id = id)
+        localDataSource.getMovieRemoteKeyById(id = id)
 
     override suspend fun deleteAndInsertAll(
         isLoadTypeRefresh: Boolean,
@@ -57,8 +57,8 @@ class UpcomingMovieRemoteMediator(
         data: List<UpcomingMovieEntity>
     ) = localDataSource.withTransaction {
         if (isLoadTypeRefresh) {
-            localDataSource.deleteUpcomingMoviesAndRemoteKeys()
+            localDataSource.deleteMoviesAndRemoteKeys()
         }
-        localDataSource.insertUpcomingMoviesAndRemoteKeys(data = data, remoteKeys = remoteKeys)
+        localDataSource.insertMoviesAndRemoteKeys(data = data, remoteKeys = remoteKeys)
     }
 }
