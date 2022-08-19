@@ -18,6 +18,7 @@ package com.maximillianleonov.cinemax.feature.home.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.home.presentation.HomeRoute
 
@@ -26,4 +27,8 @@ object HomeDestination : CinemaxNavigationDestination {
     override val destination = "home_destination"
 }
 
-fun NavGraphBuilder.homeGraph() = composable(route = HomeDestination.route) { HomeRoute() }
+fun NavGraphBuilder.homeGraph(
+    onNavigateToListDestination: (ContentType) -> Unit
+) = composable(route = HomeDestination.route) {
+    HomeRoute(onNavigateToListDestination = onNavigateToListDestination)
+}

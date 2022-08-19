@@ -94,6 +94,7 @@ javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inje
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
 accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
+accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }

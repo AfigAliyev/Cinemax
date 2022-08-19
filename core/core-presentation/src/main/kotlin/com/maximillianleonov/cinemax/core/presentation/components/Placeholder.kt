@@ -28,7 +28,7 @@ import com.google.accompanist.placeholder.material.shimmer
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 
 @Composable
-fun EmptyPlaceholder(
+fun CinemaxPlaceholder(
     modifier: Modifier = Modifier,
     visible: Boolean = true,
     color: Color = CinemaxTheme.colors.primarySoft,

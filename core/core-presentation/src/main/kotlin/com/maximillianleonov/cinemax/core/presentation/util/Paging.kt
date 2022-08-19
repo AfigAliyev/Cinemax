@@ -16,9 +16,19 @@
 
 package com.maximillianleonov.cinemax.core.presentation.util
 
-object Constants {
-    object Messages {
-        const val UNHANDLED_STATE = "Unhandled state."
-        const val INVALID_CONTENT_TYPE = "Invalid content type."
-    }
-}
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
+
+val LoadState.isLoading: Boolean
+    get() = this is LoadState.Loading
+
+val CombinedLoadStates.isError: Boolean
+    get() = listOf(append, prepend, refresh).any { loadState -> loadState is LoadState.Error }
+
+val CombinedLoadStates.error: Throwable?
+    get() = when {
+        append is LoadState.Error -> append as LoadState.Error
+        prepend is LoadState.Error -> prepend as LoadState.Error
+        refresh is LoadState.Error -> refresh as LoadState.Error
+        else -> null
+    }?.error

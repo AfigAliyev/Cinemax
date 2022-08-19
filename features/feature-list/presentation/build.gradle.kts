@@ -17,6 +17,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.dagger.hilt.android)
 }
 
 android {
@@ -44,7 +46,6 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -60,19 +61,13 @@ android {
 }
 
 dependencies {
-    api(project(":core:core-data"))
-    api(project(":domain"))
+    implementation(project(":core:core-presentation"))
 
-    api(libs.androidx.core.ktx)
-    api(libs.bundles.androidx.compose)
-    api(libs.bundles.androidx.lifecycle)
-    api(libs.androidx.hilt.navigation.compose)
-    api(libs.accompanist.placeholder.material)
-    api(libs.accompanist.swiperefresh)
-    api(libs.coil.compose)
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
 
-    debugApi(libs.bundles.debug)
-
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
     implementation(libs.androidx.paging.compose)
 
     testImplementation(libs.bundles.test)

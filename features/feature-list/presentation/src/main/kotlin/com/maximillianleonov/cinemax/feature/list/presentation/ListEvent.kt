@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.presentation.model
+package com.maximillianleonov.cinemax.feature.list.presentation
 
-import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.presentation.common.Event
 
-data class ErrorMessage(
-    val error: Throwable,
-    @StringRes val messageResourceId: Int
-)
+sealed class ListEvent : Event

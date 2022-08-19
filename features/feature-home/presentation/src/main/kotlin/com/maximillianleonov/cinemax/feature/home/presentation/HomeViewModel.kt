@@ -20,8 +20,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maximillianleonov.cinemax.core.presentation.common.EventHandler
 import com.maximillianleonov.cinemax.core.presentation.mapper.toMovie
-import com.maximillianleonov.cinemax.core.presentation.model.toErrorMessage
 import com.maximillianleonov.cinemax.core.presentation.util.handle
+import com.maximillianleonov.cinemax.core.presentation.util.toErrorMessage
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 import com.maximillianleonov.cinemax.domain.usecase.GetUpcomingMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

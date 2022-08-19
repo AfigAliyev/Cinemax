@@ -23,7 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun CenteredBox(
+fun CinemaxCenteredBox(
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.Center,
     propagateMinConstraints: Boolean = false,

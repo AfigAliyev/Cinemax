@@ -104,6 +104,7 @@ dependencies {
     implementation(project(":domain"))
 
     implementation(project(":features:feature-home:presentation"))
+    implementation(project(":features:feature-list:presentation"))
 
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)

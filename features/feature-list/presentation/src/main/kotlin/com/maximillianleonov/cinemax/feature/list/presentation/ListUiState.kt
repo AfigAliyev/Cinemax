@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.presentation.model
+package com.maximillianleonov.cinemax.feature.list.presentation
 
-import androidx.annotation.StringRes
+import androidx.paging.PagingData
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
+import com.maximillianleonov.cinemax.core.presentation.common.State
+import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
+import com.maximillianleonov.cinemax.core.presentation.model.Movie
+import kotlinx.coroutines.flow.Flow
 
-data class ErrorMessage(
-    val error: Throwable,
-    @StringRes val messageResourceId: Int
-)
+data class ListUiState(
+    val contentType: ContentType,
+    val movies: Flow<PagingData<Movie>>,
+    val isRetry: Boolean = false,
+    val error: ErrorMessage? = null
+) : State

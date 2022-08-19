@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.presentation.model
+package com.maximillianleonov.cinemax.core.presentation.common
 
-import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.presentation.util.Constants
 
-data class ErrorMessage(
-    val error: Throwable,
-    @StringRes val messageResourceId: Int
-)
+enum class ContentType(val value: String) {
+    Upcoming(UpcomingContentType);
+
+    companion object {
+        private val contentTypes = values().associateBy(ContentType::value)
+        operator fun get(contentType: String) = checkNotNull(contentTypes[contentType]) {
+            "${Constants.Messages.INVALID_CONTENT_TYPE} $contentType"
+        }
+    }
+}
+
+private const val UpcomingContentType = "upcoming"

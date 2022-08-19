@@ -15,15 +15,5 @@
      limitations under the License.
 -->
 <resources>
-    <string name="back">Back</string>
-    <string name="movie">Movie</string>
-    <string name="see_all">See All</string>
-    <string name="poster">Poster</string>
-    <string name="rating">Rating</string>
-    <string name="not_rated">NR</string>
-    <string name="no_overview">No overview.</string>
-    <string name="no_genre">No genre.</string>
-    <string name="retry">Retry</string>
-    <string name="no_internet_connection">No internet connection.</string>
-    <string name="unknown_error">An unknown error has occurred.</string>
+    <string name="upcoming_movies">Upcoming movies</string>
 </resources>

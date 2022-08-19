@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.presentation.model
+package com.maximillianleonov.cinemax.feature.list.presentation.util
 
 import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
+import com.maximillianleonov.cinemax.feature.list.presentation.R
 
-data class ErrorMessage(
-    val error: Throwable,
-    @StringRes val messageResourceId: Int
-)
+@StringRes
+internal fun ContentType.toTitleResourceId() = when (this) {
+    ContentType.Upcoming -> R.string.upcoming_movies
+}
