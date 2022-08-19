@@ -16,9 +16,16 @@
 
 package com.maximillianleonov.cinemax.feature.list.presentation
 
+import androidx.paging.PagingData
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.common.State
+import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
+import com.maximillianleonov.cinemax.core.presentation.model.Movie
+import kotlinx.coroutines.flow.Flow
 
 data class ListUiState(
-    val contentType: ContentType
+    val contentType: ContentType,
+    val movies: Flow<PagingData<Movie>>,
+    val isRetry: Boolean = false,
+    val error: ErrorMessage? = null
 ) : State

@@ -39,11 +39,11 @@ object ListDestination : CinemaxNavigationDestination {
     ]
 }
 
-fun NavGraphBuilder.listGraph() = composable(
+fun NavGraphBuilder.listGraph(onBackButtonClick: () -> Unit) = composable(
     route = ListDestination.routeWithArgument,
     arguments = listOf(
         navArgument(ListDestination.contentTypeArgument) { type = NavType.StringType }
     )
-) { ListRoute() }
+) { ListRoute(onBackButtonClick = onBackButtonClick) }
 
 private const val CONTENT_TYPE_NULL_MESSAGE = "Content type is null."

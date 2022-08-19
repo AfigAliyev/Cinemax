@@ -18,11 +18,10 @@ package com.maximillianleonov.cinemax.feature.home.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.common.EventHandler
 import com.maximillianleonov.cinemax.core.presentation.mapper.toMovie
-import com.maximillianleonov.cinemax.core.presentation.model.toErrorMessage
 import com.maximillianleonov.cinemax.core.presentation.util.handle
+import com.maximillianleonov.cinemax.core.presentation.util.toErrorMessage
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 import com.maximillianleonov.cinemax.domain.usecase.GetUpcomingMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,8 +41,6 @@ class HomeViewModel @Inject constructor(
     private var upcomingMoviesJob = loadUpcomingMovies()
 
     override fun onEvent(event: HomeEvent) = when (event) {
-        is HomeEvent.NavigateToListDestination -> onNavigateToListDestination(event.contentType)
-        HomeEvent.ClearNavigateToListDestination -> onClearNavigateToListDestination()
         HomeEvent.Retry -> onRefresh()
         HomeEvent.ClearError -> onClearError()
     }
@@ -82,12 +79,6 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
-
-    private fun onNavigateToListDestination(contentType: ContentType) =
-        _uiState.update { it.copy(navigateToListDestination = contentType) }
-
-    private fun onClearNavigateToListDestination() =
-        _uiState.update { it.copy(navigateToListDestination = null) }
 
     private fun onRefresh() {
         _uiState.update { it.copy(upcomingMovies = emptyList()) }

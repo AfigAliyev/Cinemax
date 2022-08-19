@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.home.presentation
+package com.maximillianleonov.cinemax.feature.list.presentation.util
 
-import com.maximillianleonov.cinemax.core.presentation.common.State
-import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
-import com.maximillianleonov.cinemax.core.presentation.model.Movie
+import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
+import com.maximillianleonov.cinemax.feature.list.presentation.R
 
-data class HomeUiState(
-    val upcomingMovies: List<Movie> = emptyList(),
-    val isUpcomingMoviesLoading: Boolean = false,
-    val error: ErrorMessage? = null
-) : State
+@StringRes
+internal fun ContentType.toTitleResourceId() = when (this) {
+    ContentType.Upcoming -> R.string.upcoming_movies
+}

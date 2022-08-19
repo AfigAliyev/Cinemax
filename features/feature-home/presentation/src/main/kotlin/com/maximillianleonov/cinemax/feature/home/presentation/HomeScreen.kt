@@ -40,14 +40,10 @@ fun HomeRoute(
     HomeScreen(
         uiState = uiState,
         modifier = modifier,
-        onNavigateToListDestination = { viewModel.onEvent(HomeEvent.NavigateToListDestination(it)) },
+        onNavigateToListDestination = onNavigateToListDestination,
         onRetry = { viewModel.onEvent(HomeEvent.Retry) },
         onDismiss = { viewModel.onEvent(HomeEvent.ClearError) }
     )
-    uiState.navigateToListDestination?.let { contentType ->
-        onNavigateToListDestination(contentType)
-        viewModel.onEvent(HomeEvent.ClearNavigateToListDestination)
-    }
 }
 
 @Composable

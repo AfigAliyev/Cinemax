@@ -40,7 +40,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
-import com.maximillianleonov.cinemax.core.presentation.components.EmptyPlaceholder
+import com.maximillianleonov.cinemax.core.presentation.components.CinemaxPlaceholder
 import com.maximillianleonov.cinemax.core.presentation.components.MoviesContainer
 import com.maximillianleonov.cinemax.core.presentation.components.SubcomposeAsyncImageHandler
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
@@ -74,7 +74,7 @@ internal fun UpcomingMoviesContainer(
             contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.extraLarge)
         ) { page ->
             if (shouldShowPlaceholder) {
-                EmptyUpcomingMovieItem(
+                UpcomingMovieItemPlaceholder(
                     modifier = Modifier.pagerTransition(pagerScope = this, page = page)
                 )
             } else {
@@ -142,7 +142,7 @@ private fun UpcomingMovieItem(
 }
 
 @Composable
-private fun EmptyUpcomingMovieItem(
+private fun UpcomingMovieItemPlaceholder(
     modifier: Modifier = Modifier,
     visible: Boolean = true,
     shape: Shape = CinemaxTheme.shapes.medium,
@@ -155,7 +155,7 @@ private fun EmptyUpcomingMovieItem(
         shape = shape
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            EmptyPlaceholder()
+            CinemaxPlaceholder()
 
             Column(
                 modifier = Modifier
@@ -175,7 +175,7 @@ private fun EmptyUpcomingMovieItem(
                             shape = shape,
                             highlight = highlight
                         ),
-                    text = ""
+                    text = EmptyUpcomingMovieText
                 )
                 Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
                 Text(
@@ -187,7 +187,7 @@ private fun EmptyUpcomingMovieItem(
                             shape = shape,
                             highlight = highlight
                         ),
-                    text = ""
+                    text = EmptyUpcomingMovieText
                 )
             }
         }
@@ -198,3 +198,4 @@ private val UpcomingMovieHeight = 154.dp
 private const val UpcomingMovieDatePattern = "MMMM d, yyyy"
 private const val UpcomingMoviesContainerPagerPlaceholderCount = 20
 private const val EmptyUpcomingMovieItemSecondTextMaxWidthFraction = 0.5f
+private const val EmptyUpcomingMovieText = ""

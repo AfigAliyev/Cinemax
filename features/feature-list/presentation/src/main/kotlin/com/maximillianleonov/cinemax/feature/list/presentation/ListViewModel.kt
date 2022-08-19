@@ -18,7 +18,14 @@ package com.maximillianleonov.cinemax.feature.list.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.common.EventHandler
+import com.maximillianleonov.cinemax.core.presentation.mapper.pagingMap
+import com.maximillianleonov.cinemax.core.presentation.mapper.toMovie
+import com.maximillianleonov.cinemax.domain.model.MovieModel
+import com.maximillianleonov.cinemax.domain.usecase.GetUpcomingMoviesPagingUseCase
 import com.maximillianleonov.cinemax.feature.list.presentation.navigation.ListDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,12 +34,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
+    private val getUpcomingMoviesPagingUseCase: GetUpcomingMoviesPagingUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), EventHandler<ListEvent> {
-    private val _uiState = MutableStateFlow(
-        ListUiState(contentType = ListDestination.fromSavedStateHandle(savedStateHandle))
-    )
+    private val _uiState = MutableStateFlow(getInitialUiState(savedStateHandle = savedStateHandle))
     val uiState = _uiState.asStateFlow()
 
     override fun onEvent(event: ListEvent) = Unit
+
+    private fun getInitialUiState(savedStateHandle: SavedStateHandle): ListUiState {
+        val contentType = ListDestination.fromSavedStateHandle(savedStateHandle)
+
+        val movies = when (contentType) {
+            ContentType.Upcoming -> getUpcomingMoviesPagingUseCase()
+        }.pagingMap(MovieModel::toMovie).cachedIn(viewModelScope)
+
+        return ListUiState(
+            contentType = contentType,
+            movies = movies
+        )
+    }
 }
