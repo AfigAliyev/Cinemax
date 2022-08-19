@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.maximillianleonov.cinemax.core.presentation.R
+import com.maximillianleonov.cinemax.core.presentation.model.Movie
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 
 @Composable
@@ -66,3 +67,24 @@ fun MoviesContainer(
         content()
     }
 }
+
+@Composable
+fun VerticalMovieItem(
+    movie: Movie,
+    modifier: Modifier = Modifier
+) = with(movie) {
+    VerticalContentItem(
+        title = title,
+        overview = overview,
+        posterPath = posterPath,
+        voteAverage = voteAverage,
+        releaseDate = releaseDate,
+        genres = genres,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun VerticalMovieItemPlaceholder(
+    modifier: Modifier = Modifier
+) = VerticalContentItemPlaceholder(modifier = modifier)

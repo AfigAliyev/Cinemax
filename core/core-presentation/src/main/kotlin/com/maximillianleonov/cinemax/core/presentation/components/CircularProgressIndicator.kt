@@ -16,23 +16,23 @@
 
 package com.maximillianleonov.cinemax.core.presentation.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import coil.compose.AsyncImagePainter
-import coil.compose.SubcomposeAsyncImageContent
-import coil.compose.SubcomposeAsyncImageScope
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 
 @Composable
-fun SubcomposeAsyncImageScope.SubcomposeAsyncImageHandler() = when (painter.state) {
-    is AsyncImagePainter.State.Loading -> CinemaxPlaceholder()
-    is AsyncImagePainter.State.Success -> SubcomposeAsyncImageContent()
-    AsyncImagePainter.State.Empty, is AsyncImagePainter.State.Error -> Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(CinemaxTheme.colors.primarySoft)
-    )
-}
+fun CinemaxCircularProgressIndicator(
+    modifier: Modifier = Modifier,
+    color: Color = CinemaxTheme.colors.primaryBlue,
+    strokeWidth: Dp = StrokeWidth
+) = CircularProgressIndicator(
+    modifier = modifier,
+    color = color,
+    strokeWidth = strokeWidth
+)
+
+private val StrokeWidth = 2.dp

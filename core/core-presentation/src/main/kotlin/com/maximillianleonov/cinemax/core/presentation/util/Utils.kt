@@ -17,6 +17,7 @@
 package com.maximillianleonov.cinemax.core.presentation.util
 
 import com.maximillianleonov.cinemax.core.presentation.R
+import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toJavaLocalDate
 import java.io.IOException
@@ -28,6 +29,11 @@ internal object Utils {
         else -> R.string.unknown_error
     }
 }
+
+fun Throwable.toErrorMessage() = ErrorMessage(
+    error = this,
+    messageResourceId = Utils.getMessageFromThrowable(this)
+)
 
 fun LocalDate.format(pattern: String): String =
     toJavaLocalDate().format(DateTimeFormatter.ofPattern(pattern))

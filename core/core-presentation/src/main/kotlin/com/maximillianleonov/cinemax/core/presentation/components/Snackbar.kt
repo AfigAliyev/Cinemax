@@ -29,9 +29,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
+import androidx.paging.compose.LazyPagingItems
 import com.maximillianleonov.cinemax.core.presentation.R
 import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.presentation.util.error
+import com.maximillianleonov.cinemax.core.presentation.util.isError
+import com.maximillianleonov.cinemax.core.presentation.util.toErrorMessage
 
 @Composable
 fun CinemaxSnackbarHost(
@@ -79,6 +83,31 @@ fun SnackbarErrorHandler(
         onDismiss()
         if (snackbarResult == SnackbarResult.ActionPerformed) {
             onRetry()
+        }
+    }
+}
+
+@Composable
+fun <T : Any> SnackbarPagingErrorHandler(
+    items: LazyPagingItems<T>,
+    snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current,
+    duration: SnackbarDuration = SnackbarDuration.Indefinite,
+    @StringRes actionLabelResourceId: Int = R.string.retry
+) {
+    if (!items.loadState.isError) return
+    val errorMessage = items.loadState.error?.toErrorMessage() ?: return
+
+    val message = stringResource(id = errorMessage.messageResourceId)
+    val actionLabel = stringResource(id = actionLabelResourceId)
+
+    LaunchedEffect(key1 = snackbarHostState) {
+        val snackbarResult = snackbarHostState.showSnackbar(
+            message = message,
+            actionLabel = actionLabel,
+            duration = duration
+        )
+        if (snackbarResult == SnackbarResult.ActionPerformed) {
+            items.retry()
         }
     }
 }

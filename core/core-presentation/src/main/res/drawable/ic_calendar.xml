@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2022 Maximillian Leonov
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M18,4H17V3C17,2.735 16.895,2.48 16.707,2.293C16.52,2.105 16.265,2 16,2C15.735,2 15.48,2.105 15.293,2.293C15.105,2.48 15,2.735 15,3V4H9V3C9,2.735 8.895,2.48 8.707,2.293C8.52,2.105 8.265,2 8,2C7.735,2 7.48,2.105 7.293,2.293C7.105,2.48 7,2.735 7,3V4H6C5.204,4 4.441,4.316 3.879,4.879C3.316,5.441 3,6.204 3,7V19C3,19.796 3.316,20.559 3.879,21.121C4.441,21.684 5.204,22 6,22H18C18.796,22 19.559,21.684 20.121,21.121C20.684,20.559 21,19.796 21,19V7C21,6.204 20.684,5.441 20.121,4.879C19.559,4.316 18.796,4 18,4ZM8,17C7.802,17 7.609,16.941 7.444,16.831C7.28,16.722 7.152,16.565 7.076,16.383C7,16.2 6.981,15.999 7.019,15.805C7.058,15.611 7.153,15.433 7.293,15.293C7.433,15.153 7.611,15.058 7.805,15.019C7.999,14.981 8.2,15 8.383,15.076C8.565,15.152 8.722,15.28 8.831,15.444C8.941,15.609 9,15.802 9,16C9,16.265 8.895,16.52 8.707,16.707C8.52,16.895 8.265,17 8,17ZM16,17H12C11.735,17 11.48,16.895 11.293,16.707C11.105,16.52 11,16.265 11,16C11,15.735 11.105,15.48 11.293,15.293C11.48,15.105 11.735,15 12,15H16C16.265,15 16.52,15.105 16.707,15.293C16.895,15.48 17,15.735 17,16C17,16.265 16.895,16.52 16.707,16.707C16.52,16.895 16.265,17 16,17ZM19,11H5V7C5,6.735 5.105,6.48 5.293,6.293C5.48,6.105 5.735,6 6,6H7V7C7,7.265 7.105,7.52 7.293,7.707C7.48,7.895 7.735,8 8,8C8.265,8 8.52,7.895 8.707,7.707C8.895,7.52 9,7.265 9,7V6H15V7C15,7.265 15.105,7.52 15.293,7.707C15.48,7.895 15.735,8 16,8C16.265,8 16.52,7.895 16.707,7.707C16.895,7.52 17,7.265 17,7V6H18C18.265,6 18.52,6.105 18.707,6.293C18.895,6.48 19,6.735 19,7V11Z"
+        tools:ignore="VectorPath" />
+</vector>
