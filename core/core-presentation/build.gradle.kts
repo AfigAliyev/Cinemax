@@ -68,11 +68,12 @@ dependencies {
     api(libs.bundles.androidx.lifecycle)
     api(libs.androidx.hilt.navigation.compose)
     api(libs.accompanist.placeholder.material)
+    api(libs.accompanist.swiperefresh)
     api(libs.coil.compose)
 
     debugApi(libs.bundles.debug)
 
-    implementation(libs.androidx.paging.common)
+    implementation(libs.androidx.paging.compose)
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
