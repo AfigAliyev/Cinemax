@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +29,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -61,13 +63,13 @@ internal fun VerticalContentItem(
 ) = Row(
     modifier = modifier
         .fillMaxWidth()
-        .height(ContentItemHeight),
+        .height(VerticalContentItemHeight),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium)
 ) {
     Box(
         modifier = Modifier
-            .width(ContentItemPosterWidth)
+            .width(VerticalContentItemPosterWidth)
             .fillMaxHeight()
             .clip(shape = CinemaxTheme.shapes.small)
     ) {
@@ -103,11 +105,11 @@ internal fun VerticalContentItem(
             overflow = TextOverflow.Ellipsis
         )
         Column {
-            ContentItemIconAndText(
+            VerticalContentItemIconAndText(
                 iconResourceId = R.drawable.ic_calendar,
                 text = releaseDate.year.toString()
             )
-            ContentItemIconAndText(
+            VerticalContentItemIconAndText(
                 iconResourceId = R.drawable.ic_film,
                 text = genres.joinToString(separator = ContentItemGenreSeparator)
                     .ifEmpty { stringResource(id = R.string.no_genre) }
@@ -117,7 +119,7 @@ internal fun VerticalContentItem(
 }
 
 @Composable
-private fun ContentItemIconAndText(
+private fun VerticalContentItemIconAndText(
     @DrawableRes iconResourceId: Int,
     text: String,
     modifier: Modifier = Modifier,
@@ -128,7 +130,7 @@ private fun ContentItemIconAndText(
     horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraSmall)
 ) {
     Icon(
-        modifier = Modifier.size(ContentItemIconSize),
+        modifier = Modifier.size(VerticalContentItemIconSize),
         painter = painterResource(id = iconResourceId),
         contentDescription = text,
         tint = color
@@ -152,13 +154,13 @@ internal fun VerticalContentItemPlaceholder(
 ) = Row(
     modifier = modifier
         .fillMaxWidth()
-        .height(ContentItemHeight),
+        .height(VerticalContentItemHeight),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium)
 ) {
     Box(
         modifier = Modifier
-            .width(ContentItemPosterWidth)
+            .width(VerticalContentItemPosterWidth)
             .fillMaxHeight()
             .clip(shape = CinemaxTheme.shapes.small)
     ) {
@@ -203,14 +205,14 @@ internal fun VerticalContentItemPlaceholder(
             text = ContentItemPlaceholderText
         )
         Column {
-            ContentItemIconAndTextPlaceholder(iconResourceId = R.drawable.ic_calendar)
-            ContentItemIconAndTextPlaceholder(iconResourceId = R.drawable.ic_film)
+            VerticalContentItemIconAndTextPlaceholder(iconResourceId = R.drawable.ic_calendar)
+            VerticalContentItemIconAndTextPlaceholder(iconResourceId = R.drawable.ic_film)
         }
     }
 }
 
 @Composable
-private fun ContentItemIconAndTextPlaceholder(
+private fun VerticalContentItemIconAndTextPlaceholder(
     @DrawableRes iconResourceId: Int,
     modifier: Modifier = Modifier,
     color: Color = CinemaxTheme.colors.textGrey,
@@ -223,7 +225,7 @@ private fun ContentItemIconAndTextPlaceholder(
     horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraSmall)
 ) {
     Icon(
-        modifier = Modifier.size(ContentItemIconSize),
+        modifier = Modifier.size(VerticalContentItemIconSize),
         painter = painterResource(id = iconResourceId),
         contentDescription = ContentItemPlaceholderText,
         tint = color
@@ -231,7 +233,7 @@ private fun ContentItemIconAndTextPlaceholder(
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .height(ContentItemIconAndTextPlaceholderHeight)
+            .height(VerticalContentItemIconAndTextPlaceholderHeight)
             .placeholder(
                 visible = visible,
                 color = color,
@@ -242,11 +244,138 @@ private fun ContentItemIconAndTextPlaceholder(
     )
 }
 
-private val ContentItemHeight = 147.dp
-private val ContentItemPosterWidth = 112.dp
-private val ContentItemIconSize = 18.dp
-private const val ContentItemGenreSeparator = ", "
+@Composable
+fun HorizontalContentItem(
+    title: String,
+    posterPath: String?,
+    genres: List<String>,
+    voteAverage: Double,
+    modifier: Modifier = Modifier
+) = Card(
+    modifier = modifier.width(HorizontalContentItemWidth),
+    backgroundColor = CinemaxTheme.colors.primarySoft,
+    shape = CinemaxTheme.shapes.smallMedium
+) {
+    Column {
+        Box(modifier = Modifier.height(HorizontalContentItemPosterHeight)) {
+            SubcomposeAsyncImage(
+                modifier = Modifier.fillMaxSize(),
+                model = posterPath,
+                contentDescription = stringResource(id = R.string.poster),
+                contentScale = ContentScale.Crop
+            ) { SubcomposeAsyncImageHandler() }
+            RatingItem(
+                rating = voteAverage,
+                modifier = Modifier
+                    .padding(
+                        top = CinemaxTheme.spacing.small,
+                        start = CinemaxTheme.spacing.small
+                    )
+                    .align(Alignment.TopEnd)
+            )
+        }
+        Spacer(modifier = Modifier.height(CinemaxTheme.spacing.smallMedium))
+        Text(
+            modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.small),
+            text = title,
+            style = CinemaxTheme.typography.semiBold.h5,
+            color = CinemaxTheme.colors.textWhite,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
+        Text(
+            modifier = Modifier.padding(
+                start = CinemaxTheme.spacing.small,
+                end = CinemaxTheme.spacing.small,
+                bottom = CinemaxTheme.spacing.small
+            ),
+            text = genres.joinToString(separator = ContentItemGenreSeparator)
+                .ifEmpty { stringResource(id = R.string.no_genre) },
+            style = CinemaxTheme.typography.medium.h7,
+            color = CinemaxTheme.colors.textGrey,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
 
-private const val PlaceholderRating = 0.0
+@Composable
+fun HorizontalContentItemPlaceholder(
+    modifier: Modifier = Modifier,
+    visible: Boolean = true,
+    shape: Shape = CinemaxTheme.shapes.medium,
+    highlight: PlaceholderHighlight = PlaceholderHighlight.shimmer()
+) {
+    Card(
+        modifier = modifier.width(HorizontalContentItemWidth),
+        backgroundColor = CinemaxTheme.colors.primarySoft,
+        shape = CinemaxTheme.shapes.smallMedium
+    ) {
+        Column {
+            Box(modifier = Modifier.height(HorizontalContentItemPosterHeight)) {
+                CinemaxPlaceholder()
+                RatingItem(
+                    rating = PlaceholderRating,
+                    modifier = Modifier
+                        .padding(
+                            top = CinemaxTheme.spacing.small,
+                            start = CinemaxTheme.spacing.small
+                        )
+                        .align(Alignment.TopEnd)
+                        .placeholder(
+                            visible = visible,
+                            color = CinemaxTheme.colors.secondaryOrange,
+                            shape = shape,
+                            highlight = highlight
+                        )
+                )
+            }
+            Spacer(modifier = Modifier.height(CinemaxTheme.spacing.smallMedium))
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = CinemaxTheme.spacing.small)
+                    .fillMaxWidth()
+                    .placeholder(
+                        visible = visible,
+                        color = CinemaxTheme.colors.textWhite,
+                        shape = shape,
+                        highlight = highlight
+                    ),
+                text = ContentItemPlaceholderText,
+                style = CinemaxTheme.typography.semiBold.h5
+            )
+            Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
+            Text(
+                modifier = Modifier
+                    .padding(
+                        start = CinemaxTheme.spacing.small,
+                        end = CinemaxTheme.spacing.small,
+                        bottom = CinemaxTheme.spacing.small
+                    )
+                    .fillMaxWidth(HorizontalContentItemPlaceholderSecondTextMaxWidthFraction)
+                    .placeholder(
+                        visible = visible,
+                        color = CinemaxTheme.colors.textGrey,
+                        shape = shape,
+                        highlight = highlight
+                    ),
+                text = ContentItemPlaceholderText,
+                style = CinemaxTheme.typography.medium.h7
+            )
+        }
+    }
+}
+
+private val HorizontalContentItemWidth = 135.dp
+private val HorizontalContentItemPosterHeight = 178.dp
+private const val HorizontalContentItemPlaceholderSecondTextMaxWidthFraction = 0.5f
+
+private val VerticalContentItemHeight = 147.dp
+private val VerticalContentItemPosterWidth = 112.dp
+private val VerticalContentItemIconSize = 18.dp
+private val VerticalContentItemIconAndTextPlaceholderHeight = VerticalContentItemIconSize / 1.5f
+
 private const val ContentItemPlaceholderText = ""
-private val ContentItemIconAndTextPlaceholderHeight = ContentItemIconSize / 1.5f
+private const val ContentItemGenreSeparator = ", "
+private const val PlaceholderRating = 0.0

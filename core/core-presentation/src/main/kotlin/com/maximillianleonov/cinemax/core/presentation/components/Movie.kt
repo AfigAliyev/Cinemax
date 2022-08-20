@@ -20,11 +20,14 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -34,6 +37,27 @@ import androidx.compose.ui.res.stringResource
 import com.maximillianleonov.cinemax.core.presentation.R
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
+
+@Composable
+fun MoviesContainer(
+    movies: List<Movie>,
+    modifier: Modifier = Modifier
+) {
+    val shouldShowPlaceholder = movies.isEmpty()
+    LazyRow(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.smallMedium),
+        contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.smallMedium)
+    ) {
+        if (shouldShowPlaceholder) {
+            items(MoviesContainerPlaceholderCount) { HorizontalMovieItemPlaceholder() }
+        } else {
+            items(movies) { movie ->
+                HorizontalMovieItem(movie = movie)
+            }
+        }
+    }
+}
 
 @Composable
 fun MoviesContainer(
@@ -69,6 +93,25 @@ fun MoviesContainer(
 }
 
 @Composable
+fun HorizontalMovieItem(
+    movie: Movie,
+    modifier: Modifier = Modifier
+) = with(movie) {
+    HorizontalContentItem(
+        title = title,
+        posterPath = posterPath,
+        voteAverage = voteAverage,
+        genres = genres,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun HorizontalMovieItemPlaceholder(
+    modifier: Modifier = Modifier
+) = HorizontalContentItemPlaceholder(modifier = modifier)
+
+@Composable
 fun VerticalMovieItem(
     movie: Movie,
     modifier: Modifier = Modifier
@@ -88,3 +131,5 @@ fun VerticalMovieItem(
 fun VerticalMovieItemPlaceholder(
     modifier: Modifier = Modifier
 ) = VerticalContentItemPlaceholder(modifier = modifier)
+
+private const val MoviesContainerPlaceholderCount = 20

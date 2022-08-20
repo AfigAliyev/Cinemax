@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.data.remote.api.service
+package com.maximillianleonov.cinemax.domain.repository
 
-import com.maximillianleonov.cinemax.core.data.util.Constants
+import androidx.paging.PagingData
 import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
-import retrofit2.http.GET
-import retrofit2.http.Query
+import com.maximillianleonov.cinemax.domain.model.MovieModel
+import kotlinx.coroutines.flow.Flow
 
-interface MovieService {
-    @GET(Constants.Remote.UPCOMING_MOVIE_PATH)
-    suspend fun getUpcomingMovies(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<MovieResponseDto>
-
-    @GET(Constants.Remote.TOP_RATED_MOVIE_PATH)
-    suspend fun getTopRatedMovies(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<MovieResponseDto>
+interface TopRatedRepository {
+    fun getMovies(): Flow<Result<List<MovieModel>>>
+    fun getMoviesPaging(): Flow<PagingData<MovieModel>>
 }

@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.home.presentation
+package com.maximillianleonov.cinemax.domain.usecase
 
-import com.maximillianleonov.cinemax.core.presentation.common.State
-import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
-import com.maximillianleonov.cinemax.core.presentation.model.Movie
+import com.maximillianleonov.cinemax.domain.repository.TopRatedRepository
+import javax.inject.Inject
 
-data class HomeUiState(
-    val upcomingMovies: List<Movie> = emptyList(),
-    val isUpcomingMoviesLoading: Boolean = false,
-    val topRatedMovies: List<Movie> = emptyList(),
-    val isTopRatedMoviesLoading: Boolean = false,
-    val error: ErrorMessage? = null
-) : State
+class GetTopRatedMoviesUseCase @Inject constructor(
+    private val topRatedRepository: TopRatedRepository
+) {
+    operator fun invoke() = topRatedRepository.getMovies()
+}
