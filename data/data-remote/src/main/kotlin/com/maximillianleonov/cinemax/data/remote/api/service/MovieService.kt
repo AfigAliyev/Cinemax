@@ -23,8 +23,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface MovieService {
-    @GET("movie/upcoming")
+    @GET(Constants.Remote.UPCOMING_MOVIE_PATH)
     suspend fun getUpcomingMovies(
-        @Query("page") page: Int = Constants.Remote.DEFAULT_PAGE
+        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
     ): Result<MovieResponseDto>
 }

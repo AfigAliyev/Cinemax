@@ -23,11 +23,16 @@ object Constants {
         const val API_KEY_QUERY_PARAM = "api_key"
         const val PAGE_SIZE = 20
         const val DEFAULT_PAGE = 1
+
+        const val UPCOMING_MOVIE_PATH = "movie/upcoming"
     }
 
     object Tables {
         const val UPCOMING_MOVIES = "upcoming_movies"
         const val UPCOMING_MOVIES_REMOTE_KEYS = "upcoming_movies_remote_keys"
+
+        const val TOP_RATED_MOVIES = "top_rated_movies"
+        const val TOP_RATED_MOVIES_REMOTE_KEYS = "top_rated_movies_remote_keys"
     }
 
     object Fields {
