@@ -19,6 +19,7 @@ package com.maximillianleonov.cinemax.data.remote.dto
 import com.maximillianleonov.cinemax.core.data.remote.common.ResponseDto
 import com.maximillianleonov.cinemax.core.data.util.Constants
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
+import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -39,3 +40,21 @@ data class MovieResponseDto(
     @SerialName(Constants.Fields.DATES)
     val dates: DatesDto? = null
 ) : ResponseDto<MovieDto>
+
+@Serializable
+data class TvShowResponseDto(
+    @SerialName(Constants.Fields.PAGE)
+    override val page: Int,
+
+    @SerialName(Constants.Fields.RESULTS)
+    override val results: List<TvShowDto>,
+
+    @SerialName(Constants.Fields.TOTAL_PAGES)
+    override val totalPages: Int,
+
+    @SerialName(Constants.Fields.TOTAL_RESULTS)
+    override val totalResults: Int,
+
+    @SerialName(Constants.Fields.DATES)
+    val dates: DatesDto? = null
+) : ResponseDto<TvShowDto>
