@@ -19,11 +19,14 @@ package com.maximillianleonov.cinemax.feature.home.presentation
 import com.maximillianleonov.cinemax.core.presentation.common.State
 import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
+import com.maximillianleonov.cinemax.core.presentation.model.TvShow
 
 data class HomeUiState(
     val upcomingMovies: List<Movie> = emptyList(),
     val isUpcomingMoviesLoading: Boolean = false,
     val topRatedMovies: List<Movie> = emptyList(),
     val isTopRatedMoviesLoading: Boolean = false,
+    val topRatedTvShows: List<TvShow> = emptyList(),
+    val isTopRatedTvShowsLoading: Boolean = false,
     val error: ErrorMessage? = null
 ) : State

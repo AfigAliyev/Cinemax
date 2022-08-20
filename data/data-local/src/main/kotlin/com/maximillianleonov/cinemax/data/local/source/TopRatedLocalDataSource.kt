@@ -20,31 +20,57 @@ import androidx.room.withTransaction
 import com.maximillianleonov.cinemax.data.local.db.CinemaxDatabase
 import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieEntity
 import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieRemoteKeyEntity
+import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowEntity
+import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowRemoteKeyEntity
 import javax.inject.Inject
 
 class TopRatedLocalDataSource @Inject constructor(private val db: CinemaxDatabase) {
     private val movieDao = db.topRatedMovieDao
     private val movieRemoteKeyDao = db.topRatedMovieRemoteKeyDao
+    private val tvShowDao = db.topRatedTvShowDao
+    private val tvShowRemoteKeyDao = db.topRatedTvShowRemoteKeyDao
 
     fun getMovies() = movieDao.getAll()
     fun getMoviesPaging() = movieDao.getAllPaging()
-    suspend fun getMovieRemoteKeyById(id: Int) = movieRemoteKeyDao.getById(id = id)
+    suspend fun getMovieRemoteKeyById(id: Int) = movieRemoteKeyDao.getById(id)
 
-    suspend fun deleteAndInsertMovies(entities: List<TopRatedMovieEntity>) = db.withTransaction {
+    fun getTvShows() = tvShowDao.getAll()
+    fun getTvShowsPaging() = tvShowDao.getAllPaging()
+    suspend fun getTvShowRemoteKeyById(id: Int) = tvShowRemoteKeyDao.getById(id)
+
+    suspend fun deleteAndInsertMovies(movies: List<TopRatedMovieEntity>) = db.withTransaction {
         movieDao.deleteAll()
-        movieDao.insertAll(entities)
+        movieDao.insertAll(movies)
+    }
+
+    suspend fun deleteAndInsertTvShows(tvShows: List<TopRatedTvShowEntity>) = db.withTransaction {
+        tvShowDao.deleteAll()
+        tvShowDao.insertAll(tvShows)
     }
 
     suspend fun handleMoviesPaging(
         shouldDeleteMoviesAndRemoteKeys: Boolean,
         remoteKeys: List<TopRatedMovieRemoteKeyEntity>,
-        data: List<TopRatedMovieEntity>
+        movies: List<TopRatedMovieEntity>
     ) = db.withTransaction {
         if (shouldDeleteMoviesAndRemoteKeys) {
             movieDao.deleteAll()
             movieRemoteKeyDao.deleteAll()
         }
         movieRemoteKeyDao.insertAll(remoteKeys)
-        movieDao.insertAll(data)
+        movieDao.insertAll(movies)
+    }
+
+    suspend fun handleTvShowsPaging(
+        shouldDeleteTvShowsAndRemoteKeys: Boolean,
+        remoteKeys: List<TopRatedTvShowRemoteKeyEntity>,
+        tvShows: List<TopRatedTvShowEntity>
+    ) = db.withTransaction {
+        if (shouldDeleteTvShowsAndRemoteKeys) {
+            tvShowDao.deleteAll()
+            tvShowRemoteKeyDao.deleteAll()
+        }
+        tvShowRemoteKeyDao.insertAll(remoteKeys)
+        tvShowDao.insertAll(tvShows)
     }
 }

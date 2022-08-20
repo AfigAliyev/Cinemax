@@ -28,23 +28,23 @@ class UpcomingLocalDataSource @Inject constructor(private val db: CinemaxDatabas
 
     fun getMovies() = movieDao.getAll()
     fun getMoviesPaging() = movieDao.getAllPaging()
-    suspend fun getMovieRemoteKeyById(id: Int) = movieRemoteKeyDao.getById(id = id)
+    suspend fun getMovieRemoteKeyById(id: Int) = movieRemoteKeyDao.getById(id)
 
-    suspend fun deleteAndInsertMovies(entities: List<UpcomingMovieEntity>) = db.withTransaction {
+    suspend fun deleteAndInsertMovies(movies: List<UpcomingMovieEntity>) = db.withTransaction {
         movieDao.deleteAll()
-        movieDao.insertAll(entities)
+        movieDao.insertAll(movies)
     }
 
     suspend fun handleMoviesPaging(
         shouldDeleteMoviesAndRemoteKeys: Boolean,
         remoteKeys: List<UpcomingMovieRemoteKeyEntity>,
-        data: List<UpcomingMovieEntity>
+        movies: List<UpcomingMovieEntity>
     ) = db.withTransaction {
         if (shouldDeleteMoviesAndRemoteKeys) {
             movieDao.deleteAll()
             movieRemoteKeyDao.deleteAll()
         }
         movieRemoteKeyDao.insertAll(remoteKeys)
-        movieDao.insertAll(data)
+        movieDao.insertAll(movies)
     }
 }

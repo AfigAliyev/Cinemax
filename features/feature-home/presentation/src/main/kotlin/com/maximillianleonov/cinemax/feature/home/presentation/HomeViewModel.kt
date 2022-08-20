@@ -20,10 +20,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maximillianleonov.cinemax.core.presentation.common.EventHandler
 import com.maximillianleonov.cinemax.core.presentation.mapper.toMovie
+import com.maximillianleonov.cinemax.core.presentation.mapper.toTvShow
 import com.maximillianleonov.cinemax.core.presentation.util.handle
 import com.maximillianleonov.cinemax.core.presentation.util.toErrorMessage
 import com.maximillianleonov.cinemax.domain.model.MovieModel
+import com.maximillianleonov.cinemax.domain.model.TvShowModel
 import com.maximillianleonov.cinemax.domain.usecase.GetTopRatedMoviesUseCase
+import com.maximillianleonov.cinemax.domain.usecase.GetTopRatedTvShowsUseCase
 import com.maximillianleonov.cinemax.domain.usecase.GetUpcomingMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,13 +39,15 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
-    private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase
+    private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
+    private val getTopRatedTvShowsUseCase: GetTopRatedTvShowsUseCase
 ) : ViewModel(), EventHandler<HomeEvent> {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
     private var upcomingMoviesJob = loadUpcomingMovies()
     private var topRatedMoviesJob = loadTopRatedMovies()
+    private var topRatedTvShowsJob = loadTopRatedTvShows()
 
     override fun onEvent(event: HomeEvent) = when (event) {
         HomeEvent.Retry -> onRetry()
@@ -62,6 +67,14 @@ class HomeViewModel @Inject constructor(
             onLoading = ::handleTopRatedMoviesLoading,
             onSuccess = ::handleTopRatedMoviesSuccess,
             onFailure = ::handleTopRatedMoviesFailure
+        )
+    }
+
+    private fun loadTopRatedTvShows() = viewModelScope.launch {
+        getTopRatedTvShowsUseCase().handle(
+            onLoading = ::handleTopRatedTvShowsLoading,
+            onSuccess = ::handleTopRatedTvShowsSuccess,
+            onFailure = ::handleTopRatedTvShowsFailure
         )
     }
 
@@ -92,19 +105,19 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun handleTopRatedMoviesLoading(topRated: List<MovieModel>?) {
+    private fun handleTopRatedMoviesLoading(topRatedMovies: List<MovieModel>?) {
         _uiState.update {
             it.copy(
-                topRatedMovies = topRated?.map(MovieModel::toMovie).orEmpty(),
+                topRatedMovies = topRatedMovies?.map(MovieModel::toMovie).orEmpty(),
                 isTopRatedMoviesLoading = true
             )
         }
     }
 
-    private fun handleTopRatedMoviesSuccess(topRated: List<MovieModel>) {
+    private fun handleTopRatedMoviesSuccess(topRatedMovies: List<MovieModel>) {
         _uiState.update {
             it.copy(
-                topRatedMovies = topRated.map(MovieModel::toMovie),
+                topRatedMovies = topRatedMovies.map(MovieModel::toMovie),
                 isTopRatedMoviesLoading = false
             )
         }
@@ -119,11 +132,40 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun handleTopRatedTvShowsLoading(topRatedTvShows: List<TvShowModel>?) {
+        _uiState.update {
+            it.copy(
+                topRatedTvShows = topRatedTvShows?.map(TvShowModel::toTvShow).orEmpty(),
+                isTopRatedTvShowsLoading = true
+            )
+        }
+    }
+
+    private fun handleTopRatedTvShowsSuccess(topRatedTvShows: List<TvShowModel>) {
+        _uiState.update {
+            it.copy(
+                topRatedTvShows = topRatedTvShows.map(TvShowModel::toTvShow),
+                isTopRatedTvShowsLoading = false
+            )
+        }
+    }
+
+    private fun handleTopRatedTvShowsFailure(throwable: Throwable) {
+        _uiState.update {
+            it.copy(
+                error = throwable.toErrorMessage(),
+                isTopRatedTvShowsLoading = false
+            )
+        }
+    }
+
     private fun onRetry() {
         upcomingMoviesJob.cancel()
         topRatedMoviesJob.cancel()
+        topRatedTvShowsJob.cancel()
         upcomingMoviesJob = loadUpcomingMovies()
         topRatedMoviesJob = loadTopRatedMovies()
+        topRatedTvShowsJob = loadTopRatedTvShows()
     }
 
     private fun onClearError() = _uiState.update { it.copy(error = null) }

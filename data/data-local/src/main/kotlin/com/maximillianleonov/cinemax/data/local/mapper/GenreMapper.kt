@@ -22,3 +22,7 @@ import com.maximillianleonov.cinemax.domain.model.GenreModel
 internal fun List<Int>.toMovieGenres() = map(Genres.Movie::get).map { genre ->
     GenreModel(id = genre.id, name = genre.genreName)
 }
+
+internal fun List<Int>.toTvShowGenres() = map(Genres.TvShow::get).map { genre ->
+    GenreModel(id = genre.id, name = genre.genreName)
+}

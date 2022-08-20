@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.domain.repository
+package com.maximillianleonov.cinemax.core.presentation.model
 
-import androidx.paging.PagingData
-import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.domain.model.MovieModel
-import com.maximillianleonov.cinemax.domain.model.TvShowModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.LocalDate
 
-interface TopRatedRepository {
-    fun getMovies(): Flow<Result<List<MovieModel>>>
-    fun getMoviesPaging(): Flow<PagingData<MovieModel>>
-    fun getTvShows(): Flow<Result<List<TvShowModel>>>
-    fun getTvShowsPaging(): Flow<PagingData<TvShowModel>>
-}
+data class TvShow(
+    val id: Int,
+    val name: String,
+    val overview: String,
+    val firstAirDate: LocalDate,
+    val genres: List<String>,
+    val voteAverage: Double,
+    val posterPath: String?,
+    val backdropPath: String?
+)

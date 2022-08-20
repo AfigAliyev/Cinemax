@@ -17,6 +17,7 @@
 package com.maximillianleonov.cinemax.core.presentation.components
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,8 +50,182 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 import com.maximillianleonov.cinemax.core.presentation.R
+import com.maximillianleonov.cinemax.core.presentation.model.Movie
+import com.maximillianleonov.cinemax.core.presentation.model.TvShow
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 import kotlinx.datetime.LocalDate
+
+@Composable
+fun MoviesAndTvShowsContainer(
+    @StringRes titleResourceId: Int,
+    onSeeAllClick: () -> Unit,
+    movies: List<Movie>,
+    tvShows: List<TvShow>,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .padding(horizontal = CinemaxTheme.spacing.extraMedium)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = titleResourceId),
+                style = CinemaxTheme.typography.semiBold.h4,
+                color = CinemaxTheme.colors.textWhite
+            )
+            TextButton(onClick = onSeeAllClick) {
+                Text(
+                    text = stringResource(id = R.string.see_all),
+                    style = CinemaxTheme.typography.medium.h5,
+                    color = CinemaxTheme.colors.primaryBlue
+                )
+            }
+        }
+        Text(
+            modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.extraMedium),
+            text = stringResource(id = R.string.movies),
+            style = CinemaxTheme.typography.semiBold.h5,
+            color = CinemaxTheme.colors.textWhiteGrey
+        )
+        Spacer(modifier = Modifier.height(CinemaxTheme.spacing.small))
+        MoviesContainer(movies = movies)
+        Spacer(modifier = Modifier.height(CinemaxTheme.spacing.smallMedium))
+        Text(
+            modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.extraMedium),
+            text = stringResource(id = R.string.tv_shows),
+            style = CinemaxTheme.typography.semiBold.h5,
+            color = CinemaxTheme.colors.textWhiteGrey
+        )
+        Spacer(modifier = Modifier.height(CinemaxTheme.spacing.small))
+        TvShowsContainer(tvShows = tvShows)
+    }
+}
+
+@Composable
+fun HorizontalContentItem(
+    title: String,
+    posterPath: String?,
+    genres: List<String>,
+    voteAverage: Double,
+    modifier: Modifier = Modifier
+) = Card(
+    modifier = modifier.width(HorizontalContentItemWidth),
+    backgroundColor = CinemaxTheme.colors.primarySoft,
+    shape = CinemaxTheme.shapes.smallMedium
+) {
+    Column {
+        Box(modifier = Modifier.height(HorizontalContentItemPosterHeight)) {
+            SubcomposeAsyncImage(
+                modifier = Modifier.fillMaxSize(),
+                model = posterPath,
+                contentDescription = title,
+                contentScale = ContentScale.Crop
+            ) { SubcomposeAsyncImageHandler() }
+            RatingItem(
+                rating = voteAverage,
+                modifier = Modifier
+                    .padding(
+                        top = CinemaxTheme.spacing.small,
+                        end = CinemaxTheme.spacing.small
+                    )
+                    .align(Alignment.TopEnd)
+            )
+        }
+        Spacer(modifier = Modifier.height(CinemaxTheme.spacing.smallMedium))
+        Text(
+            modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.small),
+            text = title,
+            style = CinemaxTheme.typography.semiBold.h5,
+            color = CinemaxTheme.colors.textWhite,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
+        Text(
+            modifier = Modifier.padding(
+                start = CinemaxTheme.spacing.small,
+                end = CinemaxTheme.spacing.small,
+                bottom = CinemaxTheme.spacing.small
+            ),
+            text = genres.joinToString(separator = ContentItemGenreSeparator)
+                .ifEmpty { stringResource(id = R.string.no_genre) },
+            style = CinemaxTheme.typography.medium.h7,
+            color = CinemaxTheme.colors.textGrey,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+fun HorizontalContentItemPlaceholder(
+    modifier: Modifier = Modifier,
+    visible: Boolean = true,
+    shape: Shape = CinemaxTheme.shapes.medium,
+    highlight: PlaceholderHighlight = PlaceholderHighlight.shimmer()
+) {
+    Card(
+        modifier = modifier.width(HorizontalContentItemWidth),
+        backgroundColor = CinemaxTheme.colors.primarySoft,
+        shape = CinemaxTheme.shapes.smallMedium
+    ) {
+        Column {
+            Box(modifier = Modifier.height(HorizontalContentItemPosterHeight)) {
+                CinemaxPlaceholder()
+                RatingItem(
+                    rating = PlaceholderRating,
+                    modifier = Modifier
+                        .padding(
+                            top = CinemaxTheme.spacing.small,
+                            end = CinemaxTheme.spacing.small
+                        )
+                        .align(Alignment.TopEnd)
+                        .placeholder(
+                            visible = visible,
+                            color = CinemaxTheme.colors.secondaryOrange,
+                            shape = shape,
+                            highlight = highlight
+                        )
+                )
+            }
+            Spacer(modifier = Modifier.height(CinemaxTheme.spacing.smallMedium))
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = CinemaxTheme.spacing.small)
+                    .fillMaxWidth()
+                    .placeholder(
+                        visible = visible,
+                        color = CinemaxTheme.colors.textWhite,
+                        shape = shape,
+                        highlight = highlight
+                    ),
+                text = ContentItemPlaceholderText,
+                style = CinemaxTheme.typography.semiBold.h5
+            )
+            Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
+            Text(
+                modifier = Modifier
+                    .padding(
+                        start = CinemaxTheme.spacing.small,
+                        end = CinemaxTheme.spacing.small,
+                        bottom = CinemaxTheme.spacing.small
+                    )
+                    .fillMaxWidth(HorizontalContentItemPlaceholderSecondTextMaxWidthFraction)
+                    .placeholder(
+                        visible = visible,
+                        color = CinemaxTheme.colors.textGrey,
+                        shape = shape,
+                        highlight = highlight
+                    ),
+                text = ContentItemPlaceholderText,
+                style = CinemaxTheme.typography.medium.h7
+            )
+        }
+    }
+}
 
 @Composable
 internal fun VerticalContentItem(
@@ -76,7 +252,7 @@ internal fun VerticalContentItem(
         SubcomposeAsyncImage(
             modifier = Modifier.fillMaxSize(),
             model = posterPath,
-            contentDescription = stringResource(id = R.string.poster),
+            contentDescription = title,
             contentScale = ContentScale.Crop
         ) { SubcomposeAsyncImageHandler() }
         RatingItem(
@@ -242,129 +418,6 @@ private fun VerticalContentItemIconAndTextPlaceholder(
             ),
         text = ContentItemPlaceholderText
     )
-}
-
-@Composable
-fun HorizontalContentItem(
-    title: String,
-    posterPath: String?,
-    genres: List<String>,
-    voteAverage: Double,
-    modifier: Modifier = Modifier
-) = Card(
-    modifier = modifier.width(HorizontalContentItemWidth),
-    backgroundColor = CinemaxTheme.colors.primarySoft,
-    shape = CinemaxTheme.shapes.smallMedium
-) {
-    Column {
-        Box(modifier = Modifier.height(HorizontalContentItemPosterHeight)) {
-            SubcomposeAsyncImage(
-                modifier = Modifier.fillMaxSize(),
-                model = posterPath,
-                contentDescription = stringResource(id = R.string.poster),
-                contentScale = ContentScale.Crop
-            ) { SubcomposeAsyncImageHandler() }
-            RatingItem(
-                rating = voteAverage,
-                modifier = Modifier
-                    .padding(
-                        top = CinemaxTheme.spacing.small,
-                        start = CinemaxTheme.spacing.small
-                    )
-                    .align(Alignment.TopEnd)
-            )
-        }
-        Spacer(modifier = Modifier.height(CinemaxTheme.spacing.smallMedium))
-        Text(
-            modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.small),
-            text = title,
-            style = CinemaxTheme.typography.semiBold.h5,
-            color = CinemaxTheme.colors.textWhite,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
-        Text(
-            modifier = Modifier.padding(
-                start = CinemaxTheme.spacing.small,
-                end = CinemaxTheme.spacing.small,
-                bottom = CinemaxTheme.spacing.small
-            ),
-            text = genres.joinToString(separator = ContentItemGenreSeparator)
-                .ifEmpty { stringResource(id = R.string.no_genre) },
-            style = CinemaxTheme.typography.medium.h7,
-            color = CinemaxTheme.colors.textGrey,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-@Composable
-fun HorizontalContentItemPlaceholder(
-    modifier: Modifier = Modifier,
-    visible: Boolean = true,
-    shape: Shape = CinemaxTheme.shapes.medium,
-    highlight: PlaceholderHighlight = PlaceholderHighlight.shimmer()
-) {
-    Card(
-        modifier = modifier.width(HorizontalContentItemWidth),
-        backgroundColor = CinemaxTheme.colors.primarySoft,
-        shape = CinemaxTheme.shapes.smallMedium
-    ) {
-        Column {
-            Box(modifier = Modifier.height(HorizontalContentItemPosterHeight)) {
-                CinemaxPlaceholder()
-                RatingItem(
-                    rating = PlaceholderRating,
-                    modifier = Modifier
-                        .padding(
-                            top = CinemaxTheme.spacing.small,
-                            start = CinemaxTheme.spacing.small
-                        )
-                        .align(Alignment.TopEnd)
-                        .placeholder(
-                            visible = visible,
-                            color = CinemaxTheme.colors.secondaryOrange,
-                            shape = shape,
-                            highlight = highlight
-                        )
-                )
-            }
-            Spacer(modifier = Modifier.height(CinemaxTheme.spacing.smallMedium))
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = CinemaxTheme.spacing.small)
-                    .fillMaxWidth()
-                    .placeholder(
-                        visible = visible,
-                        color = CinemaxTheme.colors.textWhite,
-                        shape = shape,
-                        highlight = highlight
-                    ),
-                text = ContentItemPlaceholderText,
-                style = CinemaxTheme.typography.semiBold.h5
-            )
-            Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
-            Text(
-                modifier = Modifier
-                    .padding(
-                        start = CinemaxTheme.spacing.small,
-                        end = CinemaxTheme.spacing.small,
-                        bottom = CinemaxTheme.spacing.small
-                    )
-                    .fillMaxWidth(HorizontalContentItemPlaceholderSecondTextMaxWidthFraction)
-                    .placeholder(
-                        visible = visible,
-                        color = CinemaxTheme.colors.textGrey,
-                        shape = shape,
-                        highlight = highlight
-                    ),
-                text = ContentItemPlaceholderText,
-                style = CinemaxTheme.typography.medium.h7
-            )
-        }
-    }
 }
 
 private val HorizontalContentItemWidth = 135.dp

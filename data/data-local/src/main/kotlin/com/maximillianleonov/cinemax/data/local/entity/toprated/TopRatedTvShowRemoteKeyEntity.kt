@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.data.remote.api.service
+package com.maximillianleonov.cinemax.data.local.entity.toprated
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.maximillianleonov.cinemax.core.data.local.common.RemoteKeyEntity
 import com.maximillianleonov.cinemax.core.data.util.Constants
-import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.data.remote.dto.TvShowResponseDto
-import retrofit2.http.GET
-import retrofit2.http.Query
 
-interface TvShowService {
-    @GET(Constants.Remote.TOP_RATED_TV_SHOW_PATH)
-    suspend fun getTopRatedTvShows(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<TvShowResponseDto>
-}
+@Entity(tableName = Constants.Tables.TOP_RATED_TV_SHOWS_REMOTE_KEYS)
+data class TopRatedTvShowRemoteKeyEntity(
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = Constants.Fields.ID)
+    override val id: Int,
+
+    @ColumnInfo(name = Constants.Fields.PREV_PAGE)
+    override val prevPage: Int?,
+
+    @ColumnInfo(name = Constants.Fields.NEXT_PAGE)
+    override val nextPage: Int?
+) : RemoteKeyEntity

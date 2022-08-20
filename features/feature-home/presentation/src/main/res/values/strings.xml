@@ -16,5 +16,5 @@
 -->
 <resources>
     <string name="upcoming_movies">Upcoming Movies</string>
-    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="top_rated">Top Rated</string>
 </resources>
