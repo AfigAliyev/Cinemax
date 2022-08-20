@@ -31,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -110,9 +109,7 @@ private fun UpcomingMovieItem(
             SubcomposeAsyncImage(
                 modifier = Modifier.fillMaxSize(),
                 model = movie.backdropPath,
-                contentDescription = stringResource(
-                    id = com.maximillianleonov.cinemax.core.presentation.R.string.movie
-                ),
+                contentDescription = movie.title,
                 contentScale = ContentScale.Crop
             ) { SubcomposeAsyncImageHandler() }
 

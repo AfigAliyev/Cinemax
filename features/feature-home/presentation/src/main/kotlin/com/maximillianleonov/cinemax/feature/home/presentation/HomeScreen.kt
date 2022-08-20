@@ -26,7 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType
-import com.maximillianleonov.cinemax.core.presentation.components.MoviesContainer
+import com.maximillianleonov.cinemax.core.presentation.components.MoviesAndTvShowsContainer
 import com.maximillianleonov.cinemax.core.presentation.components.SnackbarErrorHandler
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.feature.home.presentation.components.UpcomingMoviesContainer
@@ -73,12 +73,12 @@ internal fun HomeScreen(
         }
         item {
             @Suppress("ForbiddenComment")
-            MoviesContainer(
-                titleResourceId = R.string.top_rated_movies,
-                onSeeAllClick = { /* TODO: Not yet implemented. */ }
-            ) {
-                MoviesContainer(movies = uiState.topRatedMovies)
-            }
+            MoviesAndTvShowsContainer(
+                titleResourceId = R.string.top_rated,
+                onSeeAllClick = { /*TODO*/ },
+                movies = uiState.topRatedMovies,
+                tvShows = uiState.topRatedTvShows
+            )
         }
     }
 }
