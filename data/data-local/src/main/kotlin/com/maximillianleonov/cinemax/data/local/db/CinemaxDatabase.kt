@@ -19,14 +19,19 @@ package com.maximillianleonov.cinemax.data.local.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.maximillianleonov.cinemax.data.local.dao.toprated.TopRatedMovieDao
+import com.maximillianleonov.cinemax.data.local.dao.toprated.TopRatedMovieRemoteKeyDao
 import com.maximillianleonov.cinemax.data.local.dao.upcoming.UpcomingMovieDao
 import com.maximillianleonov.cinemax.data.local.dao.upcoming.UpcomingMovieRemoteKeyDao
+import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieEntity
+import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRemoteKeyEntity
 
 @Database(
     entities = [
-        UpcomingMovieEntity::class, UpcomingMovieRemoteKeyEntity::class
+        UpcomingMovieEntity::class, UpcomingMovieRemoteKeyEntity::class,
+        TopRatedMovieEntity::class, TopRatedMovieRemoteKeyEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -35,6 +40,9 @@ import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRem
 abstract class CinemaxDatabase : RoomDatabase() {
     abstract val upcomingMovieDao: UpcomingMovieDao
     abstract val upcomingMovieRemoteKeyDao: UpcomingMovieRemoteKeyDao
+
+    abstract val topRatedMovieDao: TopRatedMovieDao
+    abstract val topRatedMovieRemoteKeyDao: TopRatedMovieRemoteKeyDao
 
     companion object {
         const val CINEMAX_DATABASE = "cinemax.db"
