@@ -175,7 +175,8 @@ private fun UpcomingMovieItemPlaceholder(
                             shape = shape,
                             highlight = highlight
                         ),
-                    text = EmptyUpcomingMovieText
+                    text = EmptyUpcomingMovieText,
+                    style = CinemaxTheme.typography.semiBold.h4
                 )
                 Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
                 Text(
@@ -187,7 +188,8 @@ private fun UpcomingMovieItemPlaceholder(
                             shape = shape,
                             highlight = highlight
                         ),
-                    text = EmptyUpcomingMovieText
+                    text = EmptyUpcomingMovieText,
+                    style = CinemaxTheme.typography.medium.h6
                 )
             }
         }

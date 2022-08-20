@@ -23,5 +23,7 @@ import com.maximillianleonov.cinemax.core.presentation.model.Movie
 data class HomeUiState(
     val upcomingMovies: List<Movie> = emptyList(),
     val isUpcomingMoviesLoading: Boolean = false,
+    val topRatedMovies: List<Movie> = emptyList(),
+    val isTopRatedMoviesLoading: Boolean = false,
     val error: ErrorMessage? = null
 ) : State
