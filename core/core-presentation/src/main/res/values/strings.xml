@@ -16,9 +16,9 @@
 -->
 <resources>
     <string name="back">Back</string>
-    <string name="movie">Movie</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
     <string name="see_all">See All</string>
-    <string name="poster">Poster</string>
     <string name="rating">Rating</string>
     <string name="not_rated">NR</string>
     <string name="no_overview">No overview.</string>
