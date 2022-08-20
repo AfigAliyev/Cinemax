@@ -19,9 +19,11 @@ package com.maximillianleonov.cinemax.data.remote.api
 import com.maximillianleonov.cinemax.core.data.remote.api.CinemaxApiKeyProvider
 import com.maximillianleonov.cinemax.core.data.remote.util.retrofit
 import com.maximillianleonov.cinemax.data.remote.api.service.MovieService
+import com.maximillianleonov.cinemax.data.remote.api.service.TvShowService
 import retrofit2.create
 import javax.inject.Inject
 
 class CinemaxApi @Inject constructor(private val apiKeyProvider: CinemaxApiKeyProvider) {
     val movieService: MovieService by lazy { retrofit(apiKeyProvider).create() }
+    val tvShowService: TvShowService by lazy { retrofit(apiKeyProvider).create() }
 }
