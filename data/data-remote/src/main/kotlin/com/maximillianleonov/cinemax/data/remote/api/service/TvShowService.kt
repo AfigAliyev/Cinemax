@@ -16,4 +16,15 @@
 
 package com.maximillianleonov.cinemax.data.remote.api.service
 
-interface TvShowService
+import com.maximillianleonov.cinemax.core.data.util.Constants
+import com.maximillianleonov.cinemax.core.domain.result.Result
+import com.maximillianleonov.cinemax.data.remote.dto.TvShowResponseDto
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface TvShowService {
+    @GET(Constants.Remote.TOP_RATED_TV_SHOW_PATH)
+    suspend fun getTopRatedTvShows(
+        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
+    ): Result<TvShowResponseDto>
+}

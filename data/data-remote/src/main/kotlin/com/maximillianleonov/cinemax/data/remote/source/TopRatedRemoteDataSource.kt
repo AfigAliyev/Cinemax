@@ -22,8 +22,13 @@ import javax.inject.Inject
 
 class TopRatedRemoteDataSource @Inject constructor(api: CinemaxApi) {
     private val movieService = api.movieService
+    private val tvShowService = api.tvShowService
 
     suspend fun getMovies(
         page: Int = Constants.Remote.DEFAULT_PAGE
     ) = movieService.getTopRatedMovies(page)
+
+    suspend fun getTvShows(
+        page: Int = Constants.Remote.DEFAULT_PAGE
+    ) = tvShowService.getTopRatedTvShows(page)
 }

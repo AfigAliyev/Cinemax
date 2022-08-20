@@ -26,6 +26,8 @@ object Constants {
 
         const val UPCOMING_MOVIE_PATH = "movie/upcoming"
         const val TOP_RATED_MOVIE_PATH = "movie/top_rated"
+
+        const val TOP_RATED_TV_SHOW_PATH = "tv/top_rated"
     }
 
     object Tables {
@@ -34,6 +36,9 @@ object Constants {
 
         const val TOP_RATED_MOVIES = "top_rated_movies"
         const val TOP_RATED_MOVIES_REMOTE_KEYS = "top_rated_movies_remote_keys"
+
+        const val TOP_RATED_TV_SHOWS = "top_rated_tv_shows"
+        const val TOP_RATED_TV_SHOWS_REMOTE_KEYS = "top_rated_tv_shows_remote_keys"
     }
 
     object Fields {
