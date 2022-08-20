@@ -16,7 +16,9 @@
 
 package com.maximillianleonov.cinemax.di
 
+import com.maximillianleonov.cinemax.data.local.repository.TopRatedRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.UpcomingRepositoryImpl
+import com.maximillianleonov.cinemax.domain.repository.TopRatedRepository
 import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
 import dagger.Binds
 import dagger.Module
@@ -27,4 +29,7 @@ import dagger.hilt.android.components.ViewModelComponent
 interface RepositoryModule {
     @Binds
     fun bindUpcomingRepository(upcomingRepositoryImpl: UpcomingRepositoryImpl): UpcomingRepository
+
+    @Binds
+    fun bindTopRatedRepository(topRatedRepositoryImpl: TopRatedRepositoryImpl): TopRatedRepository
 }
