@@ -33,7 +33,7 @@ class UpcomingMovieRemoteMediator(
     MovieDto,
     MovieResponseDto>() {
 
-    override suspend fun getDataFromService(page: Int) = remoteDataSource.getMovies(page = page)
+    override suspend fun getDataFromService(page: Int) = remoteDataSource.getMovies(page)
 
     override fun dtoToEntity(dto: MovieDto) = dto.toUpcomingMovieEntity()
 
@@ -47,7 +47,7 @@ class UpcomingMovieRemoteMediator(
         nextPage = nextPage
     )
 
-    override suspend fun getRemoteKeyById(id: Int) = localDataSource.getMovieRemoteKeyById(id = id)
+    override suspend fun getRemoteKeyById(id: Int) = localDataSource.getMovieRemoteKeyById(id)
 
     override suspend fun deleteAndInsertAll(
         isLoadTypeRefresh: Boolean,
@@ -56,6 +56,6 @@ class UpcomingMovieRemoteMediator(
     ) = localDataSource.handleMoviesPaging(
         shouldDeleteMoviesAndRemoteKeys = isLoadTypeRefresh,
         remoteKeys = remoteKeys,
-        data = data
+        movies = data
     )
 }

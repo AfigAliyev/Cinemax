@@ -23,15 +23,21 @@ import com.maximillianleonov.cinemax.core.data.local.common.defaultPagingConfig
 import com.maximillianleonov.cinemax.core.data.remote.common.networkBoundResource
 import com.maximillianleonov.cinemax.core.domain.result.Result
 import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieEntity
+import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowEntity
 import com.maximillianleonov.cinemax.data.local.mapper.listMap
 import com.maximillianleonov.cinemax.data.local.mapper.pagingMap
 import com.maximillianleonov.cinemax.data.local.mapper.toMovieModel
 import com.maximillianleonov.cinemax.data.local.mapper.toTopRatedMovieEntity
+import com.maximillianleonov.cinemax.data.local.mapper.toTopRatedTvShowEntity
+import com.maximillianleonov.cinemax.data.local.mapper.toTvShowModel
 import com.maximillianleonov.cinemax.data.local.paging.TopRatedMovieRemoteMediator
+import com.maximillianleonov.cinemax.data.local.paging.TopRatedTvShowRemoteMediator
 import com.maximillianleonov.cinemax.data.local.source.TopRatedLocalDataSource
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
+import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDto
 import com.maximillianleonov.cinemax.data.remote.source.TopRatedRemoteDataSource
 import com.maximillianleonov.cinemax.domain.model.MovieModel
+import com.maximillianleonov.cinemax.domain.model.TvShowModel
 import com.maximillianleonov.cinemax.domain.repository.TopRatedRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -56,4 +62,21 @@ class TopRatedRepositoryImpl @Inject constructor(
         remoteMediator = TopRatedMovieRemoteMediator(localDataSource, remoteDataSource),
         pagingSourceFactory = { localDataSource.getMoviesPaging() }
     ).flow.pagingMap(TopRatedMovieEntity::toMovieModel)
+
+    override fun getTvShows(): Flow<Result<List<TvShowModel>>> = networkBoundResource(
+        query = { localDataSource.getTvShows().listMap(TopRatedTvShowEntity::toTvShowModel) },
+        fetch = { remoteDataSource.getTvShows() },
+        saveFetchResult = { response ->
+            localDataSource.deleteAndInsertTvShows(
+                response.results.map(TvShowDto::toTopRatedTvShowEntity)
+            )
+        }
+    )
+
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getTvShowsPaging(): Flow<PagingData<TvShowModel>> = Pager(
+        config = defaultPagingConfig,
+        remoteMediator = TopRatedTvShowRemoteMediator(localDataSource, remoteDataSource),
+        pagingSourceFactory = { localDataSource.getTvShowsPaging() }
+    ).flow.pagingMap(TopRatedTvShowEntity::toTvShowModel)
 }

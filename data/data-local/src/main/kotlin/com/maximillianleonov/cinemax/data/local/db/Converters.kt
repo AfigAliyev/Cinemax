@@ -33,4 +33,10 @@ object Converters {
 
     @TypeConverter
     fun jsonToIntList(json: String): List<Int> = JsonParser.fromJson(json)
+
+    @TypeConverter
+    fun stringListToJson(value: List<String>): String = JsonParser.toJson(value)
+
+    @TypeConverter
+    fun jsonToStringList(json: String): List<String> = JsonParser.fromJson(json)
 }

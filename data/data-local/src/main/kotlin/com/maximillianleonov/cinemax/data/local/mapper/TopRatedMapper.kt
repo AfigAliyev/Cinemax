@@ -17,8 +17,11 @@
 package com.maximillianleonov.cinemax.data.local.mapper
 
 import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieEntity
+import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowEntity
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
+import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDto
 import com.maximillianleonov.cinemax.domain.model.MovieModel
+import com.maximillianleonov.cinemax.domain.model.TvShowModel
 
 internal fun MovieDto.toTopRatedMovieEntity() = TopRatedMovieEntity(
     remoteId = id,
@@ -52,4 +55,36 @@ internal fun TopRatedMovieEntity.toMovieModel() = MovieModel(
     posterPath = posterPath?.toImageUrl(),
     backdropPath = backdropPath?.toImageUrl(),
     video = video
+)
+
+internal fun TvShowDto.toTopRatedTvShowEntity() = TopRatedTvShowEntity(
+    remoteId = id,
+    name = name,
+    overview = overview,
+    popularity = popularity,
+    firstAirDate = firstAirDate,
+    genreIds = genreIds,
+    originalName = originalName,
+    originalLanguage = originalLanguage,
+    originCountry = originCountry,
+    voteAverage = voteAverage,
+    voteCount = voteCount,
+    posterPath = posterPath,
+    backdropPath = backdropPath
+)
+
+internal fun TopRatedTvShowEntity.toTvShowModel() = TvShowModel(
+    id = remoteId,
+    name = name,
+    overview = overview,
+    popularity = popularity,
+    firstAirDate = firstAirDate,
+    genres = genreIds.toTvShowGenres(),
+    originalName = originalName,
+    originalLanguage = originalLanguage,
+    originCountry = originCountry,
+    voteAverage = voteAverage,
+    voteCount = voteCount,
+    posterPath = posterPath?.toImageUrl(),
+    backdropPath = backdropPath?.toImageUrl()
 )

@@ -17,45 +17,45 @@
 package com.maximillianleonov.cinemax.data.local.paging
 
 import com.maximillianleonov.cinemax.core.data.local.common.DefaultRemoteMediator
-import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieEntity
-import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieRemoteKeyEntity
-import com.maximillianleonov.cinemax.data.local.mapper.toTopRatedMovieEntity
+import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowEntity
+import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowRemoteKeyEntity
+import com.maximillianleonov.cinemax.data.local.mapper.toTopRatedTvShowEntity
 import com.maximillianleonov.cinemax.data.local.source.TopRatedLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
-import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
+import com.maximillianleonov.cinemax.data.remote.dto.TvShowResponseDto
+import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDto
 import com.maximillianleonov.cinemax.data.remote.source.TopRatedRemoteDataSource
 
-class TopRatedMovieRemoteMediator(
+class TopRatedTvShowRemoteMediator(
     private val localDataSource: TopRatedLocalDataSource,
     private val remoteDataSource: TopRatedRemoteDataSource
-) : DefaultRemoteMediator<TopRatedMovieEntity,
-    TopRatedMovieRemoteKeyEntity,
-    MovieDto,
-    MovieResponseDto>() {
+) : DefaultRemoteMediator<TopRatedTvShowEntity,
+    TopRatedTvShowRemoteKeyEntity,
+    TvShowDto,
+    TvShowResponseDto>() {
 
-    override suspend fun getDataFromService(page: Int) = remoteDataSource.getMovies(page)
+    override suspend fun getDataFromService(page: Int) = remoteDataSource.getTvShows(page)
 
-    override fun dtoToEntity(dto: MovieDto) = dto.toTopRatedMovieEntity()
+    override fun dtoToEntity(dto: TvShowDto) = dto.toTopRatedTvShowEntity()
 
     override fun entityToRemoteKey(
         id: Int,
         prevPage: Int?,
         nextPage: Int?
-    ) = TopRatedMovieRemoteKeyEntity(
+    ) = TopRatedTvShowRemoteKeyEntity(
         id = id,
         prevPage = prevPage,
         nextPage = nextPage
     )
 
-    override suspend fun getRemoteKeyById(id: Int) = localDataSource.getMovieRemoteKeyById(id)
+    override suspend fun getRemoteKeyById(id: Int) = localDataSource.getTvShowRemoteKeyById(id)
 
     override suspend fun deleteAndInsertAll(
         isLoadTypeRefresh: Boolean,
-        remoteKeys: List<TopRatedMovieRemoteKeyEntity>,
-        data: List<TopRatedMovieEntity>
-    ) = localDataSource.handleMoviesPaging(
-        shouldDeleteMoviesAndRemoteKeys = isLoadTypeRefresh,
+        remoteKeys: List<TopRatedTvShowRemoteKeyEntity>,
+        data: List<TopRatedTvShowEntity>
+    ) = localDataSource.handleTvShowsPaging(
+        shouldDeleteTvShowsAndRemoteKeys = isLoadTypeRefresh,
         remoteKeys = remoteKeys,
-        movies = data
+        tvShows = data
     )
 }
