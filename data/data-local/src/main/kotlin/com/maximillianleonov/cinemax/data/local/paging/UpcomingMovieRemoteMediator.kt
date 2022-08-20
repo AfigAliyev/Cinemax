@@ -53,10 +53,9 @@ class UpcomingMovieRemoteMediator(
         isLoadTypeRefresh: Boolean,
         remoteKeys: List<UpcomingMovieRemoteKeyEntity>,
         data: List<UpcomingMovieEntity>
-    ) = localDataSource.withTransaction {
-        if (isLoadTypeRefresh) {
-            localDataSource.deleteMoviesAndRemoteKeys()
-        }
-        localDataSource.insertMoviesAndRemoteKeys(data = data, remoteKeys = remoteKeys)
-    }
+    ) = localDataSource.handleMoviesPaging(
+        shouldDeleteMoviesAndRemoteKeys = isLoadTypeRefresh,
+        remoteKeys = remoteKeys,
+        data = data
+    )
 }
