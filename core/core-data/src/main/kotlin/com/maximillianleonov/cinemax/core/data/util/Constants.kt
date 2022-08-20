@@ -25,6 +25,7 @@ object Constants {
         const val DEFAULT_PAGE = 1
 
         const val UPCOMING_MOVIE_PATH = "movie/upcoming"
+        const val TOP_RATED_MOVIE_PATH = "movie/top_rated"
     }
 
     object Tables {
