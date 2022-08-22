@@ -40,6 +40,11 @@ object Constants {
         const val TOP_RATED_MOVIES_REMOTE_KEYS = "top_rated_movies_remote_keys"
         const val TOP_RATED_TV_SHOWS = "top_rated_tv_shows"
         const val TOP_RATED_TV_SHOWS_REMOTE_KEYS = "top_rated_tv_shows_remote_keys"
+
+        const val POPULAR_MOVIES = "popular_movies"
+        const val POPULAR_MOVIES_REMOTE_KEYS = "popular_movies_remote_keys"
+        const val POPULAR_TV_SHOWS = "popular_tv_shows"
+        const val POPULAR_TV_SHOWS_REMOTE_KEYS = "popular_tv_shows_remote_keys"
     }
 
     object Fields {
