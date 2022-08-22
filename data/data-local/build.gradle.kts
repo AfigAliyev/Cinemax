@@ -50,7 +50,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:core-data:data-local"))
+    implementation(project(":core:core-data-local"))
     implementation(project(":data:data-remote"))
     implementation(project(":domain"))
 

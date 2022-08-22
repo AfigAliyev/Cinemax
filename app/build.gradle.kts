@@ -93,8 +93,8 @@ android {
 
 dependencies {
     implementation(project(":core:core-data"))
-    implementation(project(":core:core-data:data-local"))
-    implementation(project(":core:core-data:data-remote"))
+    implementation(project(":core:core-data-local"))
+    implementation(project(":core:core-data-remote"))
     implementation(project(":core:core-domain"))
     implementation(project(":core:core-presentation"))
 

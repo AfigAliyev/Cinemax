@@ -49,7 +49,7 @@ android {
 }
 
 dependencies {
-    api(project(":core:core-data:data-remote"))
+    api(project(":core:core-data-remote"))
 
     api(libs.androidx.paging.common)
     api(libs.bundles.androidx.room)
