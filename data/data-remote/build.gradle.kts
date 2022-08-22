@@ -26,7 +26,7 @@ java {
 }
 
 dependencies {
-    implementation(project(":core:core-data:data-remote"))
+    implementation(project(":core:core-data-remote"))
 
     testImplementation(libs.bundles.test)
 }
