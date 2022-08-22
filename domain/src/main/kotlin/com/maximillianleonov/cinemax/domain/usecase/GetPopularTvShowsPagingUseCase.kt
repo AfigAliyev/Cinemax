@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.home.presentation.common
+package com.maximillianleonov.cinemax.domain.usecase
 
-enum class ContentLoadType {
-    UpcomingMovies,
-    TopRatedMovies,
-    TopRatedTvShows,
-    PopularMovies,
-    PopularTvShows
+import com.maximillianleonov.cinemax.domain.repository.PopularRepository
+import javax.inject.Inject
+
+class GetPopularTvShowsPagingUseCase @Inject constructor(
+    private val popularRepository: PopularRepository
+) {
+    operator fun invoke() = popularRepository.getTvShowsPaging()
 }

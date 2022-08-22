@@ -25,6 +25,8 @@ import com.maximillianleonov.cinemax.core.presentation.util.handle
 import com.maximillianleonov.cinemax.core.presentation.util.toErrorMessage
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 import com.maximillianleonov.cinemax.domain.model.TvShowModel
+import com.maximillianleonov.cinemax.domain.usecase.GetPopularMoviesUseCase
+import com.maximillianleonov.cinemax.domain.usecase.GetPopularTvShowsUseCase
 import com.maximillianleonov.cinemax.domain.usecase.GetTopRatedMoviesUseCase
 import com.maximillianleonov.cinemax.domain.usecase.GetTopRatedTvShowsUseCase
 import com.maximillianleonov.cinemax.domain.usecase.GetUpcomingMoviesUseCase
@@ -41,7 +43,9 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
-    private val getTopRatedTvShowsUseCase: GetTopRatedTvShowsUseCase
+    private val getTopRatedTvShowsUseCase: GetTopRatedTvShowsUseCase,
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val getPopularTvShowsUseCase: GetPopularTvShowsUseCase
 ) : ViewModel(), EventHandler<HomeEvent> {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
@@ -49,6 +53,8 @@ class HomeViewModel @Inject constructor(
     private var upcomingMoviesJob = loadUpcomingMovies()
     private var topRatedMoviesJob = loadTopRatedMovies()
     private var topRatedTvShowsJob = loadTopRatedTvShows()
+    private var popularMoviesJob = loadPopularMovies()
+    private var popularTvShowsJob = loadPopularTvShows()
 
     override fun onEvent(event: HomeEvent) = when (event) {
         HomeEvent.Refresh -> onRefresh()
@@ -76,6 +82,22 @@ class HomeViewModel @Inject constructor(
             onLoading = ::handleTopRatedTvShowsLoading,
             onSuccess = ::handleTopRatedTvShowsSuccess,
             onFailure = ::handleTopRatedTvShowsFailure
+        )
+    }
+
+    private fun loadPopularMovies() = viewModelScope.launch {
+        getPopularMoviesUseCase().handle(
+            onLoading = ::handlePopularMoviesLoading,
+            onSuccess = ::handlePopularMoviesSuccess,
+            onFailure = ::handlePopularMoviesFailure
+        )
+    }
+
+    private fun loadPopularTvShows() = viewModelScope.launch {
+        getPopularTvShowsUseCase().handle(
+            onLoading = ::handlePopularTvShowsLoading,
+            onSuccess = ::handlePopularTvShowsSuccess,
+            onFailure = ::handlePopularTvShowsFailure
         )
     }
 
@@ -160,13 +182,71 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun handlePopularMoviesLoading(popularMovies: List<MovieModel>?) {
+        _uiState.update {
+            it.copy(
+                popularMovies = popularMovies?.map(MovieModel::toMovie).orEmpty(),
+                loadStates = it.loadStates + (ContentLoadType.PopularMovies to true)
+            )
+        }
+    }
+
+    private fun handlePopularMoviesSuccess(popularMovies: List<MovieModel>) {
+        _uiState.update {
+            it.copy(
+                popularMovies = popularMovies.map(MovieModel::toMovie),
+                loadStates = it.loadStates + (ContentLoadType.PopularMovies to false)
+            )
+        }
+    }
+
+    private fun handlePopularMoviesFailure(throwable: Throwable) {
+        _uiState.update {
+            it.copy(
+                error = throwable.toErrorMessage(),
+                loadStates = it.loadStates + (ContentLoadType.PopularMovies to false)
+            )
+        }
+    }
+
+    private fun handlePopularTvShowsLoading(popularTvShows: List<TvShowModel>?) {
+        _uiState.update {
+            it.copy(
+                popularTvShows = popularTvShows?.map(TvShowModel::toTvShow).orEmpty(),
+                loadStates = it.loadStates + (ContentLoadType.PopularTvShows to true)
+            )
+        }
+    }
+
+    private fun handlePopularTvShowsSuccess(popularTvShows: List<TvShowModel>) {
+        _uiState.update {
+            it.copy(
+                popularTvShows = popularTvShows.map(TvShowModel::toTvShow),
+                loadStates = it.loadStates + (ContentLoadType.PopularTvShows to false)
+            )
+        }
+    }
+
+    private fun handlePopularTvShowsFailure(throwable: Throwable) {
+        _uiState.update {
+            it.copy(
+                error = throwable.toErrorMessage(),
+                loadStates = it.loadStates + (ContentLoadType.PopularTvShows to false)
+            )
+        }
+    }
+
     private fun onRefresh() {
         upcomingMoviesJob.cancel()
         topRatedMoviesJob.cancel()
         topRatedTvShowsJob.cancel()
+        popularMoviesJob.cancel()
+        popularTvShowsJob.cancel()
         upcomingMoviesJob = loadUpcomingMovies()
         topRatedMoviesJob = loadTopRatedMovies()
         topRatedTvShowsJob = loadTopRatedTvShows()
+        popularMoviesJob = loadPopularMovies()
+        popularTvShowsJob = loadPopularTvShows()
     }
 
     private fun onClearError() = _uiState.update { it.copy(error = null) }
