@@ -16,8 +16,10 @@
 
 package com.maximillianleonov.cinemax.di
 
+import com.maximillianleonov.cinemax.data.local.repository.PopularRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.TopRatedRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.UpcomingRepositoryImpl
+import com.maximillianleonov.cinemax.domain.repository.PopularRepository
 import com.maximillianleonov.cinemax.domain.repository.TopRatedRepository
 import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
 import dagger.Binds
@@ -32,4 +34,7 @@ interface RepositoryModule {
 
     @Binds
     fun bindTopRatedRepository(topRatedRepositoryImpl: TopRatedRepositoryImpl): TopRatedRepository
+
+    @Binds
+    fun bindPopularRepository(popularRepositoryImpl: PopularRepositoryImpl): PopularRepository
 }
