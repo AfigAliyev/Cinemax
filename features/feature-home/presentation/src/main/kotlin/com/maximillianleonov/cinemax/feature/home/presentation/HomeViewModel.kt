@@ -28,6 +28,7 @@ import com.maximillianleonov.cinemax.domain.model.TvShowModel
 import com.maximillianleonov.cinemax.domain.usecase.GetTopRatedMoviesUseCase
 import com.maximillianleonov.cinemax.domain.usecase.GetTopRatedTvShowsUseCase
 import com.maximillianleonov.cinemax.domain.usecase.GetUpcomingMoviesUseCase
+import com.maximillianleonov.cinemax.feature.home.presentation.common.ContentLoadType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -50,7 +51,7 @@ class HomeViewModel @Inject constructor(
     private var topRatedTvShowsJob = loadTopRatedTvShows()
 
     override fun onEvent(event: HomeEvent) = when (event) {
-        HomeEvent.Retry -> onRetry()
+        HomeEvent.Refresh -> onRefresh()
         HomeEvent.ClearError -> onClearError()
     }
 
@@ -82,7 +83,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 upcomingMovies = upcomingMovies?.map(MovieModel::toMovie).orEmpty(),
-                isUpcomingMoviesLoading = true
+                loadStates = it.loadStates + (ContentLoadType.UpcomingMovies to true)
             )
         }
     }
@@ -91,7 +92,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 upcomingMovies = upcomingMovies.map(MovieModel::toMovie),
-                isUpcomingMoviesLoading = false
+                loadStates = it.loadStates + (ContentLoadType.UpcomingMovies to false)
             )
         }
     }
@@ -100,7 +101,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 error = throwable.toErrorMessage(),
-                isUpcomingMoviesLoading = false
+                loadStates = it.loadStates + (ContentLoadType.UpcomingMovies to false)
             )
         }
     }
@@ -109,7 +110,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 topRatedMovies = topRatedMovies?.map(MovieModel::toMovie).orEmpty(),
-                isTopRatedMoviesLoading = true
+                loadStates = it.loadStates + (ContentLoadType.TopRatedMovies to true)
             )
         }
     }
@@ -118,7 +119,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 topRatedMovies = topRatedMovies.map(MovieModel::toMovie),
-                isTopRatedMoviesLoading = false
+                loadStates = it.loadStates + (ContentLoadType.TopRatedMovies to false)
             )
         }
     }
@@ -127,7 +128,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 error = throwable.toErrorMessage(),
-                isTopRatedMoviesLoading = false
+                loadStates = it.loadStates + (ContentLoadType.TopRatedMovies to false)
             )
         }
     }
@@ -136,7 +137,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 topRatedTvShows = topRatedTvShows?.map(TvShowModel::toTvShow).orEmpty(),
-                isTopRatedTvShowsLoading = true
+                loadStates = it.loadStates + (ContentLoadType.TopRatedTvShows to true)
             )
         }
     }
@@ -145,7 +146,7 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 topRatedTvShows = topRatedTvShows.map(TvShowModel::toTvShow),
-                isTopRatedTvShowsLoading = false
+                loadStates = it.loadStates + (ContentLoadType.TopRatedTvShows to false)
             )
         }
     }
@@ -154,12 +155,12 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 error = throwable.toErrorMessage(),
-                isTopRatedTvShowsLoading = false
+                loadStates = it.loadStates + (ContentLoadType.TopRatedTvShows to false)
             )
         }
     }
 
-    private fun onRetry() {
+    private fun onRefresh() {
         upcomingMoviesJob.cancel()
         topRatedMoviesJob.cancel()
         topRatedTvShowsJob.cancel()

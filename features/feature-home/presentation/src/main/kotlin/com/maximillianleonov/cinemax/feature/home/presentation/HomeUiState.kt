@@ -20,13 +20,14 @@ import com.maximillianleonov.cinemax.core.presentation.common.State
 import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
 import com.maximillianleonov.cinemax.core.presentation.model.TvShow
+import com.maximillianleonov.cinemax.feature.home.presentation.common.ContentLoadType
 
 data class HomeUiState(
     val upcomingMovies: List<Movie> = emptyList(),
-    val isUpcomingMoviesLoading: Boolean = false,
     val topRatedMovies: List<Movie> = emptyList(),
-    val isTopRatedMoviesLoading: Boolean = false,
     val topRatedTvShows: List<TvShow> = emptyList(),
-    val isTopRatedTvShowsLoading: Boolean = false,
+    val loadStates: Map<ContentLoadType, Boolean> = emptyMap(),
     val error: ErrorMessage? = null
-) : State
+) : State {
+    val isLoading: Boolean get() = loadStates.values.any { it }
+}

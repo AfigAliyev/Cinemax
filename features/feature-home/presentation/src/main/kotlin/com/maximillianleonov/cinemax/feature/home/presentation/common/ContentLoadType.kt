@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.home.presentation
+package com.maximillianleonov.cinemax.feature.home.presentation.common
 
-import com.maximillianleonov.cinemax.core.presentation.common.Event
-
-sealed class HomeEvent : Event {
-    object Refresh : HomeEvent()
-    object ClearError : HomeEvent()
+enum class ContentLoadType {
+    UpcomingMovies,
+    TopRatedMovies,
+    TopRatedTvShows
 }
