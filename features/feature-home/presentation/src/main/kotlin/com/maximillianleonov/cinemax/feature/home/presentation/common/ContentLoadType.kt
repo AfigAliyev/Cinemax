@@ -19,5 +19,7 @@ package com.maximillianleonov.cinemax.feature.home.presentation.common
 enum class ContentLoadType {
     UpcomingMovies,
     TopRatedMovies,
-    TopRatedTvShows
+    TopRatedTvShows,
+    PopularMovies,
+    PopularTvShows
 }
