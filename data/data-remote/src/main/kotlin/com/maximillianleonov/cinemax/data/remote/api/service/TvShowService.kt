@@ -27,4 +27,9 @@ interface TvShowService {
     suspend fun getTopRatedTvShows(
         @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
     ): Result<TvShowResponseDto>
+
+    @GET(Constants.Remote.POPULAR_TV_SHOW_PATH)
+    suspend fun getPopularTvShows(
+        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
+    ): Result<TvShowResponseDto>
 }
