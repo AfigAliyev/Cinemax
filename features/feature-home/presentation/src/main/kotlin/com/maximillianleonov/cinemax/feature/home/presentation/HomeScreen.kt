@@ -25,7 +25,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType
+import com.maximillianleonov.cinemax.core.presentation.components.CinemaxSwipeRefresh
 import com.maximillianleonov.cinemax.core.presentation.components.MoviesAndTvShowsContainer
 import com.maximillianleonov.cinemax.core.presentation.components.SnackbarErrorHandler
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
@@ -42,43 +45,52 @@ fun HomeRoute(
         uiState = uiState,
         modifier = modifier,
         onNavigateToListDestination = onNavigateToListDestination,
-        onRetry = { viewModel.onEvent(HomeEvent.Retry) },
+        onRefresh = { viewModel.onEvent(HomeEvent.Refresh) },
         onDismiss = { viewModel.onEvent(HomeEvent.ClearError) }
     )
 }
 
+@Suppress("ReusedModifierInstance")
 @Composable
 internal fun HomeScreen(
     uiState: HomeUiState,
     onNavigateToListDestination: (ContentType) -> Unit,
-    onRetry: () -> Unit,
+    onRefresh: () -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
+        isRefreshing = uiState.isLoading
+    )
 ) {
     SnackbarErrorHandler(
         errorMessage = uiState.error,
-        onRetry = onRetry,
+        onRetry = onRefresh,
         onDismiss = onDismiss
     )
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium),
-        contentPadding = PaddingValues(vertical = CinemaxTheme.spacing.extraMedium)
+    CinemaxSwipeRefresh(
+        swipeRefreshState = swipeRefreshState,
+        onRefresh = onRefresh
     ) {
-        item {
-            UpcomingMoviesContainer(
-                movies = uiState.upcomingMovies,
-                onSeeAllClick = { onNavigateToListDestination(ContentType.Upcoming) }
-            )
-        }
-        item {
-            @Suppress("ForbiddenComment")
-            MoviesAndTvShowsContainer(
-                titleResourceId = R.string.top_rated,
-                onSeeAllClick = { /*TODO*/ },
-                movies = uiState.topRatedMovies,
-                tvShows = uiState.topRatedTvShows
-            )
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium),
+            contentPadding = PaddingValues(vertical = CinemaxTheme.spacing.extraMedium)
+        ) {
+            item {
+                UpcomingMoviesContainer(
+                    movies = uiState.upcomingMovies,
+                    onSeeAllClick = { onNavigateToListDestination(ContentType.Upcoming) }
+                )
+            }
+            item {
+                @Suppress("ForbiddenComment")
+                MoviesAndTvShowsContainer(
+                    titleResourceId = R.string.top_rated,
+                    onSeeAllClick = { /*TODO*/ },
+                    movies = uiState.topRatedMovies,
+                    tvShows = uiState.topRatedTvShows
+                )
+            }
         }
     }
 }
