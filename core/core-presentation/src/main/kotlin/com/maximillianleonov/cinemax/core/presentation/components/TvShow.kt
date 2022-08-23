@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.maximillianleonov.cinemax.core.presentation.mapper.toNames
 import com.maximillianleonov.cinemax.core.presentation.model.TvShow
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 
@@ -56,7 +57,7 @@ fun HorizontalTvShowItem(
         title = name,
         posterPath = posterPath,
         voteAverage = voteAverage,
-        genres = genres,
+        genres = genres.toNames(),
         modifier = modifier
     )
 }

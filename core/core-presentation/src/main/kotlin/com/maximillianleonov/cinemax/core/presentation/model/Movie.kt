@@ -23,7 +23,7 @@ data class Movie(
     val title: String,
     val overview: String,
     val releaseDate: LocalDate,
-    val genres: List<String>,
+    val genres: List<Genre>,
     val voteAverage: Double,
     val posterPath: String?,
     val backdropPath: String?

@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.maximillianleonov.cinemax.core.presentation.R
+import com.maximillianleonov.cinemax.core.presentation.mapper.toNames
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 
@@ -101,7 +102,7 @@ fun HorizontalMovieItem(
         title = title,
         posterPath = posterPath,
         voteAverage = voteAverage,
-        genres = genres,
+        genres = genres.toNames(),
         modifier = modifier
     )
 }
@@ -122,7 +123,7 @@ fun VerticalMovieItem(
         posterPath = posterPath,
         voteAverage = voteAverage,
         releaseDate = releaseDate,
-        genres = genres,
+        genres = genres.toNames(),
         modifier = modifier
     )
 }
