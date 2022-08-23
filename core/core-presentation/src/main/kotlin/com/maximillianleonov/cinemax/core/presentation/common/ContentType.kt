@@ -18,13 +18,25 @@ package com.maximillianleonov.cinemax.core.presentation.common
 
 import com.maximillianleonov.cinemax.core.presentation.util.Constants
 
-enum class ContentType(val value: String) {
-    Upcoming(UpcomingContentType);
+object ContentType {
+    enum class Main {
+        UpcomingMovies,
+        TopRatedMovies,
+        TopRatedTvShows,
+        PopularMovies,
+        PopularTvShows,
+        NowPlayingMovies,
+        NowPlayingTvShows
+    }
 
-    companion object {
-        private val contentTypes = values().associateBy(ContentType::value)
-        operator fun get(contentType: String) = checkNotNull(contentTypes[contentType]) {
-            "${Constants.Messages.INVALID_CONTENT_TYPE} $contentType"
+    enum class List(val value: String) {
+        Upcoming(UpcomingContentType);
+
+        companion object {
+            private val contentTypes = values().associateBy(List::value)
+            operator fun get(contentType: String) = checkNotNull(contentTypes[contentType]) {
+                "${Constants.Messages.INVALID_CONTENT_TYPE} $contentType"
+            }
         }
     }
 }

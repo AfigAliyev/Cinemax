@@ -16,16 +16,16 @@
 
 package com.maximillianleonov.cinemax.feature.home.presentation
 
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.common.State
 import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
 import com.maximillianleonov.cinemax.core.presentation.model.TvShow
-import com.maximillianleonov.cinemax.feature.home.presentation.common.ContentLoadType
 
 data class HomeUiState(
-    val movies: Map<ContentLoadType, List<Movie>> = emptyMap(),
-    val tvShows: Map<ContentLoadType, List<TvShow>> = emptyMap(),
-    val loadStates: Map<ContentLoadType, Boolean> = emptyMap(),
+    val movies: Map<ContentType.Main, List<Movie>> = emptyMap(),
+    val tvShows: Map<ContentType.Main, List<TvShow>> = emptyMap(),
+    val loadStates: Map<ContentType.Main, Boolean> = emptyMap(),
     val error: ErrorMessage? = null
 ) : State {
     val isLoading: Boolean get() = loadStates.values.any { it }

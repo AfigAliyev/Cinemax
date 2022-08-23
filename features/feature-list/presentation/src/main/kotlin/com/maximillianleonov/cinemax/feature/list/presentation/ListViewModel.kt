@@ -46,7 +46,7 @@ class ListViewModel @Inject constructor(
         val contentType = ListDestination.fromSavedStateHandle(savedStateHandle)
 
         val movies = when (contentType) {
-            ContentType.Upcoming -> getUpcomingMoviesPagingUseCase()
+            ContentType.List.Upcoming -> getUpcomingMoviesPagingUseCase()
         }.pagingMap(MovieModel::toMovie).cachedIn(viewModelScope)
 
         return ListUiState(

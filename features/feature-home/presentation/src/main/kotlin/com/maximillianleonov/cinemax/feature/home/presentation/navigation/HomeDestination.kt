@@ -28,7 +28,7 @@ object HomeDestination : CinemaxNavigationDestination {
 }
 
 fun NavGraphBuilder.homeGraph(
-    onNavigateToListDestination: (ContentType) -> Unit
+    onNavigateToListDestination: (ContentType.List) -> Unit
 ) = composable(route = HomeDestination.route) {
-    HomeRoute(onNavigateToListDestination = onNavigateToListDestination)
+    HomeRoute(onSeeAllClick = onNavigateToListDestination)
 }

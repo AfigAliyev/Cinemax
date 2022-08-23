@@ -18,6 +18,7 @@ package com.maximillianleonov.cinemax.feature.home.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.common.EventHandler
 import com.maximillianleonov.cinemax.core.presentation.mapper.toMovie
 import com.maximillianleonov.cinemax.core.presentation.mapper.toTvShow
@@ -27,7 +28,6 @@ import com.maximillianleonov.cinemax.domain.model.MovieModel
 import com.maximillianleonov.cinemax.domain.model.TvShowModel
 import com.maximillianleonov.cinemax.domain.usecase.MovieUseCases
 import com.maximillianleonov.cinemax.domain.usecase.TvShowUseCases
-import com.maximillianleonov.cinemax.feature.home.presentation.common.ContentLoadType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,13 +53,13 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getContentJobs() = mapOf(
-        ContentLoadType.UpcomingMovies to loadUpcomingMovies(),
-        ContentLoadType.TopRatedMovies to loadTopRatedMovies(),
-        ContentLoadType.TopRatedTvShows to loadTopRatedTvShows(),
-        ContentLoadType.PopularMovies to loadPopularMovies(),
-        ContentLoadType.PopularTvShows to loadPopularTvShows(),
-        ContentLoadType.NowPlayingMovies to loadNowPlayingMovies(),
-        ContentLoadType.NowPlayingTvShows to loadNowPlayingTvShows()
+        ContentType.Main.UpcomingMovies to loadUpcomingMovies(),
+        ContentType.Main.TopRatedMovies to loadTopRatedMovies(),
+        ContentType.Main.TopRatedTvShows to loadTopRatedTvShows(),
+        ContentType.Main.PopularMovies to loadPopularMovies(),
+        ContentType.Main.PopularTvShows to loadPopularTvShows(),
+        ContentType.Main.NowPlayingMovies to loadNowPlayingMovies(),
+        ContentType.Main.NowPlayingTvShows to loadNowPlayingTvShows()
     )
 
     private fun onRefresh() {
@@ -126,70 +126,70 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleUpcomingMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentLoadType.UpcomingMovies, movies = movies)
+        handleLoading(contentLoadType = ContentType.Main.UpcomingMovies, movies = movies)
 
     private fun handleUpcomingMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentLoadType.UpcomingMovies, movies = movies)
+        handleSuccess(contentLoadType = ContentType.Main.UpcomingMovies, movies = movies)
 
     private fun handleUpcomingMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentLoadType.UpcomingMovies, error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.UpcomingMovies, error = throwable)
 
     private fun handleTopRatedMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentLoadType.TopRatedMovies, movies = movies)
+        handleLoading(contentLoadType = ContentType.Main.TopRatedMovies, movies = movies)
 
     private fun handleTopRatedMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentLoadType.TopRatedMovies, movies = movies)
+        handleSuccess(contentLoadType = ContentType.Main.TopRatedMovies, movies = movies)
 
     private fun handleTopRatedMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentLoadType.TopRatedMovies, error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.TopRatedMovies, error = throwable)
 
     private fun handleTopRatedTvShowsLoading(tvShows: List<TvShowModel>?) =
-        handleLoading(contentLoadType = ContentLoadType.TopRatedTvShows, tvShows = tvShows)
+        handleLoading(contentLoadType = ContentType.Main.TopRatedTvShows, tvShows = tvShows)
 
     private fun handleTopRatedTvShowsSuccess(tvShows: List<TvShowModel>) =
-        handleSuccess(contentLoadType = ContentLoadType.TopRatedTvShows, tvShows = tvShows)
+        handleSuccess(contentLoadType = ContentType.Main.TopRatedTvShows, tvShows = tvShows)
 
     private fun handleTopRatedTvShowsFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentLoadType.TopRatedTvShows, error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.TopRatedTvShows, error = throwable)
 
     private fun handlePopularMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentLoadType.PopularMovies, movies = movies)
+        handleLoading(contentLoadType = ContentType.Main.PopularMovies, movies = movies)
 
     private fun handlePopularMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentLoadType.PopularMovies, movies = movies)
+        handleSuccess(contentLoadType = ContentType.Main.PopularMovies, movies = movies)
 
     private fun handlePopularMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentLoadType.PopularMovies, error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.PopularMovies, error = throwable)
 
     private fun handlePopularTvShowsLoading(tvShows: List<TvShowModel>?) =
-        handleLoading(contentLoadType = ContentLoadType.PopularTvShows, tvShows = tvShows)
+        handleLoading(contentLoadType = ContentType.Main.PopularTvShows, tvShows = tvShows)
 
     private fun handlePopularTvShowsSuccess(tvShows: List<TvShowModel>) =
-        handleSuccess(contentLoadType = ContentLoadType.PopularTvShows, tvShows = tvShows)
+        handleSuccess(contentLoadType = ContentType.Main.PopularTvShows, tvShows = tvShows)
 
     private fun handlePopularTvShowsFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentLoadType.PopularTvShows, error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.PopularTvShows, error = throwable)
 
     private fun handleNowPlayingMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentLoadType.NowPlayingMovies, movies = movies)
+        handleLoading(contentLoadType = ContentType.Main.NowPlayingMovies, movies = movies)
 
     private fun handleNowPlayingMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentLoadType.NowPlayingMovies, movies = movies)
+        handleSuccess(contentLoadType = ContentType.Main.NowPlayingMovies, movies = movies)
 
     private fun handleNowPlayingMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentLoadType.NowPlayingMovies, error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.NowPlayingMovies, error = throwable)
 
     private fun handleNowPlayingTvShowsLoading(tvShows: List<TvShowModel>?) =
-        handleLoading(contentLoadType = ContentLoadType.NowPlayingTvShows, tvShows = tvShows)
+        handleLoading(contentLoadType = ContentType.Main.NowPlayingTvShows, tvShows = tvShows)
 
     private fun handleNowPlayingTvShowsSuccess(tvShows: List<TvShowModel>) =
-        handleSuccess(contentLoadType = ContentLoadType.NowPlayingTvShows, tvShows = tvShows)
+        handleSuccess(contentLoadType = ContentType.Main.NowPlayingTvShows, tvShows = tvShows)
 
     private fun handleNowPlayingTvShowsFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentLoadType.NowPlayingTvShows, error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.NowPlayingTvShows, error = throwable)
 
     @JvmName("handleMoviesLoading")
-    private fun handleLoading(contentLoadType: ContentLoadType, movies: List<MovieModel>?) =
+    private fun handleLoading(contentLoadType: ContentType.Main, movies: List<MovieModel>?) =
         _uiState.update {
             it.copy(
                 movies = it.movies + (
@@ -200,7 +200,7 @@ class HomeViewModel @Inject constructor(
         }
 
     @JvmName("handleTvShowsLoading")
-    private fun handleLoading(contentLoadType: ContentLoadType, tvShows: List<TvShowModel>?) =
+    private fun handleLoading(contentLoadType: ContentType.Main, tvShows: List<TvShowModel>?) =
         _uiState.update {
             it.copy(
                 tvShows = it.tvShows + (
@@ -211,7 +211,7 @@ class HomeViewModel @Inject constructor(
         }
 
     @JvmName("handleMoviesSuccess")
-    private fun handleSuccess(contentLoadType: ContentLoadType, movies: List<MovieModel>) =
+    private fun handleSuccess(contentLoadType: ContentType.Main, movies: List<MovieModel>) =
         _uiState.update {
             it.copy(
                 movies = it.movies + (contentLoadType to movies.map(MovieModel::toMovie)),
@@ -220,7 +220,7 @@ class HomeViewModel @Inject constructor(
         }
 
     @JvmName("handleTvShowsSuccess")
-    private fun handleSuccess(contentLoadType: ContentLoadType, tvShows: List<TvShowModel>) =
+    private fun handleSuccess(contentLoadType: ContentType.Main, tvShows: List<TvShowModel>) =
         _uiState.update {
             it.copy(
                 tvShows = it.tvShows + (contentLoadType to tvShows.map(TvShowModel::toTvShow)),
@@ -228,7 +228,7 @@ class HomeViewModel @Inject constructor(
             )
         }
 
-    private fun handleFailure(contentLoadType: ContentLoadType, error: Throwable) =
+    private fun handleFailure(contentLoadType: ContentType.Main, error: Throwable) =
         _uiState.update {
             it.copy(
                 loadStates = it.loadStates + (contentLoadType to false),

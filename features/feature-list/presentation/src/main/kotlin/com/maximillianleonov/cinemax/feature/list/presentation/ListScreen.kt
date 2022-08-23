@@ -80,7 +80,7 @@ internal fun ListScreen(
         }
     ) { innerPadding ->
         when (uiState.contentType) {
-            ContentType.Upcoming -> MoviesDisplay(
+            ContentType.List.Upcoming -> MoviesDisplay(
                 movies = movies,
                 modifier = Modifier.padding(innerPadding)
             )

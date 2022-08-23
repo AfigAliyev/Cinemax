@@ -24,7 +24,7 @@ import com.maximillianleonov.cinemax.core.presentation.model.Movie
 import kotlinx.coroutines.flow.Flow
 
 data class ListUiState(
-    val contentType: ContentType,
+    val contentType: ContentType.List,
     val movies: Flow<PagingData<Movie>>,
     val isRetry: Boolean = false,
     val error: ErrorMessage? = null
