@@ -32,12 +32,11 @@ import com.maximillianleonov.cinemax.core.presentation.components.CinemaxSwipeRe
 import com.maximillianleonov.cinemax.core.presentation.components.MoviesAndTvShowsContainer
 import com.maximillianleonov.cinemax.core.presentation.components.SnackbarErrorHandler
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.feature.home.presentation.common.ContentLoadType
 import com.maximillianleonov.cinemax.feature.home.presentation.components.UpcomingMoviesContainer
 
 @Composable
 fun HomeRoute(
-    onNavigateToListDestination: (ContentType) -> Unit,
+    onSeeAllClick: (ContentType.List) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -45,7 +44,7 @@ fun HomeRoute(
     HomeScreen(
         uiState = uiState,
         modifier = modifier,
-        onNavigateToListDestination = onNavigateToListDestination,
+        onSeeAllClick = onSeeAllClick,
         onRefresh = { viewModel.onEvent(HomeEvent.Refresh) },
         onDismiss = { viewModel.onEvent(HomeEvent.ClearError) }
     )
@@ -55,7 +54,7 @@ fun HomeRoute(
 @Composable
 internal fun HomeScreen(
     uiState: HomeUiState,
-    onNavigateToListDestination: (ContentType) -> Unit,
+    onSeeAllClick: (ContentType.List) -> Unit,
     onRefresh: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
@@ -79,8 +78,8 @@ internal fun HomeScreen(
         ) {
             item {
                 UpcomingMoviesContainer(
-                    movies = uiState.movies[ContentLoadType.UpcomingMovies].orEmpty(),
-                    onSeeAllClick = { onNavigateToListDestination(ContentType.Upcoming) }
+                    movies = uiState.movies[ContentType.Main.UpcomingMovies].orEmpty(),
+                    onSeeAllClick = { onSeeAllClick(ContentType.List.Upcoming) }
                 )
             }
             item {
@@ -88,8 +87,8 @@ internal fun HomeScreen(
                 MoviesAndTvShowsContainer(
                     titleResourceId = R.string.top_rated,
                     onSeeAllClick = { /*TODO*/ },
-                    movies = uiState.movies[ContentLoadType.TopRatedMovies].orEmpty(),
-                    tvShows = uiState.tvShows[ContentLoadType.TopRatedTvShows].orEmpty()
+                    movies = uiState.movies[ContentType.Main.TopRatedMovies].orEmpty(),
+                    tvShows = uiState.tvShows[ContentType.Main.TopRatedTvShows].orEmpty()
                 )
             }
             item {
@@ -97,8 +96,8 @@ internal fun HomeScreen(
                 MoviesAndTvShowsContainer(
                     titleResourceId = R.string.most_popular,
                     onSeeAllClick = { /*TODO*/ },
-                    movies = uiState.movies[ContentLoadType.PopularMovies].orEmpty(),
-                    tvShows = uiState.tvShows[ContentLoadType.PopularTvShows].orEmpty()
+                    movies = uiState.movies[ContentType.Main.PopularMovies].orEmpty(),
+                    tvShows = uiState.tvShows[ContentType.Main.PopularTvShows].orEmpty()
                 )
             }
             item {
@@ -106,8 +105,8 @@ internal fun HomeScreen(
                 MoviesAndTvShowsContainer(
                     titleResourceId = R.string.now_playing,
                     onSeeAllClick = { /*TODO*/ },
-                    movies = uiState.movies[ContentLoadType.NowPlayingMovies].orEmpty(),
-                    tvShows = uiState.tvShows[ContentLoadType.NowPlayingTvShows].orEmpty()
+                    movies = uiState.movies[ContentType.Main.NowPlayingMovies].orEmpty(),
+                    tvShows = uiState.tvShows[ContentType.Main.NowPlayingTvShows].orEmpty()
                 )
             }
         }

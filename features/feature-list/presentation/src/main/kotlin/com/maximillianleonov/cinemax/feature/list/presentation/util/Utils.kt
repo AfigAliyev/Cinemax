@@ -21,6 +21,6 @@ import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.feature.list.presentation.R
 
 @StringRes
-internal fun ContentType.toTitleResourceId() = when (this) {
-    ContentType.Upcoming -> R.string.upcoming_movies
+internal fun ContentType.List.toTitleResourceId() = when (this) {
+    ContentType.List.Upcoming -> R.string.upcoming_movies
 }

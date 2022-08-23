@@ -32,9 +32,9 @@ object ListDestination : CinemaxNavigationDestination {
     const val contentTypeArgument = "contentType"
     val routeWithArgument = "$route/{$contentTypeArgument}"
 
-    fun createNavigationRoute(contentType: ContentType) = "$route/${contentType.value}"
+    fun createNavigationRoute(contentType: ContentType.List) = "$route/${contentType.value}"
 
-    fun fromSavedStateHandle(savedStateHandle: SavedStateHandle) = ContentType[
+    fun fromSavedStateHandle(savedStateHandle: SavedStateHandle) = ContentType.List[
         checkNotNull(savedStateHandle[contentTypeArgument]) { CONTENT_TYPE_NULL_MESSAGE }
     ]
 }
