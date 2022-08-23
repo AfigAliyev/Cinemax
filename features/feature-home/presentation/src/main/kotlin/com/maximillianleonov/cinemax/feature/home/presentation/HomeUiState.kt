@@ -23,13 +23,8 @@ import com.maximillianleonov.cinemax.core.presentation.model.TvShow
 import com.maximillianleonov.cinemax.feature.home.presentation.common.ContentLoadType
 
 data class HomeUiState(
-    val upcomingMovies: List<Movie> = emptyList(),
-    val topRatedMovies: List<Movie> = emptyList(),
-    val topRatedTvShows: List<TvShow> = emptyList(),
-    val popularMovies: List<Movie> = emptyList(),
-    val popularTvShows: List<TvShow> = emptyList(),
-    val nowPlayingMovies: List<Movie> = emptyList(),
-    val nowPlayingTvShows: List<TvShow> = emptyList(),
+    val movies: Map<ContentLoadType, List<Movie>> = emptyMap(),
+    val tvShows: Map<ContentLoadType, List<TvShow>> = emptyMap(),
     val loadStates: Map<ContentLoadType, Boolean> = emptyMap(),
     val error: ErrorMessage? = null
 ) : State {

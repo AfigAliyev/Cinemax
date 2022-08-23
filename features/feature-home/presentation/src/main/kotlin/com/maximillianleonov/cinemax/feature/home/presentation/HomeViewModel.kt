@@ -25,50 +25,52 @@ import com.maximillianleonov.cinemax.core.presentation.util.handle
 import com.maximillianleonov.cinemax.core.presentation.util.toErrorMessage
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 import com.maximillianleonov.cinemax.domain.model.TvShowModel
-import com.maximillianleonov.cinemax.domain.usecase.GetNowPlayingMoviesUseCase
-import com.maximillianleonov.cinemax.domain.usecase.GetNowPlayingTvShowsUseCase
-import com.maximillianleonov.cinemax.domain.usecase.GetPopularMoviesUseCase
-import com.maximillianleonov.cinemax.domain.usecase.GetPopularTvShowsUseCase
-import com.maximillianleonov.cinemax.domain.usecase.GetTopRatedMoviesUseCase
-import com.maximillianleonov.cinemax.domain.usecase.GetTopRatedTvShowsUseCase
-import com.maximillianleonov.cinemax.domain.usecase.GetUpcomingMoviesUseCase
+import com.maximillianleonov.cinemax.domain.usecase.MovieUseCases
+import com.maximillianleonov.cinemax.domain.usecase.TvShowUseCases
 import com.maximillianleonov.cinemax.feature.home.presentation.common.ContentLoadType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions", "LongParameterList")
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
-    private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
-    private val getTopRatedTvShowsUseCase: GetTopRatedTvShowsUseCase,
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val getPopularTvShowsUseCase: GetPopularTvShowsUseCase,
-    private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
-    private val getNowPlayingTvShowsUseCase: GetNowPlayingTvShowsUseCase
+    private val movieUseCases: MovieUseCases,
+    private val tvShowUseCases: TvShowUseCases
 ) : ViewModel(), EventHandler<HomeEvent> {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
-    private var upcomingMoviesJob = loadUpcomingMovies()
-    private var topRatedMoviesJob = loadTopRatedMovies()
-    private var topRatedTvShowsJob = loadTopRatedTvShows()
-    private var popularMoviesJob = loadPopularMovies()
-    private var popularTvShowsJob = loadPopularTvShows()
-    private var nowPlayingMoviesJob = loadNowPlayingMovies()
-    private var nowPlayingTvShowsJob = loadNowPlayingTvShows()
+    private var contentJobs = getContentJobs()
 
     override fun onEvent(event: HomeEvent) = when (event) {
         HomeEvent.Refresh -> onRefresh()
         HomeEvent.ClearError -> onClearError()
     }
 
+    private fun getContentJobs() = mapOf(
+        ContentLoadType.UpcomingMovies to loadUpcomingMovies(),
+        ContentLoadType.TopRatedMovies to loadTopRatedMovies(),
+        ContentLoadType.TopRatedTvShows to loadTopRatedTvShows(),
+        ContentLoadType.PopularMovies to loadPopularMovies(),
+        ContentLoadType.PopularTvShows to loadPopularTvShows(),
+        ContentLoadType.NowPlayingMovies to loadNowPlayingMovies(),
+        ContentLoadType.NowPlayingTvShows to loadNowPlayingTvShows()
+    )
+
+    private fun onRefresh() {
+        contentJobs.values.forEach(Job::cancel)
+        contentJobs = getContentJobs()
+    }
+
+    private fun onClearError() = _uiState.update { it.copy(error = null) }
+
     private fun loadUpcomingMovies() = viewModelScope.launch {
-        getUpcomingMoviesUseCase().handle(
+        movieUseCases.getUpcomingMoviesUseCase().handle(
             onLoading = ::handleUpcomingMoviesLoading,
             onSuccess = ::handleUpcomingMoviesSuccess,
             onFailure = ::handleUpcomingMoviesFailure
@@ -76,7 +78,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadTopRatedMovies() = viewModelScope.launch {
-        getTopRatedMoviesUseCase().handle(
+        movieUseCases.getTopRatedMoviesUseCase().handle(
             onLoading = ::handleTopRatedMoviesLoading,
             onSuccess = ::handleTopRatedMoviesSuccess,
             onFailure = ::handleTopRatedMoviesFailure
@@ -84,7 +86,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadTopRatedTvShows() = viewModelScope.launch {
-        getTopRatedTvShowsUseCase().handle(
+        tvShowUseCases.getTopRatedTvShowsUseCase().handle(
             onLoading = ::handleTopRatedTvShowsLoading,
             onSuccess = ::handleTopRatedTvShowsSuccess,
             onFailure = ::handleTopRatedTvShowsFailure
@@ -92,7 +94,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadPopularMovies() = viewModelScope.launch {
-        getPopularMoviesUseCase().handle(
+        movieUseCases.getPopularMoviesUseCase().handle(
             onLoading = ::handlePopularMoviesLoading,
             onSuccess = ::handlePopularMoviesSuccess,
             onFailure = ::handlePopularMoviesFailure
@@ -100,7 +102,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadPopularTvShows() = viewModelScope.launch {
-        getPopularTvShowsUseCase().handle(
+        tvShowUseCases.getPopularTvShowsUseCase().handle(
             onLoading = ::handlePopularTvShowsLoading,
             onSuccess = ::handlePopularTvShowsSuccess,
             onFailure = ::handlePopularTvShowsFailure
@@ -108,7 +110,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadNowPlayingMovies() = viewModelScope.launch {
-        getNowPlayingMoviesUseCase().handle(
+        movieUseCases.getNowPlayingMoviesUseCase().handle(
             onLoading = ::handleNowPlayingMoviesLoading,
             onSuccess = ::handleNowPlayingMoviesSuccess,
             onFailure = ::handleNowPlayingMoviesFailure
@@ -116,218 +118,121 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadNowPlayingTvShows() = viewModelScope.launch {
-        getNowPlayingTvShowsUseCase().handle(
+        tvShowUseCases.getNowPlayingTvShowsUseCase().handle(
             onLoading = ::handleNowPlayingTvShowsLoading,
             onSuccess = ::handleNowPlayingTvShowsSuccess,
             onFailure = ::handleNowPlayingTvShowsFailure
         )
     }
 
-    private fun handleUpcomingMoviesLoading(upcomingMovies: List<MovieModel>?) {
+    private fun handleUpcomingMoviesLoading(movies: List<MovieModel>?) =
+        handleLoading(contentLoadType = ContentLoadType.UpcomingMovies, movies = movies)
+
+    private fun handleUpcomingMoviesSuccess(movies: List<MovieModel>) =
+        handleSuccess(contentLoadType = ContentLoadType.UpcomingMovies, movies = movies)
+
+    private fun handleUpcomingMoviesFailure(throwable: Throwable) =
+        handleFailure(contentLoadType = ContentLoadType.UpcomingMovies, error = throwable)
+
+    private fun handleTopRatedMoviesLoading(movies: List<MovieModel>?) =
+        handleLoading(contentLoadType = ContentLoadType.TopRatedMovies, movies = movies)
+
+    private fun handleTopRatedMoviesSuccess(movies: List<MovieModel>) =
+        handleSuccess(contentLoadType = ContentLoadType.TopRatedMovies, movies = movies)
+
+    private fun handleTopRatedMoviesFailure(throwable: Throwable) =
+        handleFailure(contentLoadType = ContentLoadType.TopRatedMovies, error = throwable)
+
+    private fun handleTopRatedTvShowsLoading(tvShows: List<TvShowModel>?) =
+        handleLoading(contentLoadType = ContentLoadType.TopRatedTvShows, tvShows = tvShows)
+
+    private fun handleTopRatedTvShowsSuccess(tvShows: List<TvShowModel>) =
+        handleSuccess(contentLoadType = ContentLoadType.TopRatedTvShows, tvShows = tvShows)
+
+    private fun handleTopRatedTvShowsFailure(throwable: Throwable) =
+        handleFailure(contentLoadType = ContentLoadType.TopRatedTvShows, error = throwable)
+
+    private fun handlePopularMoviesLoading(movies: List<MovieModel>?) =
+        handleLoading(contentLoadType = ContentLoadType.PopularMovies, movies = movies)
+
+    private fun handlePopularMoviesSuccess(movies: List<MovieModel>) =
+        handleSuccess(contentLoadType = ContentLoadType.PopularMovies, movies = movies)
+
+    private fun handlePopularMoviesFailure(throwable: Throwable) =
+        handleFailure(contentLoadType = ContentLoadType.PopularMovies, error = throwable)
+
+    private fun handlePopularTvShowsLoading(tvShows: List<TvShowModel>?) =
+        handleLoading(contentLoadType = ContentLoadType.PopularTvShows, tvShows = tvShows)
+
+    private fun handlePopularTvShowsSuccess(tvShows: List<TvShowModel>) =
+        handleSuccess(contentLoadType = ContentLoadType.PopularTvShows, tvShows = tvShows)
+
+    private fun handlePopularTvShowsFailure(throwable: Throwable) =
+        handleFailure(contentLoadType = ContentLoadType.PopularTvShows, error = throwable)
+
+    private fun handleNowPlayingMoviesLoading(movies: List<MovieModel>?) =
+        handleLoading(contentLoadType = ContentLoadType.NowPlayingMovies, movies = movies)
+
+    private fun handleNowPlayingMoviesSuccess(movies: List<MovieModel>) =
+        handleSuccess(contentLoadType = ContentLoadType.NowPlayingMovies, movies = movies)
+
+    private fun handleNowPlayingMoviesFailure(throwable: Throwable) =
+        handleFailure(contentLoadType = ContentLoadType.NowPlayingMovies, error = throwable)
+
+    private fun handleNowPlayingTvShowsLoading(tvShows: List<TvShowModel>?) =
+        handleLoading(contentLoadType = ContentLoadType.NowPlayingTvShows, tvShows = tvShows)
+
+    private fun handleNowPlayingTvShowsSuccess(tvShows: List<TvShowModel>) =
+        handleSuccess(contentLoadType = ContentLoadType.NowPlayingTvShows, tvShows = tvShows)
+
+    private fun handleNowPlayingTvShowsFailure(throwable: Throwable) =
+        handleFailure(contentLoadType = ContentLoadType.NowPlayingTvShows, error = throwable)
+
+    @JvmName("handleMoviesLoading")
+    private fun handleLoading(contentLoadType: ContentLoadType, movies: List<MovieModel>?) =
         _uiState.update {
             it.copy(
-                upcomingMovies = upcomingMovies?.map(MovieModel::toMovie).orEmpty(),
-                loadStates = it.loadStates + (ContentLoadType.UpcomingMovies to true)
+                movies = it.movies + (
+                    contentLoadType to movies?.map(MovieModel::toMovie).orEmpty()
+                    ),
+                loadStates = it.loadStates + (contentLoadType to true)
             )
         }
-    }
 
-    private fun handleUpcomingMoviesSuccess(upcomingMovies: List<MovieModel>) {
+    @JvmName("handleTvShowsLoading")
+    private fun handleLoading(contentLoadType: ContentLoadType, tvShows: List<TvShowModel>?) =
         _uiState.update {
             it.copy(
-                upcomingMovies = upcomingMovies.map(MovieModel::toMovie),
-                loadStates = it.loadStates + (ContentLoadType.UpcomingMovies to false)
+                tvShows = it.tvShows + (
+                    contentLoadType to tvShows?.map(TvShowModel::toTvShow).orEmpty()
+                    ),
+                loadStates = it.loadStates + (contentLoadType to true)
             )
         }
-    }
 
-    private fun handleUpcomingMoviesFailure(throwable: Throwable) {
+    @JvmName("handleMoviesSuccess")
+    private fun handleSuccess(contentLoadType: ContentLoadType, movies: List<MovieModel>) =
         _uiState.update {
             it.copy(
-                error = throwable.toErrorMessage(),
-                loadStates = it.loadStates + (ContentLoadType.UpcomingMovies to false)
+                movies = it.movies + (contentLoadType to movies.map(MovieModel::toMovie)),
+                loadStates = it.loadStates + (contentLoadType to false)
             )
         }
-    }
 
-    private fun handleTopRatedMoviesLoading(topRatedMovies: List<MovieModel>?) {
+    @JvmName("handleTvShowsSuccess")
+    private fun handleSuccess(contentLoadType: ContentLoadType, tvShows: List<TvShowModel>) =
         _uiState.update {
             it.copy(
-                topRatedMovies = topRatedMovies?.map(MovieModel::toMovie).orEmpty(),
-                loadStates = it.loadStates + (ContentLoadType.TopRatedMovies to true)
+                tvShows = it.tvShows + (contentLoadType to tvShows.map(TvShowModel::toTvShow)),
+                loadStates = it.loadStates + (contentLoadType to false)
             )
         }
-    }
 
-    private fun handleTopRatedMoviesSuccess(topRatedMovies: List<MovieModel>) {
+    private fun handleFailure(contentLoadType: ContentLoadType, error: Throwable) =
         _uiState.update {
             it.copy(
-                topRatedMovies = topRatedMovies.map(MovieModel::toMovie),
-                loadStates = it.loadStates + (ContentLoadType.TopRatedMovies to false)
+                loadStates = it.loadStates + (contentLoadType to false),
+                error = error.toErrorMessage()
             )
         }
-    }
-
-    private fun handleTopRatedMoviesFailure(throwable: Throwable) {
-        _uiState.update {
-            it.copy(
-                error = throwable.toErrorMessage(),
-                loadStates = it.loadStates + (ContentLoadType.TopRatedMovies to false)
-            )
-        }
-    }
-
-    private fun handleTopRatedTvShowsLoading(topRatedTvShows: List<TvShowModel>?) {
-        _uiState.update {
-            it.copy(
-                topRatedTvShows = topRatedTvShows?.map(TvShowModel::toTvShow).orEmpty(),
-                loadStates = it.loadStates + (ContentLoadType.TopRatedTvShows to true)
-            )
-        }
-    }
-
-    private fun handleTopRatedTvShowsSuccess(topRatedTvShows: List<TvShowModel>) {
-        _uiState.update {
-            it.copy(
-                topRatedTvShows = topRatedTvShows.map(TvShowModel::toTvShow),
-                loadStates = it.loadStates + (ContentLoadType.TopRatedTvShows to false)
-            )
-        }
-    }
-
-    private fun handleTopRatedTvShowsFailure(throwable: Throwable) {
-        _uiState.update {
-            it.copy(
-                error = throwable.toErrorMessage(),
-                loadStates = it.loadStates + (ContentLoadType.TopRatedTvShows to false)
-            )
-        }
-    }
-
-    private fun handlePopularMoviesLoading(popularMovies: List<MovieModel>?) {
-        _uiState.update {
-            it.copy(
-                popularMovies = popularMovies?.map(MovieModel::toMovie).orEmpty(),
-                loadStates = it.loadStates + (ContentLoadType.PopularMovies to true)
-            )
-        }
-    }
-
-    private fun handlePopularMoviesSuccess(popularMovies: List<MovieModel>) {
-        _uiState.update {
-            it.copy(
-                popularMovies = popularMovies.map(MovieModel::toMovie),
-                loadStates = it.loadStates + (ContentLoadType.PopularMovies to false)
-            )
-        }
-    }
-
-    private fun handlePopularMoviesFailure(throwable: Throwable) {
-        _uiState.update {
-            it.copy(
-                error = throwable.toErrorMessage(),
-                loadStates = it.loadStates + (ContentLoadType.PopularMovies to false)
-            )
-        }
-    }
-
-    private fun handlePopularTvShowsLoading(popularTvShows: List<TvShowModel>?) {
-        _uiState.update {
-            it.copy(
-                popularTvShows = popularTvShows?.map(TvShowModel::toTvShow).orEmpty(),
-                loadStates = it.loadStates + (ContentLoadType.PopularTvShows to true)
-            )
-        }
-    }
-
-    private fun handlePopularTvShowsSuccess(popularTvShows: List<TvShowModel>) {
-        _uiState.update {
-            it.copy(
-                popularTvShows = popularTvShows.map(TvShowModel::toTvShow),
-                loadStates = it.loadStates + (ContentLoadType.PopularTvShows to false)
-            )
-        }
-    }
-
-    private fun handlePopularTvShowsFailure(throwable: Throwable) {
-        _uiState.update {
-            it.copy(
-                error = throwable.toErrorMessage(),
-                loadStates = it.loadStates + (ContentLoadType.PopularTvShows to false)
-            )
-        }
-    }
-
-    private fun handleNowPlayingMoviesLoading(nowPlayingMovies: List<MovieModel>?) {
-        _uiState.update {
-            it.copy(
-                nowPlayingMovies = nowPlayingMovies?.map(MovieModel::toMovie).orEmpty(),
-                loadStates = it.loadStates + (ContentLoadType.NowPlayingMovies to true)
-            )
-        }
-    }
-
-    private fun handleNowPlayingMoviesSuccess(nowPlayingMovies: List<MovieModel>) {
-        _uiState.update {
-            it.copy(
-                nowPlayingMovies = nowPlayingMovies.map(MovieModel::toMovie),
-                loadStates = it.loadStates + (ContentLoadType.NowPlayingMovies to false)
-            )
-        }
-    }
-
-    private fun handleNowPlayingMoviesFailure(throwable: Throwable) {
-        _uiState.update {
-            it.copy(
-                error = throwable.toErrorMessage(),
-                loadStates = it.loadStates + (ContentLoadType.NowPlayingMovies to false)
-            )
-        }
-    }
-
-    private fun handleNowPlayingTvShowsLoading(nowPlayingTvShows: List<TvShowModel>?) {
-        _uiState.update {
-            it.copy(
-                nowPlayingTvShows = nowPlayingTvShows?.map(TvShowModel::toTvShow).orEmpty(),
-                loadStates = it.loadStates + (ContentLoadType.NowPlayingTvShows to true)
-            )
-        }
-    }
-
-    private fun handleNowPlayingTvShowsSuccess(nowPlayingTvShows: List<TvShowModel>) {
-        _uiState.update {
-            it.copy(
-                nowPlayingTvShows = nowPlayingTvShows.map(TvShowModel::toTvShow),
-                loadStates = it.loadStates + (ContentLoadType.NowPlayingTvShows to false)
-            )
-        }
-    }
-
-    private fun handleNowPlayingTvShowsFailure(throwable: Throwable) {
-        _uiState.update {
-            it.copy(
-                error = throwable.toErrorMessage(),
-                loadStates = it.loadStates + (ContentLoadType.NowPlayingTvShows to false)
-            )
-        }
-    }
-
-    private fun onRefresh() {
-        upcomingMoviesJob.cancel()
-        topRatedMoviesJob.cancel()
-        topRatedTvShowsJob.cancel()
-        popularMoviesJob.cancel()
-        popularTvShowsJob.cancel()
-        nowPlayingMoviesJob.cancel()
-        nowPlayingTvShowsJob.cancel()
-        upcomingMoviesJob = loadUpcomingMovies()
-        topRatedMoviesJob = loadTopRatedMovies()
-        topRatedTvShowsJob = loadTopRatedTvShows()
-        popularMoviesJob = loadPopularMovies()
-        popularTvShowsJob = loadPopularTvShows()
-        nowPlayingMoviesJob = loadNowPlayingMovies()
-        nowPlayingTvShowsJob = loadNowPlayingTvShows()
-    }
-
-    private fun onClearError() = _uiState.update { it.copy(error = null) }
 }

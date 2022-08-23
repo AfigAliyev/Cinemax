@@ -32,6 +32,7 @@ import com.maximillianleonov.cinemax.core.presentation.components.CinemaxSwipeRe
 import com.maximillianleonov.cinemax.core.presentation.components.MoviesAndTvShowsContainer
 import com.maximillianleonov.cinemax.core.presentation.components.SnackbarErrorHandler
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.feature.home.presentation.common.ContentLoadType
 import com.maximillianleonov.cinemax.feature.home.presentation.components.UpcomingMoviesContainer
 
 @Composable
@@ -78,7 +79,7 @@ internal fun HomeScreen(
         ) {
             item {
                 UpcomingMoviesContainer(
-                    movies = uiState.upcomingMovies,
+                    movies = uiState.movies[ContentLoadType.UpcomingMovies].orEmpty(),
                     onSeeAllClick = { onNavigateToListDestination(ContentType.Upcoming) }
                 )
             }
@@ -87,8 +88,8 @@ internal fun HomeScreen(
                 MoviesAndTvShowsContainer(
                     titleResourceId = R.string.top_rated,
                     onSeeAllClick = { /*TODO*/ },
-                    movies = uiState.topRatedMovies,
-                    tvShows = uiState.topRatedTvShows
+                    movies = uiState.movies[ContentLoadType.TopRatedMovies].orEmpty(),
+                    tvShows = uiState.tvShows[ContentLoadType.TopRatedTvShows].orEmpty()
                 )
             }
             item {
@@ -96,8 +97,8 @@ internal fun HomeScreen(
                 MoviesAndTvShowsContainer(
                     titleResourceId = R.string.most_popular,
                     onSeeAllClick = { /*TODO*/ },
-                    movies = uiState.popularMovies,
-                    tvShows = uiState.popularTvShows
+                    movies = uiState.movies[ContentLoadType.PopularMovies].orEmpty(),
+                    tvShows = uiState.tvShows[ContentLoadType.PopularTvShows].orEmpty()
                 )
             }
             item {
@@ -105,8 +106,8 @@ internal fun HomeScreen(
                 MoviesAndTvShowsContainer(
                     titleResourceId = R.string.now_playing,
                     onSeeAllClick = { /*TODO*/ },
-                    movies = uiState.nowPlayingMovies,
-                    tvShows = uiState.nowPlayingTvShows
+                    movies = uiState.movies[ContentLoadType.NowPlayingMovies].orEmpty(),
+                    tvShows = uiState.tvShows[ContentLoadType.NowPlayingTvShows].orEmpty()
                 )
             }
         }
