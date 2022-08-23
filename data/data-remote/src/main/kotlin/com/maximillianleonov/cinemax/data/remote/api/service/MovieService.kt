@@ -37,4 +37,9 @@ interface MovieService {
     suspend fun getPopularMovies(
         @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
     ): Result<MovieResponseDto>
+
+    @GET(Constants.Remote.NOW_PLAYING_MOVIE_PATH)
+    suspend fun getNowPlayingMovies(
+        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
+    ): Result<MovieResponseDto>
 }

@@ -100,6 +100,15 @@ internal fun HomeScreen(
                     tvShows = uiState.popularTvShows
                 )
             }
+            item {
+                @Suppress("ForbiddenComment")
+                MoviesAndTvShowsContainer(
+                    titleResourceId = R.string.now_playing,
+                    onSeeAllClick = { /*TODO*/ },
+                    movies = uiState.nowPlayingMovies,
+                    tvShows = uiState.nowPlayingTvShows
+                )
+            }
         }
     }
 }

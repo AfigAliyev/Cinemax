@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.home.presentation.common
+package com.maximillianleonov.cinemax.domain.repository
 
-enum class ContentLoadType {
-    UpcomingMovies,
-    TopRatedMovies,
-    TopRatedTvShows,
-    PopularMovies,
-    PopularTvShows,
-    NowPlayingMovies,
-    NowPlayingTvShows
+import androidx.paging.PagingData
+import com.maximillianleonov.cinemax.core.domain.result.Result
+import com.maximillianleonov.cinemax.domain.model.MovieModel
+import com.maximillianleonov.cinemax.domain.model.TvShowModel
+import kotlinx.coroutines.flow.Flow
+
+interface NowPlayingRepository {
+    fun getMovies(): Flow<Result<List<MovieModel>>>
+    fun getMoviesPaging(): Flow<PagingData<MovieModel>>
+    fun getTvShows(): Flow<Result<List<TvShowModel>>>
+    fun getTvShowsPaging(): Flow<PagingData<TvShowModel>>
 }
