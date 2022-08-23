@@ -28,6 +28,8 @@ data class HomeUiState(
     val topRatedTvShows: List<TvShow> = emptyList(),
     val popularMovies: List<Movie> = emptyList(),
     val popularTvShows: List<TvShow> = emptyList(),
+    val nowPlayingMovies: List<Movie> = emptyList(),
+    val nowPlayingTvShows: List<TvShow> = emptyList(),
     val loadStates: Map<ContentLoadType, Boolean> = emptyMap(),
     val error: ErrorMessage? = null
 ) : State {

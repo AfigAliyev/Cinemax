@@ -25,6 +25,8 @@ import com.maximillianleonov.cinemax.core.presentation.util.handle
 import com.maximillianleonov.cinemax.core.presentation.util.toErrorMessage
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 import com.maximillianleonov.cinemax.domain.model.TvShowModel
+import com.maximillianleonov.cinemax.domain.usecase.GetNowPlayingMoviesUseCase
+import com.maximillianleonov.cinemax.domain.usecase.GetNowPlayingTvShowsUseCase
 import com.maximillianleonov.cinemax.domain.usecase.GetPopularMoviesUseCase
 import com.maximillianleonov.cinemax.domain.usecase.GetPopularTvShowsUseCase
 import com.maximillianleonov.cinemax.domain.usecase.GetTopRatedMoviesUseCase
@@ -38,14 +40,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
     private val getTopRatedTvShowsUseCase: GetTopRatedTvShowsUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    private val getPopularTvShowsUseCase: GetPopularTvShowsUseCase
+    private val getPopularTvShowsUseCase: GetPopularTvShowsUseCase,
+    private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
+    private val getNowPlayingTvShowsUseCase: GetNowPlayingTvShowsUseCase
 ) : ViewModel(), EventHandler<HomeEvent> {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
@@ -55,6 +59,8 @@ class HomeViewModel @Inject constructor(
     private var topRatedTvShowsJob = loadTopRatedTvShows()
     private var popularMoviesJob = loadPopularMovies()
     private var popularTvShowsJob = loadPopularTvShows()
+    private var nowPlayingMoviesJob = loadNowPlayingMovies()
+    private var nowPlayingTvShowsJob = loadNowPlayingTvShows()
 
     override fun onEvent(event: HomeEvent) = when (event) {
         HomeEvent.Refresh -> onRefresh()
@@ -98,6 +104,22 @@ class HomeViewModel @Inject constructor(
             onLoading = ::handlePopularTvShowsLoading,
             onSuccess = ::handlePopularTvShowsSuccess,
             onFailure = ::handlePopularTvShowsFailure
+        )
+    }
+
+    private fun loadNowPlayingMovies() = viewModelScope.launch {
+        getNowPlayingMoviesUseCase().handle(
+            onLoading = ::handleNowPlayingMoviesLoading,
+            onSuccess = ::handleNowPlayingMoviesSuccess,
+            onFailure = ::handleNowPlayingMoviesFailure
+        )
+    }
+
+    private fun loadNowPlayingTvShows() = viewModelScope.launch {
+        getNowPlayingTvShowsUseCase().handle(
+            onLoading = ::handleNowPlayingTvShowsLoading,
+            onSuccess = ::handleNowPlayingTvShowsSuccess,
+            onFailure = ::handleNowPlayingTvShowsFailure
         )
     }
 
@@ -236,17 +258,75 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun handleNowPlayingMoviesLoading(nowPlayingMovies: List<MovieModel>?) {
+        _uiState.update {
+            it.copy(
+                nowPlayingMovies = nowPlayingMovies?.map(MovieModel::toMovie).orEmpty(),
+                loadStates = it.loadStates + (ContentLoadType.NowPlayingMovies to true)
+            )
+        }
+    }
+
+    private fun handleNowPlayingMoviesSuccess(nowPlayingMovies: List<MovieModel>) {
+        _uiState.update {
+            it.copy(
+                nowPlayingMovies = nowPlayingMovies.map(MovieModel::toMovie),
+                loadStates = it.loadStates + (ContentLoadType.NowPlayingMovies to false)
+            )
+        }
+    }
+
+    private fun handleNowPlayingMoviesFailure(throwable: Throwable) {
+        _uiState.update {
+            it.copy(
+                error = throwable.toErrorMessage(),
+                loadStates = it.loadStates + (ContentLoadType.NowPlayingMovies to false)
+            )
+        }
+    }
+
+    private fun handleNowPlayingTvShowsLoading(nowPlayingTvShows: List<TvShowModel>?) {
+        _uiState.update {
+            it.copy(
+                nowPlayingTvShows = nowPlayingTvShows?.map(TvShowModel::toTvShow).orEmpty(),
+                loadStates = it.loadStates + (ContentLoadType.NowPlayingTvShows to true)
+            )
+        }
+    }
+
+    private fun handleNowPlayingTvShowsSuccess(nowPlayingTvShows: List<TvShowModel>) {
+        _uiState.update {
+            it.copy(
+                nowPlayingTvShows = nowPlayingTvShows.map(TvShowModel::toTvShow),
+                loadStates = it.loadStates + (ContentLoadType.NowPlayingTvShows to false)
+            )
+        }
+    }
+
+    private fun handleNowPlayingTvShowsFailure(throwable: Throwable) {
+        _uiState.update {
+            it.copy(
+                error = throwable.toErrorMessage(),
+                loadStates = it.loadStates + (ContentLoadType.NowPlayingTvShows to false)
+            )
+        }
+    }
+
     private fun onRefresh() {
         upcomingMoviesJob.cancel()
         topRatedMoviesJob.cancel()
         topRatedTvShowsJob.cancel()
         popularMoviesJob.cancel()
         popularTvShowsJob.cancel()
+        nowPlayingMoviesJob.cancel()
+        nowPlayingTvShowsJob.cancel()
         upcomingMoviesJob = loadUpcomingMovies()
         topRatedMoviesJob = loadTopRatedMovies()
         topRatedTvShowsJob = loadTopRatedTvShows()
         popularMoviesJob = loadPopularMovies()
         popularTvShowsJob = loadPopularTvShows()
+        nowPlayingMoviesJob = loadNowPlayingMovies()
+        nowPlayingTvShowsJob = loadNowPlayingTvShows()
     }
 
     private fun onClearError() = _uiState.update { it.copy(error = null) }

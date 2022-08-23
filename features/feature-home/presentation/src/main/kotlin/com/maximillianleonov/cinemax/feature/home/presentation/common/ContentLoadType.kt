@@ -21,5 +21,7 @@ enum class ContentLoadType {
     TopRatedMovies,
     TopRatedTvShows,
     PopularMovies,
-    PopularTvShows
+    PopularTvShows,
+    NowPlayingMovies,
+    NowPlayingTvShows
 }
