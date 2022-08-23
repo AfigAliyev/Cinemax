@@ -89,6 +89,5 @@ object Constants {
 
     object Messages {
         const val UNHANDLED_STATE = "Unhandled state."
-        const val INVALID_GENRE_ID = "Invalid genre id."
     }
 }

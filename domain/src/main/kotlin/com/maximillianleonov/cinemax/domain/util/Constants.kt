@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.domain.model
+package com.maximillianleonov.cinemax.domain.util
 
-data class GenreModel(
-    val id: Int,
-    val name: String
-)
+internal object Constants {
+    internal object Messages {
+        internal const val INVALID_GENRE_ID = "Invalid genre id."
+    }
+}

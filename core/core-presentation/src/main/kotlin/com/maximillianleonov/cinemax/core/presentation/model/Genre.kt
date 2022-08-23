@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.presentation.mapper
+package com.maximillianleonov.cinemax.core.presentation.model
 
-import com.maximillianleonov.cinemax.core.presentation.model.TvShow
-import com.maximillianleonov.cinemax.domain.model.TvShowModel
+import androidx.annotation.StringRes
 
-fun TvShowModel.toTvShow() = TvShow(
-    id = id,
-    name = name,
-    overview = overview,
-    firstAirDate = firstAirDate,
-    genres = genres.toGenres(),
-    voteAverage = voteAverage,
-    posterPath = posterPath,
-    backdropPath = backdropPath
+data class Genre(
+    val id: Int,
+    @StringRes val nameResourceId: Int
 )

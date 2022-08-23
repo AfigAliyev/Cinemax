@@ -17,7 +17,6 @@
 package com.maximillianleonov.cinemax.core.presentation.mapper
 
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
-import com.maximillianleonov.cinemax.domain.model.GenreModel
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 
 fun MovieModel.toMovie() = Movie(
@@ -25,7 +24,7 @@ fun MovieModel.toMovie() = Movie(
     title = title,
     overview = overview,
     releaseDate = releaseDate,
-    genres = genres.map(GenreModel::name),
+    genres = genres.toGenres(),
     voteAverage = voteAverage,
     posterPath = posterPath,
     backdropPath = backdropPath

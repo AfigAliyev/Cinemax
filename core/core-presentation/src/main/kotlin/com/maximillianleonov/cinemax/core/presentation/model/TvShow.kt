@@ -23,7 +23,7 @@ data class TvShow(
     val name: String,
     val overview: String,
     val firstAirDate: LocalDate,
-    val genres: List<String>,
+    val genres: List<Genre>,
     val voteAverage: Double,
     val posterPath: String?,
     val backdropPath: String?

@@ -16,13 +16,7 @@
 
 package com.maximillianleonov.cinemax.data.local.mapper
 
-import com.maximillianleonov.cinemax.data.remote.dto.Genres
-import com.maximillianleonov.cinemax.domain.model.GenreModel
+import com.maximillianleonov.cinemax.domain.model.Genres
 
-internal fun List<Int>.toMovieGenres() = map(Genres.Movie::get).map { genre ->
-    GenreModel(id = genre.id, name = genre.genreName)
-}
-
-internal fun List<Int>.toTvShowGenres() = map(Genres.TvShow::get).map { genre ->
-    GenreModel(id = genre.id, name = genre.genreName)
-}
+internal fun List<Int>.toMovieGenres() = map(Genres.Movie::get)
+internal fun List<Int>.toTvShowGenres() = map(Genres.TvShow::get)
