@@ -16,9 +16,4 @@
 -->
 <resources>
     <string name="app_name">Cinemax</string>
-
-    <string name="home">Home</string>
-    <string name="search">Search</string>
-    <string name="wishlist">Wishlist</string>
-    <string name="settings">Settings</string>
 </resources>

@@ -15,6 +15,11 @@
      limitations under the License.
 -->
 <resources>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="wishlist">Wishlist</string>
+    <string name="settings">Settings</string>
+
     <string name="back">Back</string>
     <string name="see_all">See All</string>
     <string name="rating">Rating</string>

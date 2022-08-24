@@ -18,7 +18,7 @@ package com.maximillianleonov.cinemax.presentation.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.maximillianleonov.cinemax.R
+import com.maximillianleonov.cinemax.core.presentation.R
 import com.maximillianleonov.cinemax.feature.home.presentation.navigation.HomeDestination
 import com.maximillianleonov.cinemax.feature.search.presentation.navigation.SearchDestination
 
