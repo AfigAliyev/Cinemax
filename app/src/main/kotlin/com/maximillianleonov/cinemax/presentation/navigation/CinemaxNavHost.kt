@@ -25,6 +25,7 @@ import com.maximillianleonov.cinemax.feature.home.presentation.navigation.HomeDe
 import com.maximillianleonov.cinemax.feature.home.presentation.navigation.homeGraph
 import com.maximillianleonov.cinemax.feature.list.presentation.navigation.ListDestination
 import com.maximillianleonov.cinemax.feature.list.presentation.navigation.listGraph
+import com.maximillianleonov.cinemax.feature.search.presentation.navigation.searchGraph
 
 @Suppress("ForbiddenComment")
 @Composable
@@ -43,9 +44,9 @@ fun CinemaxNavHost(
                 navController.navigate(route = ListDestination.createNavigationRoute(contentType))
             }
         )
+        searchGraph()
         listGraph(onBackButtonClick = navController::popBackStack)
 
-        composable(route = "search") { /* TODO: Not yet implemented. */ }
         composable(route = "wishlist") { /* TODO: Not yet implemented. */ }
         composable(route = "settings") { /* TODO: Not yet implemented. */ }
         composable(route = "details") { /* TODO: Not yet implemented. */ }

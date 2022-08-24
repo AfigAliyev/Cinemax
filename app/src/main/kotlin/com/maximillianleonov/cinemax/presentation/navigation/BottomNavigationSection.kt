@@ -20,6 +20,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.maximillianleonov.cinemax.R
 import com.maximillianleonov.cinemax.feature.home.presentation.navigation.HomeDestination
+import com.maximillianleonov.cinemax.feature.search.presentation.navigation.SearchDestination
 
 enum class BottomNavigationSection(
     val route: String,
@@ -32,7 +33,7 @@ enum class BottomNavigationSection(
         drawableResourceId = R.drawable.ic_home
     ),
     Search(
-        route = "search",
+        route = SearchDestination.route,
         stringResourceId = R.string.search,
         drawableResourceId = R.drawable.ic_search
     ),
