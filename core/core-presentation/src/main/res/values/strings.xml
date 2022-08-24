@@ -21,8 +21,11 @@
     <string name="settings">Settings</string>
 
     <string name="back">Back</string>
+    <string name="clear">Clear</string>
     <string name="see_all">See All</string>
     <string name="rating">Rating</string>
+
+    <string name="search_placeholder">Search…</string>
 
     <string name="not_rated">NR</string>
     <string name="no_overview">No overview.</string>
