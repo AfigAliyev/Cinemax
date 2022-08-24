@@ -26,7 +26,9 @@ object ContentType {
         PopularMovies,
         PopularTvShows,
         NowPlayingMovies,
-        NowPlayingTvShows
+        NowPlayingTvShows,
+        DiscoverMovies,
+        DiscoverTvShows
     }
 
     enum class List(val value: String) {

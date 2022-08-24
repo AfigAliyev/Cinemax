@@ -109,6 +109,15 @@ internal fun HomeScreen(
                     tvShows = uiState.tvShows[ContentType.Main.NowPlayingTvShows].orEmpty()
                 )
             }
+            item {
+                @Suppress("ForbiddenComment")
+                MoviesAndTvShowsContainer(
+                    titleResourceId = R.string.discover,
+                    onSeeAllClick = { /*TODO*/ },
+                    movies = uiState.movies[ContentType.Main.DiscoverMovies].orEmpty(),
+                    tvShows = uiState.tvShows[ContentType.Main.DiscoverTvShows].orEmpty()
+                )
+            }
         }
     }
 }
