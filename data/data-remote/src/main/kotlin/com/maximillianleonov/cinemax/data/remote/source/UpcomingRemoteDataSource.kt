@@ -21,9 +21,9 @@ import com.maximillianleonov.cinemax.data.remote.api.CinemaxApi
 import javax.inject.Inject
 
 class UpcomingRemoteDataSource @Inject constructor(api: CinemaxApi) {
-    private val movieService = api.movieService
+    private val service = api.upcomingService
 
     suspend fun getMovies(
         page: Int = Constants.Remote.DEFAULT_PAGE
-    ) = movieService.getUpcomingMovies(page)
+    ) = service.getMovies(page)
 }

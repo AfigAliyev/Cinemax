@@ -21,14 +21,13 @@ import com.maximillianleonov.cinemax.data.remote.api.CinemaxApi
 import javax.inject.Inject
 
 class NowPlayingRemoteDataSource @Inject constructor(api: CinemaxApi) {
-    private val movieService = api.movieService
-    private val tvShowService = api.tvShowService
+    private val service = api.nowPlayingService
 
     suspend fun getMovies(
         page: Int = Constants.Remote.DEFAULT_PAGE
-    ) = movieService.getNowPlayingMovies(page)
+    ) = service.getMovies(page)
 
     suspend fun getTvShows(
         page: Int = Constants.Remote.DEFAULT_PAGE
-    ) = tvShowService.getOnTheAirTvShows(page)
+    ) = service.getTvShows(page)
 }

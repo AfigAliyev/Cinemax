@@ -20,7 +20,7 @@ import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
 import javax.inject.Inject
 
 class GetUpcomingMoviesUseCase @Inject constructor(
-    private val upcomingRepository: UpcomingRepository
+    private val repository: UpcomingRepository
 ) {
-    operator fun invoke() = upcomingRepository.getMovies()
+    operator fun invoke() = repository.getMovies()
 }

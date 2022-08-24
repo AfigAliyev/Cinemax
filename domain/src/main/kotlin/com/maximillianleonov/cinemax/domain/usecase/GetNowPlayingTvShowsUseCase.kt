@@ -20,7 +20,7 @@ import com.maximillianleonov.cinemax.domain.repository.NowPlayingRepository
 import javax.inject.Inject
 
 class GetNowPlayingTvShowsUseCase @Inject constructor(
-    private val nowPlayingRepository: NowPlayingRepository
+    private val repository: NowPlayingRepository
 ) {
-    operator fun invoke() = nowPlayingRepository.getTvShows()
+    operator fun invoke() = repository.getTvShows()
 }

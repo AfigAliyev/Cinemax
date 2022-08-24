@@ -20,7 +20,7 @@ import com.maximillianleonov.cinemax.domain.repository.PopularRepository
 import javax.inject.Inject
 
 class GetPopularMoviesPagingUseCase @Inject constructor(
-    private val popularRepository: PopularRepository
+    private val repository: PopularRepository
 ) {
-    operator fun invoke() = popularRepository.getMoviesPaging()
+    operator fun invoke() = repository.getMoviesPaging()
 }
