@@ -20,7 +20,7 @@ import com.maximillianleonov.cinemax.domain.repository.PopularRepository
 import javax.inject.Inject
 
 class GetPopularTvShowsUseCase @Inject constructor(
-    private val popularRepository: PopularRepository
+    private val repository: PopularRepository
 ) {
-    operator fun invoke() = popularRepository.getTvShows()
+    operator fun invoke() = repository.getTvShows()
 }

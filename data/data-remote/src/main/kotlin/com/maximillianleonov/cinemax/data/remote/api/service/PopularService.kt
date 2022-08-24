@@ -19,32 +19,18 @@ package com.maximillianleonov.cinemax.data.remote.api.service
 import com.maximillianleonov.cinemax.core.data.util.Constants
 import com.maximillianleonov.cinemax.core.domain.result.Result
 import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
+import com.maximillianleonov.cinemax.data.remote.dto.TvShowResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface MovieService {
-    @GET(Constants.Remote.UPCOMING_MOVIE_PATH)
-    suspend fun getUpcomingMovies(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<MovieResponseDto>
-
-    @GET(Constants.Remote.TOP_RATED_MOVIE_PATH)
-    suspend fun getTopRatedMovies(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<MovieResponseDto>
-
+interface PopularService {
     @GET(Constants.Remote.POPULAR_MOVIE_PATH)
-    suspend fun getPopularMovies(
+    suspend fun getMovies(
         @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
     ): Result<MovieResponseDto>
 
-    @GET(Constants.Remote.NOW_PLAYING_MOVIE_PATH)
-    suspend fun getNowPlayingMovies(
+    @GET(Constants.Remote.POPULAR_TV_SHOW_PATH)
+    suspend fun getTvShows(
         @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<MovieResponseDto>
-
-    @GET(Constants.Remote.DISCOVER_MOVIE_PATH)
-    suspend fun getDiscoverMovies(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<MovieResponseDto>
+    ): Result<TvShowResponseDto>
 }

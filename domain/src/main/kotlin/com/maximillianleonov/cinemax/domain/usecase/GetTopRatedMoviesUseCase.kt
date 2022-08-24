@@ -20,7 +20,7 @@ import com.maximillianleonov.cinemax.domain.repository.TopRatedRepository
 import javax.inject.Inject
 
 class GetTopRatedMoviesUseCase @Inject constructor(
-    private val topRatedRepository: TopRatedRepository
+    private val repository: TopRatedRepository
 ) {
-    operator fun invoke() = topRatedRepository.getMovies()
+    operator fun invoke() = repository.getMovies()
 }

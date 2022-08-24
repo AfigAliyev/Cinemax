@@ -20,7 +20,7 @@ import com.maximillianleonov.cinemax.domain.repository.DiscoverRepository
 import javax.inject.Inject
 
 class GetDiscoverMoviesPagingUseCase @Inject constructor(
-    private val discoverRepository: DiscoverRepository
+    private val repository: DiscoverRepository
 ) {
-    operator fun invoke() = discoverRepository.getMoviesPaging()
+    operator fun invoke() = repository.getMoviesPaging()
 }

@@ -20,7 +20,7 @@ import com.maximillianleonov.cinemax.domain.repository.TopRatedRepository
 import javax.inject.Inject
 
 class GetTopRatedTvShowsPagingUseCase @Inject constructor(
-    private val topRatedRepository: TopRatedRepository
+    private val repository: TopRatedRepository
 ) {
-    operator fun invoke() = topRatedRepository.getTvShowsPaging()
+    operator fun invoke() = repository.getTvShowsPaging()
 }
