@@ -36,7 +36,7 @@ import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.feature.home.presentation.components.UpcomingMoviesContainer
 
 @Composable
-fun HomeRoute(
+internal fun HomeRoute(
     onSeeAllClick: (ContentType.List) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
@@ -53,7 +53,7 @@ fun HomeRoute(
 
 @Suppress("ReusedModifierInstance")
 @Composable
-internal fun HomeScreen(
+private fun HomeScreen(
     uiState: HomeUiState,
     onSeeAllClick: (ContentType.List) -> Unit,
     onRefresh: () -> Unit,
