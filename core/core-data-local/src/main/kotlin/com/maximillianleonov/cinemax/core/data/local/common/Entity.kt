@@ -39,7 +39,7 @@ interface MovieEntity : ContentEntity {
     val title: String
     val overview: String
     val popularity: Double
-    val releaseDate: LocalDate
+    val releaseDate: LocalDate?
     val adult: Boolean
     val genreIds: List<Int>
     val originalTitle: String
@@ -57,7 +57,7 @@ interface TvShowEntity : ContentEntity {
     val name: String
     val overview: String
     val popularity: Double
-    val firstAirDate: LocalDate
+    val firstAirDate: LocalDate?
     val genreIds: List<Int>
     val originalName: String
     val originalLanguage: String

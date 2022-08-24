@@ -67,4 +67,25 @@ fun HorizontalTvShowItemPlaceholder(
     modifier: Modifier = Modifier
 ) = HorizontalContentItemPlaceholder(modifier = modifier)
 
+@Composable
+fun VerticalTvShowItem(
+    tvShow: TvShow,
+    modifier: Modifier = Modifier
+) = with(tvShow) {
+    VerticalContentItem(
+        title = name,
+        overview = overview,
+        posterPath = posterPath,
+        voteAverage = voteAverage,
+        releaseDate = firstAirDate,
+        genres = genres.toNames(),
+        modifier = modifier
+    )
+}
+
+@Composable
+fun VerticalTvShowItemPlaceholder(
+    modifier: Modifier = Modifier
+) = VerticalContentItemPlaceholder(modifier = modifier)
+
 private const val TvShowsContainerPlaceholderCount = 20

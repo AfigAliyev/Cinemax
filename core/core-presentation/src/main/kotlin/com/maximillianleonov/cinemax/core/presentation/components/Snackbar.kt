@@ -16,6 +16,7 @@
 
 package com.maximillianleonov.cinemax.core.presentation.components
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarDuration
@@ -101,6 +102,7 @@ fun <T : Any> SnackbarPagingErrorHandler(
     val actionLabel = stringResource(id = actionLabelResourceId)
 
     LaunchedEffect(key1 = snackbarHostState) {
+        Log.e("AAA", "ERROR CAUGHT: ${errorMessage.error}")
         val snackbarResult = snackbarHostState.showSnackbar(
             message = message,
             actionLabel = actionLabel,

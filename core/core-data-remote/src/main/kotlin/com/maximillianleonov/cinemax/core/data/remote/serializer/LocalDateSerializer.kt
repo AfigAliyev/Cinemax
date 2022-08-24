@@ -27,18 +27,21 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import java.text.ParseException
 
-class LocalDateSerializer : KSerializer<LocalDate> {
+class LocalDateSerializer : KSerializer<LocalDate?> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
         serialName = "LocalDate",
         kind = PrimitiveKind.STRING
     )
 
-    override fun serialize(encoder: Encoder, value: LocalDate) =
+    override fun serialize(encoder: Encoder, value: LocalDate?) =
         encoder.encodeString(value.toString())
 
-    override fun deserialize(decoder: Decoder): LocalDate = try {
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
+    override fun deserialize(decoder: Decoder): LocalDate? = try {
         decoder.decodeString().toLocalDate()
     } catch (exception: ParseException) {
         throw SerializationException(exception)
+    } catch (exception: Exception) {
+        null
     }
 }

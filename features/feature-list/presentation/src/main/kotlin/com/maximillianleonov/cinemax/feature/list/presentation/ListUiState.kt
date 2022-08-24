@@ -21,11 +21,13 @@ import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.common.State
 import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
+import com.maximillianleonov.cinemax.core.presentation.model.TvShow
 import kotlinx.coroutines.flow.Flow
 
 data class ListUiState(
     val contentType: ContentType.List,
     val movies: Flow<PagingData<Movie>>,
+    val tvShows: Flow<PagingData<TvShow>>,
     val isRetry: Boolean = false,
     val error: ErrorMessage? = null
 ) : State

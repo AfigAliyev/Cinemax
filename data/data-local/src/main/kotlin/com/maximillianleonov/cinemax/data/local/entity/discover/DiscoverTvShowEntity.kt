@@ -42,7 +42,7 @@ data class DiscoverTvShowEntity(
     override val popularity: Double,
 
     @ColumnInfo(name = Constants.Fields.FIRST_AIR_DATE)
-    override val firstAirDate: LocalDate,
+    override val firstAirDate: LocalDate?,
 
     @ColumnInfo(name = Constants.Fields.GENRE_IDS)
     override val genreIds: List<Int>,

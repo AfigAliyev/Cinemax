@@ -42,7 +42,7 @@ data class DiscoverMovieEntity(
     override val popularity: Double,
 
     @ColumnInfo(name = Constants.Fields.RELEASE_DATE)
-    override val releaseDate: LocalDate,
+    override val releaseDate: LocalDate?,
 
     @ColumnInfo(name = Constants.Fields.ADULT)
     override val adult: Boolean,

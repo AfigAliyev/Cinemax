@@ -23,10 +23,10 @@ import kotlinx.datetime.LocalDate
 
 object Converters {
     @TypeConverter
-    fun localDateToJson(value: LocalDate): String = JsonParser.toJson(LocalDateSerializer(), value)
+    fun localDateToJson(value: LocalDate?): String = JsonParser.toJson(LocalDateSerializer(), value)
 
     @TypeConverter
-    fun jsonToLocalDate(json: String): LocalDate = JsonParser.fromJson(LocalDateSerializer(), json)
+    fun jsonToLocalDate(json: String): LocalDate? = JsonParser.fromJson(LocalDateSerializer(), json)
 
     @TypeConverter
     fun intListToJson(value: List<Int>): String = JsonParser.toJson(value)

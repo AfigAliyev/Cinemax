@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -129,7 +130,12 @@ private fun UpcomingMovieItem(
                 )
                 Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
                 Text(
-                    text = "On ${movie.releaseDate.format(UpcomingMovieDatePattern)}",
+                    text = movie.releaseDate?.let { releaseDate ->
+                        stringResource(
+                            id = R.string.upcoming_movie_release_date_text,
+                            releaseDate.format(UpcomingMovieDatePattern)
+                        )
+                    } ?: stringResource(id = R.string.no_release_date),
                     style = CinemaxTheme.typography.medium.h6,
                     color = CinemaxTheme.colors.textWhiteGrey
                 )

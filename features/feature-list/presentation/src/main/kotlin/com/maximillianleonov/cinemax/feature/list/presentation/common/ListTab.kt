@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.presentation.model
+package com.maximillianleonov.cinemax.feature.list.presentation.common
 
-import kotlinx.datetime.LocalDate
+import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.feature.list.presentation.R
 
-data class TvShow(
-    val id: Int,
-    val name: String,
-    val overview: String,
-    val firstAirDate: LocalDate?,
-    val genres: List<Genre>,
-    val voteAverage: Double,
-    val posterPath: String?,
-    val backdropPath: String?
-)
+enum class ListTab(@StringRes val titleResourceId: Int) {
+    Movies(titleResourceId = R.string.movies),
+    TvShows(titleResourceId = R.string.tv_shows)
+}

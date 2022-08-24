@@ -23,7 +23,7 @@ data class MovieModel(
     val title: String,
     val overview: String,
     val popularity: Double,
-    val releaseDate: LocalDate,
+    val releaseDate: LocalDate?,
     val adult: Boolean,
     val genres: List<Genres.Movie>,
     val originalTitle: String,

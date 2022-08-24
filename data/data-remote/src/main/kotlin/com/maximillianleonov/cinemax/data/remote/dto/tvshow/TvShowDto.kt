@@ -39,7 +39,7 @@ data class TvShowDto(
 
     @Serializable(LocalDateSerializer::class)
     @SerialName(Constants.Fields.FIRST_AIR_DATE)
-    val firstAirDate: LocalDate,
+    val firstAirDate: LocalDate?,
 
     @SerialName(Constants.Fields.GENRE_IDS)
     val genreIds: List<Int>,
