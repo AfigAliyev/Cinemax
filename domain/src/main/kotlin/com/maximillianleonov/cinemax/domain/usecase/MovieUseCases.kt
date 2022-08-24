@@ -23,4 +23,5 @@ data class MovieUseCases @Inject constructor(
     val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
     val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
+    val getDiscoverMoviesUseCase: GetDiscoverMoviesUseCase
 )

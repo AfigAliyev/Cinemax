@@ -28,10 +28,12 @@ object Constants {
         const val TOP_RATED_MOVIE_PATH = "movie/top_rated"
         const val POPULAR_MOVIE_PATH = "movie/popular"
         const val NOW_PLAYING_MOVIE_PATH = "movie/now_playing"
+        const val DISCOVER_MOVIE_PATH = "discover/movie"
 
         const val TOP_RATED_TV_SHOW_PATH = "tv/top_rated"
         const val POPULAR_TV_SHOW_PATH = "tv/popular"
         const val ON_THE_AIR_TV_SHOW_PATH = "tv/on_the_air"
+        const val DISCOVER_TV_SHOW_PATH = "discover/tv"
     }
 
     object Tables {
@@ -52,6 +54,11 @@ object Constants {
         const val NOW_PLAYING_MOVIES_REMOTE_KEYS = "now_playing_movies_remote_keys"
         const val NOW_PLAYING_TV_SHOWS = "now_playing_tv_shows"
         const val NOW_PLAYING_TV_SHOWS_REMOTE_KEYS = "now_playing_tv_shows_remote_keys"
+
+        const val DISCOVER_MOVIES = "discover_movies"
+        const val DISCOVER_MOVIES_REMOTE_KEYS = "discover_movies_remote_keys"
+        const val DISCOVER_TV_SHOWS = "discover_tv_shows"
+        const val DISCOVER_TV_SHOWS_REMOTE_KEYS = "discover_tv_shows_remote_keys"
     }
 
     object Fields {

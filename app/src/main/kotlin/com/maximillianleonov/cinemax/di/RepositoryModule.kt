@@ -16,10 +16,12 @@
 
 package com.maximillianleonov.cinemax.di
 
+import com.maximillianleonov.cinemax.data.local.repository.DiscoverRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.NowPlayingRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.PopularRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.TopRatedRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.UpcomingRepositoryImpl
+import com.maximillianleonov.cinemax.domain.repository.DiscoverRepository
 import com.maximillianleonov.cinemax.domain.repository.NowPlayingRepository
 import com.maximillianleonov.cinemax.domain.repository.PopularRepository
 import com.maximillianleonov.cinemax.domain.repository.TopRatedRepository
@@ -42,4 +44,7 @@ interface RepositoryModule {
 
     @Binds
     fun bindNowPlayingRepository(nowPlayingRepositoryImpl: NowPlayingRepositoryImpl): NowPlayingRepository
+
+    @Binds
+    fun bindDiscoverRepository(discoverRepositoryImpl: DiscoverRepositoryImpl): DiscoverRepository
 }
