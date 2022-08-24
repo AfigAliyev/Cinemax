@@ -17,7 +17,7 @@
 package com.maximillianleonov.cinemax.feature.list.presentation.common
 
 import androidx.annotation.StringRes
-import com.maximillianleonov.cinemax.feature.list.presentation.R
+import com.maximillianleonov.cinemax.core.presentation.R
 
 enum class ListTab(@StringRes val titleResourceId: Int) {
     Movies(titleResourceId = R.string.movies),
