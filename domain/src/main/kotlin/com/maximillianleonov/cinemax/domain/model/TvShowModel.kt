@@ -23,7 +23,7 @@ data class TvShowModel(
     val name: String,
     val overview: String,
     val popularity: Double,
-    val firstAirDate: LocalDate,
+    val firstAirDate: LocalDate?,
     val genres: List<Genres.TvShow>,
     val originalName: String,
     val originalLanguage: String,

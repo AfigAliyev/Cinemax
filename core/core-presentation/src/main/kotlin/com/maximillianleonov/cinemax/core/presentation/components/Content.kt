@@ -233,7 +233,7 @@ internal fun VerticalContentItem(
     overview: String,
     posterPath: String?,
     voteAverage: Double,
-    releaseDate: LocalDate,
+    releaseDate: LocalDate?,
     genres: List<String>,
     modifier: Modifier = Modifier
 ) = Row(
@@ -283,7 +283,8 @@ internal fun VerticalContentItem(
         Column {
             VerticalContentItemIconAndText(
                 iconResourceId = R.drawable.ic_calendar,
-                text = releaseDate.year.toString()
+                text = releaseDate?.year?.toString()
+                    ?: stringResource(id = R.string.no_release_date)
             )
             VerticalContentItemIconAndText(
                 iconResourceId = R.drawable.ic_film,

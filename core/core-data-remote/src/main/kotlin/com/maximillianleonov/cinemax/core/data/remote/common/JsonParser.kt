@@ -17,6 +17,7 @@
 package com.maximillianleonov.cinemax.core.data.remote.common
 
 import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -36,6 +37,9 @@ object JsonParser {
     ): T = defaultJson.decodeFromString(deserializer, json)
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 @PublishedApi
-internal val defaultJson: Json
-    get() = Json { ignoreUnknownKeys = true }
+internal val defaultJson = Json {
+    ignoreUnknownKeys = true
+    explicitNulls = false
+}

@@ -22,7 +22,7 @@ data class Movie(
     val id: Int,
     val title: String,
     val overview: String,
-    val releaseDate: LocalDate,
+    val releaseDate: LocalDate?,
     val genres: List<Genre>,
     val voteAverage: Double,
     val posterPath: String?,

@@ -83,37 +83,33 @@ internal fun HomeScreen(
                 )
             }
             item {
-                @Suppress("ForbiddenComment")
                 MoviesAndTvShowsContainer(
                     titleResourceId = R.string.top_rated,
-                    onSeeAllClick = { /*TODO*/ },
+                    onSeeAllClick = { onSeeAllClick(ContentType.List.TopRated) },
                     movies = uiState.movies[ContentType.Main.TopRatedMovies].orEmpty(),
                     tvShows = uiState.tvShows[ContentType.Main.TopRatedTvShows].orEmpty()
                 )
             }
             item {
-                @Suppress("ForbiddenComment")
                 MoviesAndTvShowsContainer(
                     titleResourceId = R.string.most_popular,
-                    onSeeAllClick = { /*TODO*/ },
+                    onSeeAllClick = { onSeeAllClick(ContentType.List.Popular) },
                     movies = uiState.movies[ContentType.Main.PopularMovies].orEmpty(),
                     tvShows = uiState.tvShows[ContentType.Main.PopularTvShows].orEmpty()
                 )
             }
             item {
-                @Suppress("ForbiddenComment")
                 MoviesAndTvShowsContainer(
                     titleResourceId = R.string.now_playing,
-                    onSeeAllClick = { /*TODO*/ },
+                    onSeeAllClick = { onSeeAllClick(ContentType.List.NowPlaying) },
                     movies = uiState.movies[ContentType.Main.NowPlayingMovies].orEmpty(),
                     tvShows = uiState.tvShows[ContentType.Main.NowPlayingTvShows].orEmpty()
                 )
             }
             item {
-                @Suppress("ForbiddenComment")
                 MoviesAndTvShowsContainer(
                     titleResourceId = R.string.discover,
-                    onSeeAllClick = { /*TODO*/ },
+                    onSeeAllClick = { onSeeAllClick(ContentType.List.Discover) },
                     movies = uiState.movies[ContentType.Main.DiscoverMovies].orEmpty(),
                     tvShows = uiState.tvShows[ContentType.Main.DiscoverTvShows].orEmpty()
                 )

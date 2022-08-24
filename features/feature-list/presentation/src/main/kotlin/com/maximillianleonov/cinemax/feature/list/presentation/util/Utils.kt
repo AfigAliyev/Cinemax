@@ -23,4 +23,8 @@ import com.maximillianleonov.cinemax.feature.list.presentation.R
 @StringRes
 internal fun ContentType.List.toTitleResourceId() = when (this) {
     ContentType.List.Upcoming -> R.string.upcoming_movies
+    ContentType.List.TopRated -> R.string.top_rated
+    ContentType.List.Popular -> R.string.most_popular
+    ContentType.List.NowPlaying -> R.string.now_playing
+    ContentType.List.Discover -> R.string.discover
 }

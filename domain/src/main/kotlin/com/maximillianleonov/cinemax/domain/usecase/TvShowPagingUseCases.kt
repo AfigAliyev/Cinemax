@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.presentation.model
+package com.maximillianleonov.cinemax.domain.usecase
 
-import kotlinx.datetime.LocalDate
+import javax.inject.Inject
 
-data class TvShow(
-    val id: Int,
-    val name: String,
-    val overview: String,
-    val firstAirDate: LocalDate?,
-    val genres: List<Genre>,
-    val voteAverage: Double,
-    val posterPath: String?,
-    val backdropPath: String?
+data class TvShowPagingUseCases @Inject constructor(
+    val getTopRatedTvShowsPagingUseCase: GetTopRatedTvShowsPagingUseCase,
+    val getPopularTvShowsPagingUseCase: GetPopularTvShowsPagingUseCase,
+    val getNowPlayingTvShowsPagingUseCase: GetNowPlayingTvShowsPagingUseCase,
+    val getDiscoverTvShowsPagingUseCase: GetDiscoverTvShowsPagingUseCase
 )

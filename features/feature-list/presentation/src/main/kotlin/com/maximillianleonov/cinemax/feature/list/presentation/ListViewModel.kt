@@ -20,21 +20,30 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.maximillianleonov.cinemax.core.presentation.common.ContentType
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Discover
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.NowPlaying
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Popular
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.TopRated
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Upcoming
 import com.maximillianleonov.cinemax.core.presentation.common.EventHandler
 import com.maximillianleonov.cinemax.core.presentation.mapper.pagingMap
 import com.maximillianleonov.cinemax.core.presentation.mapper.toMovie
+import com.maximillianleonov.cinemax.core.presentation.mapper.toTvShow
 import com.maximillianleonov.cinemax.domain.model.MovieModel
-import com.maximillianleonov.cinemax.domain.usecase.GetUpcomingMoviesPagingUseCase
+import com.maximillianleonov.cinemax.domain.model.TvShowModel
+import com.maximillianleonov.cinemax.domain.usecase.MoviePagingUseCases
+import com.maximillianleonov.cinemax.domain.usecase.TvShowPagingUseCases
 import com.maximillianleonov.cinemax.feature.list.presentation.navigation.ListDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
-    private val getUpcomingMoviesPagingUseCase: GetUpcomingMoviesPagingUseCase,
+    private val moviePagingUseCases: MoviePagingUseCases,
+    private val tvShowPagingUseCases: TvShowPagingUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), EventHandler<ListEvent> {
     private val _uiState = MutableStateFlow(getInitialUiState(savedStateHandle = savedStateHandle))
@@ -46,12 +55,25 @@ class ListViewModel @Inject constructor(
         val contentType = ListDestination.fromSavedStateHandle(savedStateHandle)
 
         val movies = when (contentType) {
-            ContentType.List.Upcoming -> getUpcomingMoviesPagingUseCase()
+            Upcoming -> moviePagingUseCases.getUpcomingMoviesPagingUseCase()
+            TopRated -> moviePagingUseCases.getTopRatedMoviesPagingUseCase()
+            Popular -> moviePagingUseCases.getPopularMoviesPagingUseCase()
+            NowPlaying -> moviePagingUseCases.getNowPlayingMoviesPagingUseCase()
+            Discover -> moviePagingUseCases.getDiscoverMoviesPagingUseCase()
         }.pagingMap(MovieModel::toMovie).cachedIn(viewModelScope)
+
+        val tvShows = when (contentType) {
+            TopRated -> tvShowPagingUseCases.getTopRatedTvShowsPagingUseCase()
+            Popular -> tvShowPagingUseCases.getPopularTvShowsPagingUseCase()
+            NowPlaying -> tvShowPagingUseCases.getNowPlayingTvShowsPagingUseCase()
+            Discover -> tvShowPagingUseCases.getDiscoverTvShowsPagingUseCase()
+            else -> emptyFlow()
+        }.pagingMap(TvShowModel::toTvShow).cachedIn(viewModelScope)
 
         return ListUiState(
             contentType = contentType,
-            movies = movies
+            movies = movies,
+            tvShows = tvShows
         )
     }
 }

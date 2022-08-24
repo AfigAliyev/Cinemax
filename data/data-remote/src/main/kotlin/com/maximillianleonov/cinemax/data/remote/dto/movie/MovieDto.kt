@@ -39,7 +39,7 @@ data class MovieDto(
 
     @Serializable(LocalDateSerializer::class)
     @SerialName(Constants.Fields.RELEASE_DATE)
-    val releaseDate: LocalDate,
+    val releaseDate: LocalDate?,
 
     @SerialName(Constants.Fields.ADULT)
     val adult: Boolean,

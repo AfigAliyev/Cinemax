@@ -20,4 +20,6 @@
     <string name="most_popular">Most Popular</string>
     <string name="now_playing">Now Playing</string>
     <string name="discover">Discover</string>
+    <string name="upcoming_movie_release_date_text">On %1$s</string>
+    <string name="no_release_date">No release date.</string>
 </resources>

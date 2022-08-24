@@ -38,7 +38,7 @@ data class MovieResponseDto(
     override val totalResults: Int,
 
     @SerialName(Constants.Fields.DATES)
-    val dates: DatesDto? = null
+    val dates: DatesDto?
 ) : ResponseDto<MovieDto>
 
 @Serializable
