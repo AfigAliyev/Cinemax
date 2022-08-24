@@ -17,8 +17,8 @@
 package com.maximillianleonov.cinemax.feature.list.presentation.util
 
 import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.presentation.R
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType
-import com.maximillianleonov.cinemax.feature.list.presentation.R
 
 @StringRes
 internal fun ContentType.List.toTitleResourceId() = when (this) {

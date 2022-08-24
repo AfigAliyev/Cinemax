@@ -40,13 +40,13 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import com.maximillianleonov.cinemax.core.presentation.R
 import com.maximillianleonov.cinemax.core.presentation.components.CinemaxPlaceholder
 import com.maximillianleonov.cinemax.core.presentation.components.MoviesContainer
 import com.maximillianleonov.cinemax.core.presentation.components.SubcomposeAsyncImageHandler
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.presentation.util.format
-import com.maximillianleonov.cinemax.feature.home.presentation.R
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
