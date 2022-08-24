@@ -43,5 +43,6 @@ include(
     ":data:data-remote",
     ":domain",
     ":features:feature-home:presentation",
+    ":features:feature-search:presentation",
     ":features:feature-list:presentation"
 )
