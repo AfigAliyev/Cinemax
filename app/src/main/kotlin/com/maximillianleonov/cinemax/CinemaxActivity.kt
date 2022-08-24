@@ -23,7 +23,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.presentation.main.MainScreen
+import com.maximillianleonov.cinemax.presentation.main.MainRoute
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,7 +33,7 @@ class CinemaxActivity : ComponentActivity() {
         setContent {
             CinemaxTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    MainScreen()
+                    MainRoute()
                 }
             }
         }

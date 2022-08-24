@@ -31,13 +31,13 @@ import com.maximillianleonov.cinemax.presentation.navigation.CinemaxBottomNaviga
 import com.maximillianleonov.cinemax.presentation.navigation.CinemaxNavHost
 
 @Composable
-fun MainScreen() {
-    MainContent()
+fun MainRoute(modifier: Modifier = Modifier) {
+    MainScreen(modifier = modifier)
 }
 
 @Suppress("ReusedModifierInstance")
 @Composable
-private fun MainContent(
+private fun MainScreen(
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     navController: NavHostController = rememberNavController()

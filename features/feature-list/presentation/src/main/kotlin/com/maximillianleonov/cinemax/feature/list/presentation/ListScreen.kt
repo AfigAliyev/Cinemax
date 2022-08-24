@@ -66,7 +66,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun ListRoute(
+internal fun ListRoute(
     onBackButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ListViewModel = hiltViewModel()
@@ -84,7 +84,7 @@ fun ListRoute(
 }
 
 @Composable
-internal fun ListScreen(
+private fun ListScreen(
     uiState: ListUiState,
     movies: LazyPagingItems<Movie>,
     tvShows: LazyPagingItems<TvShow>,
