@@ -19,6 +19,10 @@ package com.maximillianleonov.cinemax.data.local.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.maximillianleonov.cinemax.data.local.dao.discover.DiscoverMovieDao
+import com.maximillianleonov.cinemax.data.local.dao.discover.DiscoverMovieRemoteKeyDao
+import com.maximillianleonov.cinemax.data.local.dao.discover.DiscoverTvShowDao
+import com.maximillianleonov.cinemax.data.local.dao.discover.DiscoverTvShowRemoteKeyDao
 import com.maximillianleonov.cinemax.data.local.dao.nowplaying.NowPlayingMovieDao
 import com.maximillianleonov.cinemax.data.local.dao.nowplaying.NowPlayingMovieRemoteKeyDao
 import com.maximillianleonov.cinemax.data.local.dao.nowplaying.NowPlayingTvShowDao
@@ -33,6 +37,10 @@ import com.maximillianleonov.cinemax.data.local.dao.toprated.TopRatedTvShowDao
 import com.maximillianleonov.cinemax.data.local.dao.toprated.TopRatedTvShowRemoteKeyDao
 import com.maximillianleonov.cinemax.data.local.dao.upcoming.UpcomingMovieDao
 import com.maximillianleonov.cinemax.data.local.dao.upcoming.UpcomingMovieRemoteKeyDao
+import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverMovieEntity
+import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverMovieRemoteKeyEntity
+import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverTvShowEntity
+import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverTvShowRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.entity.nowplaying.NowPlayingMovieEntity
 import com.maximillianleonov.cinemax.data.local.entity.nowplaying.NowPlayingMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.entity.nowplaying.NowPlayingTvShowEntity
@@ -56,7 +64,9 @@ import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRem
         PopularMovieEntity::class, PopularMovieRemoteKeyEntity::class,
         PopularTvShowEntity::class, PopularTvShowRemoteKeyEntity::class,
         NowPlayingMovieEntity::class, NowPlayingMovieRemoteKeyEntity::class,
-        NowPlayingTvShowEntity::class, NowPlayingTvShowRemoteKeyEntity::class
+        NowPlayingTvShowEntity::class, NowPlayingTvShowRemoteKeyEntity::class,
+        DiscoverMovieEntity::class, DiscoverMovieRemoteKeyEntity::class,
+        DiscoverTvShowEntity::class, DiscoverTvShowRemoteKeyEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -80,6 +90,11 @@ abstract class CinemaxDatabase : RoomDatabase() {
     abstract val nowPlayingMovieRemoteKeyDao: NowPlayingMovieRemoteKeyDao
     abstract val nowPlayingTvShowDao: NowPlayingTvShowDao
     abstract val nowPlayingTvShowRemoteKeyDao: NowPlayingTvShowRemoteKeyDao
+
+    abstract val discoverMovieDao: DiscoverMovieDao
+    abstract val discoverMovieRemoteKeyDao: DiscoverMovieRemoteKeyDao
+    abstract val discoverTvShowDao: DiscoverTvShowDao
+    abstract val discoverTvShowRemoteKeyDao: DiscoverTvShowRemoteKeyDao
 
     companion object {
         const val CINEMAX_DATABASE = "cinemax.db"
