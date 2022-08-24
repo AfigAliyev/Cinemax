@@ -2,7 +2,16 @@
 
 # Cinemax
 
-Cinemax is under development.
+Cinemax is a Movies & TV Shows application for Android.
+
+## Build
+
+- Generate an API key from [The Movie Database](https://www.themoviedb.org/).
+- Put the key in the `local.properties` file.
+
+```
+cinemax.apikey=YOUR_API_KEY_HERE
+```
 
 ## Credits
 
