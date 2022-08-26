@@ -18,6 +18,7 @@ package com.maximillianleonov.cinemax.feature.search.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.search.presentation.SearchRoute
 
@@ -26,4 +27,8 @@ object SearchDestination : CinemaxNavigationDestination {
     override val destination = "search_destination"
 }
 
-fun NavGraphBuilder.searchGraph() = composable(route = SearchDestination.route) { SearchRoute() }
+fun NavGraphBuilder.searchGraph(
+    onSeeAllClick: (ContentType.List) -> Unit
+) = composable(route = SearchDestination.route) {
+    SearchRoute(onSeeAllClick = onSeeAllClick)
+}

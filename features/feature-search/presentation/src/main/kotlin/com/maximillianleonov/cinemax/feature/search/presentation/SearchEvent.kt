@@ -20,4 +20,7 @@ import com.maximillianleonov.cinemax.core.presentation.common.Event
 
 sealed class SearchEvent : Event {
     data class ChangeQuery(val value: String) : SearchEvent()
+
+    object Refresh : SearchEvent()
+    object ClearError : SearchEvent()
 }

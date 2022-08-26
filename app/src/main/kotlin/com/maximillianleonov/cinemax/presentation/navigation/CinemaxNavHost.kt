@@ -40,11 +40,15 @@ fun CinemaxNavHost(
         startDestination = startDestination
     ) {
         homeGraph(
-            onNavigateToListDestination = { contentType ->
+            onSeeAllClick = { contentType ->
                 navController.navigate(route = ListDestination.createNavigationRoute(contentType))
             }
         )
-        searchGraph()
+        searchGraph(
+            onSeeAllClick = { contentType ->
+                navController.navigate(route = ListDestination.createNavigationRoute(contentType))
+            }
+        )
         listGraph(onBackButtonClick = navController::popBackStack)
 
         composable(route = "wishlist") { /* TODO: Not yet implemented. */ }
