@@ -16,8 +16,16 @@
 
 package com.maximillianleonov.cinemax.feature.search.presentation
 
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.common.State
+import com.maximillianleonov.cinemax.core.presentation.model.ErrorMessage
+import com.maximillianleonov.cinemax.core.presentation.model.Movie
+import com.maximillianleonov.cinemax.core.presentation.model.TvShow
 
 data class SearchUiState(
-    val query: String = ""
+    val query: String = "",
+    val isSearching: Boolean = false,
+    val movies: Map<ContentType.Main, List<Movie>> = emptyMap(),
+    val tvShows: Map<ContentType.Main, List<TvShow>> = emptyMap(),
+    val error: ErrorMessage? = null
 ) : State

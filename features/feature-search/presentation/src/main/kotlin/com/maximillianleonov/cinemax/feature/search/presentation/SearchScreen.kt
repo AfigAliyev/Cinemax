@@ -16,10 +16,15 @@
 
 package com.maximillianleonov.cinemax.feature.search.presentation
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -32,11 +37,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.maximillianleonov.cinemax.core.presentation.R
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.components.CinemaxTextField
+import com.maximillianleonov.cinemax.core.presentation.components.MoviesAndTvShowsContainer
+import com.maximillianleonov.cinemax.core.presentation.model.Movie
+import com.maximillianleonov.cinemax.core.presentation.model.TvShow
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 
 @Composable
 internal fun SearchRoute(
+    onSeeAllClick: (ContentType.List) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
@@ -44,14 +54,17 @@ internal fun SearchRoute(
     SearchScreen(
         uiState = uiState,
         onQueryChange = { viewModel.onEvent(SearchEvent.ChangeQuery(it)) },
+        onSeeAllClick = onSeeAllClick,
         modifier = modifier
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SearchScreen(
     uiState: SearchUiState,
     onQueryChange: (String) -> Unit,
+    onSeeAllClick: (ContentType.List) -> Unit,
     modifier: Modifier = Modifier,
     focusManager: FocusManager = LocalFocusManager.current
 ) {
@@ -75,5 +88,40 @@ private fun SearchScreen(
             ),
             keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() })
         )
+        AnimatedContent(targetState = uiState.isSearching) { isSearching ->
+            @Suppress("ForbiddenComment")
+            if (isSearching) {
+                // TODO: Search results.
+            } else {
+                MoviesAndTvShowsBlock(
+                    movies = uiState.movies,
+                    tvShows = uiState.tvShows,
+                    onSeeAllClick = onSeeAllClick
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MoviesAndTvShowsBlock(
+    movies: Map<ContentType.Main, List<Movie>>,
+    tvShows: Map<ContentType.Main, List<TvShow>>,
+    onSeeAllClick: (ContentType.List) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium),
+        contentPadding = PaddingValues(bottom = CinemaxTheme.spacing.extraMedium)
+    ) {
+        item {
+            MoviesAndTvShowsContainer(
+                titleResourceId = R.string.discover,
+                onSeeAllClick = { onSeeAllClick(ContentType.List.Discover) },
+                movies = movies[ContentType.Main.DiscoverMovies].orEmpty(),
+                tvShows = tvShows[ContentType.Main.DiscoverTvShows].orEmpty()
+            )
+        }
     }
 }

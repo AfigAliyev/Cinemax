@@ -59,9 +59,7 @@ class HomeViewModel @Inject constructor(
         ContentType.Main.PopularMovies to loadPopularMovies(),
         ContentType.Main.PopularTvShows to loadPopularTvShows(),
         ContentType.Main.NowPlayingMovies to loadNowPlayingMovies(),
-        ContentType.Main.NowPlayingTvShows to loadNowPlayingTvShows(),
-        ContentType.Main.DiscoverMovies to loadDiscoverMovies(),
-        ContentType.Main.DiscoverTvShows to loadDiscoverTvShows()
+        ContentType.Main.NowPlayingTvShows to loadNowPlayingTvShows()
     )
 
     private fun onRefresh() {
@@ -127,22 +125,6 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun loadDiscoverMovies() = viewModelScope.launch {
-        movieUseCases.getDiscoverMoviesUseCase().handle(
-            onLoading = ::handleDiscoverMoviesLoading,
-            onSuccess = ::handleDiscoverMoviesSuccess,
-            onFailure = ::handleDiscoverMoviesFailure
-        )
-    }
-
-    private fun loadDiscoverTvShows() = viewModelScope.launch {
-        tvShowUseCases.getDiscoverTvShowsUseCase().handle(
-            onLoading = ::handleDiscoverTvShowsLoading,
-            onSuccess = ::handleDiscoverTvShowsSuccess,
-            onFailure = ::handleDiscoverTvShowsFailure
-        )
-    }
-
     private fun handleUpcomingMoviesLoading(movies: List<MovieModel>?) =
         handleLoading(contentLoadType = ContentType.Main.UpcomingMovies, movies = movies)
 
@@ -205,24 +187,6 @@ class HomeViewModel @Inject constructor(
 
     private fun handleNowPlayingTvShowsFailure(throwable: Throwable) =
         handleFailure(contentLoadType = ContentType.Main.NowPlayingTvShows, error = throwable)
-
-    private fun handleDiscoverMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.DiscoverMovies, movies = movies)
-
-    private fun handleDiscoverMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.DiscoverMovies, movies = movies)
-
-    private fun handleDiscoverMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.DiscoverMovies, error = throwable)
-
-    private fun handleDiscoverTvShowsLoading(tvShows: List<TvShowModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.DiscoverTvShows, tvShows = tvShows)
-
-    private fun handleDiscoverTvShowsSuccess(tvShows: List<TvShowModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.DiscoverTvShows, tvShows = tvShows)
-
-    private fun handleDiscoverTvShowsFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.DiscoverTvShows, error = throwable)
 
     @JvmName("handleMoviesLoading")
     private fun handleLoading(contentLoadType: ContentType.Main, movies: List<MovieModel>?) =
