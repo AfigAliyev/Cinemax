@@ -17,6 +17,7 @@
 package com.maximillianleonov.cinemax.core.presentation.mapper
 
 import com.maximillianleonov.cinemax.core.presentation.model.TvShow
+import com.maximillianleonov.cinemax.core.presentation.util.roundToOneDecimal
 import com.maximillianleonov.cinemax.domain.model.TvShowModel
 
 fun TvShowModel.toTvShow() = TvShow(
@@ -25,7 +26,7 @@ fun TvShowModel.toTvShow() = TvShow(
     overview = overview,
     firstAirDate = firstAirDate,
     genres = genres.toGenres(),
-    voteAverage = voteAverage,
+    voteAverage = voteAverage.roundToOneDecimal(),
     posterPath = posterPath,
     backdropPath = backdropPath
 )

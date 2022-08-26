@@ -24,6 +24,7 @@ import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.D
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.NowPlaying
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Popular
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.TopRated
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Trending
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Upcoming
 import com.maximillianleonov.cinemax.core.presentation.common.EventHandler
 import com.maximillianleonov.cinemax.core.presentation.mapper.pagingMap
@@ -60,14 +61,16 @@ class ListViewModel @Inject constructor(
             Popular -> moviePagingUseCases.getPopularMoviesPagingUseCase()
             NowPlaying -> moviePagingUseCases.getNowPlayingMoviesPagingUseCase()
             Discover -> moviePagingUseCases.getDiscoverMoviesPagingUseCase()
+            Trending -> moviePagingUseCases.getTrendingMoviesPagingUseCase()
         }.pagingMap(MovieModel::toMovie).cachedIn(viewModelScope)
 
         val tvShows = when (contentType) {
+            Upcoming -> emptyFlow()
             TopRated -> tvShowPagingUseCases.getTopRatedTvShowsPagingUseCase()
             Popular -> tvShowPagingUseCases.getPopularTvShowsPagingUseCase()
             NowPlaying -> tvShowPagingUseCases.getNowPlayingTvShowsPagingUseCase()
             Discover -> tvShowPagingUseCases.getDiscoverTvShowsPagingUseCase()
-            else -> emptyFlow()
+            Trending -> tvShowPagingUseCases.getTrendingTvShowsPagingUseCase()
         }.pagingMap(TvShowModel::toTvShow).cachedIn(viewModelScope)
 
         return ListUiState(
