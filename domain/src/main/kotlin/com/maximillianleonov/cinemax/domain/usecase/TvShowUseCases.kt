@@ -22,5 +22,6 @@ data class TvShowUseCases @Inject constructor(
     val getTopRatedTvShowsUseCase: GetTopRatedTvShowsUseCase,
     val getPopularTvShowsUseCase: GetPopularTvShowsUseCase,
     val getNowPlayingTvShowsUseCase: GetNowPlayingTvShowsUseCase,
-    val getDiscoverTvShowsUseCase: GetDiscoverTvShowsUseCase
+    val getDiscoverTvShowsUseCase: GetDiscoverTvShowsUseCase,
+    val getTrendingTvShowsUseCase: GetTrendingTvShowsUseCase
 )

@@ -20,11 +20,13 @@ import com.maximillianleonov.cinemax.data.local.repository.DiscoverRepositoryImp
 import com.maximillianleonov.cinemax.data.local.repository.NowPlayingRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.PopularRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.TopRatedRepositoryImpl
+import com.maximillianleonov.cinemax.data.local.repository.TrendingRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.UpcomingRepositoryImpl
 import com.maximillianleonov.cinemax.domain.repository.DiscoverRepository
 import com.maximillianleonov.cinemax.domain.repository.NowPlayingRepository
 import com.maximillianleonov.cinemax.domain.repository.PopularRepository
 import com.maximillianleonov.cinemax.domain.repository.TopRatedRepository
+import com.maximillianleonov.cinemax.domain.repository.TrendingRepository
 import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
 import dagger.Binds
 import dagger.Module
@@ -47,4 +49,7 @@ interface RepositoryModule {
 
     @Binds
     fun bindDiscoverRepository(discoverRepositoryImpl: DiscoverRepositoryImpl): DiscoverRepository
+
+    @Binds
+    fun bindTrendingRepository(trendingRepositoryImpl: TrendingRepositoryImpl): TrendingRepository
 }

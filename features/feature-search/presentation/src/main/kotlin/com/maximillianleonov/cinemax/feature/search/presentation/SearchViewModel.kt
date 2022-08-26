@@ -55,7 +55,9 @@ class SearchViewModel @Inject constructor(
 
     private fun getContentJobs() = mapOf(
         ContentType.Main.DiscoverMovies to loadDiscoverMovies(),
-        ContentType.Main.DiscoverTvShows to loadDiscoverTvShows()
+        ContentType.Main.DiscoverTvShows to loadDiscoverTvShows(),
+        ContentType.Main.TrendingMovies to loadTrendingMovies(),
+        ContentType.Main.TrendingTvShows to loadTrendingTvShows()
     )
 
     private fun onQueryChange(newQuery: String) = _uiState.update {
@@ -78,6 +80,22 @@ class SearchViewModel @Inject constructor(
         )
     }
 
+    private fun loadTrendingMovies() = viewModelScope.launch {
+        movieUseCases.getTrendingMoviesUseCase().handle(
+            onLoading = ::handleTrendingMoviesLoading,
+            onSuccess = ::handleTrendingMoviesSuccess,
+            onFailure = ::handleTrendingMoviesFailure
+        )
+    }
+
+    private fun loadTrendingTvShows() = viewModelScope.launch {
+        tvShowUseCases.getTrendingTvShowsUseCase().handle(
+            onLoading = ::handleTrendingTvShowsLoading,
+            onSuccess = ::handleTrendingTvShowsSuccess,
+            onFailure = ::handleTrendingTvShowsFailure
+        )
+    }
+
     private fun handleDiscoverMoviesLoading(movies: List<MovieModel>?) =
         handleLoading(contentLoadType = ContentType.Main.DiscoverMovies, movies = movies)
 
@@ -94,6 +112,24 @@ class SearchViewModel @Inject constructor(
         handleSuccess(contentLoadType = ContentType.Main.DiscoverTvShows, tvShows = tvShows)
 
     private fun handleDiscoverTvShowsFailure(throwable: Throwable) =
+        handleFailure(error = throwable)
+
+    private fun handleTrendingMoviesLoading(movies: List<MovieModel>?) =
+        handleLoading(contentLoadType = ContentType.Main.TrendingMovies, movies = movies)
+
+    private fun handleTrendingMoviesSuccess(movies: List<MovieModel>) =
+        handleSuccess(contentLoadType = ContentType.Main.TrendingMovies, movies = movies)
+
+    private fun handleTrendingMoviesFailure(throwable: Throwable) =
+        handleFailure(error = throwable)
+
+    private fun handleTrendingTvShowsLoading(tvShows: List<TvShowModel>?) =
+        handleLoading(contentLoadType = ContentType.Main.TrendingTvShows, tvShows = tvShows)
+
+    private fun handleTrendingTvShowsSuccess(tvShows: List<TvShowModel>) =
+        handleSuccess(contentLoadType = ContentType.Main.TrendingTvShows, tvShows = tvShows)
+
+    private fun handleTrendingTvShowsFailure(throwable: Throwable) =
         handleFailure(error = throwable)
 
     @JvmName("handleMoviesLoading")

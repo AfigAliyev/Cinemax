@@ -28,7 +28,9 @@ object ContentType {
         NowPlayingMovies,
         NowPlayingTvShows,
         DiscoverMovies,
-        DiscoverTvShows
+        DiscoverTvShows,
+        TrendingMovies,
+        TrendingTvShows
     }
 
     enum class List(val value: String) {
@@ -36,7 +38,8 @@ object ContentType {
         TopRated(TopRatedContentType),
         Popular(PopularContentType),
         NowPlaying(NowPlayingContentType),
-        Discover(DiscoverContentType);
+        Discover(DiscoverContentType),
+        Trending(TrendingContentType);
 
         companion object {
             private val contentTypes = values().associateBy(List::value)
@@ -52,3 +55,4 @@ private const val TopRatedContentType = "top_rated"
 private const val PopularContentType = "popular"
 private const val NowPlayingContentType = "now_playing"
 private const val DiscoverContentType = "discover"
+private const val TrendingContentType = "trending"

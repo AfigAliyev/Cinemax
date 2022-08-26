@@ -16,13 +16,11 @@
 
 package com.maximillianleonov.cinemax.domain.usecase
 
+import com.maximillianleonov.cinemax.domain.repository.TrendingRepository
 import javax.inject.Inject
 
-data class MovieUseCases @Inject constructor(
-    val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
-    val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
-    val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
-    val getDiscoverMoviesUseCase: GetDiscoverMoviesUseCase,
-    val getTrendingMoviesUseCase: GetTrendingMoviesUseCase
-)
+class GetTrendingTvShowsUseCase @Inject constructor(
+    private val repository: TrendingRepository
+) {
+    operator fun invoke() = repository.getTvShows()
+}

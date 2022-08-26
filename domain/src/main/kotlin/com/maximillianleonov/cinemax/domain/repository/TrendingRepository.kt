@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.domain.usecase
+package com.maximillianleonov.cinemax.domain.repository
 
-import javax.inject.Inject
+import androidx.paging.PagingData
+import com.maximillianleonov.cinemax.core.domain.result.Result
+import com.maximillianleonov.cinemax.domain.model.MovieModel
+import com.maximillianleonov.cinemax.domain.model.TvShowModel
+import kotlinx.coroutines.flow.Flow
 
-data class MovieUseCases @Inject constructor(
-    val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
-    val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
-    val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
-    val getDiscoverMoviesUseCase: GetDiscoverMoviesUseCase,
-    val getTrendingMoviesUseCase: GetTrendingMoviesUseCase
-)
+interface TrendingRepository {
+    fun getMovies(): Flow<Result<List<MovieModel>>>
+    fun getMoviesPaging(): Flow<PagingData<MovieModel>>
+    fun getTvShows(): Flow<Result<List<TvShowModel>>>
+    fun getTvShowsPaging(): Flow<PagingData<TvShowModel>>
+}

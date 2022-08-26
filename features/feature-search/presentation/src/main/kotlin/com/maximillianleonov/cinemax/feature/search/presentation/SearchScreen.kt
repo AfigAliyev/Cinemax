@@ -123,5 +123,13 @@ private fun MoviesAndTvShowsBlock(
                 tvShows = tvShows[ContentType.Main.DiscoverTvShows].orEmpty()
             )
         }
+        item {
+            MoviesAndTvShowsContainer(
+                titleResourceId = R.string.trending,
+                onSeeAllClick = { onSeeAllClick(ContentType.List.Trending) },
+                movies = movies[ContentType.Main.TrendingMovies].orEmpty(),
+                tvShows = tvShows[ContentType.Main.TrendingTvShows].orEmpty()
+            )
+        }
     }
 }

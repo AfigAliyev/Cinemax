@@ -17,6 +17,7 @@
 package com.maximillianleonov.cinemax.core.presentation.mapper
 
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
+import com.maximillianleonov.cinemax.core.presentation.util.roundToOneDecimal
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 
 fun MovieModel.toMovie() = Movie(
@@ -25,7 +26,7 @@ fun MovieModel.toMovie() = Movie(
     overview = overview,
     releaseDate = releaseDate,
     genres = genres.toGenres(),
-    voteAverage = voteAverage,
+    voteAverage = voteAverage.roundToOneDecimal(),
     posterPath = posterPath,
     backdropPath = backdropPath
 )

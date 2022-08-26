@@ -19,12 +19,19 @@ package com.maximillianleonov.cinemax.feature.list.presentation.util
 import androidx.annotation.StringRes
 import com.maximillianleonov.cinemax.core.presentation.R
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Discover
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.NowPlaying
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Popular
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.TopRated
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Trending
+import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Upcoming
 
 @StringRes
 internal fun ContentType.List.toTitleResourceId() = when (this) {
-    ContentType.List.Upcoming -> R.string.upcoming_movies
-    ContentType.List.TopRated -> R.string.top_rated
-    ContentType.List.Popular -> R.string.most_popular
-    ContentType.List.NowPlaying -> R.string.now_playing
-    ContentType.List.Discover -> R.string.discover
+    Upcoming -> R.string.upcoming_movies
+    TopRated -> R.string.top_rated
+    Popular -> R.string.most_popular
+    NowPlaying -> R.string.now_playing
+    Discover -> R.string.discover
+    Trending -> R.string.trending
 }

@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.domain.usecase
+package com.maximillianleonov.cinemax.data.remote.source
 
+import com.maximillianleonov.cinemax.core.data.util.Constants
+import com.maximillianleonov.cinemax.data.remote.api.CinemaxApi
 import javax.inject.Inject
 
-data class MovieUseCases @Inject constructor(
-    val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
-    val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
-    val getPopularMoviesUseCase: GetPopularMoviesUseCase,
-    val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
-    val getDiscoverMoviesUseCase: GetDiscoverMoviesUseCase,
-    val getTrendingMoviesUseCase: GetTrendingMoviesUseCase
-)
+class TrendingRemoteDataSource @Inject constructor(api: CinemaxApi) {
+    private val service = api.trendingService
+
+    suspend fun getMovies(
+        page: Int = Constants.Remote.DEFAULT_PAGE
+    ) = service.getMovies(page)
+
+    suspend fun getTvShows(
+        page: Int = Constants.Remote.DEFAULT_PAGE
+    ) = service.getTvShows(page)
+}
