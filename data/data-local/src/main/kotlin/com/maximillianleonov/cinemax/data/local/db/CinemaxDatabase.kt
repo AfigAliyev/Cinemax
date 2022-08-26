@@ -35,6 +35,10 @@ import com.maximillianleonov.cinemax.data.local.dao.toprated.TopRatedMovieDao
 import com.maximillianleonov.cinemax.data.local.dao.toprated.TopRatedMovieRemoteKeyDao
 import com.maximillianleonov.cinemax.data.local.dao.toprated.TopRatedTvShowDao
 import com.maximillianleonov.cinemax.data.local.dao.toprated.TopRatedTvShowRemoteKeyDao
+import com.maximillianleonov.cinemax.data.local.dao.trending.TrendingMovieDao
+import com.maximillianleonov.cinemax.data.local.dao.trending.TrendingMovieRemoteKeyDao
+import com.maximillianleonov.cinemax.data.local.dao.trending.TrendingTvShowDao
+import com.maximillianleonov.cinemax.data.local.dao.trending.TrendingTvShowRemoteKeyDao
 import com.maximillianleonov.cinemax.data.local.dao.upcoming.UpcomingMovieDao
 import com.maximillianleonov.cinemax.data.local.dao.upcoming.UpcomingMovieRemoteKeyDao
 import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverMovieEntity
@@ -53,6 +57,10 @@ import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieEnt
 import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowEntity
 import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowRemoteKeyEntity
+import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingMovieEntity
+import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingMovieRemoteKeyEntity
+import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingTvShowEntity
+import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingTvShowRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRemoteKeyEntity
 
@@ -66,7 +74,9 @@ import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRem
         NowPlayingMovieEntity::class, NowPlayingMovieRemoteKeyEntity::class,
         NowPlayingTvShowEntity::class, NowPlayingTvShowRemoteKeyEntity::class,
         DiscoverMovieEntity::class, DiscoverMovieRemoteKeyEntity::class,
-        DiscoverTvShowEntity::class, DiscoverTvShowRemoteKeyEntity::class
+        DiscoverTvShowEntity::class, DiscoverTvShowRemoteKeyEntity::class,
+        TrendingMovieEntity::class, TrendingMovieRemoteKeyEntity::class,
+        TrendingTvShowEntity::class, TrendingTvShowRemoteKeyEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -95,6 +105,11 @@ abstract class CinemaxDatabase : RoomDatabase() {
     abstract val discoverMovieRemoteKeyDao: DiscoverMovieRemoteKeyDao
     abstract val discoverTvShowDao: DiscoverTvShowDao
     abstract val discoverTvShowRemoteKeyDao: DiscoverTvShowRemoteKeyDao
+
+    abstract val trendingMovieDao: TrendingMovieDao
+    abstract val trendingMovieRemoteKeyDao: TrendingMovieRemoteKeyDao
+    abstract val trendingTvShowDao: TrendingTvShowDao
+    abstract val trendingTvShowRemoteKeyDao: TrendingTvShowRemoteKeyDao
 
     companion object {
         const val CINEMAX_DATABASE = "cinemax.db"

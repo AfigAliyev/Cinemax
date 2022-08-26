@@ -61,6 +61,11 @@ object Constants {
         const val DISCOVER_MOVIES_REMOTE_KEYS = "discover_movies_remote_keys"
         const val DISCOVER_TV_SHOWS = "discover_tv_shows"
         const val DISCOVER_TV_SHOWS_REMOTE_KEYS = "discover_tv_shows_remote_keys"
+
+        const val TRENDING_MOVIES = "trending_movies"
+        const val TRENDING_MOVIES_REMOTE_KEYS = "trending_movies_remote_keys"
+        const val TRENDING_TV_SHOWS = "trending_tv_shows"
+        const val TRENDING_TV_SHOWS_REMOTE_KEYS = "trending_tv_shows_remote_keys"
     }
 
     object Fields {
