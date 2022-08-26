@@ -29,11 +29,13 @@ object Constants {
         const val POPULAR_MOVIE_PATH = "movie/popular"
         const val NOW_PLAYING_MOVIE_PATH = "movie/now_playing"
         const val DISCOVER_MOVIE_PATH = "discover/movie"
+        const val TRENDING_MOVIE_PATH = "trending/movie/day"
 
         const val TOP_RATED_TV_SHOW_PATH = "tv/top_rated"
         const val POPULAR_TV_SHOW_PATH = "tv/popular"
         const val ON_THE_AIR_TV_SHOW_PATH = "tv/on_the_air"
         const val DISCOVER_TV_SHOW_PATH = "discover/tv"
+        const val TRENDING_TV_SHOW_PATH = "trending/tv/day"
     }
 
     object Tables {
