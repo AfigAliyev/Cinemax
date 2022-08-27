@@ -18,20 +18,26 @@ package com.maximillianleonov.cinemax.feature.search.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType
 import com.maximillianleonov.cinemax.core.presentation.common.EventHandler
+import com.maximillianleonov.cinemax.core.presentation.mapper.pagingMap
 import com.maximillianleonov.cinemax.core.presentation.mapper.toMovie
 import com.maximillianleonov.cinemax.core.presentation.mapper.toTvShow
 import com.maximillianleonov.cinemax.core.presentation.util.handle
 import com.maximillianleonov.cinemax.core.presentation.util.toErrorMessage
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 import com.maximillianleonov.cinemax.domain.model.TvShowModel
+import com.maximillianleonov.cinemax.domain.usecase.GetSearchMoviesPagingUseCase
+import com.maximillianleonov.cinemax.domain.usecase.GetSearchTvShowsPagingUseCase
 import com.maximillianleonov.cinemax.domain.usecase.MovieUseCases
 import com.maximillianleonov.cinemax.domain.usecase.TvShowUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,15 +46,18 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val movieUseCases: MovieUseCases,
-    private val tvShowUseCases: TvShowUseCases
+    private val tvShowUseCases: TvShowUseCases,
+    private val getSearchMoviesPagingUseCase: GetSearchMoviesPagingUseCase,
+    private val getSearchTvShowsPagingUseCase: GetSearchTvShowsPagingUseCase
 ) : ViewModel(), EventHandler<SearchEvent> {
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
 
     private var contentJobs = getContentJobs()
+    private var searchJob: Job? = null
 
     override fun onEvent(event: SearchEvent) = when (event) {
-        is SearchEvent.ChangeQuery -> onQueryChange(newQuery = event.value)
+        is SearchEvent.ChangeQuery -> onQueryChange(query = event.value)
         SearchEvent.Refresh -> onRefresh()
         SearchEvent.ClearError -> onClearError()
     }
@@ -60,8 +69,43 @@ class SearchViewModel @Inject constructor(
         ContentType.Main.TrendingTvShows to loadTrendingTvShows()
     )
 
-    private fun onQueryChange(newQuery: String) = _uiState.update {
-        it.copy(query = newQuery, isSearching = newQuery.isNotBlank())
+    private fun onQueryChange(query: String) {
+        val isSearching = query.isNotBlank()
+        _uiState.update {
+            it.copy(query = query, isSearching = isSearching)
+        }
+        searchDebounced(query = query.trim())
+    }
+
+    private fun searchDebounced(query: String) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DURATION)
+            search(query)
+        }
+    }
+
+    private fun search(query: String) = _uiState.update {
+        val searchMovies = if (it.isSearching) {
+            getSearchMoviesPagingUseCase(query)
+                .pagingMap(MovieModel::toMovie)
+                .cachedIn(viewModelScope)
+        } else {
+            emptyFlow()
+        }
+
+        val searchTvShows = if (it.isSearching) {
+            getSearchTvShowsPagingUseCase(query)
+                .pagingMap(TvShowModel::toTvShow)
+                .cachedIn(viewModelScope)
+        } else {
+            emptyFlow()
+        }
+
+        it.copy(
+            searchMovies = searchMovies,
+            searchTvShows = searchTvShows
+        )
     }
 
     private fun loadDiscoverMovies() = viewModelScope.launch {
@@ -174,3 +218,5 @@ class SearchViewModel @Inject constructor(
 
     private fun onClearError() = _uiState.update { it.copy(error = null) }
 }
+
+private const val SEARCH_DEBOUNCE_DURATION = 500L

@@ -21,6 +21,7 @@ import com.maximillianleonov.cinemax.core.data.remote.util.retrofit
 import com.maximillianleonov.cinemax.data.remote.api.service.DiscoverService
 import com.maximillianleonov.cinemax.data.remote.api.service.NowPlayingService
 import com.maximillianleonov.cinemax.data.remote.api.service.PopularService
+import com.maximillianleonov.cinemax.data.remote.api.service.SearchService
 import com.maximillianleonov.cinemax.data.remote.api.service.TopRatedService
 import com.maximillianleonov.cinemax.data.remote.api.service.TrendingService
 import com.maximillianleonov.cinemax.data.remote.api.service.UpcomingService
@@ -34,4 +35,5 @@ class CinemaxApi @Inject constructor(private val apiKeyProvider: CinemaxApiKeyPr
     val nowPlayingService: NowPlayingService by lazy { retrofit(apiKeyProvider).create() }
     val discoverService: DiscoverService by lazy { retrofit(apiKeyProvider).create() }
     val trendingService: TrendingService by lazy { retrofit(apiKeyProvider).create() }
+    val searchService: SearchService by lazy { retrofit(apiKeyProvider).create() }
 }

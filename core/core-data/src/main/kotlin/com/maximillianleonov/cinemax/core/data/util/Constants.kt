@@ -30,12 +30,14 @@ object Constants {
         const val NOW_PLAYING_MOVIE_PATH = "movie/now_playing"
         const val DISCOVER_MOVIE_PATH = "discover/movie"
         const val TRENDING_MOVIE_PATH = "trending/movie/day"
+        const val SEARCH_MOVIE_PATH = "search/movie"
 
         const val TOP_RATED_TV_SHOW_PATH = "tv/top_rated"
         const val POPULAR_TV_SHOW_PATH = "tv/popular"
         const val ON_THE_AIR_TV_SHOW_PATH = "tv/on_the_air"
         const val DISCOVER_TV_SHOW_PATH = "discover/tv"
         const val TRENDING_TV_SHOW_PATH = "trending/tv/day"
+        const val SEARCH_TV_SHOW_PATH = "search/tv"
     }
 
     object Tables {
@@ -99,6 +101,8 @@ object Constants {
 
         const val PREV_PAGE = "prev_page"
         const val NEXT_PAGE = "next_page"
+
+        const val QUERY = "query"
     }
 
     object Messages {
