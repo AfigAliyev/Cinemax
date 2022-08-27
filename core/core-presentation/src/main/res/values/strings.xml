@@ -26,6 +26,8 @@
     <string name="rating">Rating</string>
 
     <string name="search_placeholder">Search…</string>
+    <string name="no_movie_results">Sorry, we couldn\'t find any movies.</string>
+    <string name="no_tv_show_results">Sorry, we couldn\'t find any TV shows.</string>
 
     <string name="not_rated">NR</string>
     <string name="no_overview">No overview.</string>

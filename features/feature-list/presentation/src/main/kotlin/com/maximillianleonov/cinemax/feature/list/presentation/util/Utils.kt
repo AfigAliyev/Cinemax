@@ -27,11 +27,13 @@ import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.T
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Upcoming
 
 @StringRes
-internal fun ContentType.List.toTitleResourceId() = when (this) {
-    Upcoming -> R.string.upcoming_movies
-    TopRated -> R.string.top_rated
-    Popular -> R.string.most_popular
-    NowPlaying -> R.string.now_playing
-    Discover -> R.string.discover
-    Trending -> R.string.trending
-}
+internal fun ContentType.List.toTitleResourceId() = contentTypesTitleResources.getValue(this)
+
+private val contentTypesTitleResources = mapOf(
+    Upcoming to R.string.upcoming_movies,
+    TopRated to R.string.top_rated,
+    Popular to R.string.most_popular,
+    NowPlaying to R.string.now_playing,
+    Discover to R.string.discover,
+    Trending to R.string.trending
+)

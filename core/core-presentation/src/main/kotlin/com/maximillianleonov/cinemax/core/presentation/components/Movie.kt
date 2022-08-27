@@ -23,9 +23,11 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
@@ -34,10 +36,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.items
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.maximillianleonov.cinemax.core.presentation.R
 import com.maximillianleonov.cinemax.core.presentation.mapper.toNames
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.presentation.util.isEmpty
+import com.maximillianleonov.cinemax.core.presentation.util.isLoading
 
 @Composable
 fun MoviesContainer(
@@ -51,7 +60,7 @@ fun MoviesContainer(
         contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.smallMedium)
     ) {
         if (shouldShowPlaceholder) {
-            items(MoviesContainerPlaceholderCount) { HorizontalMovieItemPlaceholder() }
+            items(PlaceholderCount) { HorizontalMovieItemPlaceholder() }
         } else {
             items(movies) { movie ->
                 HorizontalMovieItem(movie = movie)
@@ -90,6 +99,55 @@ fun MoviesContainer(
         }
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
         content()
+    }
+}
+
+@Suppress("ReusedModifierInstance")
+@Composable
+fun MoviesDisplay(
+    movies: LazyPagingItems<Movie>,
+    modifier: Modifier = Modifier,
+    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
+        isRefreshing = movies.loadState.refresh.isLoading
+    )
+) {
+    SnackbarPagingErrorHandler(items = movies)
+    CinemaxSwipeRefresh(
+        swipeRefreshState = swipeRefreshState,
+        onRefresh = movies::refresh
+    ) {
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium),
+            contentPadding = PaddingValues(CinemaxTheme.spacing.extraMedium)
+        ) {
+            if (movies.loadState.refresh is LoadState.NotLoading) {
+                items(movies) { movie ->
+                    if (movie == null) {
+                        VerticalMovieItemPlaceholder()
+                    } else {
+                        VerticalMovieItem(movie = movie)
+                    }
+                }
+                if (movies.isEmpty) {
+                    item {
+                        NoResultsDisplay(
+                            modifier = Modifier.fillParentMaxSize(),
+                            messageResourceId = R.string.no_movie_results
+                        )
+                    }
+                }
+            } else {
+                items(PlaceholderCount) { VerticalMovieItemPlaceholder() }
+            }
+            if (movies.loadState.append is LoadState.Loading) {
+                item {
+                    CinemaxCenteredBox(modifier = Modifier.fillMaxWidth()) {
+                        CinemaxCircularProgressIndicator()
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -132,5 +190,3 @@ fun VerticalMovieItem(
 fun VerticalMovieItemPlaceholder(
     modifier: Modifier = Modifier
 ) = VerticalContentItemPlaceholder(modifier = modifier)
-
-private const val MoviesContainerPlaceholderCount = 20

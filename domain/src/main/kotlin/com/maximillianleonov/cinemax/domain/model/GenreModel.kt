@@ -18,58 +18,39 @@ package com.maximillianleonov.cinemax.domain.model
 
 import com.maximillianleonov.cinemax.domain.util.Constants
 
-object Genres {
-    enum class Movie(val id: Int) {
-        ACTION(ACTION_ID),
-        ADVENTURE(ADVENTURE_ID),
-        ANIMATION(ANIMATION_ID),
-        COMEDY(COMEDY_ID),
-        CRIME(CRIME_ID),
-        DOCUMENTARY(DOCUMENTARY_ID),
-        DRAMA(DRAMA_ID),
-        FAMILY(FAMILY_ID),
-        FANTASY(FANTASY_ID),
-        HISTORY(HISTORY_ID),
-        HORROR(HORROR_ID),
-        MUSIC(MUSIC_ID),
-        MYSTERY(MYSTERY_ID),
-        ROMANCE(ROMANCE_ID),
-        SCIENCE_FICTION(SCIENCE_FICTION_ID),
-        TV_MOVIE(TV_MOVIE_ID),
-        THRILLER(THRILLER_ID),
-        WAR(WAR_ID),
-        WESTERN(WESTERN_ID);
+enum class GenreModel(val id: Int) {
+    ACTION(ACTION_ID),
+    ADVENTURE(ADVENTURE_ID),
+    ACTION_ADVENTURE(ACTION_ADVENTURE_ID),
+    ANIMATION(ANIMATION_ID),
+    COMEDY(COMEDY_ID),
+    CRIME(CRIME_ID),
+    DOCUMENTARY(DOCUMENTARY_ID),
+    DRAMA(DRAMA_ID),
+    FAMILY(FAMILY_ID),
+    FANTASY(FANTASY_ID),
+    HISTORY(HISTORY_ID),
+    HORROR(HORROR_ID),
+    KIDS(KIDS_ID),
+    MUSIC(MUSIC_ID),
+    MYSTERY(MYSTERY_ID),
+    NEWS(NEWS_ID),
+    REALITY(REALITY_ID),
+    ROMANCE(ROMANCE_ID),
+    SCIENCE_FICTION(SCIENCE_FICTION_ID),
+    SCIENCE_FICTION_FANTASY(SCIENCE_FICTION_FANTASY_ID),
+    SOAP(SOAP_ID),
+    TALK(TALK_ID),
+    THRILLER(THRILLER_ID),
+    TV_MOVIE(TV_MOVIE_ID),
+    WAR(WAR_ID),
+    WAR_POLITICS(WAR_POLITICS_ID),
+    WESTERN(WESTERN_ID);
 
-        companion object {
-            private val genres = values().associateBy(Movie::id)
-            operator fun get(id: Int) =
-                checkNotNull(genres[id]) { "${Constants.Messages.INVALID_GENRE_ID} $id" }
-        }
-    }
-
-    enum class TvShow(val id: Int) {
-        ACTION_ADVENTURE(ACTION_ADVENTURE_ID),
-        ANIMATION(ANIMATION_ID),
-        COMEDY(COMEDY_ID),
-        CRIME(CRIME_ID),
-        DOCUMENTARY(DOCUMENTARY_ID),
-        DRAMA(DRAMA_ID),
-        FAMILY(FAMILY_ID),
-        KIDS(KIDS_ID),
-        MYSTERY(MYSTERY_ID),
-        NEWS(NEWS_ID),
-        REALITY(REALITY_ID),
-        SCIENCE_FICTION_FANTASY(SCIENCE_FICTION_FANTASY_ID),
-        SOAP(SOAP_ID),
-        TALK(TALK_ID),
-        WAR_POLITICS(WAR_POLITICS_ID),
-        WESTERN(WESTERN_ID);
-
-        companion object {
-            private val genres = values().associateBy(TvShow::id)
-            operator fun get(id: Int) =
-                checkNotNull(genres[id]) { "${Constants.Messages.INVALID_GENRE_ID} $id" }
-        }
+    companion object {
+        private val genres = values().associateBy(GenreModel::id)
+        operator fun get(id: Int) =
+            checkNotNull(genres[id]) { "${Constants.Messages.INVALID_GENRE_ID} $id" }
     }
 }
 
@@ -86,9 +67,9 @@ private const val FANTASY_ID = 14
 private const val HISTORY_ID = 36
 private const val HORROR_ID = 27
 private const val KIDS_ID = 10762
+private const val MUSIC_ID = 10402
 private const val MYSTERY_ID = 9648
 private const val NEWS_ID = 10763
-private const val MUSIC_ID = 10402
 private const val REALITY_ID = 10764
 private const val ROMANCE_ID = 10749
 private const val SCIENCE_FICTION_ID = 878

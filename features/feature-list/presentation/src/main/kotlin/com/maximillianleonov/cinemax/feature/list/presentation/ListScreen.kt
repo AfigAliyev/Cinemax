@@ -17,13 +17,9 @@
 package com.maximillianleonov.cinemax.feature.list.presentation
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -36,30 +32,19 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
-import com.google.accompanist.swiperefresh.SwipeRefreshState
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.maximillianleonov.cinemax.core.presentation.common.ContentType.List.Upcoming
-import com.maximillianleonov.cinemax.core.presentation.components.CinemaxCenteredBox
-import com.maximillianleonov.cinemax.core.presentation.components.CinemaxCircularProgressIndicator
-import com.maximillianleonov.cinemax.core.presentation.components.CinemaxSwipeRefresh
 import com.maximillianleonov.cinemax.core.presentation.components.CinemaxTopAppBar
-import com.maximillianleonov.cinemax.core.presentation.components.SnackbarPagingErrorHandler
-import com.maximillianleonov.cinemax.core.presentation.components.VerticalMovieItem
-import com.maximillianleonov.cinemax.core.presentation.components.VerticalMovieItemPlaceholder
-import com.maximillianleonov.cinemax.core.presentation.components.VerticalTvShowItem
-import com.maximillianleonov.cinemax.core.presentation.components.VerticalTvShowItemPlaceholder
+import com.maximillianleonov.cinemax.core.presentation.components.MoviesDisplay
+import com.maximillianleonov.cinemax.core.presentation.components.TvShowsDisplay
 import com.maximillianleonov.cinemax.core.presentation.model.Movie
 import com.maximillianleonov.cinemax.core.presentation.model.TvShow
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.core.presentation.util.isLoading
 import com.maximillianleonov.cinemax.feature.list.presentation.common.ListTab
 import com.maximillianleonov.cinemax.feature.list.presentation.util.toTitleResourceId
 import kotlinx.coroutines.CoroutineScope
@@ -170,87 +155,3 @@ private fun MoviesAndTvShowsDisplay(
         }
     }
 }
-
-@Suppress("ReusedModifierInstance")
-@Composable
-private fun MoviesDisplay(
-    movies: LazyPagingItems<Movie>,
-    modifier: Modifier = Modifier,
-    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = movies.loadState.refresh.isLoading
-    )
-) {
-    SnackbarPagingErrorHandler(items = movies)
-    CinemaxSwipeRefresh(
-        swipeRefreshState = swipeRefreshState,
-        onRefresh = movies::refresh
-    ) {
-        LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium),
-            contentPadding = PaddingValues(CinemaxTheme.spacing.extraMedium)
-        ) {
-            if (movies.loadState.refresh !is LoadState.NotLoading) {
-                items(PlaceholderCount) { VerticalMovieItemPlaceholder() }
-            } else {
-                items(movies) { movie ->
-                    if (movie == null) {
-                        VerticalMovieItemPlaceholder()
-                    } else {
-                        VerticalMovieItem(movie = movie)
-                    }
-                }
-            }
-            if (movies.loadState.append is LoadState.Loading) {
-                item {
-                    CinemaxCenteredBox(modifier = Modifier.fillMaxWidth()) {
-                        CinemaxCircularProgressIndicator()
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Suppress("ReusedModifierInstance")
-@Composable
-private fun TvShowsDisplay(
-    tvShows: LazyPagingItems<TvShow>,
-    modifier: Modifier = Modifier,
-    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = tvShows.loadState.refresh.isLoading
-    )
-) {
-    SnackbarPagingErrorHandler(items = tvShows)
-    CinemaxSwipeRefresh(
-        swipeRefreshState = swipeRefreshState,
-        onRefresh = tvShows::refresh
-    ) {
-        LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium),
-            contentPadding = PaddingValues(CinemaxTheme.spacing.extraMedium)
-        ) {
-            if (tvShows.loadState.refresh !is LoadState.NotLoading) {
-                items(PlaceholderCount) { VerticalTvShowItemPlaceholder() }
-            } else {
-                items(tvShows) { tvShow ->
-                    if (tvShow == null) {
-                        VerticalTvShowItemPlaceholder()
-                    } else {
-                        VerticalTvShowItem(tvShow = tvShow)
-                    }
-                }
-            }
-            if (tvShows.loadState.append is LoadState.Loading) {
-                item {
-                    CinemaxCenteredBox(modifier = Modifier.fillMaxWidth()) {
-                        CinemaxCircularProgressIndicator()
-                    }
-                }
-            }
-        }
-    }
-}
-
-private const val PlaceholderCount = 20
