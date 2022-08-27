@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.maximillianleonov.cinemax.feature.details.presentation.navigation.detailsGraph
 import com.maximillianleonov.cinemax.feature.home.presentation.navigation.HomeDestination
 import com.maximillianleonov.cinemax.feature.home.presentation.navigation.homeGraph
 import com.maximillianleonov.cinemax.feature.list.presentation.navigation.ListDestination
@@ -50,9 +51,9 @@ fun CinemaxNavHost(
             }
         )
         listGraph(onBackButtonClick = navController::popBackStack)
+        detailsGraph()
 
         composable(route = "wishlist") { /* TODO: Not yet implemented. */ }
         composable(route = "settings") { /* TODO: Not yet implemented. */ }
-        composable(route = "details") { /* TODO: Not yet implemented. */ }
     }
 }
