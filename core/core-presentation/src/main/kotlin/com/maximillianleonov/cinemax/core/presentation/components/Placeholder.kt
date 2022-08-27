@@ -44,3 +44,5 @@ fun CinemaxPlaceholder(
             highlight = highlight
         )
 )
+
+internal const val PlaceholderCount = 20

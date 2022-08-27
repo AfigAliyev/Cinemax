@@ -20,60 +20,43 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.maximillianleonov.cinemax.core.presentation.R
 import com.maximillianleonov.cinemax.core.presentation.model.Genre
-import com.maximillianleonov.cinemax.domain.model.Genres
+import com.maximillianleonov.cinemax.domain.model.GenreModel
 
-@JvmName("toMovieGenres")
-internal fun List<Genres.Movie>.toGenres() = map { genre ->
-    Genre(id = genre.id, nameResourceId = genre.toNameResourceId())
-}
-
-@JvmName("toTvShowGenres")
-internal fun List<Genres.TvShow>.toGenres() = map { genre ->
+internal fun List<GenreModel>.toGenres() = map { genre ->
     Genre(id = genre.id, nameResourceId = genre.toNameResourceId())
 }
 
 @Composable
 internal fun List<Genre>.toNames() = map { genre -> stringResource(id = genre.nameResourceId) }
 
-@Suppress("ComplexMethod")
-private fun Genres.Movie.toNameResourceId() = when (this) {
-    Genres.Movie.ACTION -> R.string.action
-    Genres.Movie.ADVENTURE -> R.string.adventure
-    Genres.Movie.ANIMATION -> R.string.animation
-    Genres.Movie.COMEDY -> R.string.comedy
-    Genres.Movie.CRIME -> R.string.crime
-    Genres.Movie.DOCUMENTARY -> R.string.documentary
-    Genres.Movie.DRAMA -> R.string.drama
-    Genres.Movie.FAMILY -> R.string.family
-    Genres.Movie.FANTASY -> R.string.fantasy
-    Genres.Movie.HISTORY -> R.string.history
-    Genres.Movie.HORROR -> R.string.horror
-    Genres.Movie.MUSIC -> R.string.music
-    Genres.Movie.MYSTERY -> R.string.mystery
-    Genres.Movie.ROMANCE -> R.string.romance
-    Genres.Movie.SCIENCE_FICTION -> R.string.science_fiction
-    Genres.Movie.TV_MOVIE -> R.string.tv_movie
-    Genres.Movie.THRILLER -> R.string.thriller
-    Genres.Movie.WAR -> R.string.war
-    Genres.Movie.WESTERN -> R.string.western
-}
+private fun GenreModel.toNameResourceId() = genresNameResources.getValue(this)
 
-@Suppress("ComplexMethod")
-private fun Genres.TvShow.toNameResourceId() = when (this) {
-    Genres.TvShow.ACTION_ADVENTURE -> R.string.action_adventure
-    Genres.TvShow.ANIMATION -> R.string.animation
-    Genres.TvShow.COMEDY -> R.string.comedy
-    Genres.TvShow.CRIME -> R.string.crime
-    Genres.TvShow.DOCUMENTARY -> R.string.documentary
-    Genres.TvShow.DRAMA -> R.string.drama
-    Genres.TvShow.FAMILY -> R.string.family
-    Genres.TvShow.KIDS -> R.string.kids
-    Genres.TvShow.MYSTERY -> R.string.mystery
-    Genres.TvShow.NEWS -> R.string.news
-    Genres.TvShow.REALITY -> R.string.reality
-    Genres.TvShow.SCIENCE_FICTION_FANTASY -> R.string.science_fiction_fantasy
-    Genres.TvShow.SOAP -> R.string.soap
-    Genres.TvShow.TALK -> R.string.talk
-    Genres.TvShow.WAR_POLITICS -> R.string.war_politics
-    Genres.TvShow.WESTERN -> R.string.western
-}
+private val genresNameResources = mapOf(
+    GenreModel.ACTION to R.string.action,
+    GenreModel.ADVENTURE to R.string.adventure,
+    GenreModel.ACTION_ADVENTURE to R.string.action_adventure,
+    GenreModel.ANIMATION to R.string.animation,
+    GenreModel.COMEDY to R.string.comedy,
+    GenreModel.CRIME to R.string.crime,
+    GenreModel.DOCUMENTARY to R.string.documentary,
+    GenreModel.DRAMA to R.string.drama,
+    GenreModel.FAMILY to R.string.family,
+    GenreModel.FANTASY to R.string.fantasy,
+    GenreModel.HISTORY to R.string.history,
+    GenreModel.HORROR to R.string.horror,
+    GenreModel.KIDS to R.string.kids,
+    GenreModel.MUSIC to R.string.music,
+    GenreModel.MYSTERY to R.string.mystery,
+    GenreModel.NEWS to R.string.news,
+    GenreModel.REALITY to R.string.reality,
+    GenreModel.ROMANCE to R.string.romance,
+    GenreModel.SCIENCE_FICTION to R.string.science_fiction,
+    GenreModel.SCIENCE_FICTION_FANTASY to R.string.science_fiction_fantasy,
+    GenreModel.SOAP to R.string.soap,
+    GenreModel.TALK to R.string.talk,
+    GenreModel.THRILLER to R.string.thriller,
+    GenreModel.TV_MOVIE to R.string.tv_movie,
+    GenreModel.WAR to R.string.war,
+    GenreModel.WAR_POLITICS to R.string.war_politics,
+    GenreModel.WESTERN to R.string.western
+)

@@ -18,9 +18,13 @@ package com.maximillianleonov.cinemax.core.presentation.util
 
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 
 val LoadState.isLoading: Boolean
     get() = this is LoadState.Loading
+
+val <T : Any> LazyPagingItems<T>.isEmpty: Boolean
+    get() = loadState.append.endOfPaginationReached && itemCount == 0
 
 val CombinedLoadStates.isError: Boolean
     get() = listOf(append, prepend, refresh).any { loadState -> loadState is LoadState.Error }

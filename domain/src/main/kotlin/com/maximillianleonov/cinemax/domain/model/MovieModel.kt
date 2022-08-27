@@ -25,7 +25,7 @@ data class MovieModel(
     val popularity: Double,
     val releaseDate: LocalDate?,
     val adult: Boolean,
-    val genres: List<Genres.Movie>,
+    val genres: List<GenreModel>,
     val originalTitle: String,
     val originalLanguage: String,
     val voteAverage: Double,

@@ -16,7 +16,6 @@
 
 package com.maximillianleonov.cinemax.data.local.mapper
 
-import com.maximillianleonov.cinemax.domain.model.Genres
+import com.maximillianleonov.cinemax.domain.model.GenreModel
 
-internal fun List<Int>.toMovieGenres() = map(Genres.Movie::get)
-internal fun List<Int>.toTvShowGenres() = map(Genres.TvShow::get)
+internal fun List<Int>.toGenres() = map(GenreModel::get)

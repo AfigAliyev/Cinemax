@@ -18,14 +18,24 @@ package com.maximillianleonov.cinemax.core.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.items
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.maximillianleonov.cinemax.core.presentation.R
 import com.maximillianleonov.cinemax.core.presentation.mapper.toNames
 import com.maximillianleonov.cinemax.core.presentation.model.TvShow
 import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.presentation.util.isEmpty
+import com.maximillianleonov.cinemax.core.presentation.util.isLoading
 
 @Composable
 fun TvShowsContainer(
@@ -39,10 +49,59 @@ fun TvShowsContainer(
         contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.smallMedium)
     ) {
         if (shouldShowPlaceholder) {
-            items(TvShowsContainerPlaceholderCount) { HorizontalTvShowItemPlaceholder() }
+            items(PlaceholderCount) { HorizontalTvShowItemPlaceholder() }
         } else {
             items(tvShows) { tvShow ->
                 HorizontalTvShowItem(tvShow = tvShow)
+            }
+        }
+    }
+}
+
+@Suppress("ReusedModifierInstance")
+@Composable
+fun TvShowsDisplay(
+    tvShows: LazyPagingItems<TvShow>,
+    modifier: Modifier = Modifier,
+    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
+        isRefreshing = tvShows.loadState.refresh.isLoading
+    )
+) {
+    SnackbarPagingErrorHandler(items = tvShows)
+    CinemaxSwipeRefresh(
+        swipeRefreshState = swipeRefreshState,
+        onRefresh = tvShows::refresh
+    ) {
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium),
+            contentPadding = PaddingValues(CinemaxTheme.spacing.extraMedium)
+        ) {
+            if (tvShows.loadState.refresh is LoadState.NotLoading) {
+                items(tvShows) { tvShow ->
+                    if (tvShow == null) {
+                        VerticalTvShowItemPlaceholder()
+                    } else {
+                        VerticalTvShowItem(tvShow = tvShow)
+                    }
+                }
+                if (tvShows.isEmpty) {
+                    item {
+                        NoResultsDisplay(
+                            modifier = Modifier.fillParentMaxSize(),
+                            messageResourceId = R.string.no_tv_show_results
+                        )
+                    }
+                }
+            } else {
+                items(PlaceholderCount) { VerticalTvShowItemPlaceholder() }
+            }
+            if (tvShows.loadState.append is LoadState.Loading) {
+                item {
+                    CinemaxCenteredBox(modifier = Modifier.fillMaxWidth()) {
+                        CinemaxCircularProgressIndicator()
+                    }
+                }
             }
         }
     }
@@ -87,5 +146,3 @@ fun VerticalTvShowItem(
 fun VerticalTvShowItemPlaceholder(
     modifier: Modifier = Modifier
 ) = VerticalContentItemPlaceholder(modifier = modifier)
-
-private const val TvShowsContainerPlaceholderCount = 20

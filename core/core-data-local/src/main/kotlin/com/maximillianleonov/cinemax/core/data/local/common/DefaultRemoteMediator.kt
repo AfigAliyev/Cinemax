@@ -103,9 +103,7 @@ abstract class DefaultRemoteMediator<EntityType : ContentEntity,
 
                     MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
                 }
-                response.isFailure() -> {
-                    return MediatorResult.Error(response.error)
-                }
+                response.isFailure() -> return MediatorResult.Error(response.error)
                 else -> error("${Constants.Messages.UNHANDLED_STATE} $response")
             }
         } catch (exception: IOException) {
