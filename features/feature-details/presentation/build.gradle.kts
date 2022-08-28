@@ -22,6 +22,7 @@ plugins {
 }
 
 android {
+    namespace = "com.maximillianleonov.cinemax.feature.details.presentation"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

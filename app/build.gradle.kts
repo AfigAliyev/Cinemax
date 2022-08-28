@@ -32,6 +32,7 @@ if (localPropertiesFile.exists() && localPropertiesFile.isFile) {
 }
 
 android {
+    namespace = "com.maximillianleonov.cinemax"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
