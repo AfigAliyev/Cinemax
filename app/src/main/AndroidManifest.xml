@@ -26,11 +26,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Cinemax">
+        android:theme="@style/Theme.Cinemax.Splash">
         <activity
             android:name=".CinemaxActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Cinemax">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
