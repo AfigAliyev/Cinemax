@@ -18,6 +18,12 @@
 
     <style name="Theme.Cinemax" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/primaryDark</item>
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:navigationBarColor">@color/primaryDark</item>
+    </style>
+
+    <style name="Theme.Cinemax.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/primaryDark</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.Cinemax</item>
     </style>
 </resources>

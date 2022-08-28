@@ -109,9 +109,10 @@ dependencies {
     implementation(project(":features:feature-list:presentation"))
     implementation(project(":features:feature-details:presentation"))
 
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
-    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.android.test)
