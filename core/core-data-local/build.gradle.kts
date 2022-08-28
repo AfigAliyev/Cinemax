@@ -20,6 +20,7 @@ plugins {
 }
 
 android {
+    namespace = "com.maximillianleonov.cinemax.core.data.local"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
