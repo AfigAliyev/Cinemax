@@ -14,11 +14,13 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.Cinemax" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/primaryDark</item>
         <item name="android:navigationBarColor">@color/primaryDark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>
 
     <style name="Theme.Cinemax.Splash" parent="Theme.SplashScreen">
