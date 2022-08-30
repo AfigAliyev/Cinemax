@@ -68,6 +68,7 @@ dependencies {
     api(libs.bundles.androidx.compose)
     api(libs.bundles.androidx.lifecycle)
     api(libs.androidx.hilt.navigation.compose)
+    api(libs.accompanist.systemuicontroller)
     api(libs.accompanist.placeholder.material)
     api(libs.accompanist.swiperefresh)
     api(libs.coil.compose)

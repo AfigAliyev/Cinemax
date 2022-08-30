@@ -22,17 +22,33 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.maximillianleonov.cinemax.core.presentation.components.CinemaxSnackbarHost
 import com.maximillianleonov.cinemax.core.presentation.components.LocalSnackbarHostState
+import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.presentation.navigation.CinemaxBottomNavigation
 import com.maximillianleonov.cinemax.presentation.navigation.CinemaxNavHost
 
 @Composable
-fun MainRoute(modifier: Modifier = Modifier) {
+fun MainRoute(
+    modifier: Modifier = Modifier,
+    systemUiController: SystemUiController = rememberSystemUiController(),
+    systemBarsColor: Color = CinemaxTheme.colors.primaryDark,
+    systemBarsDarkIcons: Boolean = false
+) {
     MainScreen(modifier = modifier)
+    LaunchedEffect(systemUiController, systemBarsColor, systemBarsDarkIcons) {
+        systemUiController.setSystemBarsColor(
+            color = systemBarsColor,
+            darkIcons = systemBarsDarkIcons
+        )
+    }
 }
 
 @Suppress("ReusedModifierInstance")
