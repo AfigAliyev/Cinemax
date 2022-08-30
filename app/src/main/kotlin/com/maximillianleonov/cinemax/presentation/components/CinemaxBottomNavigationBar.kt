@@ -67,13 +67,13 @@ import com.maximillianleonov.cinemax.presentation.navigation.BottomNavigationSec
 @Composable
 fun CinemaxBottomNavigationBar(
     tabs: Array<BottomNavigationSection>,
+    itemCount: Int,
     currentRoute: String,
     onSelect: (String) -> Unit,
     modifier: Modifier = Modifier,
     color: Color = CinemaxTheme.colors.primaryDark
 ) {
-    val routes = remember { tabs.map(BottomNavigationSection::route) }
-    var currentSection by remember { mutableStateOf(tabs.first { it.route == currentRoute }) }
+    var currentSection by remember(tabs) { mutableStateOf(tabs.first { it.route == currentRoute }) }
     tabs.firstOrNull { it.route == currentRoute }?.let { currentSection = it }
 
     Surface(
@@ -84,7 +84,7 @@ fun CinemaxBottomNavigationBar(
 
         BottomNavigationLayout(
             selectedIndex = currentSection.ordinal,
-            itemCount = routes.size,
+            itemCount = itemCount,
             animationSpec = animationSpec,
             indicator = { BottomNavigationIndicator() },
             modifier = Modifier.windowInsetsPadding(

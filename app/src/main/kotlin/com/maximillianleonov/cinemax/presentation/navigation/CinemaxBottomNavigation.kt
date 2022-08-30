@@ -23,6 +23,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -37,10 +38,12 @@ fun CinemaxBottomNavigation(
     modifier: Modifier = Modifier
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentRoute = remember(navBackStackEntry) { navBackStackEntry?.destination?.route }
 
-    val bottomNavigationSections = BottomNavigationSection.values()
-    val bottomNavigationRoutes = bottomNavigationSections.map(BottomNavigationSection::route)
+    val bottomNavigationSections = remember { BottomNavigationSection.values() }
+    val bottomNavigationRoutes = remember(bottomNavigationSections) {
+        bottomNavigationSections.map(BottomNavigationSection::route)
+    }
 
     AnimatedVisibility(
         visible = currentRoute in bottomNavigationRoutes,
@@ -49,6 +52,7 @@ fun CinemaxBottomNavigation(
     ) {
         CinemaxBottomNavigationBar(
             tabs = bottomNavigationSections,
+            itemCount = bottomNavigationSections.size,
             currentRoute = checkNotNull(currentRoute) { MESSAGE_CURRENT_ROUTE_NULL },
             onSelect = { route -> navController.navigateOnce(route = route) },
             modifier = modifier
