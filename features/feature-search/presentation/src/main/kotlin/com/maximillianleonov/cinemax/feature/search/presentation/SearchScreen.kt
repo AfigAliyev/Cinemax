@@ -40,6 +40,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -152,11 +153,11 @@ private fun SearchResultsBlock(
     searchMovies: LazyPagingItems<Movie>,
     searchTvShows: LazyPagingItems<TvShow>,
     modifier: Modifier = Modifier,
-    tabs: Array<SearchTab> = SearchTab.values(),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {
+    val tabs = remember { SearchTab.values() }
     val pagerState = rememberPagerState()
-    val selectedTabIndex = pagerState.currentPage
+    val selectedTabIndex = remember(pagerState) { pagerState.currentPage }
     Column(modifier = modifier.fillMaxSize()) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
