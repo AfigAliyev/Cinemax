@@ -16,6 +16,8 @@
 
 package com.maximillianleonov.cinemax.presentation.main
 
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
@@ -51,6 +53,7 @@ fun MainRoute(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Suppress("ReusedModifierInstance")
 @Composable
 private fun MainScreen(
@@ -69,7 +72,9 @@ private fun MainScreen(
         ) { innerPadding ->
             CinemaxNavHost(
                 navController = navController,
-                modifier = Modifier.padding(paddingValues = innerPadding)
+                modifier = Modifier
+                    .padding(paddingValues = innerPadding)
+                    .consumedWindowInsets(paddingValues = innerPadding)
             )
         }
     }
