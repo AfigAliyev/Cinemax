@@ -30,6 +30,8 @@ jobs:
           distribution: temurin
           java-version: 11
           cache: gradle
+      - name: Run spotless
+        run: ./gradlew spotlessCheck
       - name: Run detekt
         run: ./gradlew detekt
       - name: Run lint
