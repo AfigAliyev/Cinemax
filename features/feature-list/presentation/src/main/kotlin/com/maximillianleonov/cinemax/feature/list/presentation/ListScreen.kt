@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
@@ -122,7 +123,11 @@ private fun MoviesAndTvShowsDisplay(
     val tabs = remember { ListTab.values() }
     val pagerState = rememberPagerState()
     val selectedTabIndex = remember(pagerState) { pagerState.currentPage }
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(tag = ContentTestTag)
+    ) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
             indicator = { tabPositions ->
@@ -167,3 +172,6 @@ private fun MoviesAndTvShowsDisplay(
         }
     }
 }
+
+private const val TestTag = "list"
+private const val ContentTestTag = "$TestTag:content"
