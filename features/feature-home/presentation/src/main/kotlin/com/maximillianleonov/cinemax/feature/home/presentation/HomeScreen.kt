@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -83,12 +84,15 @@ private fun HomeScreen(
         onRefresh = onRefresh
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag(tag = ContentTestTag),
             verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium),
             contentPadding = PaddingValues(vertical = CinemaxTheme.spacing.extraMedium)
         ) {
             item {
                 UpcomingMoviesContainer(
+                    modifier = Modifier.testTag(tag = UpcomingTestTag),
                     movies = uiState.movies[ContentType.Main.UpcomingMovies].orEmpty(),
                     onSeeAllClick = { onSeeAllClick(ContentType.List.Upcoming) }
                 )
@@ -111,6 +115,7 @@ private fun HomeScreen(
             }
             item {
                 MoviesAndTvShowsContainer(
+                    modifier = Modifier.testTag(tag = NowPlayingTestTag),
                     titleResourceId = R.string.now_playing,
                     onSeeAllClick = { onSeeAllClick(ContentType.List.NowPlaying) },
                     movies = uiState.movies[ContentType.Main.NowPlayingMovies].orEmpty(),
@@ -120,3 +125,8 @@ private fun HomeScreen(
         }
     }
 }
+
+private const val TestTag = "home"
+private const val ContentTestTag = "$TestTag:content"
+private const val UpcomingTestTag = "$TestTag:upcoming"
+private const val NowPlayingTestTag = "$TestTag:nowplaying"

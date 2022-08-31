@@ -35,6 +35,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -89,7 +90,10 @@ fun MoviesContainer(
                 style = CinemaxTheme.typography.semiBold.h4,
                 color = CinemaxTheme.colors.textWhite
             )
-            TextButton(onClick = onSeeAllClick) {
+            TextButton(
+                modifier = Modifier.testTag(tag = SeeAllTag),
+                onClick = onSeeAllClick
+            ) {
                 Text(
                     text = stringResource(id = R.string.see_all),
                     style = CinemaxTheme.typography.medium.h5,
@@ -190,3 +194,5 @@ fun VerticalMovieItem(
 fun VerticalMovieItemPlaceholder(
     modifier: Modifier = Modifier
 ) = VerticalContentItemPlaceholder(modifier = modifier)
+
+private const val SeeAllTag = "seeall"
