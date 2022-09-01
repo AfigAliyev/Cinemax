@@ -41,9 +41,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,39 +61,35 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.ui.navigation.BottomNavigationSection
+import com.maximillianleonov.cinemax.navigation.TopLevelDestination
 
 @Composable
-fun CinemaxBottomNavigationBar(
-    tabs: Array<BottomNavigationSection>,
-    itemCount: Int,
-    currentRoute: String,
-    onSelect: (String) -> Unit,
+fun CinemaxBottomBar(
+    destinations: Array<TopLevelDestination>,
+    currentDestination: TopLevelDestination,
+    onNavigateToDestination: (TopLevelDestination) -> Unit,
     modifier: Modifier = Modifier,
     color: Color = CinemaxTheme.colors.primaryDark
 ) {
-    var currentSection by remember(tabs) { mutableStateOf(tabs.first { it.route == currentRoute }) }
-    tabs.firstOrNull { it.route == currentRoute }?.let { currentSection = it }
-
     Surface(
         modifier = modifier,
         color = color
     ) {
-        val animationSpec = BottomNavigationLayoutAnimationSpec
+        val animationSpec = BottomBarAnimationSpec
 
-        BottomNavigationLayout(
-            selectedIndex = currentSection.ordinal,
-            itemCount = itemCount,
+        CinemaxBottomNavLayout(
+            selectedIndex = currentDestination.ordinal,
+            itemCount = destinations.size,
             animationSpec = animationSpec,
-            indicator = { BottomNavigationIndicator() },
+            indicator = { CinemaxBottomNavIndicator() },
             modifier = Modifier.windowInsetsPadding(
                 WindowInsets.safeDrawing.only(
                     WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
                 )
             )
         ) {
-            tabs.forEach { section ->
-                val selected = section == currentSection
+            destinations.forEach { destination ->
+                val selected = destination == currentDestination
                 val tint by animateColorAsState(
                     if (selected) {
                         CinemaxTheme.colors.primaryBlue
@@ -104,14 +98,14 @@ fun CinemaxBottomNavigationBar(
                     }
                 )
 
-                val icon = painterResource(id = section.drawableResourceId)
-                val text = stringResource(id = section.stringResourceId)
+                val icon = painterResource(id = destination.iconResourceId)
+                val text = stringResource(id = destination.textResourceId)
 
-                BottomNavigationItem(
+                CinemaxBottomNavigationItem(
                     modifier = Modifier
                         .padding(CinemaxTheme.spacing.smallMedium)
                         .clip(CinemaxTheme.shapes.medium)
-                        .testTag(tag = "$TestTag:${section.route}"),
+                        .testTag(tag = "$TestTag:${destination.route}"),
                     icon = {
                         Icon(
                             painter = icon,
@@ -128,7 +122,7 @@ fun CinemaxBottomNavigationBar(
                         )
                     },
                     selected = selected,
-                    onSelect = { onSelect(section.route) },
+                    onSelect = { onNavigateToDestination(destination) },
                     animationSpec = animationSpec
                 )
             }
@@ -137,7 +131,7 @@ fun CinemaxBottomNavigationBar(
 }
 
 @Composable
-private fun BottomNavigationLayout(
+private fun CinemaxBottomNavLayout(
     selectedIndex: Int,
     itemCount: Int,
     animationSpec: AnimationSpec<Float>,
@@ -146,8 +140,8 @@ private fun BottomNavigationLayout(
     content: @Composable () -> Unit
 ) {
     val selectionFractions = remember(itemCount) {
-        List(itemCount) { i ->
-            Animatable(if (i == selectedIndex) 1f else 0f)
+        List(itemCount) { index ->
+            Animatable(if (index == selectedIndex) 1f else 0f)
         }
     }
     selectionFractions.forEachIndexed { index, selectionFraction ->
@@ -214,7 +208,7 @@ private fun BottomNavigationLayout(
 }
 
 @Composable
-private fun BottomNavigationItem(
+private fun CinemaxBottomNavigationItem(
     icon: @Composable BoxScope.() -> Unit,
     text: @Composable BoxScope.() -> Unit,
     selected: Boolean,
@@ -230,7 +224,7 @@ private fun BottomNavigationItem(
             targetValue = if (selected) 1f else 0f,
             animationSpec = animationSpec
         )
-        BottomNavigationItemLayout(
+        CinemaxBottomNavItemLayout(
             icon = icon,
             text = text,
             animationProgress = animationProgress
@@ -239,7 +233,7 @@ private fun BottomNavigationItem(
 }
 
 @Composable
-private fun BottomNavigationItemLayout(
+private fun CinemaxBottomNavItemLayout(
     icon: @Composable BoxScope.() -> Unit,
     text: @Composable BoxScope.() -> Unit,
     @FloatRange(from = 0.0, to = 1.0) animationProgress: Float,
@@ -258,8 +252,8 @@ private fun BottomNavigationItemLayout(
                 content = icon
             )
             val scale = lerp(
-                start = BottomNavigationItemLayoutLerpStart,
-                stop = BottomNavigationItemLayoutLerpStop,
+                start = BottomNavItemLayoutLerpStart,
+                stop = BottomNavItemLayoutLerpStop,
                 fraction = animationProgress
             )
             Box(
@@ -291,7 +285,7 @@ private fun BottomNavigationItemLayout(
 }
 
 @Composable
-private fun BottomNavigationIndicator(
+private fun CinemaxBottomNavIndicator(
     modifier: Modifier = Modifier,
     padding: Dp = CinemaxTheme.spacing.smallMedium,
     color: Color = CinemaxTheme.colors.primarySoft,
@@ -332,9 +326,9 @@ private const val IconLayoutId = "icon"
 private const val IndicatorLayoutId = "indicator"
 private const val TransformOriginPivotFractionX = 0f
 private const val TransformOriginPivotFractionY = 0.5f
-private const val BottomNavigationItemLayoutLerpStart = 0.6f
-private const val BottomNavigationItemLayoutLerpStop = 1f
-private val BottomNavigationLayoutAnimationSpec = SpringSpec<Float>(
+private const val BottomNavItemLayoutLerpStart = 0.6f
+private const val BottomNavItemLayoutLerpStop = 1f
+private val BottomBarAnimationSpec = SpringSpec<Float>(
     stiffness = 800f,
     dampingRatio = 0.8f
 )

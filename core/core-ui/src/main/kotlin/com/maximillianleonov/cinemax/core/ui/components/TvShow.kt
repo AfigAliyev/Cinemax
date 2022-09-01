@@ -67,7 +67,6 @@ fun TvShowsDisplay(
         isRefreshing = tvShows.loadState.refresh.isLoading
     )
 ) {
-    SnackbarPagingErrorHandler(items = tvShows)
     CinemaxSwipeRefresh(
         swipeRefreshState = swipeRefreshState,
         onRefresh = tvShows::refresh

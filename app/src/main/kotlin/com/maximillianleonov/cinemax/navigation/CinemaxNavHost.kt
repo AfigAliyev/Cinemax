@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.ui.navigation
+package com.maximillianleonov.cinemax.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.details.navigation.detailsGraph
-import com.maximillianleonov.cinemax.feature.home.navigation.HomeDestination
 import com.maximillianleonov.cinemax.feature.home.navigation.homeGraph
 import com.maximillianleonov.cinemax.feature.list.navigation.ListDestination
 import com.maximillianleonov.cinemax.feature.list.navigation.listGraph
@@ -32,28 +32,30 @@ import com.maximillianleonov.cinemax.feature.search.navigation.searchGraph
 @Composable
 fun CinemaxNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier,
-    startDestination: String = HomeDestination.route
+    startDestination: CinemaxNavigationDestination,
+    onNavigateToDestination: (CinemaxNavigationDestination, String) -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination.route
     ) {
         homeGraph(
-            onSeeAllClick = { contentType ->
-                navController.navigate(route = ListDestination.createNavigationRoute(contentType))
+            onNavigateToListDestination = {
+                onNavigateToDestination(ListDestination, ListDestination.createNavigationRoute(it))
             }
         )
         searchGraph(
-            onSeeAllClick = { contentType ->
-                navController.navigate(route = ListDestination.createNavigationRoute(contentType))
+            onNavigateToListDestination = {
+                onNavigateToDestination(ListDestination, ListDestination.createNavigationRoute(it))
             }
         )
-        listGraph(onBackButtonClick = navController::popBackStack)
+        listGraph(onBackButtonClick = onBackClick)
         detailsGraph()
 
-        composable(route = "wishlist") { /* TODO: Not yet implemented. */ }
-        composable(route = "settings") { /* TODO: Not yet implemented. */ }
+        composable(route = "wishlist_route") { /* TODO: Not yet implemented. */ }
+        composable(route = "settings_route") { /* TODO: Not yet implemented. */ }
     }
 }
