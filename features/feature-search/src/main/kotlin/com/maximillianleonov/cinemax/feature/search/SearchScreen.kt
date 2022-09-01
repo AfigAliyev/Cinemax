@@ -71,7 +71,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun SearchRoute(
-    onSeeAllClick: (ContentType.List) -> Unit,
+    onNavigateToListDestination: (ContentType.List) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
@@ -83,7 +83,7 @@ internal fun SearchRoute(
         searchMovies = searchMovies,
         searchTvShows = searchTvShows,
         onQueryChange = { viewModel.onEvent(SearchEvent.ChangeQuery(it)) },
-        onSeeAllClick = onSeeAllClick,
+        onSeeAllClick = onNavigateToListDestination,
         modifier = modifier
     )
 }

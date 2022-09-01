@@ -21,8 +21,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.ui.main.MainRoute
+import com.maximillianleonov.cinemax.ui.CinemaxApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,9 +33,7 @@ class CinemaxActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            CinemaxTheme {
-                MainRoute()
-            }
+            CinemaxApp()
         }
     }
 }

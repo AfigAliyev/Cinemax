@@ -115,7 +115,6 @@ fun MoviesDisplay(
         isRefreshing = movies.loadState.refresh.isLoading
     )
 ) {
-    SnackbarPagingErrorHandler(items = movies)
     CinemaxSwipeRefresh(
         swipeRefreshState = swipeRefreshState,
         onRefresh = movies::refresh

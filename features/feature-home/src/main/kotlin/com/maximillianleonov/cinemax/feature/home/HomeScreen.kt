@@ -37,13 +37,12 @@ import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.common.ContentType
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxSwipeRefresh
 import com.maximillianleonov.cinemax.core.ui.components.MoviesAndTvShowsContainer
-import com.maximillianleonov.cinemax.core.ui.components.SnackbarErrorHandler
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.feature.home.components.UpcomingMoviesContainer
 
 @Composable
 internal fun HomeRoute(
-    onSeeAllClick: (ContentType.List) -> Unit,
+    onNavigateToListDestination: (ContentType.List) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -51,9 +50,8 @@ internal fun HomeRoute(
     HomeScreen(
         uiState = uiState,
         modifier = modifier,
-        onSeeAllClick = onSeeAllClick,
-        onRefresh = { viewModel.onEvent(HomeEvent.Refresh) },
-        onDismiss = { viewModel.onEvent(HomeEvent.ClearError) }
+        onSeeAllClick = onNavigateToListDestination,
+        onRefresh = { viewModel.onEvent(HomeEvent.Refresh) }
     )
 }
 
@@ -63,17 +61,11 @@ private fun HomeScreen(
     uiState: HomeUiState,
     onSeeAllClick: (ContentType.List) -> Unit,
     onRefresh: () -> Unit,
-    onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = uiState.isLoading
     )
 ) {
-    SnackbarErrorHandler(
-        errorMessage = uiState.error,
-        onRetry = onRefresh,
-        onDismiss = onDismiss
-    )
     CinemaxSwipeRefresh(
         modifier = modifier.windowInsetsPadding(
             WindowInsets.safeDrawing.only(
