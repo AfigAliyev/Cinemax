@@ -21,8 +21,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import com.maximillianleonov.cinemax.core.presentation.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.presentation.main.MainRoute
+import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.ui.main.MainRoute
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
