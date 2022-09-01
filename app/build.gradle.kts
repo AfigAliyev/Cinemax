@@ -112,17 +112,17 @@ dependencies {
     implementation(project(":core:core-data-local"))
     implementation(project(":core:core-data-remote"))
     implementation(project(":core:core-domain"))
-    implementation(project(":core:core-presentation"))
+    implementation(project(":core:core-ui"))
 
     implementation(project(":data:data-local"))
     implementation(project(":data:data-remote"))
 
     implementation(project(":domain"))
 
-    implementation(project(":features:feature-home:presentation"))
-    implementation(project(":features:feature-search:presentation"))
-    implementation(project(":features:feature-list:presentation"))
-    implementation(project(":features:feature-details:presentation"))
+    implementation(project(":features:feature-home"))
+    implementation(project(":features:feature-search"))
+    implementation(project(":features:feature-list"))
+    implementation(project(":features:feature-details"))
 
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.navigation.compose)

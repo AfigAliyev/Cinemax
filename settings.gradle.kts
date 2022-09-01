@@ -39,12 +39,12 @@ include(
     ":core:core-data-local",
     ":core:core-data-remote",
     ":core:core-domain",
-    ":core:core-presentation",
+    ":core:core-ui",
     ":data:data-local",
     ":data:data-remote",
     ":domain",
-    ":features:feature-home:presentation",
-    ":features:feature-search:presentation",
-    ":features:feature-list:presentation",
-    ":features:feature-details:presentation"
+    ":features:feature-home",
+    ":features:feature-search",
+    ":features:feature-list",
+    ":features:feature-details"
 )
