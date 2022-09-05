@@ -20,5 +20,6 @@ import com.maximillianleonov.cinemax.core.ui.common.Event
 
 sealed class HomeEvent : Event {
     object Refresh : HomeEvent()
+    object Retry : HomeEvent()
     object ClearError : HomeEvent()
 }

@@ -32,5 +32,14 @@ data class SearchUiState(
     val searchTvShows: Flow<PagingData<TvShow>> = emptyFlow(),
     val movies: Map<ContentType.Main, List<Movie>> = emptyMap(),
     val tvShows: Map<ContentType.Main, List<TvShow>> = emptyMap(),
+    val loadStates: Map<ContentType.Main, Boolean> = emptyMap(),
     val error: ErrorMessage? = null
-) : State
+) : State {
+    val isLoading: Boolean get() = loadStates.values.any { it }
+    val isError: Boolean get() = error != null
+    val isOfflineModeAvailable: Boolean
+        get() = movies.values.all(List<Movie>::isNotEmpty) &&
+            tvShows.values.all(List<TvShow>::isNotEmpty)
+
+    fun requireError() = checkNotNull(error)
+}

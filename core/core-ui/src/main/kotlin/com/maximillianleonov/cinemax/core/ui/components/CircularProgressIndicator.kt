@@ -29,10 +29,12 @@ fun CinemaxCircularProgressIndicator(
     modifier: Modifier = Modifier,
     color: Color = CinemaxTheme.colors.primaryBlue,
     strokeWidth: Dp = StrokeWidth
-) = CircularProgressIndicator(
-    modifier = modifier,
-    color = color,
-    strokeWidth = strokeWidth
-)
+) {
+    CircularProgressIndicator(
+        modifier = modifier,
+        color = color,
+        strokeWidth = strokeWidth
+    )
+}
 
 private val StrokeWidth = 2.dp

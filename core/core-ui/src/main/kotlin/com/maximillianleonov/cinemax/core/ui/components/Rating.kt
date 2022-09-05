@@ -36,34 +36,36 @@ import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 fun RatingItem(
     rating: Double,
     modifier: Modifier = Modifier
-) = Card(
-    modifier = modifier,
-    shape = CinemaxTheme.shapes.small,
-    backgroundColor = CinemaxTheme.colors.primarySoft.copy(
-        alpha = RatingItemBackgroundColorAlpha
-    ),
-    contentColor = CinemaxTheme.colors.secondaryOrange
 ) {
-    Row(
-        modifier = Modifier.padding(
-            horizontal = CinemaxTheme.spacing.small,
-            vertical = CinemaxTheme.spacing.extraSmall
-        )
+    Card(
+        modifier = modifier,
+        shape = CinemaxTheme.shapes.small,
+        backgroundColor = CinemaxTheme.colors.primarySoft.copy(
+            alpha = RatingItemBackgroundColorAlpha
+        ),
+        contentColor = CinemaxTheme.colors.secondaryOrange
     ) {
-        Icon(
-            modifier = Modifier.size(16.dp),
-            painter = painterResource(id = R.drawable.ic_star),
-            contentDescription = stringResource(id = R.string.rating)
-        )
-        Spacer(modifier = Modifier.width(CinemaxTheme.spacing.extraSmall))
-        Text(
-            text = if (rating == RatingNotRatedValue) {
-                stringResource(id = R.string.not_rated)
-            } else {
-                rating.toString()
-            },
-            style = CinemaxTheme.typography.semiBold.h6
-        )
+        Row(
+            modifier = Modifier.padding(
+                horizontal = CinemaxTheme.spacing.small,
+                vertical = CinemaxTheme.spacing.extraSmall
+            )
+        ) {
+            Icon(
+                modifier = Modifier.size(16.dp),
+                painter = painterResource(id = R.drawable.ic_star),
+                contentDescription = stringResource(id = R.string.rating)
+            )
+            Spacer(modifier = Modifier.width(CinemaxTheme.spacing.extraSmall))
+            Text(
+                text = if (rating == RatingNotRatedValue) {
+                    stringResource(id = R.string.not_rated)
+                } else {
+                    rating.toString()
+                },
+                style = CinemaxTheme.typography.semiBold.h6
+            )
+        }
     }
 }
 

@@ -23,10 +23,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -56,8 +54,13 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.common.ContentType
+import com.maximillianleonov.cinemax.core.ui.components.CinemaxCenteredBox
+import com.maximillianleonov.cinemax.core.ui.components.CinemaxErrorDisplay
+import com.maximillianleonov.cinemax.core.ui.components.CinemaxSwipeRefresh
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxTextField
 import com.maximillianleonov.cinemax.core.ui.components.MoviesAndTvShowsContainer
 import com.maximillianleonov.cinemax.core.ui.components.MoviesDisplay
@@ -82,8 +85,11 @@ internal fun SearchRoute(
         uiState = uiState,
         searchMovies = searchMovies,
         searchTvShows = searchTvShows,
+        onRefresh = { viewModel.onEvent(SearchEvent.Refresh) },
         onQueryChange = { viewModel.onEvent(SearchEvent.ChangeQuery(it)) },
         onSeeAllClick = onNavigateToListDestination,
+        onRetry = { viewModel.onEvent(SearchEvent.Retry) },
+        onOfflineModeClick = { viewModel.onEvent(SearchEvent.ClearError) },
         modifier = modifier
     )
 }
@@ -94,17 +100,19 @@ private fun SearchScreen(
     uiState: SearchUiState,
     searchMovies: LazyPagingItems<Movie>,
     searchTvShows: LazyPagingItems<TvShow>,
+    onRefresh: () -> Unit,
     onQueryChange: (String) -> Unit,
     onSeeAllClick: (ContentType.List) -> Unit,
+    onRetry: () -> Unit,
+    onOfflineModeClick: () -> Unit,
     modifier: Modifier = Modifier,
+    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
+        isRefreshing = uiState.isLoading
+    )
 ) {
     Column(
         modifier = modifier
-            .windowInsetsPadding(
-                WindowInsets.safeDrawing.only(
-                    WindowInsetsSides.Horizontal + WindowInsetsSides.Top
-                )
-            )
+            .windowInsetsPadding(WindowInsets.safeDrawing)
             .fillMaxSize()
             .testTag(tag = ContentTestTag)
     ) {
@@ -115,13 +123,33 @@ private fun SearchScreen(
         )
         AnimatedContent(targetState = uiState.isSearching) { isSearching ->
             if (isSearching) {
-                SearchResultsBlock(searchMovies = searchMovies, searchTvShows = searchTvShows)
+                SearchResultsDisplay(searchMovies = searchMovies, searchTvShows = searchTvShows)
             } else {
-                SuggestionsBlock(
-                    movies = uiState.movies,
-                    tvShows = uiState.tvShows,
-                    onSeeAllClick = onSeeAllClick
-                )
+                CinemaxSwipeRefresh(
+                    swipeRefreshState = swipeRefreshState,
+                    onRefresh = onRefresh
+                ) {
+                    if (uiState.isError) {
+                        CinemaxCenteredBox(
+                            modifier = Modifier
+                                .padding(horizontal = CinemaxTheme.spacing.extraMedium)
+                                .fillMaxSize()
+                        ) {
+                            CinemaxErrorDisplay(
+                                errorMessage = uiState.requireError(),
+                                onRetry = onRetry,
+                                shouldShowOfflineMode = uiState.isOfflineModeAvailable,
+                                onOfflineModeClick = onOfflineModeClick
+                            )
+                        }
+                    } else {
+                        SuggestionsDisplay(
+                            movies = uiState.movies,
+                            tvShows = uiState.tvShows,
+                            onSeeAllClick = onSeeAllClick
+                        )
+                    }
+                }
             }
         }
     }
@@ -133,29 +161,31 @@ private fun SearchTextField(
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     focusManager: FocusManager = LocalFocusManager.current
-) = CinemaxTextField(
-    modifier = modifier
-        .padding(
-            start = CinemaxTheme.spacing.extraMedium,
-            top = CinemaxTheme.spacing.small,
-            end = CinemaxTheme.spacing.extraMedium,
-            bottom = CinemaxTheme.spacing.extraMedium
-        )
-        .fillMaxWidth(),
-    value = query,
-    onValueChange = onQueryChange,
-    placeholderResourceId = R.string.search_placeholder,
-    iconResourceId = R.drawable.ic_search,
-    keyboardOptions = KeyboardOptions(
-        capitalization = KeyboardCapitalization.Words,
-        imeAction = ImeAction.Search
-    ),
-    keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() })
-)
+) {
+    CinemaxTextField(
+        modifier = modifier
+            .padding(
+                start = CinemaxTheme.spacing.extraMedium,
+                top = CinemaxTheme.spacing.small,
+                end = CinemaxTheme.spacing.extraMedium,
+                bottom = CinemaxTheme.spacing.extraMedium
+            )
+            .fillMaxWidth(),
+        value = query,
+        onValueChange = onQueryChange,
+        placeholderResourceId = R.string.search_placeholder,
+        iconResourceId = R.drawable.ic_search,
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Words,
+            imeAction = ImeAction.Search
+        ),
+        keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() })
+    )
+}
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun SearchResultsBlock(
+private fun SearchResultsDisplay(
     searchMovies: LazyPagingItems<Movie>,
     searchTvShows: LazyPagingItems<TvShow>,
     modifier: Modifier = Modifier,
@@ -163,7 +193,7 @@ private fun SearchResultsBlock(
 ) {
     val tabs = remember { SearchTab.values() }
     val pagerState = rememberPagerState()
-    val selectedTabIndex = remember(pagerState) { pagerState.currentPage }
+    val selectedTabIndex = pagerState.currentPage
     Column(modifier = modifier.fillMaxSize()) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
@@ -211,31 +241,33 @@ private fun SearchResultsBlock(
 }
 
 @Composable
-private fun SuggestionsBlock(
+private fun SuggestionsDisplay(
     movies: Map<ContentType.Main, List<Movie>>,
     tvShows: Map<ContentType.Main, List<TvShow>>,
     onSeeAllClick: (ContentType.List) -> Unit,
     modifier: Modifier = Modifier
-) = LazyColumn(
-    modifier = modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium),
-    contentPadding = PaddingValues(bottom = CinemaxTheme.spacing.extraMedium)
 ) {
-    item {
-        MoviesAndTvShowsContainer(
-            titleResourceId = R.string.discover,
-            onSeeAllClick = { onSeeAllClick(ContentType.List.Discover) },
-            movies = movies[ContentType.Main.DiscoverMovies].orEmpty(),
-            tvShows = tvShows[ContentType.Main.DiscoverTvShows].orEmpty()
-        )
-    }
-    item {
-        MoviesAndTvShowsContainer(
-            titleResourceId = R.string.trending,
-            onSeeAllClick = { onSeeAllClick(ContentType.List.Trending) },
-            movies = movies[ContentType.Main.TrendingMovies].orEmpty(),
-            tvShows = tvShows[ContentType.Main.TrendingTvShows].orEmpty()
-        )
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium),
+        contentPadding = PaddingValues(bottom = CinemaxTheme.spacing.extraMedium)
+    ) {
+        item {
+            MoviesAndTvShowsContainer(
+                titleResourceId = R.string.discover,
+                onSeeAllClick = { onSeeAllClick(ContentType.List.Discover) },
+                movies = movies[ContentType.Main.DiscoverMovies].orEmpty(),
+                tvShows = tvShows[ContentType.Main.DiscoverTvShows].orEmpty()
+            )
+        }
+        item {
+            MoviesAndTvShowsContainer(
+                titleResourceId = R.string.trending,
+                onSeeAllClick = { onSeeAllClick(ContentType.List.Trending) },
+                movies = movies[ContentType.Main.TrendingMovies].orEmpty(),
+                tvShows = tvShows[ContentType.Main.TrendingTvShows].orEmpty()
+            )
+        }
     }
 }
 

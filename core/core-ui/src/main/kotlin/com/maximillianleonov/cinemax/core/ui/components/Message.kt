@@ -35,20 +35,22 @@ import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 internal fun NoResultsDisplay(
     @StringRes messageResourceId: Int,
     modifier: Modifier = Modifier
-) = CinemaxCenteredBox(modifier = modifier.padding(horizontal = CinemaxTheme.spacing.largest)) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.no_results),
-            contentDescription = stringResource(id = messageResourceId)
-        )
-        Text(
-            text = stringResource(id = messageResourceId),
-            style = CinemaxTheme.typography.medium.h3,
-            color = CinemaxTheme.colors.textWhite,
-            textAlign = TextAlign.Center
-        )
+) {
+    CinemaxCenteredBox(modifier = modifier.padding(horizontal = CinemaxTheme.spacing.largest)) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.no_results),
+                contentDescription = stringResource(id = messageResourceId)
+            )
+            Text(
+                text = stringResource(id = messageResourceId),
+                style = CinemaxTheme.typography.medium.h3,
+                color = CinemaxTheme.colors.textWhite,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }

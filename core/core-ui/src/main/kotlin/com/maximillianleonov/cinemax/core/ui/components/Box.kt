@@ -28,9 +28,11 @@ fun CinemaxCenteredBox(
     contentAlignment: Alignment = Alignment.Center,
     propagateMinConstraints: Boolean = false,
     content: @Composable BoxScope.() -> Unit
-) = Box(
-    modifier = modifier,
-    contentAlignment = contentAlignment,
-    propagateMinConstraints = propagateMinConstraints,
-    content = content
-)
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = contentAlignment,
+        propagateMinConstraints = propagateMinConstraints,
+        content = content
+    )
+}

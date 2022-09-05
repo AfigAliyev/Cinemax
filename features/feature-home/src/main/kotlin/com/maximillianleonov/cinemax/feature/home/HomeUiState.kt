@@ -29,4 +29,10 @@ data class HomeUiState(
     val error: ErrorMessage? = null
 ) : State {
     val isLoading: Boolean get() = loadStates.values.any { it }
+    val isError: Boolean get() = error != null
+    val isOfflineModeAvailable: Boolean
+        get() = movies.values.all(List<Movie>::isNotEmpty) &&
+            tvShows.values.all(List<TvShow>::isNotEmpty)
+
+    fun requireError() = checkNotNull(error)
 }

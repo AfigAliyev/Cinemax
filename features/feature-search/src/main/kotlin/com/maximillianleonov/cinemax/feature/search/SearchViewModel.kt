@@ -59,6 +59,7 @@ class SearchViewModel @Inject constructor(
     override fun onEvent(event: SearchEvent) = when (event) {
         is SearchEvent.ChangeQuery -> onQueryChange(query = event.value)
         SearchEvent.Refresh -> onRefresh()
+        SearchEvent.Retry -> onRetry()
         SearchEvent.ClearError -> onClearError()
     }
 
@@ -108,6 +109,18 @@ class SearchViewModel @Inject constructor(
         )
     }
 
+    private fun onRefresh() {
+        contentJobs.values.forEach(Job::cancel)
+        contentJobs = getContentJobs()
+    }
+
+    private fun onRetry() {
+        onClearError()
+        onRefresh()
+    }
+
+    private fun onClearError() = _uiState.update { it.copy(error = null) }
+
     private fun loadDiscoverMovies() = viewModelScope.launch {
         movieUseCases.getDiscoverMoviesUseCase().handle(
             onLoading = ::handleDiscoverMoviesLoading,
@@ -147,7 +160,7 @@ class SearchViewModel @Inject constructor(
         handleSuccess(contentLoadType = ContentType.Main.DiscoverMovies, movies = movies)
 
     private fun handleDiscoverMoviesFailure(throwable: Throwable) =
-        handleFailure(error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.DiscoverMovies, error = throwable)
 
     private fun handleDiscoverTvShowsLoading(tvShows: List<TvShowModel>?) =
         handleLoading(contentLoadType = ContentType.Main.DiscoverTvShows, tvShows = tvShows)
@@ -156,7 +169,7 @@ class SearchViewModel @Inject constructor(
         handleSuccess(contentLoadType = ContentType.Main.DiscoverTvShows, tvShows = tvShows)
 
     private fun handleDiscoverTvShowsFailure(throwable: Throwable) =
-        handleFailure(error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.DiscoverTvShows, error = throwable)
 
     private fun handleTrendingMoviesLoading(movies: List<MovieModel>?) =
         handleLoading(contentLoadType = ContentType.Main.TrendingMovies, movies = movies)
@@ -165,7 +178,7 @@ class SearchViewModel @Inject constructor(
         handleSuccess(contentLoadType = ContentType.Main.TrendingMovies, movies = movies)
 
     private fun handleTrendingMoviesFailure(throwable: Throwable) =
-        handleFailure(error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.TrendingMovies, error = throwable)
 
     private fun handleTrendingTvShowsLoading(tvShows: List<TvShowModel>?) =
         handleLoading(contentLoadType = ContentType.Main.TrendingTvShows, tvShows = tvShows)
@@ -174,7 +187,7 @@ class SearchViewModel @Inject constructor(
         handleSuccess(contentLoadType = ContentType.Main.TrendingTvShows, tvShows = tvShows)
 
     private fun handleTrendingTvShowsFailure(throwable: Throwable) =
-        handleFailure(error = throwable)
+        handleFailure(contentLoadType = ContentType.Main.TrendingTvShows, error = throwable)
 
     @JvmName("handleMoviesLoading")
     private fun handleLoading(contentLoadType: ContentType.Main, movies: List<MovieModel>?) =
@@ -182,7 +195,8 @@ class SearchViewModel @Inject constructor(
             it.copy(
                 movies = it.movies + (
                     contentLoadType to movies?.map(MovieModel::toMovie).orEmpty()
-                    )
+                    ),
+                loadStates = it.loadStates + (contentLoadType to true)
             )
         }
 
@@ -192,31 +206,36 @@ class SearchViewModel @Inject constructor(
             it.copy(
                 tvShows = it.tvShows + (
                     contentLoadType to tvShows?.map(TvShowModel::toTvShow).orEmpty()
-                    )
+                    ),
+                loadStates = it.loadStates + (contentLoadType to true)
             )
         }
 
     @JvmName("handleMoviesSuccess")
     private fun handleSuccess(contentLoadType: ContentType.Main, movies: List<MovieModel>) =
         _uiState.update {
-            it.copy(movies = it.movies + (contentLoadType to movies.map(MovieModel::toMovie)))
+            it.copy(
+                movies = it.movies + (contentLoadType to movies.map(MovieModel::toMovie)),
+                loadStates = it.loadStates + (contentLoadType to false)
+            )
         }
 
     @JvmName("handleTvShowsSuccess")
     private fun handleSuccess(contentLoadType: ContentType.Main, tvShows: List<TvShowModel>) =
         _uiState.update {
-            it.copy(tvShows = it.tvShows + (contentLoadType to tvShows.map(TvShowModel::toTvShow)))
+            it.copy(
+                tvShows = it.tvShows + (contentLoadType to tvShows.map(TvShowModel::toTvShow)),
+                loadStates = it.loadStates + (contentLoadType to false)
+            )
         }
 
-    private fun handleFailure(error: Throwable) =
-        _uiState.update { it.copy(error = error.toErrorMessage()) }
-
-    private fun onRefresh() {
-        contentJobs.values.forEach(Job::cancel)
-        contentJobs = getContentJobs()
-    }
-
-    private fun onClearError() = _uiState.update { it.copy(error = null) }
+    private fun handleFailure(contentLoadType: ContentType.Main, error: Throwable) =
+        _uiState.update {
+            it.copy(
+                loadStates = it.loadStates + (contentLoadType to false),
+                error = error.toErrorMessage()
+            )
+        }
 }
 
 private const val SEARCH_DEBOUNCE_DURATION = 500L

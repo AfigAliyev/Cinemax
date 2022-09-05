@@ -19,9 +19,7 @@ package com.maximillianleonov.cinemax.feature.list
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -85,11 +83,7 @@ private fun ListScreen(
 ) {
     Scaffold(
         modifier = modifier
-            .windowInsetsPadding(
-                WindowInsets.safeDrawing.only(
-                    WindowInsetsSides.Horizontal + WindowInsetsSides.Top
-                )
-            )
+            .windowInsetsPadding(WindowInsets.safeDrawing)
             .fillMaxSize(),
         topBar = {
             CinemaxTopAppBar(
@@ -122,7 +116,7 @@ private fun MoviesAndTvShowsDisplay(
 ) {
     val tabs = remember { ListTab.values() }
     val pagerState = rememberPagerState()
-    val selectedTabIndex = remember(pagerState) { pagerState.currentPage }
+    val selectedTabIndex = pagerState.currentPage
     Column(
         modifier = modifier
             .fillMaxSize()

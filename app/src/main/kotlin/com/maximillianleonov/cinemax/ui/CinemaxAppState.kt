@@ -46,7 +46,12 @@ class CinemaxAppState(
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    var currentTopLevelDestination by mutableStateOf(startDestination)
+    val currentTopLevelDestination: TopLevelDestination
+        @Composable get() {
+            topLevelDestinations.firstOrNull { it.route == currentDestination?.route }
+                ?.let { _currentTopLevelDestination = it }
+            return _currentTopLevelDestination
+        }
 
     val shouldShowBottomBar: Boolean
         @Composable get() = currentDestination?.route == currentTopLevelDestination.route
@@ -55,6 +60,8 @@ class CinemaxAppState(
      * Top level destinations to be used in the BottomBar.
      */
     val topLevelDestinations = TopLevelDestination.values()
+
+    private var _currentTopLevelDestination by mutableStateOf(startDestination)
 
     /**
      * UI logic for navigating to a particular destination in the app. The NavigationOptions to
@@ -85,8 +92,6 @@ class CinemaxAppState(
                     // Restore state when reselecting a previously selected item.
                     restoreState = true
                 }
-                // Update the current top level destination with the new one.
-                currentTopLevelDestination = destination
             } else {
                 navigate(route ?: destination.route)
             }
