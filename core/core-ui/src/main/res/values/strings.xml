@@ -37,6 +37,7 @@
     <string name="retry">Retry</string>
     <string name="no_internet_connection">No internet connection.</string>
     <string name="unknown_error">An unknown error has occurred.</string>
+    <string name="offline_mode">Offline Mode</string>
 
     <string name="movies">Movies</string>
     <string name="tv_shows">TV Shows</string>

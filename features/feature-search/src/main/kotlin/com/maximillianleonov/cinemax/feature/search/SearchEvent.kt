@@ -22,5 +22,6 @@ sealed class SearchEvent : Event {
     data class ChangeQuery(val value: String) : SearchEvent()
 
     object Refresh : SearchEvent()
+    object Retry : SearchEvent()
     object ClearError : SearchEvent()
 }

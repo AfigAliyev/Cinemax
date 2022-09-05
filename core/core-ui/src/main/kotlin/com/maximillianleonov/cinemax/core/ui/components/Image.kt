@@ -27,12 +27,14 @@ import coil.compose.SubcomposeAsyncImageScope
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 
 @Composable
-fun SubcomposeAsyncImageScope.SubcomposeAsyncImageHandler() = when (painter.state) {
-    is AsyncImagePainter.State.Loading -> CinemaxPlaceholder()
-    is AsyncImagePainter.State.Success -> SubcomposeAsyncImageContent()
-    AsyncImagePainter.State.Empty, is AsyncImagePainter.State.Error -> Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(CinemaxTheme.colors.primarySoft)
-    )
+fun SubcomposeAsyncImageScope.SubcomposeAsyncImageHandler() {
+    when (painter.state) {
+        is AsyncImagePainter.State.Loading -> CinemaxPlaceholder()
+        is AsyncImagePainter.State.Success -> SubcomposeAsyncImageContent()
+        AsyncImagePainter.State.Empty, is AsyncImagePainter.State.Error -> Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(CinemaxTheme.colors.primarySoft)
+        )
+    }
 }

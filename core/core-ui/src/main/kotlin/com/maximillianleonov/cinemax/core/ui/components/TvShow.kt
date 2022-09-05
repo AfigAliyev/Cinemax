@@ -21,28 +21,34 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.mapper.toNames
+import com.maximillianleonov.cinemax.core.ui.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.ui.model.TvShow
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.ui.util.error
 import com.maximillianleonov.cinemax.core.ui.util.isEmpty
+import com.maximillianleonov.cinemax.core.ui.util.isError
+import com.maximillianleonov.cinemax.core.ui.util.isFinished
 import com.maximillianleonov.cinemax.core.ui.util.isLoading
+import com.maximillianleonov.cinemax.core.ui.util.isNotEmpty
+import com.maximillianleonov.cinemax.core.ui.util.toErrorMessage
 
 @Composable
 fun TvShowsContainer(
     tvShows: List<TvShow>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    shouldShowPlaceholder: Boolean = tvShows.isEmpty()
 ) {
-    val shouldShowPlaceholder = tvShows.isEmpty()
     LazyRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.smallMedium),
@@ -58,90 +64,125 @@ fun TvShowsContainer(
     }
 }
 
-@Suppress("ReusedModifierInstance")
 @Composable
 fun TvShowsDisplay(
     tvShows: LazyPagingItems<TvShow>,
     modifier: Modifier = Modifier,
     swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = tvShows.loadState.refresh.isLoading
-    )
+        isRefreshing = tvShows.loadState.refresh.isLoading()
+    ),
+    emptyDisplay: @Composable LazyItemScope.() -> Unit = {
+        NoResultsDisplay(
+            modifier = Modifier.fillParentMaxSize(),
+            messageResourceId = R.string.no_tv_show_results
+        )
+    },
+    loadingDisplay: @Composable LazyItemScope.() -> Unit = { CinemaxCircularProgressIndicator() },
+    errorDisplay: @Composable LazyItemScope.(errorMessage: ErrorMessage) -> Unit = { errorMessage ->
+        CinemaxErrorDisplay(
+            errorMessage = errorMessage,
+            onRetry = tvShows::retry,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 ) {
     CinemaxSwipeRefresh(
         swipeRefreshState = swipeRefreshState,
-        onRefresh = tvShows::refresh
+        onRefresh = tvShows::refresh,
+        modifier = modifier
     ) {
         LazyColumn(
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium),
             contentPadding = PaddingValues(CinemaxTheme.spacing.extraMedium)
         ) {
-            if (tvShows.loadState.refresh is LoadState.NotLoading) {
-                items(tvShows) { tvShow ->
-                    if (tvShow == null) {
-                        VerticalTvShowItemPlaceholder()
-                    } else {
-                        VerticalTvShowItem(tvShow = tvShow)
+            when {
+                tvShows.isNotEmpty() -> {
+                    items(tvShows) { tvShow ->
+                        if (tvShow == null) {
+                            VerticalTvShowItemPlaceholder()
+                        } else {
+                            VerticalTvShowItem(tvShow = tvShow)
+                        }
+                    }
+                    if (tvShows.loadState.refresh.isError()) {
+                        item { errorDisplay(errorMessage = tvShows.loadState.refresh.error.toErrorMessage()) }
                     }
                 }
-                if (tvShows.isEmpty) {
+                tvShows.loadState.refresh.isLoading() -> {
+                    items(PlaceholderCount) { VerticalTvShowItemPlaceholder() }
+                }
+                tvShows.loadState.refresh.isFinished() -> {
+                    if (tvShows.isEmpty()) {
+                        item(content = emptyDisplay)
+                    }
+                }
+                tvShows.loadState.refresh.isError() -> {
                     item {
-                        NoResultsDisplay(
-                            modifier = Modifier.fillParentMaxSize(),
-                            messageResourceId = R.string.no_tv_show_results
-                        )
+                        CinemaxCenteredBox(modifier = Modifier.fillParentMaxSize()) {
+                            errorDisplay(
+                                errorMessage = tvShows.loadState.refresh.error.toErrorMessage()
+                            )
+                        }
                     }
                 }
-            } else {
-                items(PlaceholderCount) { VerticalTvShowItemPlaceholder() }
             }
-            if (tvShows.loadState.append is LoadState.Loading) {
-                item {
-                    CinemaxCenteredBox(modifier = Modifier.fillMaxWidth()) {
-                        CinemaxCircularProgressIndicator()
-                    }
-                }
+            if (tvShows.loadState.append.isLoading()) {
+                item { CinemaxCenteredBox(modifier = Modifier.fillMaxWidth()) { loadingDisplay() } }
+            }
+            if (tvShows.loadState.append.isError()) {
+                item { errorDisplay(errorMessage = tvShows.loadState.append.error.toErrorMessage()) }
             }
         }
     }
 }
 
+@Suppress("ReusedModifierInstance")
 @Composable
 fun HorizontalTvShowItem(
     tvShow: TvShow,
     modifier: Modifier = Modifier
-) = with(tvShow) {
-    HorizontalContentItem(
-        title = name,
-        posterPath = posterPath,
-        voteAverage = voteAverage,
-        genres = genres.toNames(),
-        modifier = modifier
-    )
+) {
+    with(tvShow) {
+        HorizontalContentItem(
+            title = name,
+            posterPath = posterPath,
+            voteAverage = voteAverage,
+            genres = genres.toNames(),
+            modifier = modifier
+        )
+    }
 }
 
 @Composable
 fun HorizontalTvShowItemPlaceholder(
     modifier: Modifier = Modifier
-) = HorizontalContentItemPlaceholder(modifier = modifier)
+) {
+    HorizontalContentItemPlaceholder(modifier = modifier)
+}
 
+@Suppress("ReusedModifierInstance")
 @Composable
 fun VerticalTvShowItem(
     tvShow: TvShow,
     modifier: Modifier = Modifier
-) = with(tvShow) {
-    VerticalContentItem(
-        title = name,
-        overview = overview,
-        posterPath = posterPath,
-        voteAverage = voteAverage,
-        releaseDate = firstAirDate,
-        genres = genres.toNames(),
-        modifier = modifier
-    )
+) {
+    with(tvShow) {
+        VerticalContentItem(
+            title = name,
+            overview = overview,
+            posterPath = posterPath,
+            voteAverage = voteAverage,
+            releaseDate = firstAirDate,
+            genres = genres.toNames(),
+            modifier = modifier
+        )
+    }
 }
 
 @Composable
 fun VerticalTvShowItemPlaceholder(
     modifier: Modifier = Modifier
-) = VerticalContentItemPlaceholder(modifier = modifier)
+) {
+    VerticalContentItemPlaceholder(modifier = modifier)
+}

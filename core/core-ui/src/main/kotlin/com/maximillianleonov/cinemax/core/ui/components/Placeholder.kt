@@ -34,15 +34,17 @@ fun CinemaxPlaceholder(
     color: Color = CinemaxTheme.colors.primarySoft,
     shape: Shape = CinemaxTheme.shapes.medium,
     highlight: PlaceholderHighlight = PlaceholderHighlight.shimmer()
-) = Box(
-    modifier = modifier
-        .fillMaxSize()
-        .placeholder(
-            visible = visible,
-            color = color,
-            shape = shape,
-            highlight = highlight
-        )
-)
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .placeholder(
+                visible = visible,
+                color = color,
+                shape = shape,
+                highlight = highlight
+            )
+    )
+}
 
 internal const val PlaceholderCount = 20

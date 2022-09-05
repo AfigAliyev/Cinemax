@@ -46,46 +46,51 @@ fun CinemaxTopAppBar(
     onBackButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
     elevation: Dp = 0.dp
-) = TopAppBar(
-    modifier = modifier,
-    contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.extraMedium),
-    elevation = elevation
 ) {
-    CinemaxBackButton(onClick = onBackButtonClick)
-    Text(
-        modifier = Modifier
-            .padding(end = CinemaxBackButtonShapeSize)
-            .fillMaxWidth(),
-        text = stringResource(id = titleResourceId),
-        style = CinemaxTheme.typography.semiBold.h4,
-        color = CinemaxTheme.colors.textWhite,
-        textAlign = TextAlign.Center
-    )
+    TopAppBar(
+        modifier = modifier,
+        contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.extraMedium),
+        elevation = elevation
+    ) {
+        CinemaxBackButton(onClick = onBackButtonClick)
+        Text(
+            modifier = Modifier
+                .padding(end = CinemaxBackButtonShapeSize)
+                .fillMaxWidth(),
+            text = stringResource(id = titleResourceId),
+            style = CinemaxTheme.typography.semiBold.h4,
+            color = CinemaxTheme.colors.textWhite,
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
+@Suppress("ReusedModifierInstance")
 @Composable
 private fun CinemaxBackButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
-) = CompositionLocalProvider(
-    LocalMinimumTouchTargetEnforcement provides false
 ) {
-    IconButton(
-        modifier = modifier
-            .size(CinemaxBackButtonShapeSize)
-            .background(
-                color = CinemaxTheme.colors.primarySoft,
-                shape = CinemaxTheme.shapes.smallMedium
-            )
-            .testTag(tag = BackTestTag),
-        onClick = onClick
+    CompositionLocalProvider(
+        LocalMinimumTouchTargetEnforcement provides false
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_arrow_back),
-            contentDescription = stringResource(id = R.string.back),
-            tint = CinemaxTheme.colors.textWhite
-        )
+        IconButton(
+            modifier = modifier
+                .size(CinemaxBackButtonShapeSize)
+                .background(
+                    color = CinemaxTheme.colors.primarySoft,
+                    shape = CinemaxTheme.shapes.smallMedium
+                )
+                .testTag(tag = BackTestTag),
+            onClick = onClick
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_back),
+                contentDescription = stringResource(id = R.string.back),
+                tint = CinemaxTheme.colors.textWhite
+            )
+        }
     }
 }
 

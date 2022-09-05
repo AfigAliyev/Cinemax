@@ -49,6 +49,7 @@ class HomeViewModel @Inject constructor(
 
     override fun onEvent(event: HomeEvent) = when (event) {
         HomeEvent.Refresh -> onRefresh()
+        HomeEvent.Retry -> onRetry()
         HomeEvent.ClearError -> onClearError()
     }
 
@@ -65,6 +66,11 @@ class HomeViewModel @Inject constructor(
     private fun onRefresh() {
         contentJobs.values.forEach(Job::cancel)
         contentJobs = getContentJobs()
+    }
+
+    private fun onRetry() {
+        onClearError()
+        onRefresh()
     }
 
     private fun onClearError() = _uiState.update { it.copy(error = null) }

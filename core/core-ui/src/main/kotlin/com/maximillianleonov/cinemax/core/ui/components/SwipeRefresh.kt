@@ -42,10 +42,12 @@ fun CinemaxSwipeRefresh(
             )
         },
     content: @Composable () -> Unit
-) = SwipeRefresh(
-    state = swipeRefreshState,
-    onRefresh = onRefresh,
-    modifier = modifier,
-    indicator = indicator,
-    content = content
-)
+) {
+    SwipeRefresh(
+        state = swipeRefreshState,
+        onRefresh = onRefresh,
+        modifier = modifier,
+        indicator = indicator,
+        content = content
+    )
+}

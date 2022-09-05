@@ -16,23 +16,17 @@
 
 package com.maximillianleonov.cinemax.core.ui.util
 
-import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 
-val LoadState.isLoading: Boolean
-    get() = this is LoadState.Loading
+fun LoadState.isLoading() = this is LoadState.Loading
+fun LoadState.isFinished() = this is LoadState.NotLoading
+fun LoadState.isError() = this is LoadState.Error
 
-val <T : Any> LazyPagingItems<T>.isEmpty: Boolean
-    get() = loadState.append.endOfPaginationReached && itemCount == 0
+val LoadState.error: Throwable
+    get() = (this as LoadState.Error).error
 
-val CombinedLoadStates.isError: Boolean
-    get() = listOf(append, prepend, refresh).any { loadState -> loadState is LoadState.Error }
+fun <T : Any> LazyPagingItems<T>.isEmpty() =
+    loadState.append.endOfPaginationReached && itemCount == 0
 
-val CombinedLoadStates.error: Throwable?
-    get() = when {
-        append is LoadState.Error -> append as LoadState.Error
-        prepend is LoadState.Error -> prepend as LoadState.Error
-        refresh is LoadState.Error -> refresh as LoadState.Error
-        else -> null
-    }?.error
+fun <T : Any> LazyPagingItems<T>.isNotEmpty() = itemCount > 0
