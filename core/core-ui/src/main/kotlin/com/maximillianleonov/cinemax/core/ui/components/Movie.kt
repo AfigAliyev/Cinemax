@@ -62,7 +62,9 @@ fun MoviesContainer(
     shouldShowPlaceholder: Boolean = movies.isEmpty()
 ) {
     LazyRow(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag(tag = MoviesContainerTestTag),
         horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.smallMedium),
         contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.smallMedium)
     ) {
@@ -83,7 +85,7 @@ fun MoviesContainer(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.testTag(tag = MoviesContainerTestTag)) {
         Row(
             modifier = Modifier
                 .padding(horizontal = CinemaxTheme.spacing.extraMedium)
@@ -97,7 +99,7 @@ fun MoviesContainer(
                 color = CinemaxTheme.colors.textWhite
             )
             TextButton(
-                modifier = Modifier.testTag(tag = SeeAllTag),
+                modifier = Modifier.testTag(tag = SeeAllTestTag),
                 onClick = onSeeAllClick
             ) {
                 Text(
@@ -235,4 +237,5 @@ fun VerticalMovieItemPlaceholder(
     VerticalContentItemPlaceholder(modifier = modifier)
 }
 
-private const val SeeAllTag = "seeall"
+private const val MoviesContainerTestTag = "moviescontainer"
+private const val SeeAllTestTag = "seeall"
