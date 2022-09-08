@@ -18,16 +18,13 @@ package com.maximillianleonov.cinemax.benchmark.search
 
 import android.view.KeyEvent
 import androidx.benchmark.macro.MacrobenchmarkScope
-import androidx.test.uiautomator.By
-import androidx.test.uiautomator.Until
+import com.maximillianleonov.cinemax.benchmark.util.findObject
+import com.maximillianleonov.cinemax.benchmark.util.waitForContent
 
-fun MacrobenchmarkScope.searchWaitForContent() = with(device) {
-    wait(Until.hasObject(By.res(ContentTestTag)), Timeout)
-    waitForIdle()
-}
+internal fun MacrobenchmarkScope.searchWaitForContent() = waitForContent(ContentTestTag)
 
-fun MacrobenchmarkScope.searchSearchContent() = with(device) {
-    findObject(By.res(TextFieldTestTag)).click()
+internal fun MacrobenchmarkScope.searchSearchContent() = with(device) {
+    findObject(TextFieldTestTag).click()
     pressKeyCode(KeyEvent.KEYCODE_T)
     pressKeyCode(KeyEvent.KEYCODE_E)
     pressKeyCode(KeyEvent.KEYCODE_S)
@@ -40,4 +37,3 @@ fun MacrobenchmarkScope.searchSearchContent() = with(device) {
 private const val TestTag = "search"
 private const val ContentTestTag = "$TestTag:content"
 private const val TextFieldTestTag = "$TestTag:textfield"
-private const val Timeout = 30_000L

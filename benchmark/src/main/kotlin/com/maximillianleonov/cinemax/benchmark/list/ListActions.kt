@@ -17,30 +17,27 @@
 package com.maximillianleonov.cinemax.benchmark.list
 
 import androidx.benchmark.macro.MacrobenchmarkScope
-import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Direction
-import androidx.test.uiautomator.Until
+import com.maximillianleonov.cinemax.benchmark.util.findObject
+import com.maximillianleonov.cinemax.benchmark.util.findScrollable
+import com.maximillianleonov.cinemax.benchmark.util.waitForContent
 
-internal fun MacrobenchmarkScope.listWaitForContent() = with(device) {
-    wait(Until.hasObject(By.res(ContentTestTag)), Timeout)
-    waitForIdle()
-}
+internal fun MacrobenchmarkScope.listWaitForContent() = waitForContent(ContentTestTag)
 
-internal fun MacrobenchmarkScope.listScrollContent() = with(device) {
-    val content = findObject(By.res(ContentTestTag))
-    content.fling(Direction.DOWN)
-    waitForIdle()
-    content.fling(Direction.RIGHT)
-    waitForIdle()
-    content.fling(Direction.DOWN)
+internal fun MacrobenchmarkScope.listScrollContent() {
+    val content = device.findScrollable(ContentTestTag)
+    with(content) {
+        fling(Direction.DOWN)
+        fling(Direction.RIGHT)
+        fling(Direction.DOWN)
+    }
 }
 
 internal fun MacrobenchmarkScope.listNavigateBack() = with(device) {
-    findObject(By.res(BackTestTag)).click()
+    findObject(BackTestTag).click()
     waitForIdle()
 }
 
 private const val TestTag = "list"
 private const val ContentTestTag = "$TestTag:content"
 private const val BackTestTag = "back"
-private const val Timeout = 30_000L

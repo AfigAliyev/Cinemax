@@ -17,29 +17,31 @@
 package com.maximillianleonov.cinemax.benchmark.home
 
 import androidx.benchmark.macro.MacrobenchmarkScope
-import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Direction
-import androidx.test.uiautomator.Until
+import com.maximillianleonov.cinemax.benchmark.util.findObject
+import com.maximillianleonov.cinemax.benchmark.util.findScrollable
+import com.maximillianleonov.cinemax.benchmark.util.scrollAndFindObject
+import com.maximillianleonov.cinemax.benchmark.util.waitForContent
 
-internal fun MacrobenchmarkScope.homeWaitForContent() = with(device) {
-    wait(Until.hasObject(By.res(ContentTestTag)), Timeout)
-    waitForIdle()
-}
+internal fun MacrobenchmarkScope.homeWaitForContent() = waitForContent(ContentTestTag)
 
-internal fun MacrobenchmarkScope.homeScrollContent() = with(device) {
-    findObject(By.res(UpcomingTestTag)).fling(Direction.RIGHT)
-    findObject(By.res(ContentTestTag)).fling(Direction.DOWN)
-    waitForIdle()
-    findObject(By.res(NowPlayingTestTag)).fling(Direction.RIGHT)
+internal fun MacrobenchmarkScope.homeScrollContent() {
+    val content = device.findScrollable(ContentTestTag)
+    with(content) {
+        findObject(UpcomingTestTag).fling(Direction.RIGHT)
+        scrollAndFindObject(NowPlayingTestTag)
+            .scrollAndFindObject(MoviesContainerTestTag)
+            .fling(Direction.RIGHT)
+    }
 }
 
 internal fun MacrobenchmarkScope.homeNavigateToListScreen() = with(device) {
-    findObject(By.res(SeeAllTestTag)).click()
+    findObject(SeeAllTestTag).click()
     waitForIdle()
 }
 
 internal fun MacrobenchmarkScope.homeNavigateToSearchScreen() = with(device) {
-    findObject(By.res(SearchRouteTestTag)).click()
+    findObject(SearchRouteTestTag).click()
     waitForIdle()
 }
 
@@ -49,5 +51,5 @@ private const val ContentTestTag = "$TestTag:content"
 private const val UpcomingTestTag = "$TestTag:upcoming"
 private const val NowPlayingTestTag = "$TestTag:nowplaying"
 private const val SearchRouteTestTag = "$BottomNavigationBarTestTag:search_route"
+private const val MoviesContainerTestTag = "moviescontainer"
 private const val SeeAllTestTag = "seeall"
-private const val Timeout = 30_000L
