@@ -21,8 +21,8 @@ import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieEnt
 import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toTopRatedMovieEntity
 import com.maximillianleonov.cinemax.data.local.source.TopRatedLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.source.TopRatedRemoteDataSource
 
 class TopRatedMovieRemoteMediator(

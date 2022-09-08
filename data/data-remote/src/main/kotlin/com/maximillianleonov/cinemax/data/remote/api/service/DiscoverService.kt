@@ -18,8 +18,8 @@ package com.maximillianleonov.cinemax.data.remote.api.service
 
 import com.maximillianleonov.cinemax.core.data.util.Constants
 import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
-import com.maximillianleonov.cinemax.data.remote.dto.TvShowResponseDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.MovieResponseDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.TvShowResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

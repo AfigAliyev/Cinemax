@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.data.remote.dto
+package com.maximillianleonov.cinemax.data.remote.dto.movie
 
 import com.maximillianleonov.cinemax.core.data.util.Constants
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DatesDto(
-    @SerialName(Constants.Fields.MAXIMUM)
-    val maximum: String,
+data class BelongsToCollectionDto(
+    @SerialName(Constants.Fields.ID)
+    val id: Int,
 
-    @SerialName(Constants.Fields.MINIMUM)
-    val minimum: String
+    @SerialName(Constants.Fields.NAME)
+    val name: String,
+
+    @SerialName(Constants.Fields.POSTER_PATH)
+    val posterPath: String?,
+
+    @SerialName(Constants.Fields.BACKDROP_PATH)
+    val backdropPath: String?
 )

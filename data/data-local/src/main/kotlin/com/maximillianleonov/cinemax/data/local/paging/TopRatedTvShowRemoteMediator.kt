@@ -21,7 +21,7 @@ import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowEn
 import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toTopRatedTvShowEntity
 import com.maximillianleonov.cinemax.data.local.source.TopRatedLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.TvShowResponseDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.TvShowResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDto
 import com.maximillianleonov.cinemax.data.remote.source.TopRatedRemoteDataSource
 

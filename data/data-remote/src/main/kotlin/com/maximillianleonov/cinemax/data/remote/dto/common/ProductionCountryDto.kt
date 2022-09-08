@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.data.remote.api.service
+package com.maximillianleonov.cinemax.data.remote.dto.common
 
 import com.maximillianleonov.cinemax.core.data.util.Constants
-import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.data.remote.dto.response.MovieResponseDto
-import retrofit2.http.GET
-import retrofit2.http.Query
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-interface UpcomingService {
-    @GET(Constants.Remote.UPCOMING_MOVIE_PATH)
-    suspend fun getMovies(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<MovieResponseDto>
-}
+@Serializable
+data class ProductionCountryDto(
+    @SerialName(Constants.Fields.NAME)
+    val name: String,
+
+    @SerialName(Constants.Fields.ISO_3166_1)
+    val iso: String
+)

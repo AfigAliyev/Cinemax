@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.data.remote.api.service
+package com.maximillianleonov.cinemax.data.remote.dto.tvshow
 
 import com.maximillianleonov.cinemax.core.data.util.Constants
-import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.data.remote.dto.response.MovieResponseDto
-import retrofit2.http.GET
-import retrofit2.http.Query
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-interface UpcomingService {
-    @GET(Constants.Remote.UPCOMING_MOVIE_PATH)
-    suspend fun getMovies(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<MovieResponseDto>
-}
+@Serializable
+data class CreatedByDto(
+    @SerialName(Constants.Fields.ID)
+    val id: Int,
+
+    @SerialName(Constants.Fields.CREDIT_ID)
+    val creditId: String,
+
+    @SerialName(Constants.Fields.NAME)
+    val name: String,
+
+    @SerialName(Constants.Fields.GENDER)
+    val gender: Int,
+
+    @SerialName(Constants.Fields.PROFILE_PATH)
+    val profilePath: String?
+)

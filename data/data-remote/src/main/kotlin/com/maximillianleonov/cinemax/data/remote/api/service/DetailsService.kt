@@ -18,19 +18,22 @@ package com.maximillianleonov.cinemax.data.remote.api.service
 
 import com.maximillianleonov.cinemax.core.data.util.Constants
 import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.data.remote.dto.response.MovieResponseDto
-import com.maximillianleonov.cinemax.data.remote.dto.response.TvShowResponseDto
+import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDetailsDto
+import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDetailsDto
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface NowPlayingService {
-    @GET(Constants.Remote.NOW_PLAYING_MOVIE_PATH)
-    suspend fun getMovies(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<MovieResponseDto>
+interface DetailsService {
+    @GET(Constants.Remote.DETAILS_MOVIE_PATH)
+    suspend fun getMovieById(
+        @Path(Constants.Fields.ID) id: Int,
+        @Query("append_to_response") appendToResponse: String = "credits"
+    ): Result<MovieDetailsDto>
 
-    @GET(Constants.Remote.ON_THE_AIR_TV_SHOW_PATH)
-    suspend fun getTvShows(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.Remote.DEFAULT_PAGE
-    ): Result<TvShowResponseDto>
+    @GET(Constants.Remote.DETAILS_TV_SHOW_PATH)
+    suspend fun getTvShowById(
+        @Path(Constants.Fields.ID) id: Int,
+        @Query("append_to_response") appendToResponse: String = "credits"
+    ): Result<TvShowDetailsDto>
 }
