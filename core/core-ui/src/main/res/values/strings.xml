@@ -24,6 +24,9 @@
     <string name="clear">Clear</string>
     <string name="see_all">See All</string>
     <string name="rating">Rating</string>
+    <string name="overview">Overview</string>
+    <string name="cast">Cast</string>
+    <string name="crew">Crew</string>
 
     <string name="search_placeholder">Search…</string>
     <string name="no_movie_results">Sorry, we couldn\'t find any movies.</string>
@@ -32,6 +35,7 @@
     <string name="not_rated">NR</string>
     <string name="no_overview">No overview.</string>
     <string name="no_release_date">No release date.</string>
+    <string name="no_runtime">No runtime.</string>
     <string name="no_genre">No genre.</string>
 
     <string name="retry">Retry</string>
@@ -49,6 +53,7 @@
     <string name="trending">Trending</string>
 
     <string name="upcoming_movie_release_date_text">On %1$s</string>
+    <string name="details_runtime_text">%1$s minutes</string>
 
     <string name="action">Action</string>
     <string name="adventure">Adventure</string>

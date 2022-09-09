@@ -48,8 +48,23 @@ object ContentType {
             }
         }
     }
+
+    sealed class Details(val contentId: Int, val contentType: String) {
+        data class Movie(val id: Int) : Details(contentId = id, contentType = MovieContentType)
+        data class TvShow(val id: Int) : Details(contentId = id, contentType = TvShowContentType)
+
+        companion object {
+            fun from(id: Int, contentType: String) = when (contentType) {
+                MovieContentType -> Movie(id = id)
+                TvShowContentType -> TvShow(id = id)
+                else -> error("${Constants.Messages.INVALID_CONTENT_TYPE} $contentType")
+            }
+        }
+    }
 }
 
+private const val MovieContentType = "movie"
+private const val TvShowContentType = "tv_show"
 private const val UpcomingContentType = "upcoming"
 private const val TopRatedContentType = "top_rated"
 private const val PopularContentType = "popular"

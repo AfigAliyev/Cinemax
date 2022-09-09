@@ -16,84 +16,52 @@
 
 package com.maximillianleonov.cinemax.core.ui.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalMinimumTouchTargetEnforcement
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 
-@Composable
-fun CinemaxTopAppBar(
-    @StringRes titleResourceId: Int,
-    onBackButtonClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    elevation: Dp = 0.dp
-) {
-    TopAppBar(
-        modifier = modifier,
-        contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.extraMedium),
-        elevation = elevation
-    ) {
-        CinemaxBackButton(onClick = onBackButtonClick)
-        Text(
-            modifier = Modifier
-                .padding(end = CinemaxBackButtonShapeSize)
-                .fillMaxWidth(),
-            text = stringResource(id = titleResourceId),
-            style = CinemaxTheme.typography.semiBold.h4,
-            color = CinemaxTheme.colors.textWhite,
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
 @OptIn(ExperimentalMaterialApi::class)
 @Suppress("ReusedModifierInstance")
 @Composable
-fun CinemaxBackButton(
+fun CinemaxWishlistButton(
+    isWishlisted: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    disabledContentAlpha: Float = ContentAlpha.disabled
 ) {
     CompositionLocalProvider(
         LocalMinimumTouchTargetEnforcement provides false
     ) {
         IconButton(
             modifier = modifier
-                .size(CinemaxBackButtonShapeSize)
+                .size(CinemaxWishlistButtonShapeSize)
                 .background(
                     color = CinemaxTheme.colors.primarySoft,
                     shape = CinemaxTheme.shapes.smallMedium
-                )
-                .testTag(tag = BackTestTag),
+                ),
             onClick = onClick
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_back),
-                contentDescription = stringResource(id = R.string.back),
-                tint = CinemaxTheme.colors.textWhite
+                painter = painterResource(id = R.drawable.ic_wishlist),
+                contentDescription = stringResource(id = R.string.wishlist),
+                tint = CinemaxTheme.colors.secondaryRed.let { color ->
+                    if (isWishlisted) color else color.copy(alpha = disabledContentAlpha)
+                }
             )
         }
     }
 }
 
-private val CinemaxBackButtonShapeSize = 32.dp
-
-private const val BackTestTag = "back"
+private val CinemaxWishlistButtonShapeSize = 32.dp

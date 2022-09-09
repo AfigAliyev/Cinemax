@@ -19,11 +19,14 @@ package com.maximillianleonov.cinemax.benchmark
 import androidx.benchmark.macro.ExperimentalBaselineProfilesApi
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import com.maximillianleonov.cinemax.benchmark.details.detailsNavigateBack
+import com.maximillianleonov.cinemax.benchmark.details.detailsWaitForContent
 import com.maximillianleonov.cinemax.benchmark.home.homeNavigateToListScreen
 import com.maximillianleonov.cinemax.benchmark.home.homeNavigateToSearchScreen
 import com.maximillianleonov.cinemax.benchmark.home.homeScrollContent
 import com.maximillianleonov.cinemax.benchmark.home.homeWaitForContent
 import com.maximillianleonov.cinemax.benchmark.list.listNavigateBack
+import com.maximillianleonov.cinemax.benchmark.list.listNavigateToDetailsScreen
 import com.maximillianleonov.cinemax.benchmark.list.listScrollContent
 import com.maximillianleonov.cinemax.benchmark.list.listWaitForContent
 import com.maximillianleonov.cinemax.benchmark.search.searchSearchContent
@@ -50,6 +53,11 @@ class BaselineProfileGenerator {
 
         listWaitForContent()
         listScrollContent()
+        listNavigateToDetailsScreen()
+
+        detailsWaitForContent()
+        detailsNavigateBack()
+
         listNavigateBack()
 
         homeNavigateToSearchScreen()

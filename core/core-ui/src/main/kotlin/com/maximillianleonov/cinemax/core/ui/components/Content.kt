@@ -18,6 +18,7 @@ package com.maximillianleonov.cinemax.core.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,13 +41,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
@@ -62,6 +61,8 @@ fun MoviesAndTvShowsContainer(
     onSeeAllClick: () -> Unit,
     movies: List<Movie>,
     tvShows: List<TvShow>,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -95,7 +96,7 @@ fun MoviesAndTvShowsContainer(
             color = CinemaxTheme.colors.textWhiteGrey
         )
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.small))
-        MoviesContainer(movies = movies)
+        MoviesContainer(movies = movies, onClick = onMovieClick)
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.smallMedium))
         Text(
             modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.extraMedium),
@@ -104,31 +105,37 @@ fun MoviesAndTvShowsContainer(
             color = CinemaxTheme.colors.textWhiteGrey
         )
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.small))
-        TvShowsContainer(tvShows = tvShows)
+        TvShowsContainer(tvShows = tvShows, onClick = onTvShowClick)
     }
 }
 
 @Composable
-fun HorizontalContentItem(
+internal fun HorizontalContentItem(
     title: String,
     posterPath: String?,
     genres: List<String>,
     voteAverage: Double,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = CinemaxTheme.colors.primarySoft,
+    shape: Shape = CinemaxTheme.shapes.smallMedium
 ) {
     Card(
-        modifier = modifier.width(HorizontalContentItemWidth),
-        backgroundColor = CinemaxTheme.colors.primarySoft,
-        shape = CinemaxTheme.shapes.smallMedium
+        modifier = modifier
+            .width(HorizontalContentItemWidth)
+            .clip(shape)
+            .clickable(onClick = onClick)
+            .testTag(tag = ContentItemTestTag),
+        backgroundColor = backgroundColor,
+        shape = shape
     ) {
         Column {
             Box(modifier = Modifier.height(HorizontalContentItemPosterHeight)) {
-                SubcomposeAsyncImage(
+                CinemaxImage(
                     modifier = Modifier.fillMaxSize(),
                     model = posterPath,
-                    contentDescription = title,
-                    contentScale = ContentScale.Crop
-                ) { SubcomposeAsyncImageHandler() }
+                    contentDescription = title
+                )
                 RatingItem(
                     rating = voteAverage,
                     modifier = Modifier
@@ -167,7 +174,7 @@ fun HorizontalContentItem(
 }
 
 @Composable
-fun HorizontalContentItemPlaceholder(
+internal fun HorizontalContentItemPlaceholder(
     modifier: Modifier = Modifier,
     visible: Boolean = true,
     shape: Shape = CinemaxTheme.shapes.medium,
@@ -241,12 +248,17 @@ internal fun VerticalContentItem(
     voteAverage: Double,
     releaseDate: LocalDate?,
     genres: List<String>,
-    modifier: Modifier = Modifier
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    shape: Shape = CinemaxTheme.shapes.small
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(VerticalContentItemHeight),
+            .height(VerticalContentItemHeight)
+            .clip(shape)
+            .clickable(onClick = onClick)
+            .testTag(tag = ContentItemTestTag),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium)
     ) {
@@ -254,14 +266,13 @@ internal fun VerticalContentItem(
             modifier = Modifier
                 .width(VerticalContentItemPosterWidth)
                 .fillMaxHeight()
-                .clip(shape = CinemaxTheme.shapes.small)
+                .clip(shape)
         ) {
-            SubcomposeAsyncImage(
+            CinemaxImage(
                 modifier = Modifier.fillMaxSize(),
                 model = posterPath,
-                contentDescription = title,
-                contentScale = ContentScale.Crop
-            ) { SubcomposeAsyncImageHandler() }
+                contentDescription = title
+            )
             RatingItem(
                 rating = voteAverage,
                 modifier = Modifier
@@ -448,4 +459,5 @@ private const val ContentItemPlaceholderText = ""
 private const val ContentItemGenreSeparator = ", "
 private const val PlaceholderRating = 0.0
 
+private const val ContentItemTestTag = "contentitem"
 private const val SeeAllTestTag = "seeall"

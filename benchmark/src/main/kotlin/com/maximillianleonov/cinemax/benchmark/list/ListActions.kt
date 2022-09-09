@@ -20,6 +20,7 @@ import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.test.uiautomator.Direction
 import com.maximillianleonov.cinemax.benchmark.util.findObject
 import com.maximillianleonov.cinemax.benchmark.util.findScrollable
+import com.maximillianleonov.cinemax.benchmark.util.scrollAndFindObject
 import com.maximillianleonov.cinemax.benchmark.util.waitForContent
 
 internal fun MacrobenchmarkScope.listWaitForContent() = waitForContent(ContentTestTag)
@@ -28,9 +29,17 @@ internal fun MacrobenchmarkScope.listScrollContent() {
     val content = device.findScrollable(ContentTestTag)
     with(content) {
         fling(Direction.DOWN)
+        device.waitForIdle()
         fling(Direction.RIGHT)
+        device.waitForIdle()
         fling(Direction.DOWN)
     }
+}
+
+internal fun MacrobenchmarkScope.listNavigateToDetailsScreen() {
+    waitForContent(ContentItemTestTag)
+    val content = device.findScrollable(ContentTestTag)
+    content.scrollAndFindObject(ContentItemTestTag).click()
 }
 
 internal fun MacrobenchmarkScope.listNavigateBack() = with(device) {
@@ -40,4 +49,5 @@ internal fun MacrobenchmarkScope.listNavigateBack() = with(device) {
 
 private const val TestTag = "list"
 private const val ContentTestTag = "$TestTag:content"
+private const val ContentItemTestTag = "contentitem"
 private const val BackTestTag = "back"

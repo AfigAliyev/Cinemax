@@ -16,10 +16,12 @@
 
 package com.maximillianleonov.cinemax.core.ui.components
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.SwipeRefreshState
@@ -32,6 +34,7 @@ fun CinemaxSwipeRefresh(
     modifier: Modifier = Modifier,
     backgroundColor: Color = CinemaxTheme.colors.primarySoft,
     contentColor: Color = CinemaxTheme.colors.primaryBlue,
+    indicatorPadding: PaddingValues = PaddingValues(0.dp),
     indicator: @Composable (state: SwipeRefreshState, refreshTrigger: Dp) -> Unit =
         { state, refreshTrigger ->
             SwipeRefreshIndicator(
@@ -47,6 +50,7 @@ fun CinemaxSwipeRefresh(
         state = swipeRefreshState,
         onRefresh = onRefresh,
         modifier = modifier,
+        indicatorPadding = indicatorPadding,
         indicator = indicator,
         content = content
     )

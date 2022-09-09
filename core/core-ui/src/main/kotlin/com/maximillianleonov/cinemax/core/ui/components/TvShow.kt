@@ -47,6 +47,7 @@ import com.maximillianleonov.cinemax.core.ui.util.toErrorMessage
 @Composable
 fun TvShowsContainer(
     tvShows: List<TvShow>,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     shouldShowPlaceholder: Boolean = tvShows.isEmpty()
 ) {
@@ -61,7 +62,7 @@ fun TvShowsContainer(
             items(PlaceholderCount) { HorizontalTvShowItemPlaceholder() }
         } else {
             items(tvShows) { tvShow ->
-                HorizontalTvShowItem(tvShow = tvShow)
+                HorizontalTvShowItem(tvShow = tvShow, onClick = onClick)
             }
         }
     }
@@ -70,6 +71,7 @@ fun TvShowsContainer(
 @Composable
 fun TvShowsDisplay(
     tvShows: LazyPagingItems<TvShow>,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = tvShows.loadState.refresh.isLoading()
@@ -105,7 +107,7 @@ fun TvShowsDisplay(
                         if (tvShow == null) {
                             VerticalTvShowItemPlaceholder()
                         } else {
-                            VerticalTvShowItem(tvShow = tvShow)
+                            VerticalTvShowItem(tvShow = tvShow, onClick = onClick)
                         }
                     }
                     if (tvShows.loadState.refresh.isError()) {
@@ -144,6 +146,7 @@ fun TvShowsDisplay(
 @Composable
 fun HorizontalTvShowItem(
     tvShow: TvShow,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     with(tvShow) {
@@ -152,6 +155,7 @@ fun HorizontalTvShowItem(
             posterPath = posterPath,
             voteAverage = voteAverage,
             genres = genres.toNames(),
+            onClick = { onClick(id) },
             modifier = modifier
         )
     }
@@ -168,6 +172,7 @@ fun HorizontalTvShowItemPlaceholder(
 @Composable
 fun VerticalTvShowItem(
     tvShow: TvShow,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     with(tvShow) {
@@ -178,6 +183,7 @@ fun VerticalTvShowItem(
             voteAverage = voteAverage,
             releaseDate = firstAirDate,
             genres = genres.toNames(),
+            onClick = { onClick(id) },
             modifier = modifier
         )
     }
