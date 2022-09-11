@@ -44,7 +44,7 @@ enum class TopLevelDestination(
     Wishlist(
         route = "wishlist_route",
         destination = "wishlist_destination",
-        iconResourceId = R.drawable.ic_heart,
+        iconResourceId = R.drawable.ic_wishlist,
         textResourceId = R.string.wishlist
     ),
     Settings(

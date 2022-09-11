@@ -16,6 +16,7 @@
 
 package com.maximillianleonov.cinemax.feature.home.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,11 +30,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -41,9 +42,9 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 import com.maximillianleonov.cinemax.core.ui.R
+import com.maximillianleonov.cinemax.core.ui.components.CinemaxImage
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxPlaceholder
 import com.maximillianleonov.cinemax.core.ui.components.MoviesContainer
-import com.maximillianleonov.cinemax.core.ui.components.SubcomposeAsyncImageHandler
 import com.maximillianleonov.cinemax.core.ui.model.Movie
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.ui.util.format
@@ -53,6 +54,7 @@ import com.maximillianleonov.cinemax.core.ui.util.format
 internal fun UpcomingMoviesContainer(
     movies: List<Movie>,
     onSeeAllClick: () -> Unit,
+    onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState()
@@ -78,9 +80,11 @@ internal fun UpcomingMoviesContainer(
                     modifier = Modifier.pagerTransition(pagerScope = this, page = page)
                 )
             } else {
+                val movie = movies[page]
                 UpcomingMovieItem(
                     modifier = Modifier.pagerTransition(pagerScope = this, page = page),
-                    movie = movies[page]
+                    movie = movie,
+                    onClick = { onMovieClick(movie.id) }
                 )
             }
         }
@@ -97,22 +101,25 @@ internal fun UpcomingMoviesContainer(
 @Composable
 private fun UpcomingMovieItem(
     movie: Movie,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CinemaxTheme.shapes.medium
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(UpcomingMovieHeight),
+            .height(UpcomingMovieHeight)
+            .clip(shape)
+            .clickable(onClick = onClick)
+            .testTag(tag = ContentItemTestTag),
         shape = shape
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            SubcomposeAsyncImage(
+            CinemaxImage(
                 modifier = Modifier.fillMaxSize(),
                 model = movie.backdropPath,
-                contentDescription = movie.title,
-                contentScale = ContentScale.Crop
-            ) { SubcomposeAsyncImageHandler() }
+                contentDescription = movie.title
+            )
 
             Column(
                 modifier = Modifier
@@ -204,3 +211,5 @@ private const val UpcomingMovieDatePattern = "MMMM d, yyyy"
 private const val UpcomingMoviesContainerPagerPlaceholderCount = 20
 private const val EmptyUpcomingMovieItemSecondTextMaxWidthFraction = 0.5f
 private const val EmptyUpcomingMovieText = ""
+
+private const val ContentItemTestTag = "contentitem"

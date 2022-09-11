@@ -47,7 +47,7 @@ class ListViewModel @Inject constructor(
     private val tvShowPagingUseCases: TvShowPagingUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), EventHandler<ListEvent> {
-    private val _uiState = MutableStateFlow(getInitialUiState(savedStateHandle = savedStateHandle))
+    private val _uiState = MutableStateFlow(getInitialUiState(savedStateHandle))
     val uiState = _uiState.asStateFlow()
 
     override fun onEvent(event: ListEvent) = Unit

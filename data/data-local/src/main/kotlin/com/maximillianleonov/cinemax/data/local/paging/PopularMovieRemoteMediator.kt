@@ -21,8 +21,8 @@ import com.maximillianleonov.cinemax.data.local.entity.popular.PopularMovieEntit
 import com.maximillianleonov.cinemax.data.local.entity.popular.PopularMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toPopularMovieEntity
 import com.maximillianleonov.cinemax.data.local.source.PopularLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.source.PopularRemoteDataSource
 
 class PopularMovieRemoteMediator(

@@ -52,7 +52,7 @@ fun RatingItem(
             )
         ) {
             Icon(
-                modifier = Modifier.size(16.dp),
+                modifier = Modifier.size(RatingIconSize),
                 painter = painterResource(id = R.drawable.ic_star),
                 contentDescription = stringResource(id = R.string.rating)
             )
@@ -69,5 +69,6 @@ fun RatingItem(
     }
 }
 
+private val RatingIconSize = 16.dp
 private const val RatingItemBackgroundColorAlpha = 0.72f
 private const val RatingNotRatedValue = 0.0

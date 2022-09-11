@@ -22,12 +22,12 @@ import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.model.Genre
 import com.maximillianleonov.cinemax.domain.model.GenreModel
 
+@Composable
+fun List<Genre>.toNames() = map { genre -> stringResource(id = genre.nameResourceId) }
+
 internal fun List<GenreModel>.toGenres() = map { genre ->
     Genre(id = genre.id, nameResourceId = genre.toNameResourceId())
 }
-
-@Composable
-internal fun List<Genre>.toNames() = map { genre -> stringResource(id = genre.nameResourceId) }
 
 private fun GenreModel.toNameResourceId() = genresNameResources.getValue(this)
 

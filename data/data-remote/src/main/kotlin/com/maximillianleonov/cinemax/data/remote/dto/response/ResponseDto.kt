@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.data.remote.dto
+package com.maximillianleonov.cinemax.data.remote.dto.response
 
 import com.maximillianleonov.cinemax.core.data.remote.common.ResponseDto
 import com.maximillianleonov.cinemax.core.data.util.Constants

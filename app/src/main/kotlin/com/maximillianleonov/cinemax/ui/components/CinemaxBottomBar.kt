@@ -333,4 +333,4 @@ private val BottomBarAnimationSpec = SpringSpec<Float>(
     dampingRatio = 0.8f
 )
 
-private const val TestTag = "bottomnavigationbar"
+private const val TestTag = "bottombar"

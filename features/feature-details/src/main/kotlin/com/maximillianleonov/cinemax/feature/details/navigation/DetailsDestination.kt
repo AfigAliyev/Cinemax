@@ -16,14 +16,39 @@
 
 package com.maximillianleonov.cinemax.feature.details.navigation
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.maximillianleonov.cinemax.core.ui.common.ContentType
 import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.details.DetailsRoute
 
 object DetailsDestination : CinemaxNavigationDestination {
     override val route = "details_route"
     override val destination = "details_destination"
+
+    const val idArgument = "id"
+    const val contentTypeArgument = "contentType"
+    val routeWithArgument = "$route/{$idArgument}/{$contentTypeArgument}"
+
+    fun createNavigationRoute(contentType: ContentType.Details) =
+        "$route/${contentType.contentId}/${contentType.contentType}"
+
+    fun fromSavedStateHandle(savedStateHandle: SavedStateHandle) = ContentType.Details.from(
+        id = checkNotNull(savedStateHandle[idArgument]) { CONTENT_ID_NULL_MESSAGE },
+        contentType = checkNotNull(savedStateHandle[contentTypeArgument]) { CONTENT_TYPE_NULL_MESSAGE }
+    )
 }
 
-fun NavGraphBuilder.detailsGraph() = composable(route = DetailsDestination.route) { DetailsRoute() }
+fun NavGraphBuilder.detailsGraph(onBackButtonClick: () -> Unit) = composable(
+    route = DetailsDestination.routeWithArgument,
+    arguments = listOf(
+        navArgument(DetailsDestination.idArgument) { type = NavType.IntType },
+        navArgument(DetailsDestination.contentTypeArgument) { type = NavType.StringType }
+    )
+) { DetailsRoute(onBackButtonClick = onBackButtonClick) }
+
+private const val CONTENT_ID_NULL_MESSAGE = "Content id is null."
+private const val CONTENT_TYPE_NULL_MESSAGE = "Content type is null."

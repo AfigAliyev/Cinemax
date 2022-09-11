@@ -58,6 +58,8 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun ListRoute(
     onBackButtonClick: () -> Unit,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ListViewModel = hiltViewModel()
 ) {
@@ -69,6 +71,8 @@ internal fun ListRoute(
         movies = movies,
         tvShows = tvShows,
         onBackButtonClick = onBackButtonClick,
+        onMovieClick = onMovieClick,
+        onTvShowClick = onTvShowClick,
         modifier = modifier
     )
 }
@@ -79,6 +83,8 @@ private fun ListScreen(
     movies: LazyPagingItems<Movie>,
     tvShows: LazyPagingItems<TvShow>,
     onBackButtonClick: () -> Unit,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -95,12 +101,19 @@ private fun ListScreen(
         when (uiState.contentType) {
             Upcoming -> MoviesDisplay(
                 movies = movies,
-                modifier = Modifier.padding(innerPadding)
+                onClick = onMovieClick,
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .testTag(tag = ContentTestTag)
             )
             else -> MoviesAndTvShowsDisplay(
                 movies = movies,
                 tvShows = tvShows,
-                modifier = Modifier.padding(innerPadding)
+                onMovieClick = onMovieClick,
+                onTvShowClick = onTvShowClick,
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .testTag(tag = ContentTestTag)
             )
         }
     }
@@ -111,6 +124,8 @@ private fun ListScreen(
 private fun MoviesAndTvShowsDisplay(
     movies: LazyPagingItems<Movie>,
     tvShows: LazyPagingItems<TvShow>,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {
@@ -118,9 +133,7 @@ private fun MoviesAndTvShowsDisplay(
     val pagerState = rememberPagerState()
     val selectedTabIndex = pagerState.currentPage
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .testTag(tag = ContentTestTag)
+        modifier = modifier.fillMaxSize()
     ) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
@@ -160,8 +173,14 @@ private fun MoviesAndTvShowsDisplay(
             count = tabs.size
         ) { page ->
             when (page) {
-                ListTab.Movies.ordinal -> MoviesDisplay(movies = movies)
-                ListTab.TvShows.ordinal -> TvShowsDisplay(tvShows = tvShows)
+                ListTab.Movies.ordinal -> MoviesDisplay(
+                    movies = movies,
+                    onClick = onMovieClick
+                )
+                ListTab.TvShows.ordinal -> TvShowsDisplay(
+                    tvShows = tvShows,
+                    onClick = onTvShowClick
+                )
             }
         }
     }

@@ -16,6 +16,7 @@
 
 package com.maximillianleonov.cinemax.di
 
+import com.maximillianleonov.cinemax.data.local.repository.DetailsRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.DiscoverRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.NowPlayingRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.PopularRepositoryImpl
@@ -23,6 +24,7 @@ import com.maximillianleonov.cinemax.data.local.repository.SearchRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.TopRatedRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.TrendingRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.UpcomingRepositoryImpl
+import com.maximillianleonov.cinemax.domain.repository.DetailsRepository
 import com.maximillianleonov.cinemax.domain.repository.DiscoverRepository
 import com.maximillianleonov.cinemax.domain.repository.NowPlayingRepository
 import com.maximillianleonov.cinemax.domain.repository.PopularRepository
@@ -57,4 +59,7 @@ interface RepositoryModule {
 
     @Binds
     fun bindSearchRepository(searchRepositoryImpl: SearchRepositoryImpl): SearchRepository
+
+    @Binds
+    fun bindDetailsRepository(detailsRepositoryImpl: DetailsRepositoryImpl): DetailsRepository
 }

@@ -19,6 +19,7 @@ package com.maximillianleonov.cinemax.data.local.db
 import androidx.room.TypeConverter
 import com.maximillianleonov.cinemax.core.data.remote.common.JsonParser
 import com.maximillianleonov.cinemax.core.data.remote.serializer.LocalDateSerializer
+import com.maximillianleonov.cinemax.data.remote.dto.common.CreditsDto
 import kotlinx.datetime.LocalDate
 
 object Converters {
@@ -39,4 +40,10 @@ object Converters {
 
     @TypeConverter
     fun jsonToStringList(json: String): List<String> = JsonParser.fromJson(json)
+
+    @TypeConverter
+    fun creditsToJson(value: CreditsDto): String = JsonParser.toJson(value)
+
+    @TypeConverter
+    fun jsonToCredits(json: String): CreditsDto = JsonParser.fromJson(json)
 }

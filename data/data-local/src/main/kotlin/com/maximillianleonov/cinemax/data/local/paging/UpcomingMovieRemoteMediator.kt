@@ -21,8 +21,8 @@ import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEnt
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toUpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.source.UpcomingLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.source.UpcomingRemoteDataSource
 
 class UpcomingMovieRemoteMediator(

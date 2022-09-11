@@ -22,6 +22,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
+import com.maximillianleonov.cinemax.feature.details.navigation.DetailsDestination
 import com.maximillianleonov.cinemax.feature.details.navigation.detailsGraph
 import com.maximillianleonov.cinemax.feature.home.navigation.homeGraph
 import com.maximillianleonov.cinemax.feature.list.navigation.ListDestination
@@ -45,15 +46,35 @@ fun CinemaxNavHost(
         homeGraph(
             onNavigateToListDestination = {
                 onNavigateToDestination(ListDestination, ListDestination.createNavigationRoute(it))
+            },
+            onNavigateToDetailsDestination = {
+                onNavigateToDestination(
+                    DetailsDestination,
+                    DetailsDestination.createNavigationRoute(it)
+                )
             }
         )
         searchGraph(
             onNavigateToListDestination = {
                 onNavigateToDestination(ListDestination, ListDestination.createNavigationRoute(it))
+            },
+            onNavigateToDetailsDestination = {
+                onNavigateToDestination(
+                    DetailsDestination,
+                    DetailsDestination.createNavigationRoute(it)
+                )
             }
         )
-        listGraph(onBackButtonClick = onBackClick)
-        detailsGraph()
+        listGraph(
+            onBackButtonClick = onBackClick,
+            onNavigateToDetailsDestination = {
+                onNavigateToDestination(
+                    DetailsDestination,
+                    DetailsDestination.createNavigationRoute(it)
+                )
+            }
+        )
+        detailsGraph(onBackButtonClick = onBackClick)
 
         composable(route = "wishlist_route") { /* TODO: Not yet implemented. */ }
         composable(route = "settings_route") { /* TODO: Not yet implemented. */ }

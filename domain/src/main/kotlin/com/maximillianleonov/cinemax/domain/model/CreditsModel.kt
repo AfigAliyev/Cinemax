@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.data.remote.dto
+package com.maximillianleonov.cinemax.domain.model
 
-import com.maximillianleonov.cinemax.core.data.util.Constants
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class DatesDto(
-    @SerialName(Constants.Fields.MAXIMUM)
-    val maximum: String,
-
-    @SerialName(Constants.Fields.MINIMUM)
-    val minimum: String
+data class CreditsModel(
+    val cast: List<CastModel>,
+    val crew: List<CrewModel>
 )

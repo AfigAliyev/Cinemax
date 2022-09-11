@@ -58,6 +58,7 @@ import com.maximillianleonov.cinemax.core.ui.util.toErrorMessage
 @Composable
 fun MoviesContainer(
     movies: List<Movie>,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     shouldShowPlaceholder: Boolean = movies.isEmpty()
 ) {
@@ -72,7 +73,7 @@ fun MoviesContainer(
             items(PlaceholderCount) { HorizontalMovieItemPlaceholder() }
         } else {
             items(movies) { movie ->
-                HorizontalMovieItem(movie = movie)
+                HorizontalMovieItem(movie = movie, onClick = onClick)
             }
         }
     }
@@ -117,6 +118,7 @@ fun MoviesContainer(
 @Composable
 fun MoviesDisplay(
     movies: LazyPagingItems<Movie>,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = movies.loadState.refresh.isLoading()
@@ -152,7 +154,7 @@ fun MoviesDisplay(
                         if (movie == null) {
                             VerticalMovieItemPlaceholder()
                         } else {
-                            VerticalMovieItem(movie = movie)
+                            VerticalMovieItem(movie = movie, onClick = onClick)
                         }
                     }
                     if (movies.loadState.refresh.isError()) {
@@ -191,6 +193,7 @@ fun MoviesDisplay(
 @Composable
 fun HorizontalMovieItem(
     movie: Movie,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     with(movie) {
@@ -199,6 +202,7 @@ fun HorizontalMovieItem(
             posterPath = posterPath,
             voteAverage = voteAverage,
             genres = genres.toNames(),
+            onClick = { onClick(id) },
             modifier = modifier
         )
     }
@@ -215,6 +219,7 @@ fun HorizontalMovieItemPlaceholder(
 @Composable
 fun VerticalMovieItem(
     movie: Movie,
+    onClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     with(movie) {
@@ -225,6 +230,7 @@ fun VerticalMovieItem(
             voteAverage = voteAverage,
             releaseDate = releaseDate,
             genres = genres.toNames(),
+            onClick = { onClick(id) },
             modifier = modifier
         )
     }

@@ -68,7 +68,7 @@ fun CinemaxTopAppBar(
 @OptIn(ExperimentalMaterialApi::class)
 @Suppress("ReusedModifierInstance")
 @Composable
-private fun CinemaxBackButton(
+fun CinemaxBackButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

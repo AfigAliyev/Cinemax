@@ -41,15 +41,16 @@ internal fun MacrobenchmarkScope.homeNavigateToListScreen() = with(device) {
 }
 
 internal fun MacrobenchmarkScope.homeNavigateToSearchScreen() = with(device) {
+    waitForContent(SearchRouteTestTag)
     findObject(SearchRouteTestTag).click()
     waitForIdle()
 }
 
 private const val TestTag = "home"
-private const val BottomNavigationBarTestTag = "bottomnavigationbar"
+private const val BottomBarTestTag = "bottombar"
 private const val ContentTestTag = "$TestTag:content"
 private const val UpcomingTestTag = "$TestTag:upcoming"
 private const val NowPlayingTestTag = "$TestTag:nowplaying"
-private const val SearchRouteTestTag = "$BottomNavigationBarTestTag:search_route"
+private const val SearchRouteTestTag = "$BottomBarTestTag:search_route"
 private const val MoviesContainerTestTag = "moviescontainer"
 private const val SeeAllTestTag = "seeall"

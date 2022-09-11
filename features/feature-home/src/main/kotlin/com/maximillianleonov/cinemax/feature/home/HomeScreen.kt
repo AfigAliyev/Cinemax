@@ -45,14 +45,18 @@ import com.maximillianleonov.cinemax.feature.home.components.UpcomingMoviesConta
 
 @Composable
 internal fun HomeRoute(
-    onNavigateToListDestination: (ContentType.List) -> Unit,
+    onSeeAllClick: (ContentType.List) -> Unit,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     HomeScreen(
         uiState = uiState,
-        onSeeAllClick = onNavigateToListDestination,
+        onSeeAllClick = onSeeAllClick,
+        onMovieClick = onMovieClick,
+        onTvShowClick = onTvShowClick,
         onRefresh = { viewModel.onEvent(HomeEvent.Refresh) },
         onRetry = { viewModel.onEvent(HomeEvent.Retry) },
         onOfflineModeClick = { viewModel.onEvent(HomeEvent.ClearError) },
@@ -65,6 +69,8 @@ internal fun HomeRoute(
 private fun HomeScreen(
     uiState: HomeUiState,
     onSeeAllClick: (ContentType.List) -> Unit,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     onRefresh: () -> Unit,
     onRetry: () -> Unit,
     onOfflineModeClick: () -> Unit,
@@ -95,7 +101,9 @@ private fun HomeScreen(
             ContentDisplay(
                 movies = uiState.movies,
                 tvShows = uiState.tvShows,
-                onSeeAllClick = onSeeAllClick
+                onSeeAllClick = onSeeAllClick,
+                onMovieClick = onMovieClick,
+                onTvShowClick = onTvShowClick
             )
         }
     }
@@ -106,6 +114,8 @@ private fun ContentDisplay(
     movies: Map<ContentType.Main, List<Movie>>,
     tvShows: Map<ContentType.Main, List<TvShow>>,
     onSeeAllClick: (ContentType.List) -> Unit,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -119,7 +129,8 @@ private fun ContentDisplay(
             UpcomingMoviesContainer(
                 modifier = Modifier.testTag(tag = UpcomingTestTag),
                 movies = movies[ContentType.Main.UpcomingMovies].orEmpty(),
-                onSeeAllClick = { onSeeAllClick(ContentType.List.Upcoming) }
+                onSeeAllClick = { onSeeAllClick(ContentType.List.Upcoming) },
+                onMovieClick = onMovieClick
             )
         }
         item {
@@ -127,7 +138,9 @@ private fun ContentDisplay(
                 titleResourceId = R.string.top_rated,
                 onSeeAllClick = { onSeeAllClick(ContentType.List.TopRated) },
                 movies = movies[ContentType.Main.TopRatedMovies].orEmpty(),
-                tvShows = tvShows[ContentType.Main.TopRatedTvShows].orEmpty()
+                tvShows = tvShows[ContentType.Main.TopRatedTvShows].orEmpty(),
+                onMovieClick = onMovieClick,
+                onTvShowClick = onTvShowClick
             )
         }
         item {
@@ -135,7 +148,9 @@ private fun ContentDisplay(
                 titleResourceId = R.string.most_popular,
                 onSeeAllClick = { onSeeAllClick(ContentType.List.Popular) },
                 movies = movies[ContentType.Main.PopularMovies].orEmpty(),
-                tvShows = tvShows[ContentType.Main.PopularTvShows].orEmpty()
+                tvShows = tvShows[ContentType.Main.PopularTvShows].orEmpty(),
+                onMovieClick = onMovieClick,
+                onTvShowClick = onTvShowClick
             )
         }
         item {
@@ -144,7 +159,9 @@ private fun ContentDisplay(
                 titleResourceId = R.string.now_playing,
                 onSeeAllClick = { onSeeAllClick(ContentType.List.NowPlaying) },
                 movies = movies[ContentType.Main.NowPlayingMovies].orEmpty(),
-                tvShows = tvShows[ContentType.Main.NowPlayingTvShows].orEmpty()
+                tvShows = tvShows[ContentType.Main.NowPlayingTvShows].orEmpty(),
+                onMovieClick = onMovieClick,
+                onTvShowClick = onTvShowClick
             )
         }
     }

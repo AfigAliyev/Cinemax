@@ -21,7 +21,7 @@ import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverTvShowEn
 import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverTvShowRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toDiscoverTvShowEntity
 import com.maximillianleonov.cinemax.data.local.source.DiscoverLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.TvShowResponseDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.TvShowResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDto
 import com.maximillianleonov.cinemax.data.remote.source.DiscoverRemoteDataSource
 

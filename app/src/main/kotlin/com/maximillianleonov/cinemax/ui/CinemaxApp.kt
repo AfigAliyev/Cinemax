@@ -26,11 +26,15 @@ import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.navigation.CinemaxNavHost
 import com.maximillianleonov.cinemax.ui.components.CinemaxBottomBar
@@ -38,8 +42,18 @@ import com.maximillianleonov.cinemax.ui.components.CinemaxBottomBar
 @OptIn(ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun CinemaxApp(
-    appState: CinemaxAppState = rememberCinemaxAppState()
+    appState: CinemaxAppState = rememberCinemaxAppState(),
+    systemUiController: SystemUiController = rememberSystemUiController(),
+    systemBarsColor: Color = CinemaxTheme.colors.primaryDark,
+    systemBarsDarkIcons: Boolean = false
 ) {
+    LaunchedEffect(systemUiController, systemBarsColor, systemBarsDarkIcons) {
+        systemUiController.setSystemBarsColor(
+            color = systemBarsColor,
+            darkIcons = systemBarsDarkIcons
+        )
+    }
+
     CinemaxTheme {
         Scaffold(
             modifier = Modifier.semantics { testTagsAsResourceId = true },

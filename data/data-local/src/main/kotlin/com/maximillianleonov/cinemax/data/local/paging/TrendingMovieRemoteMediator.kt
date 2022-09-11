@@ -21,8 +21,8 @@ import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingMovieEnt
 import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toTrendingMovieEntity
 import com.maximillianleonov.cinemax.data.local.source.TrendingLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.source.TrendingRemoteDataSource
 
 class TrendingMovieRemoteMediator(

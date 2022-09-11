@@ -21,8 +21,8 @@ import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverMovieEnt
 import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toDiscoverMovieEntity
 import com.maximillianleonov.cinemax.data.local.source.DiscoverLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.source.DiscoverRemoteDataSource
 
 class DiscoverMovieRemoteMediator(

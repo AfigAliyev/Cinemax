@@ -21,7 +21,7 @@ import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingTvShowEn
 import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingTvShowRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toTrendingTvShowEntity
 import com.maximillianleonov.cinemax.data.local.source.TrendingLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.TvShowResponseDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.TvShowResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDto
 import com.maximillianleonov.cinemax.data.remote.source.TrendingRemoteDataSource
 

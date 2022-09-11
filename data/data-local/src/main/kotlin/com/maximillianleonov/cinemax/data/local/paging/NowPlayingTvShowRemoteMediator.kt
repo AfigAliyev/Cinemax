@@ -21,7 +21,7 @@ import com.maximillianleonov.cinemax.data.local.entity.nowplaying.NowPlayingTvSh
 import com.maximillianleonov.cinemax.data.local.entity.nowplaying.NowPlayingTvShowRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toNowPlayingTvShowEntity
 import com.maximillianleonov.cinemax.data.local.source.NowPlayingLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.TvShowResponseDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.TvShowResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDto
 import com.maximillianleonov.cinemax.data.remote.source.NowPlayingRemoteDataSource
 

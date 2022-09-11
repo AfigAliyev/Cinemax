@@ -19,6 +19,8 @@ package com.maximillianleonov.cinemax.data.local.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.maximillianleonov.cinemax.data.local.dao.details.MovieDetailsDao
+import com.maximillianleonov.cinemax.data.local.dao.details.TvShowDetailsDao
 import com.maximillianleonov.cinemax.data.local.dao.discover.DiscoverMovieDao
 import com.maximillianleonov.cinemax.data.local.dao.discover.DiscoverMovieRemoteKeyDao
 import com.maximillianleonov.cinemax.data.local.dao.discover.DiscoverTvShowDao
@@ -41,6 +43,8 @@ import com.maximillianleonov.cinemax.data.local.dao.trending.TrendingTvShowDao
 import com.maximillianleonov.cinemax.data.local.dao.trending.TrendingTvShowRemoteKeyDao
 import com.maximillianleonov.cinemax.data.local.dao.upcoming.UpcomingMovieDao
 import com.maximillianleonov.cinemax.data.local.dao.upcoming.UpcomingMovieRemoteKeyDao
+import com.maximillianleonov.cinemax.data.local.entity.details.MovieDetailsEntity
+import com.maximillianleonov.cinemax.data.local.entity.details.TvShowDetailsEntity
 import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverMovieEntity
 import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverTvShowEntity
@@ -76,7 +80,8 @@ import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRem
         DiscoverMovieEntity::class, DiscoverMovieRemoteKeyEntity::class,
         DiscoverTvShowEntity::class, DiscoverTvShowRemoteKeyEntity::class,
         TrendingMovieEntity::class, TrendingMovieRemoteKeyEntity::class,
-        TrendingTvShowEntity::class, TrendingTvShowRemoteKeyEntity::class
+        TrendingTvShowEntity::class, TrendingTvShowRemoteKeyEntity::class,
+        MovieDetailsEntity::class, TvShowDetailsEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -110,6 +115,9 @@ abstract class CinemaxDatabase : RoomDatabase() {
     abstract val trendingMovieRemoteKeyDao: TrendingMovieRemoteKeyDao
     abstract val trendingTvShowDao: TrendingTvShowDao
     abstract val trendingTvShowRemoteKeyDao: TrendingTvShowRemoteKeyDao
+
+    abstract val movieDetailsDao: MovieDetailsDao
+    abstract val tvShowDetailsDao: TvShowDetailsDao
 
     companion object {
         const val CINEMAX_DATABASE = "cinemax.db"

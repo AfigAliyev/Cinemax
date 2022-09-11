@@ -74,7 +74,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun SearchRoute(
-    onNavigateToListDestination: (ContentType.List) -> Unit,
+    onSeeAllClick: (ContentType.List) -> Unit,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
@@ -87,13 +89,16 @@ internal fun SearchRoute(
         searchTvShows = searchTvShows,
         onRefresh = { viewModel.onEvent(SearchEvent.Refresh) },
         onQueryChange = { viewModel.onEvent(SearchEvent.ChangeQuery(it)) },
-        onSeeAllClick = onNavigateToListDestination,
+        onSeeAllClick = onSeeAllClick,
+        onMovieClick = onMovieClick,
+        onTvShowClick = onTvShowClick,
         onRetry = { viewModel.onEvent(SearchEvent.Retry) },
         onOfflineModeClick = { viewModel.onEvent(SearchEvent.ClearError) },
         modifier = modifier
     )
 }
 
+@Suppress("LongParameterList")
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SearchScreen(
@@ -103,6 +108,8 @@ private fun SearchScreen(
     onRefresh: () -> Unit,
     onQueryChange: (String) -> Unit,
     onSeeAllClick: (ContentType.List) -> Unit,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     onRetry: () -> Unit,
     onOfflineModeClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -123,7 +130,12 @@ private fun SearchScreen(
         )
         AnimatedContent(targetState = uiState.isSearching) { isSearching ->
             if (isSearching) {
-                SearchResultsDisplay(searchMovies = searchMovies, searchTvShows = searchTvShows)
+                SearchResultsDisplay(
+                    searchMovies = searchMovies,
+                    searchTvShows = searchTvShows,
+                    onMovieClick = onMovieClick,
+                    onTvShowClick = onTvShowClick
+                )
             } else {
                 CinemaxSwipeRefresh(
                     swipeRefreshState = swipeRefreshState,
@@ -146,7 +158,9 @@ private fun SearchScreen(
                         SuggestionsDisplay(
                             movies = uiState.movies,
                             tvShows = uiState.tvShows,
-                            onSeeAllClick = onSeeAllClick
+                            onSeeAllClick = onSeeAllClick,
+                            onMovieClick = onMovieClick,
+                            onTvShowClick = onTvShowClick
                         )
                     }
                 }
@@ -188,6 +202,8 @@ private fun SearchTextField(
 private fun SearchResultsDisplay(
     searchMovies: LazyPagingItems<Movie>,
     searchTvShows: LazyPagingItems<TvShow>,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {
@@ -233,8 +249,14 @@ private fun SearchResultsDisplay(
             count = tabs.size
         ) { page ->
             when (page) {
-                SearchTab.Movies.ordinal -> MoviesDisplay(movies = searchMovies)
-                SearchTab.TvShows.ordinal -> TvShowsDisplay(tvShows = searchTvShows)
+                SearchTab.Movies.ordinal -> MoviesDisplay(
+                    movies = searchMovies,
+                    onClick = onMovieClick
+                )
+                SearchTab.TvShows.ordinal -> TvShowsDisplay(
+                    tvShows = searchTvShows,
+                    onClick = onTvShowClick
+                )
             }
         }
     }
@@ -245,6 +267,8 @@ private fun SuggestionsDisplay(
     movies: Map<ContentType.Main, List<Movie>>,
     tvShows: Map<ContentType.Main, List<TvShow>>,
     onSeeAllClick: (ContentType.List) -> Unit,
+    onMovieClick: (Int) -> Unit,
+    onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -257,7 +281,9 @@ private fun SuggestionsDisplay(
                 titleResourceId = R.string.discover,
                 onSeeAllClick = { onSeeAllClick(ContentType.List.Discover) },
                 movies = movies[ContentType.Main.DiscoverMovies].orEmpty(),
-                tvShows = tvShows[ContentType.Main.DiscoverTvShows].orEmpty()
+                tvShows = tvShows[ContentType.Main.DiscoverTvShows].orEmpty(),
+                onMovieClick = onMovieClick,
+                onTvShowClick = onTvShowClick
             )
         }
         item {
@@ -265,7 +291,9 @@ private fun SuggestionsDisplay(
                 titleResourceId = R.string.trending,
                 onSeeAllClick = { onSeeAllClick(ContentType.List.Trending) },
                 movies = movies[ContentType.Main.TrendingMovies].orEmpty(),
-                tvShows = tvShows[ContentType.Main.TrendingTvShows].orEmpty()
+                tvShows = tvShows[ContentType.Main.TrendingTvShows].orEmpty(),
+                onMovieClick = onMovieClick,
+                onTvShowClick = onTvShowClick
             )
         }
     }

@@ -21,7 +21,7 @@ import com.maximillianleonov.cinemax.data.local.entity.popular.PopularTvShowEnti
 import com.maximillianleonov.cinemax.data.local.entity.popular.PopularTvShowRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toPopularTvShowEntity
 import com.maximillianleonov.cinemax.data.local.source.PopularLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.TvShowResponseDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.TvShowResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDto
 import com.maximillianleonov.cinemax.data.remote.source.PopularRemoteDataSource
 

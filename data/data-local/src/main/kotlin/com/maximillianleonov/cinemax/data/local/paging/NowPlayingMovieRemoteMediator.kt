@@ -21,8 +21,8 @@ import com.maximillianleonov.cinemax.data.local.entity.nowplaying.NowPlayingMovi
 import com.maximillianleonov.cinemax.data.local.entity.nowplaying.NowPlayingMovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.mapper.toNowPlayingMovieEntity
 import com.maximillianleonov.cinemax.data.local.source.NowPlayingLocalDataSource
-import com.maximillianleonov.cinemax.data.remote.dto.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDto
+import com.maximillianleonov.cinemax.data.remote.dto.response.MovieResponseDto
 import com.maximillianleonov.cinemax.data.remote.source.NowPlayingRemoteDataSource
 
 class NowPlayingMovieRemoteMediator(

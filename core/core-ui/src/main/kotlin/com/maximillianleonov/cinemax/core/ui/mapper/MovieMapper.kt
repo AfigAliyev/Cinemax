@@ -17,7 +17,9 @@
 package com.maximillianleonov.cinemax.core.ui.mapper
 
 import com.maximillianleonov.cinemax.core.ui.model.Movie
+import com.maximillianleonov.cinemax.core.ui.model.MovieDetails
 import com.maximillianleonov.cinemax.core.ui.util.roundToOneDecimal
+import com.maximillianleonov.cinemax.domain.model.MovieDetailsModel
 import com.maximillianleonov.cinemax.domain.model.MovieModel
 
 fun MovieModel.toMovie() = Movie(
@@ -29,4 +31,20 @@ fun MovieModel.toMovie() = Movie(
     voteAverage = voteAverage.roundToOneDecimal(),
     posterPath = posterPath,
     backdropPath = backdropPath
+)
+
+fun MovieDetailsModel.toMovieDetails() = MovieDetails(
+    id = id,
+    title = title,
+    overview = overview,
+    backdropPath = backdropPath,
+    budget = budget,
+    genres = genres.toGenres(),
+    posterPath = posterPath,
+    releaseDate = releaseDate,
+    runtime = runtime ?: 0,
+    video = video,
+    voteAverage = voteAverage.roundToOneDecimal(),
+    voteCount = voteCount,
+    credits = credits.toCredits()
 )
