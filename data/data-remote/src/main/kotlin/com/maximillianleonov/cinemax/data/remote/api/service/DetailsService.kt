@@ -17,6 +17,7 @@
 package com.maximillianleonov.cinemax.data.remote.api.service
 
 import com.maximillianleonov.cinemax.core.data.util.Constants
+import com.maximillianleonov.cinemax.core.data.util.Constants.Fields.buildAppendToResponse
 import com.maximillianleonov.cinemax.core.domain.result.Result
 import com.maximillianleonov.cinemax.data.remote.dto.movie.MovieDetailsDto
 import com.maximillianleonov.cinemax.data.remote.dto.tvshow.TvShowDetailsDto
@@ -28,12 +29,16 @@ interface DetailsService {
     @GET(Constants.Remote.DETAILS_MOVIE_PATH)
     suspend fun getMovieById(
         @Path(Constants.Fields.ID) id: Int,
-        @Query("append_to_response") appendToResponse: String = "credits"
+        @Query(Constants.Fields.APPEND_TO_RESPONSE) appendToResponse: String = buildAppendToResponse(
+            Constants.Fields.CREDITS
+        )
     ): Result<MovieDetailsDto>
 
     @GET(Constants.Remote.DETAILS_TV_SHOW_PATH)
     suspend fun getTvShowById(
         @Path(Constants.Fields.ID) id: Int,
-        @Query("append_to_response") appendToResponse: String = "credits"
+        @Query(Constants.Fields.APPEND_TO_RESPONSE) appendToResponse: String = buildAppendToResponse(
+            Constants.Fields.CREDITS
+        )
     ): Result<TvShowDetailsDto>
 }

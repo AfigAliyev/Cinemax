@@ -29,6 +29,9 @@ interface TvShowDetailsDao {
     @Query("SELECT * FROM $TV_SHOW_DETAILS WHERE id = :id")
     fun getById(id: Int): Flow<TvShowDetailsEntity?>
 
+    @Query("SELECT * FROM $TV_SHOW_DETAILS WHERE id IN (:ids)")
+    fun getByIds(ids: List<Int>): Flow<List<TvShowDetailsEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: TvShowDetailsEntity)
 

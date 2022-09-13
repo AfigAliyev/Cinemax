@@ -29,14 +29,31 @@ class DetailsLocalDataSource @Inject constructor(private val db: CinemaxDatabase
     fun getMovieById(id: Int) = movieDao.getById(id)
     fun getTvShowById(id: Int) = tvShowDao.getById(id)
 
+    fun getMoviesByIds(ids: List<Int>) = movieDao.getByIds(ids)
+    fun getTvShowsByIds(ids: List<Int>) = tvShowDao.getByIds(ids)
+
     suspend fun deleteAndInsertMovie(entity: MovieDetailsEntity) = db.withTransaction {
         movieDao.deleteById(entity.id)
         movieDao.insert(entity)
     }
 
+    suspend fun deleteAndInsertMovies(entities: List<MovieDetailsEntity>) = db.withTransaction {
+        entities.forEach { entity ->
+            movieDao.deleteById(entity.id)
+            movieDao.insert(entity)
+        }
+    }
+
     suspend fun deleteAndInsertTvShow(entity: TvShowDetailsEntity) = db.withTransaction {
         tvShowDao.deleteById(entity.id)
         tvShowDao.insert(entity)
+    }
+
+    suspend fun deleteAndInsertTvShows(entities: List<TvShowDetailsEntity>) = db.withTransaction {
+        entities.forEach { entity ->
+            tvShowDao.deleteById(entity.id)
+            tvShowDao.insert(entity)
+        }
     }
 
     suspend fun deleteMovies() = movieDao.deleteAll()
