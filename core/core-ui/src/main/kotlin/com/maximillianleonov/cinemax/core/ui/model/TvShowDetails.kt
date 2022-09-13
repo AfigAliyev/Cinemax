@@ -31,5 +31,6 @@ data class TvShowDetails(
     val popularity: Double,
     val posterPath: String?,
     val voteAverage: Double,
-    val credits: Credits
+    val credits: Credits,
+    val isWishlisted: Boolean
 )

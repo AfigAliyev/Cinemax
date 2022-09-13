@@ -43,6 +43,7 @@ import com.maximillianleonov.cinemax.data.local.dao.trending.TrendingTvShowDao
 import com.maximillianleonov.cinemax.data.local.dao.trending.TrendingTvShowRemoteKeyDao
 import com.maximillianleonov.cinemax.data.local.dao.upcoming.UpcomingMovieDao
 import com.maximillianleonov.cinemax.data.local.dao.upcoming.UpcomingMovieRemoteKeyDao
+import com.maximillianleonov.cinemax.data.local.dao.wishlist.WishlistDao
 import com.maximillianleonov.cinemax.data.local.entity.details.MovieDetailsEntity
 import com.maximillianleonov.cinemax.data.local.entity.details.TvShowDetailsEntity
 import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverMovieEntity
@@ -67,6 +68,7 @@ import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingTvShowEn
 import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingTvShowRemoteKeyEntity
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieEntity
 import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRemoteKeyEntity
+import com.maximillianleonov.cinemax.data.local.entity.wishlist.WishlistEntity
 
 @Database(
     entities = [
@@ -81,7 +83,7 @@ import com.maximillianleonov.cinemax.data.local.entity.upcoming.UpcomingMovieRem
         DiscoverTvShowEntity::class, DiscoverTvShowRemoteKeyEntity::class,
         TrendingMovieEntity::class, TrendingMovieRemoteKeyEntity::class,
         TrendingTvShowEntity::class, TrendingTvShowRemoteKeyEntity::class,
-        MovieDetailsEntity::class, TvShowDetailsEntity::class
+        MovieDetailsEntity::class, TvShowDetailsEntity::class, WishlistEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -118,6 +120,7 @@ abstract class CinemaxDatabase : RoomDatabase() {
 
     abstract val movieDetailsDao: MovieDetailsDao
     abstract val tvShowDetailsDao: TvShowDetailsDao
+    abstract val wishlistDao: WishlistDao
 
     companion object {
         const val CINEMAX_DATABASE = "cinemax.db"

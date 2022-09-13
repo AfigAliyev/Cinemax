@@ -46,5 +46,6 @@ fun MovieDetailsModel.toMovieDetails() = MovieDetails(
     video = video,
     voteAverage = voteAverage.roundToOneDecimal(),
     voteCount = voteCount,
-    credits = credits.toCredits()
+    credits = credits.toCredits(),
+    isWishlisted = isWishlisted
 )

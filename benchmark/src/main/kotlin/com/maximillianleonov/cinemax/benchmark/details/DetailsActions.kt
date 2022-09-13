@@ -22,6 +22,13 @@ import com.maximillianleonov.cinemax.benchmark.util.waitForContent
 
 internal fun MacrobenchmarkScope.detailsWaitForContent() = waitForContent(ScrollableContentTestTag)
 
+internal fun MacrobenchmarkScope.detailsWaitForDetailsItem() = waitForContent(DetailsItemTestTag)
+
+internal fun MacrobenchmarkScope.detailsClickWishlist() = with(device) {
+    findObject(WishlistTestTag).click()
+    waitForIdle()
+}
+
 internal fun MacrobenchmarkScope.detailsNavigateBack() = with(device) {
     findObject(BackTestTag).click()
     waitForIdle()
@@ -29,4 +36,6 @@ internal fun MacrobenchmarkScope.detailsNavigateBack() = with(device) {
 
 private const val TestTag = "details"
 private const val ScrollableContentTestTag = "$TestTag:content"
+private const val DetailsItemTestTag = "detailsitem"
+private const val WishlistTestTag = "wishlist"
 private const val BackTestTag = "back"

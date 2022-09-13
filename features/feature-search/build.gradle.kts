@@ -22,7 +22,7 @@ plugins {
 }
 
 android {
-    namespace = "com.maximillianleonov.cinemax.feature.search.ui"
+    namespace = "com.maximillianleonov.cinemax.feature.search"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

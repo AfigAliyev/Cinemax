@@ -40,5 +40,6 @@ data class MovieDetailsModel(
     val video: Boolean,
     val voteAverage: Double,
     val voteCount: Int,
-    val credits: CreditsModel
+    val credits: CreditsModel,
+    val isWishlisted: Boolean
 )

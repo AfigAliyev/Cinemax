@@ -29,8 +29,15 @@
     <string name="crew">Crew</string>
 
     <string name="search_placeholder">Search…</string>
-    <string name="no_movie_results">Sorry, we couldn\'t find any movies.</string>
-    <string name="no_tv_show_results">Sorry, we couldn\'t find any TV shows.</string>
+    <string name="no_movie_results">Sorry, we could not find any movies.</string>
+    <string name="no_tv_show_results">Sorry, we could not find any TV shows.</string>
+    <string name="no_movie_wishlist">You have not added any movies to your wishlist yet.</string>
+    <string name="no_tv_show_wishlist">You have not added any TV shows to your wishlist yet.</string>
+
+    <string name="add_movie_wishlist">This movie has been added to your wishlist.</string>
+    <string name="add_tv_show_wishlist">This TV show has been added to your wishlist.</string>
+    <string name="remove_movie_wishlist">This movie has been removed from your wishlist.</string>
+    <string name="remove_tv_show_wishlist">This TV show has been removed from your wishlist.</string>
 
     <string name="not_rated">NR</string>
     <string name="no_overview">No overview.</string>

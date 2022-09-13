@@ -73,6 +73,7 @@ object Constants {
 
         const val MOVIE_DETAILS = "movie_details"
         const val TV_SHOW_DETAILS = "tv_show_details"
+        const val WISHLIST = "wishlist"
     }
 
     object Fields {
@@ -154,7 +155,14 @@ object Constants {
         const val PREV_PAGE = "prev_page"
         const val NEXT_PAGE = "next_page"
 
+        const val APPEND_TO_RESPONSE = "append_to_response"
         const val QUERY = "query"
+        const val CONTENT_TYPE = "content_type"
+
+        fun buildAppendToResponse(vararg fields: String) =
+            fields.joinToString(separator = APPEND_TO_RESPONSE_SEPARATOR)
+
+        private const val APPEND_TO_RESPONSE_SEPARATOR = ","
     }
 
     object Messages {

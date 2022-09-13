@@ -24,4 +24,7 @@ import kotlinx.coroutines.flow.Flow
 interface DetailsRepository {
     fun getMovieById(id: Int): Flow<Result<MovieDetailsModel?>>
     fun getTvShowById(id: Int): Flow<Result<TvShowDetailsModel?>>
+
+    fun getMoviesByIds(ids: List<Int>): Flow<Result<List<MovieDetailsModel>>>
+    fun getTvShowsByIds(ids: List<Int>): Flow<Result<List<TvShowDetailsModel>>>
 }

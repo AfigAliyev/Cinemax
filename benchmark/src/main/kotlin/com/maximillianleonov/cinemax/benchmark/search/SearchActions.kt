@@ -34,6 +34,14 @@ internal fun MacrobenchmarkScope.searchSearchContent() = with(device) {
     waitForIdle()
 }
 
+internal fun MacrobenchmarkScope.searchNavigateToWishlistScreen() = with(device) {
+    waitForContent(WishlistRouteTestTag)
+    findObject(WishlistRouteTestTag).click()
+    waitForIdle()
+}
+
 private const val TestTag = "search"
+private const val BottomBarTestTag = "bottombar"
 private const val ContentTestTag = "$TestTag:content"
+private const val WishlistRouteTestTag = "$BottomBarTestTag:wishlist_route"
 private const val TextFieldTestTag = "$TestTag:textfield"

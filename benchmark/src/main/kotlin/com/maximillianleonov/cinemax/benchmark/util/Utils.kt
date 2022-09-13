@@ -42,12 +42,13 @@ internal fun UiObject2.scrollAndFindObject(resourceId: String): UiObject2 {
     }
 }
 
-internal fun MacrobenchmarkScope.waitForContent(resourceId: String) = with(device) {
-    wait(Until.hasObject(By.res(resourceId)), Timeout)
-    waitForIdle()
-}
+internal fun MacrobenchmarkScope.waitForContent(resourceId: String, timeout: Long = Timeout) =
+    with(device) {
+        wait(Until.hasObject(By.res(resourceId)), timeout)
+        waitForIdle()
+    }
 
 internal const val PackageName = "com.maximillianleonov.cinemax"
 
-private const val Timeout = 30_000L
+private const val Timeout = 300_000L
 private const val GestureMarginDisplayWidthDivider = 5

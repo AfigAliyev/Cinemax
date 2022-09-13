@@ -22,7 +22,7 @@ plugins {
 }
 
 android {
-    namespace = "com.maximillianleonov.cinemax.feature.list.ui"
+    namespace = "com.maximillianleonov.cinemax.feature.list"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

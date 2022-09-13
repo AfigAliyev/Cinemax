@@ -28,6 +28,7 @@ import com.maximillianleonov.cinemax.feature.home.navigation.homeGraph
 import com.maximillianleonov.cinemax.feature.list.navigation.ListDestination
 import com.maximillianleonov.cinemax.feature.list.navigation.listGraph
 import com.maximillianleonov.cinemax.feature.search.navigation.searchGraph
+import com.maximillianleonov.cinemax.feature.wishlist.navigation.wishlistGraph
 
 @Suppress("ForbiddenComment")
 @Composable
@@ -65,6 +66,14 @@ fun CinemaxNavHost(
                 )
             }
         )
+        wishlistGraph(
+            onNavigateToDetailsDestination = {
+                onNavigateToDestination(
+                    DetailsDestination,
+                    DetailsDestination.createNavigationRoute(it)
+                )
+            }
+        )
         listGraph(
             onBackButtonClick = onBackClick,
             onNavigateToDetailsDestination = {
@@ -76,7 +85,6 @@ fun CinemaxNavHost(
         )
         detailsGraph(onBackButtonClick = onBackClick)
 
-        composable(route = "wishlist_route") { /* TODO: Not yet implemented. */ }
         composable(route = "settings_route") { /* TODO: Not yet implemented. */ }
     }
 }

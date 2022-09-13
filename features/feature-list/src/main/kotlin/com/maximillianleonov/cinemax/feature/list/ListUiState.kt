@@ -30,4 +30,8 @@ data class ListUiState(
     val tvShows: Flow<PagingData<TvShow>>,
     val isRetry: Boolean = false,
     val error: ErrorMessage? = null
-) : State
+) : State {
+    val isError: Boolean get() = error != null
+
+    fun requireError() = checkNotNull(error)
+}

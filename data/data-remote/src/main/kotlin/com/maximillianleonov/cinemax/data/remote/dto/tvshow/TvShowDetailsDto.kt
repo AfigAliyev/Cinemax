@@ -71,7 +71,7 @@ data class TvShowDetailsDto(
     val lastAirDate: LocalDate?,
 
     @SerialName(Constants.Fields.LAST_EPISODE_TO_AIR)
-    val lastEpisodeToAir: EpisodeDto,
+    val lastEpisodeToAir: EpisodeDto?,
 
     @SerialName(Constants.Fields.NETWORKS)
     val networks: List<NetworkDto>,

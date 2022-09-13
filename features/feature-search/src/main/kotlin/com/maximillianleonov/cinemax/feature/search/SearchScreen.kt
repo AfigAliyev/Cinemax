@@ -231,6 +231,7 @@ private fun SearchResultsDisplay(
                     }
                 )
                 Tab(
+                    modifier = Modifier.testTag(tag = "$TabTestTag:$index"),
                     selected = selected,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
                     text = {
@@ -302,3 +303,4 @@ private fun SuggestionsDisplay(
 private const val TestTag = "search"
 private const val ContentTestTag = "$TestTag:content"
 private const val TextFieldTestTag = "$TestTag:textfield"
+private const val TabTestTag = "tab"

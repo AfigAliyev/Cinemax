@@ -31,13 +31,14 @@ internal fun MacrobenchmarkScope.listScrollContent() {
         fling(Direction.DOWN)
         device.waitForIdle()
         fling(Direction.RIGHT)
+        findObject(TvShowsTabTestTag).click()
         device.waitForIdle()
         fling(Direction.DOWN)
+        device.waitForIdle()
     }
 }
 
 internal fun MacrobenchmarkScope.listNavigateToDetailsScreen() {
-    waitForContent(ContentItemTestTag)
     val content = device.findScrollable(ContentTestTag)
     content.scrollAndFindObject(ContentItemTestTag).click()
 }
@@ -51,3 +52,5 @@ private const val TestTag = "list"
 private const val ContentTestTag = "$TestTag:content"
 private const val ContentItemTestTag = "contentitem"
 private const val BackTestTag = "back"
+private const val TabTestTag = "tab"
+private const val TvShowsTabTestTag = "$TabTestTag:1"

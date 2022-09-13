@@ -19,7 +19,11 @@ package com.maximillianleonov.cinemax.feature.details
 import com.maximillianleonov.cinemax.core.ui.common.Event
 
 sealed class DetailsEvent : Event {
+    object WishlistMovie : DetailsEvent()
+    object WishlistTvShow : DetailsEvent()
+
     object Refresh : DetailsEvent()
     object Retry : DetailsEvent()
     object ClearError : DetailsEvent()
+    object ClearUserMessage : DetailsEvent()
 }

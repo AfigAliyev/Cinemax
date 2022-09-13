@@ -26,6 +26,7 @@ import androidx.compose.material.LocalMinimumTouchTargetEnforcement
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -50,7 +51,8 @@ fun CinemaxWishlistButton(
                 .background(
                     color = CinemaxTheme.colors.primarySoft,
                     shape = CinemaxTheme.shapes.smallMedium
-                ),
+                )
+                .testTag(tag = TestTag),
             onClick = onClick
         ) {
             Icon(
@@ -65,3 +67,5 @@ fun CinemaxWishlistButton(
 }
 
 private val CinemaxWishlistButtonShapeSize = 32.dp
+
+private const val TestTag = "wishlist"

@@ -46,6 +46,7 @@ import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.mapper.toNames
 import com.maximillianleonov.cinemax.core.ui.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.ui.model.Movie
+import com.maximillianleonov.cinemax.core.ui.model.MovieDetails
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.ui.util.error
 import com.maximillianleonov.cinemax.core.ui.util.isEmpty
@@ -126,7 +127,8 @@ fun MoviesDisplay(
     emptyDisplay: @Composable LazyItemScope.() -> Unit = {
         NoResultsDisplay(
             modifier = Modifier.fillParentMaxSize(),
-            messageResourceId = R.string.no_movie_results
+            messageResourceId = R.string.no_movie_results,
+            imageResourceId = R.drawable.no_search_results
         )
     },
     loadingDisplay: @Composable LazyItemScope.() -> Unit = { CinemaxCircularProgressIndicator() },
@@ -219,6 +221,27 @@ fun HorizontalMovieItemPlaceholder(
 @Composable
 fun VerticalMovieItem(
     movie: Movie,
+    onClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    with(movie) {
+        VerticalContentItem(
+            title = title,
+            overview = overview,
+            posterPath = posterPath,
+            voteAverage = voteAverage,
+            releaseDate = releaseDate,
+            genres = genres.toNames(),
+            onClick = { onClick(id) },
+            modifier = modifier
+        )
+    }
+}
+
+@Suppress("ReusedModifierInstance")
+@Composable
+fun VerticalMovieItem(
+    movie: MovieDetails,
     onClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {

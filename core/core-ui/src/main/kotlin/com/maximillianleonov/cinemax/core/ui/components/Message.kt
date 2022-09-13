@@ -16,6 +16,7 @@
 
 package com.maximillianleonov.cinemax.core.ui.components
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -28,12 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 
 @Composable
-internal fun NoResultsDisplay(
+fun NoResultsDisplay(
     @StringRes messageResourceId: Int,
+    @DrawableRes imageResourceId: Int,
     modifier: Modifier = Modifier
 ) {
     CinemaxCenteredBox(modifier = modifier.padding(horizontal = CinemaxTheme.spacing.largest)) {
@@ -42,7 +43,7 @@ internal fun NoResultsDisplay(
             verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.no_results),
+                painter = painterResource(id = imageResourceId),
                 contentDescription = stringResource(id = messageResourceId)
             )
             Text(
