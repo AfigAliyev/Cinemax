@@ -43,5 +43,6 @@ data class TvShowDetailsModel(
     val type: String,
     val voteAverage: Double,
     val voteCount: Int,
-    val credits: CreditsModel
+    val credits: CreditsModel,
+    val isWishlisted: Boolean
 )

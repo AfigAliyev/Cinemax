@@ -16,30 +16,9 @@
 
 package com.maximillianleonov.cinemax.domain.model
 
-import kotlinx.datetime.LocalDate
-
-data class MovieDetailsModel(
+data class WishlistModel(
     val id: Int,
-    val adult: Boolean,
-    val backdropPath: String?,
-    val budget: Int,
-    val genres: List<GenreModel>,
-    val homepage: String?,
-    val imdbId: String?,
-    val originalLanguage: String,
-    val originalTitle: String,
-    val overview: String,
-    val popularity: Double,
-    val posterPath: String?,
-    val releaseDate: LocalDate?,
-    val revenue: Int,
-    val runtime: Int?,
-    val status: String,
-    val tagline: String?,
-    val title: String,
-    val video: Boolean,
-    val voteAverage: Double,
-    val voteCount: Int,
-    val credits: CreditsModel,
-    val isWishlisted: Boolean
+    val contentType: WishlistContentTypeModel
 )
+
+enum class WishlistContentTypeModel { Movie, TvShow }
