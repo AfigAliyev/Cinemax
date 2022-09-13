@@ -49,7 +49,7 @@ fun MovieDetailsDto.toMovieDetailsEntity() = MovieDetailsEntity(
     credits = credits
 )
 
-fun MovieDetailsEntity.toMovieDetailsModel() = MovieDetailsModel(
+fun MovieDetailsEntity.toMovieDetailsModel(isWishlisted: Boolean) = MovieDetailsModel(
     id = id,
     adult = adult,
     backdropPath = backdropPath?.toImageUrl(),
@@ -71,7 +71,8 @@ fun MovieDetailsEntity.toMovieDetailsModel() = MovieDetailsModel(
     video = video,
     voteAverage = voteAverage,
     voteCount = voteCount,
-    credits = credits.toCreditsModel()
+    credits = credits.toCreditsModel(),
+    isWishlisted = isWishlisted
 )
 
 fun TvShowDetailsDto.toTvShowDetailsEntity() = TvShowDetailsEntity(
@@ -102,7 +103,7 @@ fun TvShowDetailsDto.toTvShowDetailsEntity() = TvShowDetailsEntity(
     credits = credits
 )
 
-fun TvShowDetailsEntity.toTvShowDetailsModel() = TvShowDetailsModel(
+fun TvShowDetailsEntity.toTvShowDetailsModel(isWishlisted: Boolean) = TvShowDetailsModel(
     id = id,
     name = name,
     adult = adult,
@@ -127,5 +128,6 @@ fun TvShowDetailsEntity.toTvShowDetailsModel() = TvShowDetailsModel(
     type = type,
     voteAverage = voteAverage,
     voteCount = voteCount,
-    credits = credits.toCreditsModel()
+    credits = credits.toCreditsModel(),
+    isWishlisted = isWishlisted
 )

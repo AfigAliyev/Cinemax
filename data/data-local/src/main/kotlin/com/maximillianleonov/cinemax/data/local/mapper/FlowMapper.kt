@@ -22,8 +22,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 internal fun <T, R> Flow<List<T>>.listMap(
-    transform: (T) -> R
-): Flow<List<R>> = map { it.map(transform) }
+    transform: suspend (T) -> R
+): Flow<List<R>> = map { list -> list.map { transform(it) } }
 
 internal fun <T : Any, R : Any> Flow<PagingData<T>>.pagingMap(
     transform: (T) -> R
