@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.domain.repository
+package com.maximillianleonov.cinemax.domain.usecase
 
 import com.maximillianleonov.cinemax.core.domain.result.Result
 import com.maximillianleonov.cinemax.domain.model.MovieDetailsModel
-import com.maximillianleonov.cinemax.domain.model.TvShowDetailsModel
+import com.maximillianleonov.cinemax.domain.model.WishlistModel
+import com.maximillianleonov.cinemax.domain.repository.DetailsRepository
+import com.maximillianleonov.cinemax.domain.repository.WishlistRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
-interface DetailsRepository {
-    fun getMovieById(id: Int): Flow<Result<MovieDetailsModel?>>
-    fun getTvShowById(id: Int): Flow<Result<TvShowDetailsModel?>>
-
-    fun getMoviesByIds(ids: List<Int>): Flow<Result<List<MovieDetailsModel>>>
-    fun getTvShowsByIds(ids: List<Int>): Flow<Result<List<TvShowDetailsModel>>>
+class GetWishlistMoviesUseCase @Inject constructor(
+    private val wishlistRepository: WishlistRepository,
+    private val detailsRepository: DetailsRepository
+) {
+    suspend operator fun invoke(): Flow<Result<List<MovieDetailsModel>>> {
+        val ids = wishlistRepository.getMovies().first().map(WishlistModel::id)
+        return detailsRepository.getMoviesByIds(ids)
+    }
 }
