@@ -121,6 +121,7 @@ dependencies {
 
     implementation(project(":features:feature-home"))
     implementation(project(":features:feature-search"))
+    implementation(project(":features:feature-wishlist"))
     implementation(project(":features:feature-list"))
     implementation(project(":features:feature-details"))
 

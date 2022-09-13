@@ -14,23 +14,12 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.ui.model
+package com.maximillianleonov.cinemax.feature.wishlist.common
 
-import kotlinx.datetime.LocalDate
+import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.ui.R
 
-data class MovieDetails(
-    val id: Int,
-    val title: String,
-    val overview: String,
-    val backdropPath: String?,
-    val budget: Int,
-    val genres: List<Genre>,
-    val posterPath: String?,
-    val releaseDate: LocalDate?,
-    val runtime: Int,
-    val video: Boolean,
-    val voteAverage: Double,
-    val voteCount: Int,
-    val credits: Credits,
-    val isWishlisted: Boolean
-)
+enum class ListTab(@StringRes val titleResourceId: Int) {
+    Movies(titleResourceId = R.string.movies),
+    TvShows(titleResourceId = R.string.tv_shows)
+}

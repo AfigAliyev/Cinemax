@@ -20,13 +20,15 @@ import com.maximillianleonov.cinemax.core.ui.common.ContentType
 import com.maximillianleonov.cinemax.core.ui.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.ui.model.MovieDetails
 import com.maximillianleonov.cinemax.core.ui.model.TvShowDetails
+import com.maximillianleonov.cinemax.core.ui.model.UserMessage
 
 data class DetailsUiState(
     val contentType: ContentType.Details,
     val movie: MovieDetails? = null,
     val tvShow: TvShowDetails? = null,
     val isLoading: Boolean = false,
-    val error: ErrorMessage? = null
+    val error: ErrorMessage? = null,
+    val userMessage: UserMessage? = null
 ) {
     val isError: Boolean get() = error != null
     val isOfflineModeAvailable: Boolean

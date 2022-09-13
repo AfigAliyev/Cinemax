@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.list
+package com.maximillianleonov.cinemax.feature.wishlist
 
-import androidx.paging.PagingData
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.common.State
 import com.maximillianleonov.cinemax.core.ui.model.ErrorMessage
-import com.maximillianleonov.cinemax.core.ui.model.Movie
-import com.maximillianleonov.cinemax.core.ui.model.TvShow
-import kotlinx.coroutines.flow.Flow
+import com.maximillianleonov.cinemax.core.ui.model.MovieDetails
+import com.maximillianleonov.cinemax.core.ui.model.TvShowDetails
 
-data class ListUiState(
-    val contentType: ContentType.List,
-    val movies: Flow<PagingData<Movie>>,
-    val tvShows: Flow<PagingData<TvShow>>,
-    val isRetry: Boolean = false,
+data class WishlistUiState(
+    val movies: List<MovieDetails> = emptyList(),
+    val tvShows: List<TvShowDetails> = emptyList(),
+    val isMoviesLoading: Boolean = false,
+    val isTvShowsLoading: Boolean = false,
     val error: ErrorMessage? = null
-) : State {
+) {
     val isError: Boolean get() = error != null
+    val isOfflineModeAvailable: Boolean
+        get() = movies.isNotEmpty() || tvShows.isNotEmpty()
 
     fun requireError() = checkNotNull(error)
 }

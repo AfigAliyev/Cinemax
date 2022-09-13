@@ -25,7 +25,10 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -35,6 +38,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.maximillianleonov.cinemax.core.ui.components.CinemaxSnackbarHost
+import com.maximillianleonov.cinemax.core.ui.components.LocalSnackbarHostState
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.navigation.CinemaxNavHost
 import com.maximillianleonov.cinemax.ui.components.CinemaxBottomBar
@@ -44,6 +49,7 @@ import com.maximillianleonov.cinemax.ui.components.CinemaxBottomBar
 fun CinemaxApp(
     appState: CinemaxAppState = rememberCinemaxAppState(),
     systemUiController: SystemUiController = rememberSystemUiController(),
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
     systemBarsColor: Color = CinemaxTheme.colors.primaryDark,
     systemBarsDarkIcons: Boolean = false
 ) {
@@ -55,31 +61,37 @@ fun CinemaxApp(
     }
 
     CinemaxTheme {
-        Scaffold(
-            modifier = Modifier.semantics { testTagsAsResourceId = true },
-            bottomBar = {
-                AnimatedVisibility(
-                    visible = appState.shouldShowBottomBar,
-                    enter = BottomBarEnterTransition,
-                    exit = BottomBarExitTransition
-                ) {
-                    CinemaxBottomBar(
-                        destinations = appState.topLevelDestinations,
-                        currentDestination = appState.currentTopLevelDestination,
-                        onNavigateToDestination = appState::navigate
-                    )
-                }
+        CompositionLocalProvider(
+            LocalSnackbarHostState provides scaffoldState.snackbarHostState
+        ) {
+            Scaffold(
+                modifier = Modifier.semantics { testTagsAsResourceId = true },
+                scaffoldState = scaffoldState,
+                bottomBar = {
+                    AnimatedVisibility(
+                        visible = appState.shouldShowBottomBar,
+                        enter = BottomBarEnterTransition,
+                        exit = BottomBarExitTransition
+                    ) {
+                        CinemaxBottomBar(
+                            destinations = appState.topLevelDestinations,
+                            currentDestination = appState.currentTopLevelDestination,
+                            onNavigateToDestination = appState::navigate
+                        )
+                    }
+                },
+                snackbarHost = { CinemaxSnackbarHost(it) }
+            ) { innerPadding ->
+                CinemaxNavHost(
+                    navController = appState.navController,
+                    startDestination = appState.startDestination,
+                    onNavigateToDestination = appState::navigate,
+                    onBackClick = appState::onBackClick,
+                    modifier = Modifier
+                        .padding(paddingValues = innerPadding)
+                        .consumedWindowInsets(paddingValues = innerPadding)
+                )
             }
-        ) { innerPadding ->
-            CinemaxNavHost(
-                navController = appState.navController,
-                startDestination = appState.startDestination,
-                onNavigateToDestination = appState::navigate,
-                onBackClick = appState::onBackClick,
-                modifier = Modifier
-                    .padding(paddingValues = innerPadding)
-                    .consumedWindowInsets(paddingValues = innerPadding)
-            )
         }
     }
 }

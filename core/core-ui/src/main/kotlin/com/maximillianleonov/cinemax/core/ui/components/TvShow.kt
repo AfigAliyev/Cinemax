@@ -35,6 +35,7 @@ import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.mapper.toNames
 import com.maximillianleonov.cinemax.core.ui.model.ErrorMessage
 import com.maximillianleonov.cinemax.core.ui.model.TvShow
+import com.maximillianleonov.cinemax.core.ui.model.TvShowDetails
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.ui.util.error
 import com.maximillianleonov.cinemax.core.ui.util.isEmpty
@@ -79,7 +80,8 @@ fun TvShowsDisplay(
     emptyDisplay: @Composable LazyItemScope.() -> Unit = {
         NoResultsDisplay(
             modifier = Modifier.fillParentMaxSize(),
-            messageResourceId = R.string.no_tv_show_results
+            messageResourceId = R.string.no_tv_show_results,
+            imageResourceId = R.drawable.no_search_results
         )
     },
     loadingDisplay: @Composable LazyItemScope.() -> Unit = { CinemaxCircularProgressIndicator() },
@@ -172,6 +174,27 @@ fun HorizontalTvShowItemPlaceholder(
 @Composable
 fun VerticalTvShowItem(
     tvShow: TvShow,
+    onClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    with(tvShow) {
+        VerticalContentItem(
+            title = name,
+            overview = overview,
+            posterPath = posterPath,
+            voteAverage = voteAverage,
+            releaseDate = firstAirDate,
+            genres = genres.toNames(),
+            onClick = { onClick(id) },
+            modifier = modifier
+        )
+    }
+}
+
+@Suppress("ReusedModifierInstance")
+@Composable
+fun VerticalTvShowItem(
+    tvShow: TvShowDetails,
     onClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {

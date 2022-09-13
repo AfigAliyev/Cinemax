@@ -61,6 +61,8 @@ object ContentType {
             }
         }
     }
+
+    enum class Wishlist { Movie, TvShow }
 }
 
 private const val MovieContentType = "movie"

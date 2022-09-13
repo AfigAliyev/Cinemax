@@ -41,6 +41,7 @@ import com.maximillianleonov.cinemax.core.ui.components.CinemaxBackButton
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxCenteredBox
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxErrorDisplay
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxSwipeRefresh
+import com.maximillianleonov.cinemax.core.ui.components.SnackbarUserMessageHandler
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.feature.details.components.MovieDetailsItem
 import com.maximillianleonov.cinemax.feature.details.components.MovieDetailsItemPlaceholder
@@ -62,8 +63,11 @@ internal fun DetailsRoute(
         uiState = uiState,
         onRefresh = { viewModel.onEvent(DetailsEvent.Refresh) },
         onBackButtonClick = onBackButtonClick,
+        onWishlistMovieClick = { viewModel.onEvent(DetailsEvent.WishlistMovie) },
+        onWishlistTvShowClick = { viewModel.onEvent(DetailsEvent.WishlistTvShow) },
         onRetry = { viewModel.onEvent(DetailsEvent.Retry) },
         onOfflineModeClick = { viewModel.onEvent(DetailsEvent.ClearError) },
+        onUserMessageDismiss = { viewModel.onEvent(DetailsEvent.ClearUserMessage) },
         modifier = modifier
     )
 
@@ -91,13 +95,20 @@ private fun DetailsScreen(
     uiState: DetailsUiState,
     onRefresh: () -> Unit,
     onBackButtonClick: () -> Unit,
+    onWishlistMovieClick: () -> Unit,
+    onWishlistTvShowClick: () -> Unit,
     onRetry: () -> Unit,
     onOfflineModeClick: () -> Unit,
+    onUserMessageDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = uiState.isLoading
     )
 ) {
+    SnackbarUserMessageHandler(
+        userMessage = uiState.userMessage,
+        onDismiss = onUserMessageDismiss
+    )
     CinemaxSwipeRefresh(
         modifier = modifier,
         swipeRefreshState = swipeRefreshState,
@@ -114,7 +125,9 @@ private fun DetailsScreen(
         } else {
             ContentDisplay(
                 uiState = uiState,
-                onBackButtonClick = onBackButtonClick
+                onBackButtonClick = onBackButtonClick,
+                onWishlistMovieClick = onWishlistMovieClick,
+                onWishlistTvShowClick = onWishlistTvShowClick
             )
         }
     }
@@ -124,6 +137,8 @@ private fun DetailsScreen(
 private fun ContentDisplay(
     uiState: DetailsUiState,
     onBackButtonClick: () -> Unit,
+    onWishlistMovieClick: () -> Unit,
+    onWishlistTvShowClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(modifier = modifier.testTag(tag = ContentTestTag)) {
@@ -134,7 +149,8 @@ private fun ContentDisplay(
                 } else {
                     MovieDetailsItem(
                         movieDetails = uiState.movie,
-                        onBackButtonClick = onBackButtonClick
+                        onBackButtonClick = onBackButtonClick,
+                        onWishlistButtonClick = onWishlistMovieClick
                     )
                 }
             }
@@ -144,7 +160,8 @@ private fun ContentDisplay(
                 } else {
                     TvShowDetailsItem(
                         tvShowDetails = uiState.tvShow,
-                        onBackButtonClick = onBackButtonClick
+                        onBackButtonClick = onBackButtonClick,
+                        onWishlistButtonClick = onWishlistTvShowClick
                     )
                 }
             }

@@ -47,4 +47,4 @@ fun CinemaxPlaceholder(
     )
 }
 
-internal const val PlaceholderCount = 20
+const val PlaceholderCount = 20

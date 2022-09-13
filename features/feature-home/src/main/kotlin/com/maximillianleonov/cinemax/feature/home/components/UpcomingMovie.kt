@@ -45,6 +45,7 @@ import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxImage
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxPlaceholder
 import com.maximillianleonov.cinemax.core.ui.components.MoviesContainer
+import com.maximillianleonov.cinemax.core.ui.components.PlaceholderCount
 import com.maximillianleonov.cinemax.core.ui.model.Movie
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.ui.util.format
@@ -60,7 +61,7 @@ internal fun UpcomingMoviesContainer(
     val pagerState = rememberPagerState()
     val shouldShowPlaceholder = movies.isEmpty()
     val count = if (shouldShowPlaceholder) {
-        UpcomingMoviesContainerPagerPlaceholderCount
+        PlaceholderCount
     } else {
         movies.size
     }
@@ -208,7 +209,6 @@ private fun UpcomingMovieItemPlaceholder(
 
 private val UpcomingMovieHeight = 154.dp
 private const val UpcomingMovieDatePattern = "MMMM d, yyyy"
-private const val UpcomingMoviesContainerPagerPlaceholderCount = 20
 private const val EmptyUpcomingMovieItemSecondTextMaxWidthFraction = 0.5f
 private const val EmptyUpcomingMovieText = ""
 

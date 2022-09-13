@@ -22,6 +22,7 @@ import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.home.navigation.HomeDestination
 import com.maximillianleonov.cinemax.feature.search.navigation.SearchDestination
+import com.maximillianleonov.cinemax.feature.wishlist.navigation.WishlistDestination
 
 enum class TopLevelDestination(
     override val route: String,
@@ -42,8 +43,8 @@ enum class TopLevelDestination(
         textResourceId = R.string.search
     ),
     Wishlist(
-        route = "wishlist_route",
-        destination = "wishlist_destination",
+        route = WishlistDestination.route,
+        destination = WishlistDestination.destination,
         iconResourceId = R.drawable.ic_wishlist,
         textResourceId = R.string.wishlist
     ),

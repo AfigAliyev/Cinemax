@@ -45,6 +45,7 @@ include(
     ":domain",
     ":features:feature-home",
     ":features:feature-search",
+    ":features:feature-wishlist",
     ":features:feature-list",
     ":features:feature-details"
 )

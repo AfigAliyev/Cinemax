@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.ui.model
+package com.maximillianleonov.cinemax.feature.wishlist
 
-import kotlinx.datetime.LocalDate
+import com.maximillianleonov.cinemax.core.ui.common.Event
 
-data class MovieDetails(
-    val id: Int,
-    val title: String,
-    val overview: String,
-    val backdropPath: String?,
-    val budget: Int,
-    val genres: List<Genre>,
-    val posterPath: String?,
-    val releaseDate: LocalDate?,
-    val runtime: Int,
-    val video: Boolean,
-    val voteAverage: Double,
-    val voteCount: Int,
-    val credits: Credits,
-    val isWishlisted: Boolean
-)
+sealed class WishlistEvent : Event {
+    object EnterScreen : WishlistEvent()
+    object RefreshMovies : WishlistEvent()
+    object RefreshTvShows : WishlistEvent()
+    object Retry : WishlistEvent()
+    object ClearError : WishlistEvent()
+}

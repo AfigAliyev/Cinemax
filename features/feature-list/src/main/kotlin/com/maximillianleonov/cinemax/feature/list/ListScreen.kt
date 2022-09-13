@@ -155,6 +155,7 @@ private fun MoviesAndTvShowsDisplay(
                     }
                 )
                 Tab(
+                    modifier = Modifier.testTag(tag = "$TabTestTag:$index"),
                     selected = selected,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
                     text = {
@@ -188,3 +189,4 @@ private fun MoviesAndTvShowsDisplay(
 
 private const val TestTag = "list"
 private const val ContentTestTag = "$TestTag:content"
+private const val TabTestTag = "tab"

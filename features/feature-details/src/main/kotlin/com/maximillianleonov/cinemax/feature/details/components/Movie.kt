@@ -28,6 +28,7 @@ import com.maximillianleonov.cinemax.core.ui.model.MovieDetails
 internal fun MovieDetailsItem(
     movieDetails: MovieDetails,
     onBackButtonClick: () -> Unit,
+    onWishlistButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     with(movieDetails) {
@@ -45,7 +46,9 @@ internal fun MovieDetailsItem(
             genres = genres.toNames(),
             voteAverage = voteAverage,
             credits = credits,
-            onBackButtonClick = onBackButtonClick
+            isWishlisted = isWishlisted,
+            onBackButtonClick = onBackButtonClick,
+            onWishlistButtonClick = onWishlistButtonClick
         )
     }
 }

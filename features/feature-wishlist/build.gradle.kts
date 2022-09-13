@@ -22,7 +22,7 @@ plugins {
 }
 
 android {
-    namespace = "com.maximillianleonov.cinemax.feature.home"
+    namespace = "com.maximillianleonov.cinemax.feature.wishlist"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

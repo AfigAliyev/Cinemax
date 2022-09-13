@@ -28,6 +28,7 @@ import com.maximillianleonov.cinemax.core.ui.model.TvShowDetails
 internal fun TvShowDetailsItem(
     tvShowDetails: TvShowDetails,
     onBackButtonClick: () -> Unit,
+    onWishlistButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     with(tvShowDetails) {
@@ -45,7 +46,9 @@ internal fun TvShowDetailsItem(
             genres = genres.toNames(),
             voteAverage = voteAverage,
             credits = credits,
-            onBackButtonClick = onBackButtonClick
+            isWishlisted = isWishlisted,
+            onBackButtonClick = onBackButtonClick,
+            onWishlistButtonClick = onWishlistButtonClick
         )
     }
 }
