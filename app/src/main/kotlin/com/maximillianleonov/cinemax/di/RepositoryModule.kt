@@ -24,6 +24,7 @@ import com.maximillianleonov.cinemax.data.local.repository.SearchRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.TopRatedRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.TrendingRepositoryImpl
 import com.maximillianleonov.cinemax.data.local.repository.UpcomingRepositoryImpl
+import com.maximillianleonov.cinemax.data.local.repository.WishlistRepositoryImpl
 import com.maximillianleonov.cinemax.domain.repository.DetailsRepository
 import com.maximillianleonov.cinemax.domain.repository.DiscoverRepository
 import com.maximillianleonov.cinemax.domain.repository.NowPlayingRepository
@@ -32,6 +33,7 @@ import com.maximillianleonov.cinemax.domain.repository.SearchRepository
 import com.maximillianleonov.cinemax.domain.repository.TopRatedRepository
 import com.maximillianleonov.cinemax.domain.repository.TrendingRepository
 import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
+import com.maximillianleonov.cinemax.domain.repository.WishlistRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -62,4 +64,7 @@ interface RepositoryModule {
 
     @Binds
     fun bindDetailsRepository(detailsRepositoryImpl: DetailsRepositoryImpl): DetailsRepository
+
+    @Binds
+    fun bindWishlistRepository(wishlistRepositoryImpl: WishlistRepositoryImpl): WishlistRepository
 }
