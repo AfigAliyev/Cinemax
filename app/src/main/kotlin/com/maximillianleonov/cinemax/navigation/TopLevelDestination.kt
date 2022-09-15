@@ -22,6 +22,7 @@ import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.home.navigation.HomeDestination
 import com.maximillianleonov.cinemax.feature.search.navigation.SearchDestination
+import com.maximillianleonov.cinemax.feature.settings.navigation.SettingsDestination
 import com.maximillianleonov.cinemax.feature.wishlist.navigation.WishlistDestination
 
 enum class TopLevelDestination(
@@ -49,8 +50,8 @@ enum class TopLevelDestination(
         textResourceId = R.string.wishlist
     ),
     Settings(
-        route = "settings_route",
-        destination = "settings_destination",
+        route = SettingsDestination.route,
+        destination = SettingsDestination.destination,
         iconResourceId = R.drawable.ic_settings,
         textResourceId = R.string.settings
     )
