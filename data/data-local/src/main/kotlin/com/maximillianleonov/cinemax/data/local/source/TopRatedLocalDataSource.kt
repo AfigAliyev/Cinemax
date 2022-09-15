@@ -24,6 +24,7 @@ import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowEn
 import com.maximillianleonov.cinemax.data.local.entity.toprated.TopRatedTvShowRemoteKeyEntity
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class TopRatedLocalDataSource @Inject constructor(private val db: CinemaxDatabase) {
     private val movieDao = db.topRatedMovieDao
     private val movieRemoteKeyDao = db.topRatedMovieRemoteKeyDao
@@ -46,6 +47,11 @@ class TopRatedLocalDataSource @Inject constructor(private val db: CinemaxDatabas
     suspend fun deleteAndInsertTvShows(tvShows: List<TopRatedTvShowEntity>) = db.withTransaction {
         tvShowDao.deleteAll()
         tvShowDao.insertAll(tvShows)
+    }
+
+    suspend fun deleteAll() {
+        movieDao.deleteAll()
+        tvShowDao.deleteAll()
     }
 
     suspend fun handleMoviesPaging(

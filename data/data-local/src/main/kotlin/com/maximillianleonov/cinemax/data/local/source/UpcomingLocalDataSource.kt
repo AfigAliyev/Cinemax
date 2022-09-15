@@ -35,6 +35,10 @@ class UpcomingLocalDataSource @Inject constructor(private val db: CinemaxDatabas
         movieDao.insertAll(movies)
     }
 
+    suspend fun deleteAll() {
+        movieDao.deleteAll()
+    }
+
     suspend fun handleMoviesPaging(
         shouldDeleteMoviesAndRemoteKeys: Boolean,
         remoteKeys: List<UpcomingMovieRemoteKeyEntity>,
