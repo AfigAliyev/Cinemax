@@ -36,7 +36,6 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
@@ -64,9 +63,7 @@ fun MoviesContainer(
     shouldShowPlaceholder: Boolean = movies.isEmpty()
 ) {
     LazyRow(
-        modifier = modifier
-            .fillMaxWidth()
-            .testTag(tag = MoviesContainerTestTag),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.smallMedium),
         contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.smallMedium)
     ) {
@@ -87,7 +84,7 @@ fun MoviesContainer(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Column(modifier = modifier.testTag(tag = MoviesContainerTestTag)) {
+    Column(modifier = modifier) {
         Row(
             modifier = Modifier
                 .padding(horizontal = CinemaxTheme.spacing.extraMedium)
@@ -100,10 +97,7 @@ fun MoviesContainer(
                 style = CinemaxTheme.typography.semiBold.h4,
                 color = CinemaxTheme.colors.textWhite
             )
-            TextButton(
-                modifier = Modifier.testTag(tag = SeeAllTestTag),
-                onClick = onSeeAllClick
-            ) {
+            TextButton(onClick = onSeeAllClick) {
                 Text(
                     text = stringResource(id = R.string.see_all),
                     style = CinemaxTheme.typography.medium.h5,
@@ -265,6 +259,3 @@ fun VerticalMovieItemPlaceholder(
 ) {
     VerticalContentItemPlaceholder(modifier = modifier)
 }
-
-private const val MoviesContainerTestTag = "moviescontainer"
-private const val SeeAllTestTag = "seeall"

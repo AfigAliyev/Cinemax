@@ -43,7 +43,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -121,10 +120,8 @@ private fun SearchScreen(
         modifier = modifier
             .windowInsetsPadding(WindowInsets.safeDrawing)
             .fillMaxSize()
-            .testTag(tag = ContentTestTag)
     ) {
         SearchTextField(
-            modifier = Modifier.testTag(tag = TextFieldTestTag),
             query = uiState.query,
             onQueryChange = onQueryChange
         )
@@ -231,7 +228,6 @@ private fun SearchResultsDisplay(
                     }
                 )
                 Tab(
-                    modifier = Modifier.testTag(tag = "$TabTestTag:$index"),
                     selected = selected,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
                     text = {
@@ -299,8 +295,3 @@ private fun SuggestionsDisplay(
         }
     }
 }
-
-private const val TestTag = "search"
-private const val ContentTestTag = "$TestTag:content"
-private const val TextFieldTestTag = "$TestTag:textfield"
-private const val TabTestTag = "tab"

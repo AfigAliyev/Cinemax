@@ -32,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -111,8 +110,7 @@ private fun UpcomingMovieItem(
             .fillMaxWidth()
             .height(UpcomingMovieHeight)
             .clip(shape)
-            .clickable(onClick = onClick)
-            .testTag(tag = ContentItemTestTag),
+            .clickable(onClick = onClick),
         shape = shape
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -211,5 +209,3 @@ private val UpcomingMovieHeight = 154.dp
 private const val UpcomingMovieDatePattern = "MMMM d, yyyy"
 private const val EmptyUpcomingMovieItemSecondTextMaxWidthFraction = 0.5f
 private const val EmptyUpcomingMovieText = ""
-
-private const val ContentItemTestTag = "contentitem"

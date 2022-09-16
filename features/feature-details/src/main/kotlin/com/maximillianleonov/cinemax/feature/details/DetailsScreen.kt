@@ -30,7 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -141,7 +140,7 @@ private fun ContentDisplay(
     onWishlistTvShowClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(modifier = modifier.testTag(tag = ContentTestTag)) {
+    Surface(modifier = modifier) {
         when (uiState.contentType) {
             is ContentType.Details.Movie -> {
                 if (uiState.movie == null) {
@@ -197,6 +196,3 @@ private fun ErrorDisplay(
         )
     }
 }
-
-private const val TestTag = "details"
-private const val ContentTestTag = "$TestTag:content"

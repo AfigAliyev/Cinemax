@@ -38,7 +38,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -72,7 +71,7 @@ internal fun DetailsItem(
     onWishlistButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier.testTag(tag = DetailsItemTestTag)) {
+    Box(modifier = modifier) {
         TopBar(
             modifier = Modifier
                 .windowInsetsPadding(
@@ -247,5 +246,3 @@ private val PosterHeight = 287.dp
 private const val BackdropAlpha = 0.2f
 private const val GenreSeparator = ", "
 private const val PlaceholderRating = 0.0
-
-private const val DetailsItemTestTag = "detailsitem"

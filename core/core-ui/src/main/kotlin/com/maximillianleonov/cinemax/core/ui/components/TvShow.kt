@@ -26,7 +26,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import com.google.accompanist.swiperefresh.SwipeRefreshState
@@ -53,9 +52,7 @@ fun TvShowsContainer(
     shouldShowPlaceholder: Boolean = tvShows.isEmpty()
 ) {
     LazyRow(
-        modifier = modifier
-            .fillMaxWidth()
-            .testTag(tag = TvShowsContainerTestTag),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.smallMedium),
         contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.smallMedium)
     ) {
@@ -218,5 +215,3 @@ fun VerticalTvShowItemPlaceholder(
 ) {
     VerticalContentItemPlaceholder(modifier = modifier)
 }
-
-private const val TvShowsContainerTestTag = "tvshowscontainer"

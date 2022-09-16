@@ -34,7 +34,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
@@ -102,18 +101,14 @@ private fun ListScreen(
             Upcoming -> MoviesDisplay(
                 movies = movies,
                 onClick = onMovieClick,
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .testTag(tag = ContentTestTag)
+                modifier = Modifier.padding(innerPadding)
             )
             else -> MoviesAndTvShowsDisplay(
                 movies = movies,
                 tvShows = tvShows,
                 onMovieClick = onMovieClick,
                 onTvShowClick = onTvShowClick,
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .testTag(tag = ContentTestTag)
+                modifier = Modifier.padding(innerPadding)
             )
         }
     }
@@ -155,7 +150,6 @@ private fun MoviesAndTvShowsDisplay(
                     }
                 )
                 Tab(
-                    modifier = Modifier.testTag(tag = "$TabTestTag:$index"),
                     selected = selected,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
                     text = {
@@ -186,7 +180,3 @@ private fun MoviesAndTvShowsDisplay(
         }
     }
 }
-
-private const val TestTag = "list"
-private const val ContentTestTag = "$TestTag:content"
-private const val TabTestTag = "tab"
