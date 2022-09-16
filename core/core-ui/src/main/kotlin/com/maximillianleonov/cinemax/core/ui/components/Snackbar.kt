@@ -16,9 +16,6 @@
 
 package com.maximillianleonov.cinemax.core.ui.components
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
@@ -44,7 +41,7 @@ fun CinemaxSnackbarHost(
 ) {
     SnackbarHost(
         hostState = snackbarHostState,
-        modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing)
+        modifier = modifier
     ) { snackbarData ->
         Snackbar(
             snackbarData = snackbarData,

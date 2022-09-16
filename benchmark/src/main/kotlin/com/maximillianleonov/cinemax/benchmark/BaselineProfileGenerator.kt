@@ -34,7 +34,9 @@ import com.maximillianleonov.cinemax.benchmark.list.listWaitForContent
 import com.maximillianleonov.cinemax.benchmark.search.searchNavigateToWishlistScreen
 import com.maximillianleonov.cinemax.benchmark.search.searchSearchContent
 import com.maximillianleonov.cinemax.benchmark.search.searchWaitForContent
+import com.maximillianleonov.cinemax.benchmark.settings.settingsWaitForContent
 import com.maximillianleonov.cinemax.benchmark.util.PackageName
+import com.maximillianleonov.cinemax.benchmark.wishlist.wishlistNavigateToSettingsScreen
 import com.maximillianleonov.cinemax.benchmark.wishlist.wishlistScrollContent
 import com.maximillianleonov.cinemax.benchmark.wishlist.wishlistWaitForContent
 import org.junit.Rule
@@ -71,10 +73,12 @@ class BaselineProfileGenerator {
 
         searchWaitForContent()
         searchSearchContent()
-
         searchNavigateToWishlistScreen()
 
         wishlistWaitForContent()
         wishlistScrollContent()
+        wishlistNavigateToSettingsScreen()
+
+        settingsWaitForContent()
     }
 }

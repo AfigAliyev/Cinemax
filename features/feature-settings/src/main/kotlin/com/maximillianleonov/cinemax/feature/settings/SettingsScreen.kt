@@ -16,14 +16,60 @@
 
 package com.maximillianleonov.cinemax.feature.settings
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.maximillianleonov.cinemax.core.ui.components.SnackbarUserMessageHandler
+import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.feature.settings.components.SettingsGroupItem
 
 @Composable
-internal fun SettingsRoute(modifier: Modifier = Modifier) {
-    SettingsScreen(modifier = modifier)
+internal fun SettingsRoute(
+    modifier: Modifier = Modifier,
+    viewModel: SettingsViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    SettingsScreen(
+        uiState = uiState,
+        onUserMessageDismiss = { viewModel.onEvent(SettingsEvent.ClearUserMessage) },
+        modifier = modifier
+    )
 }
 
-@Suppress("UnusedPrivateMember")
 @Composable
-private fun SettingsScreen(modifier: Modifier = Modifier) = Unit
+private fun SettingsScreen(
+    uiState: SettingsUiState,
+    onUserMessageDismiss: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    SnackbarUserMessageHandler(
+        userMessage = uiState.userMessage,
+        onDismiss = onUserMessageDismiss
+    )
+    LazyColumn(
+        modifier = modifier
+            .padding(CinemaxTheme.spacing.extraMedium)
+            .windowInsetsPadding(WindowInsets.safeDrawing)
+            .testTag(tag = ContentTestTag),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium)
+    ) {
+        items(uiState.settingsGroups) { settingsGroup ->
+            SettingsGroupItem(settingsGroup = settingsGroup)
+        }
+    }
+}
+
+private const val TestTag = "settings"
+private const val ContentTestTag = "$TestTag:content"
