@@ -21,7 +21,7 @@ import com.maximillianleonov.cinemax.data.local.entity.wishlist.WishlistContentT
 import com.maximillianleonov.cinemax.data.local.mapper.toWishlistEntity
 import javax.inject.Inject
 
-class WishlistLocalDataSource @Inject constructor(private val db: CinemaxDatabase) {
+class WishlistLocalDataSource @Inject constructor(db: CinemaxDatabase) {
     private val dao = db.wishlistDao
 
     fun getMovies() = dao.getByContentType(WishlistContentType.Movie)

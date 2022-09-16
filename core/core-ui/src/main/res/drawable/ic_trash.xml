@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2022 Maximillian Leonov
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M21,5H3C2.735,5 2.48,5.105 2.293,5.293C2.105,5.48 2,5.735 2,6C2,6.265 2.105,6.52 2.293,6.707C2.48,6.895 2.735,7 3,7H5V19C5,19.796 5.316,20.559 5.879,21.121C6.442,21.684 7.204,22 8,22H16C16.796,22 17.559,21.684 18.121,21.121C18.684,20.559 19,19.796 19,19V7H21C21.265,7 21.52,6.895 21.707,6.707C21.895,6.52 22,6.265 22,6C22,5.735 21.895,5.48 21.707,5.293C21.52,5.105 21.265,5 21,5ZM11,16C11,16.265 10.895,16.52 10.707,16.707C10.52,16.895 10.265,17 10,17C9.735,17 9.48,16.895 9.293,16.707C9.105,16.52 9,16.265 9,16V11C9,10.735 9.105,10.48 9.293,10.293C9.48,10.105 9.735,10 10,10C10.265,10 10.52,10.105 10.707,10.293C10.895,10.48 11,10.735 11,11V16ZM15,16C15,16.265 14.895,16.52 14.707,16.707C14.52,16.895 14.265,17 14,17C13.735,17 13.48,16.895 13.293,16.707C13.105,16.52 13,16.265 13,16V11C13,10.735 13.105,10.48 13.293,10.293C13.48,10.105 13.735,10 14,10C14.265,10 14.52,10.105 14.707,10.293C14.895,10.48 15,10.735 15,11V16Z"
+        tools:ignore="VectorPath" />
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M10,4H14C14.265,4 14.52,3.895 14.707,3.707C14.895,3.52 15,3.265 15,3C15,2.735 14.895,2.48 14.707,2.293C14.52,2.105 14.265,2 14,2H10C9.735,2 9.48,2.105 9.293,2.293C9.105,2.48 9,2.735 9,3C9,3.265 9.105,3.52 9.293,3.707C9.48,3.895 9.735,4 10,4Z" />
+</vector>

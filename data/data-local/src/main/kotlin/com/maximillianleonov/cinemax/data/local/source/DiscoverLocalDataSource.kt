@@ -24,6 +24,7 @@ import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverTvShowEn
 import com.maximillianleonov.cinemax.data.local.entity.discover.DiscoverTvShowRemoteKeyEntity
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class DiscoverLocalDataSource @Inject constructor(private val db: CinemaxDatabase) {
     private val movieDao = db.discoverMovieDao
     private val movieRemoteKeyDao = db.discoverMovieRemoteKeyDao
@@ -46,6 +47,11 @@ class DiscoverLocalDataSource @Inject constructor(private val db: CinemaxDatabas
     suspend fun deleteAndInsertTvShows(tvShows: List<DiscoverTvShowEntity>) = db.withTransaction {
         tvShowDao.deleteAll()
         tvShowDao.insertAll(tvShows)
+    }
+
+    suspend fun deleteAll() {
+        movieDao.deleteAll()
+        tvShowDao.deleteAll()
     }
 
     suspend fun handleMoviesPaging(

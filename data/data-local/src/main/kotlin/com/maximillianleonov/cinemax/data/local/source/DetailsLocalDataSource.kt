@@ -56,6 +56,8 @@ class DetailsLocalDataSource @Inject constructor(private val db: CinemaxDatabase
         }
     }
 
-    suspend fun deleteMovies() = movieDao.deleteAll()
-    suspend fun deleteTvShows() = tvShowDao.deleteAll()
+    suspend fun deleteAll() {
+        movieDao.deleteAll()
+        tvShowDao.deleteAll()
+    }
 }

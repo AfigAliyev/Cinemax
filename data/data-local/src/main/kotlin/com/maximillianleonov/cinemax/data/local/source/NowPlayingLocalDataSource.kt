@@ -24,6 +24,7 @@ import com.maximillianleonov.cinemax.data.local.entity.nowplaying.NowPlayingTvSh
 import com.maximillianleonov.cinemax.data.local.entity.nowplaying.NowPlayingTvShowRemoteKeyEntity
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class NowPlayingLocalDataSource @Inject constructor(private val db: CinemaxDatabase) {
     private val movieDao = db.nowPlayingMovieDao
     private val movieRemoteKeyDao = db.nowPlayingMovieRemoteKeyDao
@@ -46,6 +47,11 @@ class NowPlayingLocalDataSource @Inject constructor(private val db: CinemaxDatab
     suspend fun deleteAndInsertTvShows(tvShows: List<NowPlayingTvShowEntity>) = db.withTransaction {
         tvShowDao.deleteAll()
         tvShowDao.insertAll(tvShows)
+    }
+
+    suspend fun deleteAll() {
+        movieDao.deleteAll()
+        tvShowDao.deleteAll()
     }
 
     suspend fun handleMoviesPaging(

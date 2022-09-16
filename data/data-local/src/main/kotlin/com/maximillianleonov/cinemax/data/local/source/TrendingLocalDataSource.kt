@@ -24,6 +24,7 @@ import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingTvShowEn
 import com.maximillianleonov.cinemax.data.local.entity.trending.TrendingTvShowRemoteKeyEntity
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class TrendingLocalDataSource @Inject constructor(private val db: CinemaxDatabase) {
     private val movieDao = db.trendingMovieDao
     private val movieRemoteKeyDao = db.trendingMovieRemoteKeyDao
@@ -46,6 +47,11 @@ class TrendingLocalDataSource @Inject constructor(private val db: CinemaxDatabas
     suspend fun deleteAndInsertTvShows(tvShows: List<TrendingTvShowEntity>) = db.withTransaction {
         tvShowDao.deleteAll()
         tvShowDao.insertAll(tvShows)
+    }
+
+    suspend fun deleteAll() {
+        movieDao.deleteAll()
+        tvShowDao.deleteAll()
     }
 
     suspend fun handleMoviesPaging(

@@ -24,6 +24,7 @@ import com.maximillianleonov.cinemax.data.local.entity.popular.PopularTvShowEnti
 import com.maximillianleonov.cinemax.data.local.entity.popular.PopularTvShowRemoteKeyEntity
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class PopularLocalDataSource @Inject constructor(private val db: CinemaxDatabase) {
     private val movieDao = db.popularMovieDao
     private val movieRemoteKeyDao = db.popularMovieRemoteKeyDao
@@ -46,6 +47,11 @@ class PopularLocalDataSource @Inject constructor(private val db: CinemaxDatabase
     suspend fun deleteAndInsertTvShows(tvShows: List<PopularTvShowEntity>) = db.withTransaction {
         tvShowDao.deleteAll()
         tvShowDao.insertAll(tvShows)
+    }
+
+    suspend fun deleteAll() {
+        movieDao.deleteAll()
+        tvShowDao.deleteAll()
     }
 
     suspend fun handleMoviesPaging(

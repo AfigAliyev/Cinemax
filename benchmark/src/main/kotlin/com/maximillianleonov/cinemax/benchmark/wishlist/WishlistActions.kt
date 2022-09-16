@@ -33,7 +33,15 @@ internal fun MacrobenchmarkScope.wishlistScrollContent() {
     }
 }
 
+internal fun MacrobenchmarkScope.wishlistNavigateToSettingsScreen() = with(device) {
+    waitForContent(SettingsRouteTestTag)
+    findObject(SettingsRouteTestTag).click()
+    waitForIdle()
+}
+
 private const val TestTag = "wishlist"
+private const val BottomBarTestTag = "bottombar"
+private const val SettingsRouteTestTag = "$BottomBarTestTag:settings_route"
 private const val ContentTestTag = "$TestTag:content"
 private const val TabTestTag = "tab"
 private const val TvShowsTabTestTag = "$TabTestTag:1"

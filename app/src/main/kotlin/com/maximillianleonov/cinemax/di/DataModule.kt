@@ -19,6 +19,7 @@ package com.maximillianleonov.cinemax.di
 import android.content.Context
 import androidx.room.Room
 import com.maximillianleonov.cinemax.BuildConfig
+import com.maximillianleonov.cinemax.core.data.local.common.CinemaxVersionProvider
 import com.maximillianleonov.cinemax.core.data.remote.api.CinemaxApiKeyProvider
 import com.maximillianleonov.cinemax.data.local.db.CinemaxDatabase
 import com.maximillianleonov.cinemax.data.remote.api.CinemaxApi
@@ -44,5 +45,10 @@ object DataModule {
     @Provides
     fun provideCinemaxApiKeyProvider() = object : CinemaxApiKeyProvider {
         override val apiKey: String = BuildConfig.CINEMAX_API_KEY
+    }
+
+    @Provides
+    fun provideCinemaxVersionProvider() = object : CinemaxVersionProvider {
+        override val version: String = BuildConfig.VERSION_NAME
     }
 }

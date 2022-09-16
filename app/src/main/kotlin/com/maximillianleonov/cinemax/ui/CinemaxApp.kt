@@ -22,8 +22,13 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumedWindowInsets
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
@@ -80,7 +85,18 @@ fun CinemaxApp(
                         )
                     }
                 },
-                snackbarHost = { CinemaxSnackbarHost(it) }
+                snackbarHost = { snackbarHostState ->
+                    CinemaxSnackbarHost(
+                        modifier = Modifier.windowInsetsPadding(
+                            if (appState.shouldShowBottomBar) {
+                                WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                            } else {
+                                WindowInsets.safeDrawing
+                            }
+                        ),
+                        snackbarHostState = snackbarHostState
+                    )
+                }
             ) { innerPadding ->
                 CinemaxNavHost(
                     navController = appState.navController,
