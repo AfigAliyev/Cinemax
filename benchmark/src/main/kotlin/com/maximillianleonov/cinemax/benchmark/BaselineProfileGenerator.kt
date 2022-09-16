@@ -19,26 +19,7 @@ package com.maximillianleonov.cinemax.benchmark
 import androidx.benchmark.macro.ExperimentalBaselineProfilesApi
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.maximillianleonov.cinemax.benchmark.details.detailsClickWishlist
-import com.maximillianleonov.cinemax.benchmark.details.detailsNavigateBack
-import com.maximillianleonov.cinemax.benchmark.details.detailsWaitForContent
-import com.maximillianleonov.cinemax.benchmark.details.detailsWaitForDetailsItem
-import com.maximillianleonov.cinemax.benchmark.home.homeNavigateToListScreen
-import com.maximillianleonov.cinemax.benchmark.home.homeNavigateToSearchScreen
-import com.maximillianleonov.cinemax.benchmark.home.homeScrollContent
-import com.maximillianleonov.cinemax.benchmark.home.homeWaitForContent
-import com.maximillianleonov.cinemax.benchmark.list.listNavigateBack
-import com.maximillianleonov.cinemax.benchmark.list.listNavigateToDetailsScreen
-import com.maximillianleonov.cinemax.benchmark.list.listScrollContent
-import com.maximillianleonov.cinemax.benchmark.list.listWaitForContent
-import com.maximillianleonov.cinemax.benchmark.search.searchNavigateToWishlistScreen
-import com.maximillianleonov.cinemax.benchmark.search.searchSearchContent
-import com.maximillianleonov.cinemax.benchmark.search.searchWaitForContent
-import com.maximillianleonov.cinemax.benchmark.settings.settingsWaitForContent
 import com.maximillianleonov.cinemax.benchmark.util.PackageName
-import com.maximillianleonov.cinemax.benchmark.wishlist.wishlistNavigateToSettingsScreen
-import com.maximillianleonov.cinemax.benchmark.wishlist.wishlistScrollContent
-import com.maximillianleonov.cinemax.benchmark.wishlist.wishlistWaitForContent
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,32 +34,5 @@ class BaselineProfileGenerator {
     fun generate() = baselineProfileRule.collectBaselineProfile(packageName = PackageName) {
         pressHome()
         startActivityAndWait()
-
-        homeWaitForContent()
-        homeScrollContent()
-        homeNavigateToListScreen()
-
-        listWaitForContent()
-        listScrollContent()
-        listNavigateToDetailsScreen()
-
-        detailsWaitForContent()
-        detailsWaitForDetailsItem()
-        detailsClickWishlist()
-        detailsNavigateBack()
-
-        listNavigateBack()
-
-        homeNavigateToSearchScreen()
-
-        searchWaitForContent()
-        searchSearchContent()
-        searchNavigateToWishlistScreen()
-
-        wishlistWaitForContent()
-        wishlistScrollContent()
-        wishlistNavigateToSettingsScreen()
-
-        settingsWaitForContent()
     }
 }

@@ -41,7 +41,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -78,10 +77,7 @@ fun MoviesAndTvShowsContainer(
                 style = CinemaxTheme.typography.semiBold.h4,
                 color = CinemaxTheme.colors.textWhite
             )
-            TextButton(
-                modifier = Modifier.testTag(tag = SeeAllTestTag),
-                onClick = onSeeAllClick
-            ) {
+            TextButton(onClick = onSeeAllClick) {
                 Text(
                     text = stringResource(id = R.string.see_all),
                     style = CinemaxTheme.typography.medium.h5,
@@ -124,8 +120,7 @@ internal fun HorizontalContentItem(
         modifier = modifier
             .width(HorizontalContentItemWidth)
             .clip(shape)
-            .clickable(onClick = onClick)
-            .testTag(tag = ContentItemTestTag),
+            .clickable(onClick = onClick),
         backgroundColor = backgroundColor,
         shape = shape
     ) {
@@ -257,8 +252,7 @@ internal fun VerticalContentItem(
             .fillMaxWidth()
             .height(VerticalContentItemHeight)
             .clip(shape)
-            .clickable(onClick = onClick)
-            .testTag(tag = ContentItemTestTag),
+            .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.medium)
     ) {
@@ -458,6 +452,3 @@ private val VerticalContentItemIconAndTextPlaceholderHeight = VerticalContentIte
 private const val ContentItemPlaceholderText = ""
 private const val ContentItemGenreSeparator = ", "
 private const val PlaceholderRating = 0.0
-
-private const val ContentItemTestTag = "contentitem"
-private const val SeeAllTestTag = "seeall"

@@ -22,7 +22,6 @@ import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.maximillianleonov.cinemax.benchmark.home.homeWaitForContent
 import com.maximillianleonov.cinemax.benchmark.util.PackageName
 import org.junit.Rule
 import org.junit.Test
@@ -46,9 +45,5 @@ class BaselineProfileBenchmark {
         startupMode = StartupMode.COLD,
         compilationMode = compilationMode,
         setupBlock = MacrobenchmarkScope::pressHome
-    ) {
-        startActivityAndWait()
-
-        homeWaitForContent()
-    }
+    ) { startActivityAndWait() }
 }

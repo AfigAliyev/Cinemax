@@ -40,7 +40,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -140,9 +139,7 @@ private fun ContentDisplay(
     val pagerState = rememberPagerState()
     val selectedTabIndex = pagerState.currentPage
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .testTag(tag = ContentTestTag)
+        modifier = modifier.fillMaxSize()
     ) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
@@ -164,7 +161,6 @@ private fun ContentDisplay(
                     }
                 )
                 Tab(
-                    modifier = Modifier.testTag(tag = "$TabTestTag:$index"),
                     selected = selected,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
                     text = {
@@ -281,7 +277,3 @@ private fun TvShowsDisplay(
         }
     }
 }
-
-private const val TestTag = "wishlist"
-private const val ContentTestTag = "$TestTag:content"
-private const val TabTestTag = "tab"

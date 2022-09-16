@@ -31,7 +31,6 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -81,8 +80,7 @@ fun CinemaxBackButton(
                 .background(
                     color = CinemaxTheme.colors.primarySoft,
                     shape = CinemaxTheme.shapes.smallMedium
-                )
-                .testTag(tag = BackTestTag),
+                ),
             onClick = onClick
         ) {
             Icon(
@@ -95,5 +93,3 @@ fun CinemaxBackButton(
 }
 
 private val CinemaxBackButtonShapeSize = 32.dp
-
-private const val BackTestTag = "back"

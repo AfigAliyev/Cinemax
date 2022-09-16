@@ -28,7 +28,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.maximillianleonov.cinemax.core.ui.components.SnackbarUserMessageHandler
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
@@ -60,8 +59,7 @@ private fun SettingsScreen(
     LazyColumn(
         modifier = modifier
             .padding(CinemaxTheme.spacing.extraMedium)
-            .windowInsetsPadding(WindowInsets.safeDrawing)
-            .testTag(tag = ContentTestTag),
+            .windowInsetsPadding(WindowInsets.safeDrawing),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium)
     ) {
@@ -70,6 +68,3 @@ private fun SettingsScreen(
         }
     }
 }
-
-private const val TestTag = "settings"
-private const val ContentTestTag = "$TestTag:content"

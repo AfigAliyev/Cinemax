@@ -54,7 +54,6 @@ import androidx.compose.ui.layout.MeasureResult
 import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -104,8 +103,7 @@ fun CinemaxBottomBar(
                 CinemaxBottomNavigationItem(
                     modifier = Modifier
                         .padding(CinemaxTheme.spacing.smallMedium)
-                        .clip(CinemaxTheme.shapes.medium)
-                        .testTag(tag = "$TestTag:${destination.route}"),
+                        .clip(CinemaxTheme.shapes.medium),
                     icon = {
                         Icon(
                             painter = icon,
@@ -332,5 +330,3 @@ private val BottomBarAnimationSpec = SpringSpec<Float>(
     stiffness = 800f,
     dampingRatio = 0.8f
 )
-
-private const val TestTag = "bottombar"
