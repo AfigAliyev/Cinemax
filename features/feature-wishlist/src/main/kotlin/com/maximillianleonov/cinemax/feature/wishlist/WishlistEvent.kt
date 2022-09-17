@@ -19,7 +19,6 @@ package com.maximillianleonov.cinemax.feature.wishlist
 import com.maximillianleonov.cinemax.core.ui.common.Event
 
 sealed class WishlistEvent : Event {
-    object EnterScreen : WishlistEvent()
     object RefreshMovies : WishlistEvent()
     object RefreshTvShows : WishlistEvent()
     object Retry : WishlistEvent()

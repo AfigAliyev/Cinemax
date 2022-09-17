@@ -34,7 +34,6 @@ import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -83,8 +82,6 @@ internal fun WishlistRoute(
         onOfflineModeClick = { viewModel.onEvent(WishlistEvent.ClearError) },
         modifier = modifier
     )
-
-    LaunchedEffect(Unit) { viewModel.onEvent(WishlistEvent.EnterScreen) }
 }
 
 @Composable
