@@ -29,12 +29,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.maximillianleonov.cinemax.core.ui.common.ContentType
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxBackButton
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxCenteredBox
@@ -50,16 +47,16 @@ import com.maximillianleonov.cinemax.feature.details.components.TvShowDetailsIte
 @Composable
 internal fun DetailsRoute(
     onBackButtonClick: () -> Unit,
+    onShowMessage: (String) -> Unit,
+    onSetSystemBarsColorTransparent: () -> Unit,
+    onResetSystemBarsColor: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DetailsViewModel = hiltViewModel(),
-    systemUiController: SystemUiController = rememberSystemUiController(),
-    systemBarsColor: Color = Color.Transparent,
-    systemBarsDarkIcons: Boolean = false,
-    defaultSystemBarsColor: Color = CinemaxTheme.colors.primaryDark
+    viewModel: DetailsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     DetailsScreen(
         uiState = uiState,
+        onShowMessage = onShowMessage,
         onRefresh = { viewModel.onEvent(DetailsEvent.Refresh) },
         onBackButtonClick = onBackButtonClick,
         onWishlistMovieClick = { viewModel.onEvent(DetailsEvent.WishlistMovie) },
@@ -70,28 +67,16 @@ internal fun DetailsRoute(
         modifier = modifier
     )
 
-    DisposableEffect(
-        systemUiController,
-        systemBarsColor,
-        systemBarsDarkIcons,
-        defaultSystemBarsColor
-    ) {
-        systemUiController.setSystemBarsColor(
-            color = systemBarsColor,
-            darkIcons = systemBarsDarkIcons
-        )
-        onDispose {
-            systemUiController.setSystemBarsColor(
-                color = defaultSystemBarsColor,
-                darkIcons = systemBarsDarkIcons
-            )
-        }
+    DisposableEffect(onSetSystemBarsColorTransparent, onResetSystemBarsColor) {
+        onSetSystemBarsColorTransparent()
+        onDispose { onResetSystemBarsColor() }
     }
 }
 
 @Composable
 private fun DetailsScreen(
     uiState: DetailsUiState,
+    onShowMessage: (String) -> Unit,
     onRefresh: () -> Unit,
     onBackButtonClick: () -> Unit,
     onWishlistMovieClick: () -> Unit,
@@ -106,6 +91,7 @@ private fun DetailsScreen(
 ) {
     SnackbarUserMessageHandler(
         userMessage = uiState.userMessage,
+        onShowMessage = onShowMessage,
         onDismiss = onUserMessageDismiss
     )
     CinemaxSwipeRefresh(

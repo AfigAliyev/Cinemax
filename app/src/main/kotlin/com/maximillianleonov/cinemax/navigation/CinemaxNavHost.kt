@@ -36,6 +36,9 @@ fun CinemaxNavHost(
     startDestination: CinemaxNavigationDestination,
     onNavigateToDestination: (CinemaxNavigationDestination, String) -> Unit,
     onBackClick: () -> Unit,
+    onShowMessage: (String) -> Unit,
+    onSetSystemBarsColorTransparent: () -> Unit,
+    onResetSystemBarsColor: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -73,7 +76,7 @@ fun CinemaxNavHost(
                 )
             }
         )
-        settingsGraph()
+        settingsGraph(onShowMessage = onShowMessage)
         listGraph(
             onBackButtonClick = onBackClick,
             onNavigateToDetailsDestination = {
@@ -83,6 +86,11 @@ fun CinemaxNavHost(
                 )
             }
         )
-        detailsGraph(onBackButtonClick = onBackClick)
+        detailsGraph(
+            onBackButtonClick = onBackClick,
+            onShowMessage = onShowMessage,
+            onSetSystemBarsColorTransparent = onSetSystemBarsColorTransparent,
+            onResetSystemBarsColor = onResetSystemBarsColor
+        )
     }
 }

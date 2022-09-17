@@ -17,7 +17,6 @@
 package com.maximillianleonov.cinemax.core.ui.components
 
 import androidx.compose.material.Snackbar
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -56,14 +55,14 @@ fun CinemaxSnackbarHost(
 @Composable
 fun SnackbarUserMessageHandler(
     userMessage: UserMessage?,
+    onShowMessage: (String) -> Unit,
     onDismiss: () -> Unit,
-    snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current,
-    duration: SnackbarDuration = SnackbarDuration.Short
+    snackbarHostState: SnackbarHostState = LocalSnackbarHostState.current
 ) {
     if (userMessage == null) return
     val message = userMessage.asString()
     LaunchedEffect(snackbarHostState, userMessage) {
-        snackbarHostState.showSnackbar(message = message, duration = duration)
+        onShowMessage(message)
         onDismiss()
     }
 }

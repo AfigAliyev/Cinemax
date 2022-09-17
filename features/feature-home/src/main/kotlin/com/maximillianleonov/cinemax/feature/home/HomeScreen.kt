@@ -16,7 +16,6 @@
 
 package com.maximillianleonov.cinemax.feature.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -52,7 +51,6 @@ internal fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    Log.e("AAA", uiState.toString())
     HomeScreen(
         uiState = uiState,
         onSeeAllClick = onSeeAllClick,

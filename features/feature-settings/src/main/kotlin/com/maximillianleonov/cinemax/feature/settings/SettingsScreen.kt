@@ -35,12 +35,14 @@ import com.maximillianleonov.cinemax.feature.settings.components.SettingsGroupIt
 
 @Composable
 internal fun SettingsRoute(
+    onShowMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     SettingsScreen(
         uiState = uiState,
+        onShowMessage = onShowMessage,
         onUserMessageDismiss = { viewModel.onEvent(SettingsEvent.ClearUserMessage) },
         modifier = modifier
     )
@@ -49,11 +51,13 @@ internal fun SettingsRoute(
 @Composable
 private fun SettingsScreen(
     uiState: SettingsUiState,
+    onShowMessage: (String) -> Unit,
     onUserMessageDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     SnackbarUserMessageHandler(
         userMessage = uiState.userMessage,
+        onShowMessage = onShowMessage,
         onDismiss = onUserMessageDismiss
     )
     LazyColumn(

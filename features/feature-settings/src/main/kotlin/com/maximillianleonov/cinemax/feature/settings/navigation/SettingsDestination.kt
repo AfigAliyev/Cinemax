@@ -26,6 +26,8 @@ object SettingsDestination : CinemaxNavigationDestination {
     override val destination = "settings_destination"
 }
 
-fun NavGraphBuilder.settingsGraph() = composable(route = SettingsDestination.route) {
-    SettingsRoute()
+fun NavGraphBuilder.settingsGraph(
+    onShowMessage: (String) -> Unit
+) = composable(route = SettingsDestination.route) {
+    SettingsRoute(onShowMessage = onShowMessage)
 }

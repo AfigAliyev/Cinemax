@@ -42,13 +42,25 @@ object DetailsDestination : CinemaxNavigationDestination {
     )
 }
 
-fun NavGraphBuilder.detailsGraph(onBackButtonClick: () -> Unit) = composable(
+fun NavGraphBuilder.detailsGraph(
+    onBackButtonClick: () -> Unit,
+    onShowMessage: (String) -> Unit,
+    onSetSystemBarsColorTransparent: () -> Unit,
+    onResetSystemBarsColor: () -> Unit,
+) = composable(
     route = DetailsDestination.routeWithArgument,
     arguments = listOf(
         navArgument(DetailsDestination.idArgument) { type = NavType.IntType },
         navArgument(DetailsDestination.contentTypeArgument) { type = NavType.StringType }
     )
-) { DetailsRoute(onBackButtonClick = onBackButtonClick) }
+) {
+    DetailsRoute(
+        onBackButtonClick = onBackButtonClick,
+        onShowMessage = onShowMessage,
+        onSetSystemBarsColorTransparent = onSetSystemBarsColorTransparent,
+        onResetSystemBarsColor = onResetSystemBarsColor
+    )
+}
 
 private const val CONTENT_ID_NULL_MESSAGE = "Content id is null."
 private const val CONTENT_TYPE_NULL_MESSAGE = "Content type is null."
