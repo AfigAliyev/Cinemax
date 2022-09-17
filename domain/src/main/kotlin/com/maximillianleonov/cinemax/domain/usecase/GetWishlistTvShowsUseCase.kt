@@ -16,21 +16,20 @@
 
 package com.maximillianleonov.cinemax.domain.usecase
 
-import com.maximillianleonov.cinemax.core.domain.result.Result
-import com.maximillianleonov.cinemax.domain.model.TvShowDetailsModel
 import com.maximillianleonov.cinemax.domain.model.WishlistModel
 import com.maximillianleonov.cinemax.domain.repository.DetailsRepository
 import com.maximillianleonov.cinemax.domain.repository.WishlistRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 class GetWishlistTvShowsUseCase @Inject constructor(
     private val wishlistRepository: WishlistRepository,
     private val detailsRepository: DetailsRepository
 ) {
-    suspend operator fun invoke(): Flow<Result<List<TvShowDetailsModel>>> {
-        val ids = wishlistRepository.getTvShows().first().map(WishlistModel::id)
-        return detailsRepository.getTvShowsByIds(ids)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    operator fun invoke() = wishlistRepository.getTvShows().flatMapLatest { wishlistTvShows ->
+        val ids = wishlistTvShows.map(WishlistModel::id)
+        detailsRepository.getTvShowsByIds(ids)
     }
 }

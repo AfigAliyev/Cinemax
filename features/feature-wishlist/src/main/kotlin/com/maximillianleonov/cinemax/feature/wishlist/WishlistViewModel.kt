@@ -46,16 +46,10 @@ class WishlistViewModel @Inject constructor(
     private var tvShowsJob = getTvShowsJob()
 
     override fun onEvent(event: WishlistEvent) = when (event) {
-        WishlistEvent.EnterScreen -> onEnterScreen()
         WishlistEvent.RefreshMovies -> onRefreshMovies()
         WishlistEvent.RefreshTvShows -> onRefreshTvShows()
         WishlistEvent.Retry -> onRetry()
         WishlistEvent.ClearError -> onClearError()
-    }
-
-    private fun onEnterScreen() {
-        onRefreshMovies()
-        onRefreshTvShows()
     }
 
     private fun onRefreshMovies() {
