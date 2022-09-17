@@ -30,16 +30,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.maximillianleonov.cinemax.core.ui.components.CinemaxSnackbarHost
 import com.maximillianleonov.cinemax.core.ui.components.LocalSnackbarHostState
 import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
@@ -50,24 +46,16 @@ import com.maximillianleonov.cinemax.ui.components.CinemaxBottomBar
 @Composable
 fun CinemaxApp(
     appState: CinemaxAppState = rememberCinemaxAppState(),
-    systemUiController: SystemUiController = rememberSystemUiController(),
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
-    systemBarsColor: Color = CinemaxTheme.colors.primaryDark,
-    systemBarsDarkIcons: Boolean = false
+    systemBarsColor: Color = CinemaxTheme.colors.primaryDark
 ) {
-    LaunchedEffect(systemUiController, systemBarsColor, systemBarsDarkIcons) {
-        systemUiController.setSystemBarsColor(
-            color = systemBarsColor,
-            darkIcons = systemBarsDarkIcons
-        )
-    }
+    LaunchedEffect(systemBarsColor) { appState.setSystemBarsColor(systemBarsColor) }
 
     CinemaxTheme {
         CompositionLocalProvider(
-            LocalSnackbarHostState provides scaffoldState.snackbarHostState
+            LocalSnackbarHostState provides appState.scaffoldState.snackbarHostState
         ) {
             Scaffold(
-                scaffoldState = scaffoldState,
+                scaffoldState = appState.scaffoldState,
                 bottomBar = {
                     AnimatedVisibility(
                         visible = appState.shouldShowBottomBar,
@@ -99,6 +87,9 @@ fun CinemaxApp(
                     startDestination = appState.startDestination,
                     onNavigateToDestination = appState::navigate,
                     onBackClick = appState::onBackClick,
+                    onShowMessage = { message -> appState.showMessage(message) },
+                    onSetSystemBarsColorTransparent = { appState.setSystemBarsColor(Color.Transparent) },
+                    onResetSystemBarsColor = { appState.setSystemBarsColor(systemBarsColor) },
                     modifier = Modifier
                         .padding(paddingValues = innerPadding)
                         .consumedWindowInsets(paddingValues = innerPadding)
