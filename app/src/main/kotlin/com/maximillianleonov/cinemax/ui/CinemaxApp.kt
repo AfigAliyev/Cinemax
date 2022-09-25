@@ -29,20 +29,22 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxSnackbarHost
-import com.maximillianleonov.cinemax.core.ui.components.LocalSnackbarHostState
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
+import androidx.compose.ui.unit.dp
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxSnackbarHost
+import com.maximillianleonov.cinemax.core.designsystem.component.LocalSnackbarHostState
+import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.navigation.CinemaxNavHost
-import com.maximillianleonov.cinemax.ui.components.CinemaxBottomBar
+import com.maximillianleonov.cinemax.ui.component.CinemaxBottomBar
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun CinemaxApp(
     appState: CinemaxAppState = rememberCinemaxAppState(),
@@ -52,10 +54,9 @@ fun CinemaxApp(
 
     CinemaxTheme {
         CompositionLocalProvider(
-            LocalSnackbarHostState provides appState.scaffoldState.snackbarHostState
+            LocalSnackbarHostState provides appState.snackbarHostState
         ) {
             Scaffold(
-                scaffoldState = appState.scaffoldState,
                 bottomBar = {
                     AnimatedVisibility(
                         visible = appState.shouldShowBottomBar,
@@ -69,7 +70,7 @@ fun CinemaxApp(
                         )
                     }
                 },
-                snackbarHost = { snackbarHostState ->
+                snackbarHost = {
                     CinemaxSnackbarHost(
                         modifier = Modifier.windowInsetsPadding(
                             if (appState.shouldShowBottomBar) {
@@ -78,21 +79,27 @@ fun CinemaxApp(
                                 WindowInsets.safeDrawing
                             }
                         ),
-                        snackbarHostState = snackbarHostState
+                        snackbarHostState = appState.snackbarHostState
                     )
-                }
+                },
+                contentWindowInsets = WindowInsets(
+                    left = 0.dp,
+                    top = 0.dp,
+                    right = 0.dp,
+                    bottom = 0.dp
+                )
             ) { innerPadding ->
                 CinemaxNavHost(
+                    modifier = Modifier
+                        .padding(paddingValues = innerPadding)
+                        .consumedWindowInsets(paddingValues = innerPadding),
                     navController = appState.navController,
                     startDestination = appState.startDestination,
                     onNavigateToDestination = appState::navigate,
                     onBackClick = appState::onBackClick,
                     onShowMessage = { message -> appState.showMessage(message) },
                     onSetSystemBarsColorTransparent = { appState.setSystemBarsColor(Color.Transparent) },
-                    onResetSystemBarsColor = { appState.setSystemBarsColor(systemBarsColor) },
-                    modifier = Modifier
-                        .padding(paddingValues = innerPadding)
-                        .consumedWindowInsets(paddingValues = innerPadding)
+                    onResetSystemBarsColor = { appState.setSystemBarsColor(systemBarsColor) }
                 )
             }
         }

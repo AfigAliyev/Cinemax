@@ -22,27 +22,25 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.shimmer
-import com.google.accompanist.placeholder.placeholder
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.designsystem.component.cinemaxPlaceholder
+import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 
 @Composable
 internal fun IconAndText(
     @DrawableRes iconResourceId: Int,
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = CinemaxTheme.colors.textGrey
+    color: Color = CinemaxTheme.colors.grey,
+    isPlaceholder: Boolean = false
 ) {
     Row(
         modifier = modifier,
@@ -56,6 +54,14 @@ internal fun IconAndText(
             tint = color
         )
         Text(
+            modifier = if (isPlaceholder) {
+                Modifier
+                    .fillMaxWidth(PlaceholderTextMaxWidthFraction)
+                    .height(PlaceholderTextHeight)
+                    .cinemaxPlaceholder(color = color)
+            } else {
+                Modifier
+            },
             text = text,
             style = CinemaxTheme.typography.medium.h5,
             color = color,
@@ -68,40 +74,14 @@ internal fun IconAndText(
 @Composable
 internal fun IconAndTextPlaceholder(
     @DrawableRes iconResourceId: Int,
-    modifier: Modifier = Modifier,
-    color: Color = CinemaxTheme.colors.textGrey,
-    visible: Boolean = true,
-    shape: Shape = CinemaxTheme.shapes.medium,
-    highlight: PlaceholderHighlight = PlaceholderHighlight.shimmer()
+    modifier: Modifier = Modifier
 ) {
-    Row(
+    IconAndText(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraSmall)
-    ) {
-        Icon(
-            modifier = Modifier.size(IconAndTextIconSize),
-            painter = painterResource(id = iconResourceId),
-            contentDescription = PlaceholderText,
-            tint = color
-        )
-        Text(
-            modifier = Modifier
-                .fillMaxWidth(PlaceholderTextMaxWidthFraction)
-                .height(PlaceholderTextHeight)
-                .placeholder(
-                    visible = visible,
-                    color = color,
-                    shape = shape,
-                    highlight = highlight
-                ),
-            text = PlaceholderText,
-            style = CinemaxTheme.typography.medium.h5,
-            color = color,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
+        iconResourceId = iconResourceId,
+        text = PlaceholderText,
+        isPlaceholder = true
+    )
 }
 
 private val IconAndTextIconSize = 18.dp

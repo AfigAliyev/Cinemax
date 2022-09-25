@@ -16,23 +16,17 @@
 
 package com.maximillianleonov.cinemax.feature.details
 
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.model.ErrorMessage
-import com.maximillianleonov.cinemax.core.ui.model.MovieDetails
-import com.maximillianleonov.cinemax.core.ui.model.TvShowDetails
-import com.maximillianleonov.cinemax.core.ui.model.UserMessage
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.model.MovieDetails
+import com.maximillianleonov.cinemax.core.model.TvShowDetails
+import com.maximillianleonov.cinemax.core.model.UserMessage
 
 data class DetailsUiState(
-    val contentType: ContentType.Details,
+    val mediaType: MediaType.Details,
     val movie: MovieDetails? = null,
     val tvShow: TvShowDetails? = null,
     val isLoading: Boolean = false,
-    val error: ErrorMessage? = null,
-    val userMessage: UserMessage? = null
-) {
-    val isError: Boolean get() = error != null
-    val isOfflineModeAvailable: Boolean
-        get() = movie != null || tvShow != null
-
-    fun requireError() = checkNotNull(error)
-}
+    val userMessage: UserMessage? = null,
+    val error: Throwable? = null,
+    val isOfflineModeAvailable: Boolean = false
+)

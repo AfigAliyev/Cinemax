@@ -16,20 +16,14 @@
 
 package com.maximillianleonov.cinemax.feature.wishlist
 
-import com.maximillianleonov.cinemax.core.ui.model.ErrorMessage
-import com.maximillianleonov.cinemax.core.ui.model.MovieDetails
-import com.maximillianleonov.cinemax.core.ui.model.TvShowDetails
+import com.maximillianleonov.cinemax.core.model.MovieDetails
+import com.maximillianleonov.cinemax.core.model.TvShowDetails
 
 data class WishlistUiState(
     val movies: List<MovieDetails> = emptyList(),
     val tvShows: List<TvShowDetails> = emptyList(),
     val isMoviesLoading: Boolean = false,
     val isTvShowsLoading: Boolean = false,
-    val error: ErrorMessage? = null
-) {
-    val isError: Boolean get() = error != null
-    val isOfflineModeAvailable: Boolean
-        get() = movies.isNotEmpty() || tvShows.isNotEmpty()
-
-    fun requireError() = checkNotNull(error)
-}
+    val error: Throwable? = null,
+    val isOfflineModeAvailable: Boolean = false
+)

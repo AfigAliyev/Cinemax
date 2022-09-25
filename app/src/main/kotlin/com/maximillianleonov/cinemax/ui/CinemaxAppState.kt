@@ -16,8 +16,7 @@
 
 package com.maximillianleonov.cinemax.ui
 
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -33,7 +32,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
+import com.maximillianleonov.cinemax.core.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,35 +41,41 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun rememberCinemaxAppState(
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
     systemUiController: SystemUiController = rememberSystemUiController(),
-    navController: NavHostController = rememberNavController(),
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    navController: NavHostController = rememberNavController(),
     startDestination: TopLevelDestination = TopLevelDestination.Home
-) = remember(scaffoldState, systemUiController, navController, coroutineScope, startDestination) {
+) = remember(
+    systemUiController,
+    snackbarHostState,
+    coroutineScope,
+    navController,
+    startDestination
+) {
     CinemaxAppState(
-        scaffoldState = scaffoldState,
         systemUiController = systemUiController,
+        snackbarHostState = snackbarHostState,
+        coroutineScope = coroutineScope,
         navController = navController,
-        startDestination = startDestination,
-        coroutineScope = coroutineScope
+        startDestination = startDestination
     )
 }
 
 @Stable
 class CinemaxAppState(
-    val scaffoldState: ScaffoldState,
     val systemUiController: SystemUiController,
+    val snackbarHostState: SnackbarHostState,
+    val coroutineScope: CoroutineScope,
     val navController: NavHostController,
-    val startDestination: TopLevelDestination,
-    val coroutineScope: CoroutineScope
+    val startDestination: TopLevelDestination
 ) {
     init {
         coroutineScope.launch {
             snackbarMessages.collect { messages ->
                 if (messages.isNotEmpty()) {
                     val message = messages.first()
-                    scaffoldState.snackbarHostState.showSnackbar(message = message)
+                    snackbarHostState.showSnackbar(message = message)
                     snackbarMessages.update { messageList ->
                         messageList.filterNot { it == message }
                     }

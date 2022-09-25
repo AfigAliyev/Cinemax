@@ -20,37 +20,36 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.swiperefresh.SwipeRefreshState
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxSwipeRefresh
+import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.model.Movie
+import com.maximillianleonov.cinemax.core.model.TvShow
+import com.maximillianleonov.cinemax.core.ui.CinemaxCenteredError
+import com.maximillianleonov.cinemax.core.ui.MoviesAndTvShowsContainer
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxCenteredBox
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxErrorDisplay
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxSwipeRefresh
-import com.maximillianleonov.cinemax.core.ui.components.MoviesAndTvShowsContainer
-import com.maximillianleonov.cinemax.core.ui.model.Movie
-import com.maximillianleonov.cinemax.core.ui.model.TvShow
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.feature.home.components.UpcomingMoviesContainer
+import com.maximillianleonov.cinemax.core.ui.mapper.asUserMessage
+import com.maximillianleonov.cinemax.feature.home.component.UpcomingMoviesContainer
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun HomeRoute(
-    onSeeAllClick: (ContentType.List) -> Unit,
+    onSeeAllClick: (MediaType.Common) -> Unit,
     onMovieClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     HomeScreen(
         uiState = uiState,
         onSeeAllClick = onSeeAllClick,
@@ -63,41 +62,31 @@ internal fun HomeRoute(
     )
 }
 
-@Suppress("ReusedModifierInstance")
 @Composable
 private fun HomeScreen(
     uiState: HomeUiState,
-    onSeeAllClick: (ContentType.List) -> Unit,
+    onSeeAllClick: (MediaType.Common) -> Unit,
     onMovieClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onRefresh: () -> Unit,
     onRetry: () -> Unit,
     onOfflineModeClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = uiState.isLoading
-    )
+    modifier: Modifier = Modifier
 ) {
     CinemaxSwipeRefresh(
         modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing),
-        swipeRefreshState = swipeRefreshState,
+        isRefreshing = uiState.isLoading,
         onRefresh = onRefresh
     ) {
-        if (uiState.isError) {
-            CinemaxCenteredBox(
-                modifier = Modifier
-                    .padding(horizontal = CinemaxTheme.spacing.extraMedium)
-                    .fillMaxSize()
-            ) {
-                CinemaxErrorDisplay(
-                    errorMessage = uiState.requireError(),
-                    onRetry = onRetry,
-                    shouldShowOfflineMode = uiState.isOfflineModeAvailable,
-                    onOfflineModeClick = onOfflineModeClick
-                )
-            }
+        if (uiState.error != null) {
+            CinemaxCenteredError(
+                errorMessage = uiState.error.asUserMessage(),
+                onRetry = onRetry,
+                shouldShowOfflineMode = uiState.isOfflineModeAvailable,
+                onOfflineModeClick = onOfflineModeClick
+            )
         } else {
-            ContentDisplay(
+            HomeContent(
                 movies = uiState.movies,
                 tvShows = uiState.tvShows,
                 onSeeAllClick = onSeeAllClick,
@@ -109,10 +98,10 @@ private fun HomeScreen(
 }
 
 @Composable
-private fun ContentDisplay(
-    movies: Map<ContentType.Main, List<Movie>>,
-    tvShows: Map<ContentType.Main, List<TvShow>>,
-    onSeeAllClick: (ContentType.List) -> Unit,
+private fun HomeContent(
+    movies: Map<MediaType.Movie, List<Movie>>,
+    tvShows: Map<MediaType.TvShow, List<TvShow>>,
+    onSeeAllClick: (MediaType.Common) -> Unit,
     onMovieClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -124,17 +113,17 @@ private fun ContentDisplay(
     ) {
         item {
             UpcomingMoviesContainer(
-                movies = movies[ContentType.Main.UpcomingMovies].orEmpty(),
-                onSeeAllClick = { onSeeAllClick(ContentType.List.Upcoming) },
+                movies = movies[MediaType.Movie.Upcoming].orEmpty(),
+                onSeeAllClick = { onSeeAllClick(MediaType.Common.Upcoming) },
                 onMovieClick = onMovieClick
             )
         }
         item {
             MoviesAndTvShowsContainer(
                 titleResourceId = R.string.top_rated,
-                onSeeAllClick = { onSeeAllClick(ContentType.List.TopRated) },
-                movies = movies[ContentType.Main.TopRatedMovies].orEmpty(),
-                tvShows = tvShows[ContentType.Main.TopRatedTvShows].orEmpty(),
+                onSeeAllClick = { onSeeAllClick(MediaType.Common.TopRated) },
+                movies = movies[MediaType.Movie.TopRated].orEmpty(),
+                tvShows = tvShows[MediaType.TvShow.TopRated].orEmpty(),
                 onMovieClick = onMovieClick,
                 onTvShowClick = onTvShowClick
             )
@@ -142,9 +131,9 @@ private fun ContentDisplay(
         item {
             MoviesAndTvShowsContainer(
                 titleResourceId = R.string.most_popular,
-                onSeeAllClick = { onSeeAllClick(ContentType.List.Popular) },
-                movies = movies[ContentType.Main.PopularMovies].orEmpty(),
-                tvShows = tvShows[ContentType.Main.PopularTvShows].orEmpty(),
+                onSeeAllClick = { onSeeAllClick(MediaType.Common.Popular) },
+                movies = movies[MediaType.Movie.Popular].orEmpty(),
+                tvShows = tvShows[MediaType.TvShow.Popular].orEmpty(),
                 onMovieClick = onMovieClick,
                 onTvShowClick = onTvShowClick
             )
@@ -152,9 +141,9 @@ private fun ContentDisplay(
         item {
             MoviesAndTvShowsContainer(
                 titleResourceId = R.string.now_playing,
-                onSeeAllClick = { onSeeAllClick(ContentType.List.NowPlaying) },
-                movies = movies[ContentType.Main.NowPlayingMovies].orEmpty(),
-                tvShows = tvShows[ContentType.Main.NowPlayingTvShows].orEmpty(),
+                onSeeAllClick = { onSeeAllClick(MediaType.Common.NowPlaying) },
+                movies = movies[MediaType.Movie.NowPlaying].orEmpty(),
+                tvShows = tvShows[MediaType.TvShow.NowPlaying].orEmpty(),
                 onMovieClick = onMovieClick,
                 onTvShowClick = onTvShowClick
             )

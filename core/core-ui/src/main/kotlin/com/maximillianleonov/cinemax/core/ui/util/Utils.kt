@@ -16,25 +16,10 @@
 
 package com.maximillianleonov.cinemax.core.ui.util
 
-import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.model.ErrorMessage
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toJavaLocalDate
-import java.io.IOException
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
-
-internal object Utils {
-    internal fun getMessageFromThrowable(error: Throwable) = when (error) {
-        is IOException -> R.string.no_internet_connection
-        else -> R.string.unknown_error
-    }
-}
-
-fun Throwable.toErrorMessage() = ErrorMessage(
-    error = this,
-    messageResourceId = Utils.getMessageFromThrowable(this)
-)
 
 fun LocalDate.format(pattern: String): String =
     toJavaLocalDate().format(DateTimeFormatter.ofPattern(pattern))

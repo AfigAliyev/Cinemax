@@ -20,9 +20,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,30 +33,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.shimmer
-import com.google.accompanist.placeholder.placeholder
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxCardNetworkImage
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxImagePlaceholder
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxNetworkImage
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxOverlay
+import com.maximillianleonov.cinemax.core.designsystem.component.cinemaxPlaceholder
+import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.model.Credits
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxCardImage
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxCenteredBox
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxImage
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxOverlay
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxPlaceholder
-import com.maximillianleonov.cinemax.core.ui.components.RatingItem
-import com.maximillianleonov.cinemax.core.ui.model.Credits
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.ui.RatingItem
 import kotlinx.datetime.LocalDate
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Suppress("LongParameterList")
 @Composable
 internal fun DetailsItem(
@@ -69,84 +69,128 @@ internal fun DetailsItem(
     isWishlisted: Boolean,
     onBackButtonClick: () -> Unit,
     onWishlistButtonClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WindowInsets.safeDrawing.only(
+        WindowInsetsSides.Horizontal + WindowInsetsSides.Top
+    ),
+    isPlaceholder: Boolean = false
 ) {
     Box(modifier = modifier) {
-        TopBar(
+        Box(
             modifier = Modifier
-                .windowInsetsPadding(
-                    WindowInsets.safeDrawing.only(
-                        WindowInsetsSides.Horizontal + WindowInsetsSides.Top
-                    )
-                )
-                .padding(top = CinemaxTheme.spacing.small)
-                .zIndex(1f),
-            title = title,
-            isWishlisted = isWishlisted,
-            onBackButtonClick = onBackButtonClick,
-            onWishlistButtonClick = onWishlistButtonClick
-        )
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium)
+                .fillMaxWidth()
+                .height(BackdropHeight)
         ) {
-            item {
-                CinemaxCenteredBox(
+            if (isPlaceholder) {
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(BackdropHeight)
-                ) {
-                    CinemaxImage(
-                        modifier = Modifier.fillMaxSize(),
-                        model = posterPath,
-                        contentDescription = title
+                        .background(color = CinemaxTheme.colors.primarySoft)
+                        .fillMaxSize()
+                )
+            } else {
+                CinemaxNetworkImage(
+                    modifier = Modifier.fillMaxSize(),
+                    model = posterPath,
+                    contentDescription = title
+                )
+            }
+            CinemaxOverlay(color = CinemaxTheme.colors.primaryDark, alpha = BackdropAlpha)
+        }
+
+        Scaffold(
+            topBar = {
+                if (isPlaceholder) {
+                    TopAppBarPlaceholder(
+                        isWishlisted = isWishlisted,
+                        onBackButtonClick = onBackButtonClick,
+                        onWishlistButtonClick = onWishlistButtonClick
                     )
-                    CinemaxOverlay(color = CinemaxTheme.colors.primaryDark, alpha = BackdropAlpha)
+                } else {
+                    TopAppBar(
+                        title = title,
+                        isWishlisted = isWishlisted,
+                        onBackButtonClick = onBackButtonClick,
+                        onWishlistButtonClick = onWishlistButtonClick,
+                        windowInsets = windowInsets
+                    )
+                }
+            },
+            containerColor = Color.Transparent,
+            contentWindowInsets = windowInsets
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .consumedWindowInsets(innerPadding)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium)
+            ) {
+                item {
                     Column(
-                        modifier = Modifier.windowInsetsPadding(
-                            WindowInsets.safeDrawing.only(
-                                WindowInsetsSides.Horizontal + WindowInsetsSides.Top
-                            )
-                        ),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium)
                     ) {
-                        Spacer(modifier = Modifier.height(TopBarHeight))
-                        CinemaxCardImage(
-                            modifier = Modifier.size(width = PosterWidth, height = PosterHeight),
-                            model = posterPath,
-                            contentDescription = title,
-                            shape = CinemaxTheme.shapes.smallMedium
-                        )
+                        if (isPlaceholder) {
+                            CinemaxImagePlaceholder(
+                                modifier = Modifier
+                                    .size(width = PosterWidth, height = PosterHeight)
+                                    .clip(CinemaxTheme.shapes.smallMedium)
+                            )
+                        } else {
+                            CinemaxCardNetworkImage(
+                                modifier = Modifier.size(
+                                    width = PosterWidth,
+                                    height = PosterHeight
+                                ),
+                                model = posterPath,
+                                contentDescription = title,
+                                shape = CinemaxTheme.shapes.smallMedium
+                            )
+                        }
                         Column(
                             modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.largest),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            IconAndText(
-                                iconResourceId = R.drawable.ic_calendar,
-                                text = releaseDate?.year?.toString()
-                                    ?: stringResource(id = R.string.no_release_date)
-                            )
-                            IconAndText(iconResourceId = R.drawable.ic_clock, text = runtime)
-                            IconAndText(
-                                iconResourceId = R.drawable.ic_film,
-                                text = genres.joinToString(separator = GenreSeparator)
-                                    .ifEmpty { stringResource(id = R.string.no_genre) }
-                            )
+                            if (isPlaceholder) {
+                                IconAndTextPlaceholder(iconResourceId = R.drawable.ic_calendar)
+                                IconAndTextPlaceholder(iconResourceId = R.drawable.ic_clock)
+                                IconAndTextPlaceholder(iconResourceId = R.drawable.ic_film)
+                            } else {
+                                IconAndText(
+                                    iconResourceId = R.drawable.ic_calendar,
+                                    text = releaseDate?.year?.toString()
+                                        ?: stringResource(id = R.string.no_release_date)
+                                )
+                                IconAndText(iconResourceId = R.drawable.ic_clock, text = runtime)
+                                IconAndText(
+                                    iconResourceId = R.drawable.ic_film,
+                                    text = genres.joinToString(separator = GenreSeparator)
+                                        .ifEmpty { stringResource(id = R.string.no_genre) }
+                                )
+                            }
                         }
-                        RatingItem(rating = voteAverage)
+                        if (isPlaceholder) {
+                            RatingItem(
+                                modifier = Modifier.cinemaxPlaceholder(
+                                    color = CinemaxTheme.colors.secondaryOrange
+                                ),
+                                rating = PlaceholderRating
+                            )
+                        } else {
+                            RatingItem(rating = voteAverage)
+                        }
                     }
                 }
-            }
-            item {
-                Overview(overview = overview)
-            }
-            item {
-                CastAndCrew(credits = credits)
-            }
-            item {
-                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                item {
+                    if (isPlaceholder) OverviewPlaceholder() else Overview(overview = overview)
+                }
+                item {
+                    if (isPlaceholder) CastAndCrewPlaceholder() else CastAndCrew(credits = credits)
+                }
+                item {
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                }
             }
         }
     }
@@ -155,89 +199,24 @@ internal fun DetailsItem(
 @Composable
 internal fun DetailsItemPlaceholder(
     onBackButtonClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    visible: Boolean = true,
-    shape: Shape = CinemaxTheme.shapes.medium,
-    highlight: PlaceholderHighlight = PlaceholderHighlight.shimmer()
+    onWishlistButtonClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier) {
-        TopBarPlaceholder(
-            modifier = Modifier
-                .windowInsetsPadding(
-                    WindowInsets.safeDrawing.only(
-                        WindowInsetsSides.Horizontal + WindowInsetsSides.Top
-                    )
-                )
-                .padding(top = CinemaxTheme.spacing.small)
-                .zIndex(1f),
-            onBackButtonClick = onBackButtonClick,
-        )
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium)
-        ) {
-            item {
-                CinemaxCenteredBox(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(BackdropHeight)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .background(color = CinemaxTheme.colors.primarySoft)
-                            .fillMaxSize()
-                    )
-                    CinemaxOverlay(color = CinemaxTheme.colors.primaryDark, alpha = BackdropAlpha)
-                    Column(
-                        modifier = Modifier.windowInsetsPadding(
-                            WindowInsets.safeDrawing.only(
-                                WindowInsetsSides.Horizontal + WindowInsetsSides.Top
-                            )
-                        ),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium)
-                    ) {
-                        Spacer(modifier = Modifier.height(TopBarHeight))
-                        CinemaxPlaceholder(
-                            modifier = Modifier
-                                .size(
-                                    width = PosterWidth,
-                                    height = PosterHeight
-                                )
-                                .clip(CinemaxTheme.shapes.smallMedium)
-                        )
-                        Column(
-                            modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.largest),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            IconAndTextPlaceholder(iconResourceId = R.drawable.ic_calendar)
-                            IconAndTextPlaceholder(iconResourceId = R.drawable.ic_clock)
-                            IconAndTextPlaceholder(iconResourceId = R.drawable.ic_film)
-                        }
-                        RatingItem(
-                            modifier = Modifier.placeholder(
-                                visible = visible,
-                                color = CinemaxTheme.colors.secondaryOrange,
-                                shape = shape,
-                                highlight = highlight
-                            ),
-                            rating = PlaceholderRating
-                        )
-                    }
-                }
-            }
-            item {
-                OverviewPlaceholder()
-            }
-            item {
-                CastAndCrewPlaceholder()
-            }
-            item {
-                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
-            }
-        }
-    }
+    DetailsItem(
+        modifier = modifier,
+        title = PlaceholderText,
+        overview = PlaceholderText,
+        posterPath = null,
+        releaseDate = null,
+        runtime = PlaceholderText,
+        genres = emptyList(),
+        voteAverage = PlaceholderRating,
+        credits = Credits(cast = emptyList(), crew = emptyList()),
+        isWishlisted = false,
+        onBackButtonClick = onBackButtonClick,
+        onWishlistButtonClick = onWishlistButtonClick,
+        isPlaceholder = true
+    )
 }
 
 private val BackdropHeight = 552.dp
@@ -245,4 +224,5 @@ private val PosterWidth = 205.dp
 private val PosterHeight = 287.dp
 private const val BackdropAlpha = 0.2f
 private const val GenreSeparator = ", "
+private const val PlaceholderText = ""
 private const val PlaceholderRating = 0.0

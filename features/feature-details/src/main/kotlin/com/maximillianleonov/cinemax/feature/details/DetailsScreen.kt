@@ -16,34 +16,36 @@
 
 package com.maximillianleonov.cinemax.feature.details
 
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.swiperefresh.SwipeRefreshState
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxBackButton
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxCenteredBox
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxErrorDisplay
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxSwipeRefresh
-import com.maximillianleonov.cinemax.core.ui.components.SnackbarUserMessageHandler
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxSwipeRefresh
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxTopAppBar
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.model.UserMessage
+import com.maximillianleonov.cinemax.core.ui.CinemaxBackButton
+import com.maximillianleonov.cinemax.core.ui.CinemaxCenteredError
+import com.maximillianleonov.cinemax.core.ui.SnackbarUserMessageHandler
+import com.maximillianleonov.cinemax.core.ui.mapper.asUserMessage
 import com.maximillianleonov.cinemax.feature.details.components.MovieDetailsItem
 import com.maximillianleonov.cinemax.feature.details.components.MovieDetailsItemPlaceholder
 import com.maximillianleonov.cinemax.feature.details.components.TvShowDetailsItem
 import com.maximillianleonov.cinemax.feature.details.components.TvShowDetailsItemPlaceholder
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun DetailsRoute(
     onBackButtonClick: () -> Unit,
@@ -53,7 +55,7 @@ internal fun DetailsRoute(
     modifier: Modifier = Modifier,
     viewModel: DetailsViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     DetailsScreen(
         uiState = uiState,
         onShowMessage = onShowMessage,
@@ -84,10 +86,7 @@ private fun DetailsScreen(
     onRetry: () -> Unit,
     onOfflineModeClick: () -> Unit,
     onUserMessageDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
-    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = uiState.isLoading
-    )
+    modifier: Modifier = Modifier
 ) {
     SnackbarUserMessageHandler(
         userMessage = uiState.userMessage,
@@ -96,19 +95,20 @@ private fun DetailsScreen(
     )
     CinemaxSwipeRefresh(
         modifier = modifier,
-        swipeRefreshState = swipeRefreshState,
+        isRefreshing = uiState.isLoading,
         onRefresh = onRefresh,
         indicatorPadding = WindowInsets.safeDrawing.asPaddingValues()
     ) {
-        if (uiState.isError) {
-            ErrorDisplay(
-                uiState = uiState,
+        if (uiState.error != null) {
+            ErrorContent(
+                errorMessage = uiState.error.asUserMessage(),
+                isOfflineModeAvailable = uiState.isOfflineModeAvailable,
                 onBackButtonClick = onBackButtonClick,
                 onRetry = onRetry,
                 onOfflineModeClick = onOfflineModeClick
             )
         } else {
-            ContentDisplay(
+            DetailsContent(
                 uiState = uiState,
                 onBackButtonClick = onBackButtonClick,
                 onWishlistMovieClick = onWishlistMovieClick,
@@ -119,7 +119,7 @@ private fun DetailsScreen(
 }
 
 @Composable
-private fun ContentDisplay(
+private fun DetailsContent(
     uiState: DetailsUiState,
     onBackButtonClick: () -> Unit,
     onWishlistMovieClick: () -> Unit,
@@ -127,10 +127,13 @@ private fun ContentDisplay(
     modifier: Modifier = Modifier
 ) {
     Surface(modifier = modifier) {
-        when (uiState.contentType) {
-            is ContentType.Details.Movie -> {
+        when (uiState.mediaType) {
+            is MediaType.Details.Movie -> {
                 if (uiState.movie == null) {
-                    MovieDetailsItemPlaceholder(onBackButtonClick = onBackButtonClick)
+                    MovieDetailsItemPlaceholder(
+                        onBackButtonClick = onBackButtonClick,
+                        onWishlistButtonClick = onWishlistMovieClick
+                    )
                 } else {
                     MovieDetailsItem(
                         movieDetails = uiState.movie,
@@ -139,9 +142,12 @@ private fun ContentDisplay(
                     )
                 }
             }
-            is ContentType.Details.TvShow -> {
+            is MediaType.Details.TvShow -> {
                 if (uiState.tvShow == null) {
-                    TvShowDetailsItemPlaceholder(onBackButtonClick = onBackButtonClick)
+                    TvShowDetailsItemPlaceholder(
+                        onBackButtonClick = onBackButtonClick,
+                        onWishlistButtonClick = onWishlistMovieClick
+                    )
                 } else {
                     TvShowDetailsItem(
                         tvShowDetails = uiState.tvShow,
@@ -154,30 +160,32 @@ private fun ContentDisplay(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-private fun ErrorDisplay(
-    uiState: DetailsUiState,
+private fun ErrorContent(
+    errorMessage: UserMessage,
+    isOfflineModeAvailable: Boolean,
     onBackButtonClick: () -> Unit,
     onRetry: () -> Unit,
     onOfflineModeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    CinemaxCenteredBox(
-        modifier = modifier
-            .padding(horizontal = CinemaxTheme.spacing.extraMedium)
-            .safeDrawingPadding()
-            .fillMaxSize()
-    ) {
-        CinemaxBackButton(
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            CinemaxTopAppBar(
+                title = {},
+                navigationIcon = { CinemaxBackButton(onClick = onBackButtonClick) }
+            )
+        }
+    ) { innerPadding ->
+        CinemaxCenteredError(
             modifier = Modifier
-                .padding(top = CinemaxTheme.spacing.small)
-                .align(Alignment.TopStart),
-            onClick = onBackButtonClick
-        )
-        CinemaxErrorDisplay(
-            errorMessage = uiState.requireError(),
+                .padding(innerPadding)
+                .consumedWindowInsets(innerPadding),
+            errorMessage = errorMessage,
             onRetry = onRetry,
-            shouldShowOfflineMode = uiState.isOfflineModeAvailable,
+            shouldShowOfflineMode = isOfflineModeAvailable,
             onOfflineModeClick = onOfflineModeClick
         )
     }

@@ -19,9 +19,10 @@ package com.maximillianleonov.cinemax.feature.details.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.maximillianleonov.cinemax.core.model.MovieDetails
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.mapper.toNames
-import com.maximillianleonov.cinemax.core.ui.model.MovieDetails
+import com.maximillianleonov.cinemax.core.ui.mapper.NoMovieRuntimeValue
+import com.maximillianleonov.cinemax.core.ui.mapper.asNames
 
 @Suppress("ReusedModifierInstance")
 @Composable
@@ -38,12 +39,12 @@ internal fun MovieDetailsItem(
             overview = overview,
             posterPath = posterPath,
             releaseDate = releaseDate,
-            runtime = if (runtime == 0) {
+            runtime = if (runtime == NoMovieRuntimeValue) {
                 stringResource(id = R.string.no_runtime)
             } else {
                 stringResource(id = R.string.details_runtime_text, runtime.toString())
             },
-            genres = genres.toNames(),
+            genres = genres.asNames(),
             voteAverage = voteAverage,
             credits = credits,
             isWishlisted = isWishlisted,
@@ -56,7 +57,12 @@ internal fun MovieDetailsItem(
 @Composable
 internal fun MovieDetailsItemPlaceholder(
     onBackButtonClick: () -> Unit,
+    onWishlistButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    DetailsItemPlaceholder(onBackButtonClick = onBackButtonClick, modifier = modifier)
+    DetailsItemPlaceholder(
+        modifier = modifier,
+        onBackButtonClick = onBackButtonClick,
+        onWishlistButtonClick = onWishlistButtonClick
+    )
 }

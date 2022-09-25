@@ -15,60 +15,15 @@
  */
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.dagger.hilt.android)
+    id("cinemax.android.library")
+    id("cinemax.android.library.compose")
+    id("cinemax.android.feature")
 }
 
-android {
-    namespace = "com.maximillianleonov.cinemax.feature.home"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
-    }
-}
+android.namespace = "com.maximillianleonov.cinemax.feature.home"
 
 dependencies {
-    implementation(project(":core:core-ui"))
-    implementation(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.compiler)
-
+    implementation(libs.kotlinx.datetime)
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
-
-    testImplementation(libs.bundles.test)
-    androidTestImplementation(libs.bundles.android.test)
 }

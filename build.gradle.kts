@@ -24,44 +24,9 @@ plugins {
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.dagger.hilt.android) apply false
-    alias(libs.plugins.spotless)
-    alias(libs.plugins.detekt)
-}
+    alias(libs.plugins.spotless) apply false
+    alias(libs.plugins.detekt) apply false
 
-detekt {
-    toolVersion = libs.versions.detekt.get()
-    source = files(rootDir)
-    config = files("$rootDir/config/detekt/detekt.yml")
-    buildUponDefaultConfig = true
-    parallel = true
-}
-
-dependencies {
-    detektPlugins(libs.detekt.formatting)
-    detektPlugins(libs.kode.detekt.rules.compose)
-}
-
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    exclude("config/**")
-}
-
-configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-    kotlin {
-        target("**/*.kt")
-        targetExclude("build/**/*.kt", "**/build/**/*.kt", "config/**/*.kt")
-        licenseHeaderFile(rootProject.file("config/spotless/copyright.kt"))
-    }
-    kotlinGradle {
-        target("**/*.gradle.kts")
-        targetExclude("build/**/*.gradle.kts", "**/build/**/*.gradle.kts")
-        licenseHeaderFile(
-            rootProject.file("config/spotless/copyright.kt"),
-            "(plugins |pluginManagement |import |@file)"
-        )
-    }
-    format("xml") {
-        target("**/*.xml")
-        targetExclude("build/**/*.xml", "**/build/**/*.xml", "config/**/*.xml")
-        licenseHeaderFile(rootProject.file("config/spotless/copyright.xml"), "(<[^!?])")
-    }
+    id("cinemax.spotless")
+    id("cinemax.detekt")
 }

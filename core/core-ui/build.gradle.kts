@@ -15,68 +15,20 @@
  */
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    id("cinemax.android.library")
+    id("cinemax.android.library.compose")
 }
 
-android {
-    namespace = "com.maximillianleonov.cinemax.core.ui"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
-    }
-}
+android.namespace = "com.maximillianleonov.cinemax.core.ui"
 
 dependencies {
-    api(project(":core:core-data"))
-    api(project(":domain"))
+    implementation(project(":core:core-designsystem"))
+    implementation(project(":core:core-model"))
+    implementation(project(":core:core-common"))
+    implementation(project(":core:core-domain"))
 
-    api(libs.androidx.core.ktx)
-    api(libs.bundles.androidx.compose)
-    api(libs.bundles.androidx.lifecycle)
-    api(libs.androidx.hilt.navigation.compose)
-    api(libs.accompanist.systemuicontroller)
-    api(libs.accompanist.placeholder.material)
-    api(libs.accompanist.swiperefresh)
-    api(libs.coil.compose)
-
-    debugApi(libs.bundles.debug)
-
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
     implementation(libs.androidx.paging.compose)
-
-    testImplementation(libs.bundles.test)
-    androidTestImplementation(libs.bundles.android.test)
 }

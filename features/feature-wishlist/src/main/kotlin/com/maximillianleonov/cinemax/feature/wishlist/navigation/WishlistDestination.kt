@@ -18,8 +18,8 @@ package com.maximillianleonov.cinemax.feature.wishlist.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.wishlist.WishlistRoute
 
 object WishlistDestination : CinemaxNavigationDestination {
@@ -28,10 +28,10 @@ object WishlistDestination : CinemaxNavigationDestination {
 }
 
 fun NavGraphBuilder.wishlistGraph(
-    onNavigateToDetailsDestination: (ContentType.Details) -> Unit
+    onNavigateToDetailsDestination: (MediaType.Details) -> Unit
 ) = composable(route = WishlistDestination.route) {
     WishlistRoute(
-        onMovieClick = { onNavigateToDetailsDestination(ContentType.Details.Movie(it)) },
-        onTvShowClick = { onNavigateToDetailsDestination(ContentType.Details.TvShow(it)) }
+        onMovieClick = { onNavigateToDetailsDestination(MediaType.Details.Movie(it)) },
+        onTvShowClick = { onNavigateToDetailsDestination(MediaType.Details.TvShow(it)) }
     )
 }

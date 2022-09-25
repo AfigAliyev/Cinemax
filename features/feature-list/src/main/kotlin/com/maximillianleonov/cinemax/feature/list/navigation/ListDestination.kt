@@ -21,38 +21,38 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.list.ListRoute
 
 object ListDestination : CinemaxNavigationDestination {
     override val route = "list_route"
     override val destination = "list_destination"
 
-    const val contentTypeArgument = "contentType"
-    val routeWithArgument = "$route/{$contentTypeArgument}"
+    const val mediaTypeArgument = "mediaType"
+    val routeWithArgument = "$route/{$mediaTypeArgument}"
 
-    fun createNavigationRoute(contentType: ContentType.List) = "$route/${contentType.value}"
+    fun createNavigationRoute(mediaType: MediaType.Common) = "$route/${mediaType.mediaType}"
 
-    fun fromSavedStateHandle(savedStateHandle: SavedStateHandle) = ContentType.List[
-        checkNotNull(savedStateHandle[contentTypeArgument]) { CONTENT_TYPE_NULL_MESSAGE }
+    fun fromSavedStateHandle(savedStateHandle: SavedStateHandle) = MediaType.Common[
+        checkNotNull(savedStateHandle[mediaTypeArgument]) { MediaTypeNullMessage }
     ]
 }
 
 fun NavGraphBuilder.listGraph(
     onBackButtonClick: () -> Unit,
-    onNavigateToDetailsDestination: (ContentType.Details) -> Unit
+    onNavigateToDetailsDestination: (MediaType.Details) -> Unit
 ) = composable(
     route = ListDestination.routeWithArgument,
     arguments = listOf(
-        navArgument(ListDestination.contentTypeArgument) { type = NavType.StringType }
+        navArgument(ListDestination.mediaTypeArgument) { type = NavType.StringType }
     )
 ) {
     ListRoute(
         onBackButtonClick = onBackButtonClick,
-        onMovieClick = { onNavigateToDetailsDestination(ContentType.Details.Movie(it)) },
-        onTvShowClick = { onNavigateToDetailsDestination(ContentType.Details.TvShow(it)) }
+        onMovieClick = { onNavigateToDetailsDestination(MediaType.Details.Movie(it)) },
+        onTvShowClick = { onNavigateToDetailsDestination(MediaType.Details.TvShow(it)) }
     )
 }
 
-private const val CONTENT_TYPE_NULL_MESSAGE = "Content type is null."
+private const val MediaTypeNullMessage = "Media type is null."

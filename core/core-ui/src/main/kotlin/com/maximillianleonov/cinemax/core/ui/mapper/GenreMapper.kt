@@ -18,18 +18,18 @@ package com.maximillianleonov.cinemax.core.ui.mapper
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.maximillianleonov.cinemax.core.domain.model.GenreModel
+import com.maximillianleonov.cinemax.core.model.Genre
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.model.Genre
-import com.maximillianleonov.cinemax.domain.model.GenreModel
 
 @Composable
-fun List<Genre>.toNames() = map { genre -> stringResource(id = genre.nameResourceId) }
+fun List<Genre>.asNames() = map { genre -> stringResource(id = genre.nameResourceId) }
 
-internal fun List<GenreModel>.toGenres() = map { genre ->
-    Genre(id = genre.id, nameResourceId = genre.toNameResourceId())
+internal fun List<GenreModel>.asGenres() = map { genre ->
+    Genre(nameResourceId = genre.asNameResourceId())
 }
 
-private fun GenreModel.toNameResourceId() = genresNameResources.getValue(this)
+private fun GenreModel.asNameResourceId() = genresNameResources.getValue(this)
 
 private val genresNameResources = mapOf(
     GenreModel.ACTION to R.string.action,

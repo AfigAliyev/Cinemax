@@ -16,18 +16,13 @@
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    id(libs.plugins.java.library.get().pluginId)
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 dependencies {
-    api(libs.javax.inject)
-    api(libs.kotlinx.coroutines.core)
-    api(libs.kotlinx.datetime)
+    implementation(project(":core:core-common"))
 
-    testImplementation(libs.bundles.test)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.javax.inject)
+    implementation(libs.androidx.paging.common)
 }

@@ -16,11 +16,9 @@
 
 package com.maximillianleonov.cinemax.feature.wishlist
 
-import com.maximillianleonov.cinemax.core.ui.common.Event
-
-sealed class WishlistEvent : Event {
-    object RefreshMovies : WishlistEvent()
-    object RefreshTvShows : WishlistEvent()
-    object Retry : WishlistEvent()
-    object ClearError : WishlistEvent()
+sealed interface WishlistEvent {
+    object RefreshMovies : WishlistEvent
+    object RefreshTvShows : WishlistEvent
+    object Retry : WishlistEvent
+    object ClearError : WishlistEvent
 }

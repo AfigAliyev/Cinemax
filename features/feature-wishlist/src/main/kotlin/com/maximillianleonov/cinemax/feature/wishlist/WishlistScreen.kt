@@ -16,54 +16,37 @@
 
 package com.maximillianleonov.cinemax.feature.wishlist
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Surface
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
-import com.google.accompanist.swiperefresh.SwipeRefreshState
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxMessage
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxSwipeRefresh
+import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.model.MovieDetails
+import com.maximillianleonov.cinemax.core.model.TvShowDetails
+import com.maximillianleonov.cinemax.core.ui.CinemaxCenteredError
+import com.maximillianleonov.cinemax.core.ui.MediaTabPager
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxCenteredBox
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxErrorDisplay
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxSwipeRefresh
-import com.maximillianleonov.cinemax.core.ui.components.NoResultsDisplay
-import com.maximillianleonov.cinemax.core.ui.components.PlaceholderCount
-import com.maximillianleonov.cinemax.core.ui.components.VerticalMovieItem
-import com.maximillianleonov.cinemax.core.ui.components.VerticalMovieItemPlaceholder
-import com.maximillianleonov.cinemax.core.ui.components.VerticalTvShowItem
-import com.maximillianleonov.cinemax.core.ui.components.VerticalTvShowItemPlaceholder
-import com.maximillianleonov.cinemax.core.ui.model.MovieDetails
-import com.maximillianleonov.cinemax.core.ui.model.TvShowDetails
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.feature.wishlist.common.ListTab
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.maximillianleonov.cinemax.core.ui.VerticalMovieItem
+import com.maximillianleonov.cinemax.core.ui.VerticalMovieItemPlaceholder
+import com.maximillianleonov.cinemax.core.ui.VerticalTvShowItem
+import com.maximillianleonov.cinemax.core.ui.VerticalTvShowItemPlaceholder
+import com.maximillianleonov.cinemax.core.ui.mapper.asUserMessage
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun WishlistRoute(
     onMovieClick: (Int) -> Unit,
@@ -71,7 +54,7 @@ internal fun WishlistRoute(
     modifier: Modifier = Modifier,
     viewModel: WishlistViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     WishlistScreen(
         uiState = uiState,
         onRefreshMovies = { viewModel.onEvent(WishlistEvent.RefreshMovies) },
@@ -96,113 +79,45 @@ private fun WishlistScreen(
     modifier: Modifier = Modifier
 ) {
     Surface(modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing)) {
-        if (uiState.isError) {
-            CinemaxCenteredBox(
-                modifier = Modifier
-                    .padding(horizontal = CinemaxTheme.spacing.extraMedium)
-                    .fillMaxSize()
-            ) {
-                CinemaxErrorDisplay(
-                    errorMessage = uiState.requireError(),
-                    onRetry = onRetry,
-                    shouldShowOfflineMode = uiState.isOfflineModeAvailable,
-                    onOfflineModeClick = onOfflineModeClick
-                )
-            }
+        if (uiState.error != null) {
+            CinemaxCenteredError(
+                errorMessage = uiState.error.asUserMessage(),
+                onRetry = onRetry,
+                shouldShowOfflineMode = uiState.isOfflineModeAvailable,
+                onOfflineModeClick = onOfflineModeClick
+            )
         } else {
-            ContentDisplay(
-                uiState = uiState,
-                onRefreshMovies = onRefreshMovies,
-                onRefreshTvShows = onRefreshTvShows,
-                onMovieClick = onMovieClick,
-                onTvShowClick = onTvShowClick
+            MediaTabPager(
+                moviesTabContent = {
+                    MoviesContainer(
+                        movies = uiState.movies,
+                        isLoading = uiState.isMoviesLoading,
+                        onRefresh = onRefreshMovies,
+                        onClick = onMovieClick
+                    )
+                },
+                tvShowsTabContent = {
+                    TvShowsContainer(
+                        tvShows = uiState.tvShows,
+                        isLoading = uiState.isTvShowsLoading,
+                        onRefresh = onRefreshTvShows,
+                        onClick = onTvShowClick
+                    )
+                }
             )
         }
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun ContentDisplay(
-    uiState: WishlistUiState,
-    onRefreshMovies: () -> Unit,
-    onRefreshTvShows: () -> Unit,
-    onMovieClick: (Int) -> Unit,
-    onTvShowClick: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-    coroutineScope: CoroutineScope = rememberCoroutineScope()
-) {
-    val tabs = remember { ListTab.values() }
-    val pagerState = rememberPagerState()
-    val selectedTabIndex = pagerState.currentPage
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-                    color = CinemaxTheme.colors.primaryBlue
-                )
-            }
-        ) {
-            tabs.forEach { tab ->
-                val index = tab.ordinal
-                val selected = selectedTabIndex == index
-                val color by animateColorAsState(
-                    targetValue = if (selected) {
-                        CinemaxTheme.colors.primaryBlue
-                    } else {
-                        CinemaxTheme.colors.textWhite
-                    }
-                )
-                Tab(
-                    selected = selected,
-                    onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-                    text = {
-                        Text(
-                            text = stringResource(id = tab.titleResourceId),
-                            style = CinemaxTheme.typography.medium.h4,
-                            color = color
-                        )
-                    }
-                )
-            }
-        }
-        HorizontalPager(
-            modifier = Modifier.fillMaxSize(),
-            state = pagerState,
-            count = tabs.size
-        ) { page ->
-            when (page) {
-                ListTab.Movies.ordinal -> MoviesDisplay(
-                    movies = uiState.movies,
-                    isLoading = uiState.isMoviesLoading,
-                    onRefresh = onRefreshMovies,
-                    onClick = onMovieClick
-                )
-                ListTab.TvShows.ordinal -> TvShowsDisplay(
-                    tvShows = uiState.tvShows,
-                    isLoading = uiState.isTvShowsLoading,
-                    onRefresh = onRefreshTvShows,
-                    onClick = onTvShowClick
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun MoviesDisplay(
+private fun MoviesContainer(
     movies: List<MovieDetails>,
     isLoading: Boolean,
     onRefresh: () -> Unit,
     onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading),
-    emptyDisplay: @Composable LazyItemScope.() -> Unit = {
-        NoResultsDisplay(
+    emptyContent: @Composable LazyItemScope.() -> Unit = {
+        CinemaxMessage(
             modifier = Modifier.fillParentMaxSize(),
             messageResourceId = R.string.no_movie_wishlist,
             imageResourceId = R.drawable.no_wishlist_results
@@ -211,7 +126,7 @@ private fun MoviesDisplay(
 ) {
     CinemaxSwipeRefresh(
         modifier = modifier,
-        swipeRefreshState = swipeRefreshState,
+        isRefreshing = isLoading,
         onRefresh = onRefresh
     ) {
         LazyColumn(
@@ -228,22 +143,21 @@ private fun MoviesDisplay(
                 isLoading -> {
                     items(PlaceholderCount) { VerticalMovieItemPlaceholder() }
                 }
-                else -> item(content = emptyDisplay)
+                else -> item(content = emptyContent)
             }
         }
     }
 }
 
 @Composable
-private fun TvShowsDisplay(
+private fun TvShowsContainer(
     tvShows: List<TvShowDetails>,
     isLoading: Boolean,
     onRefresh: () -> Unit,
     onClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading),
-    emptyDisplay: @Composable LazyItemScope.() -> Unit = {
-        NoResultsDisplay(
+    emptyContent: @Composable LazyItemScope.() -> Unit = {
+        CinemaxMessage(
             modifier = Modifier.fillParentMaxSize(),
             messageResourceId = R.string.no_tv_show_wishlist,
             imageResourceId = R.drawable.no_wishlist_results
@@ -252,7 +166,7 @@ private fun TvShowsDisplay(
 ) {
     CinemaxSwipeRefresh(
         modifier = modifier,
-        swipeRefreshState = swipeRefreshState,
+        isRefreshing = isLoading,
         onRefresh = onRefresh
     ) {
         LazyColumn(
@@ -269,8 +183,10 @@ private fun TvShowsDisplay(
                 isLoading -> {
                     items(PlaceholderCount) { VerticalTvShowItemPlaceholder() }
                 }
-                else -> item(content = emptyDisplay)
+                else -> item(content = emptyContent)
             }
         }
     }
 }
+
+private const val PlaceholderCount = 20

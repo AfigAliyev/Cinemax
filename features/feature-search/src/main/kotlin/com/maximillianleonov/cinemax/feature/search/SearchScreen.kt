@@ -17,8 +17,12 @@
 package com.maximillianleonov.cinemax.feature.search
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,15 +35,10 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
@@ -47,42 +46,39 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
-import com.google.accompanist.swiperefresh.SwipeRefreshState
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxIconButton
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxSwipeRefresh
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxTextField
+import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.model.Movie
+import com.maximillianleonov.cinemax.core.model.TvShow
+import com.maximillianleonov.cinemax.core.ui.CinemaxCenteredError
+import com.maximillianleonov.cinemax.core.ui.MediaTabPager
+import com.maximillianleonov.cinemax.core.ui.MoviesAndTvShowsContainer
+import com.maximillianleonov.cinemax.core.ui.MoviesContainer
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxCenteredBox
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxErrorDisplay
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxSwipeRefresh
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxTextField
-import com.maximillianleonov.cinemax.core.ui.components.MoviesAndTvShowsContainer
-import com.maximillianleonov.cinemax.core.ui.components.MoviesDisplay
-import com.maximillianleonov.cinemax.core.ui.components.TvShowsDisplay
-import com.maximillianleonov.cinemax.core.ui.model.Movie
-import com.maximillianleonov.cinemax.core.ui.model.TvShow
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.feature.search.common.SearchTab
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.maximillianleonov.cinemax.core.ui.TvShowsContainer
+import com.maximillianleonov.cinemax.core.ui.mapper.asUserMessage
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun SearchRoute(
-    onSeeAllClick: (ContentType.List) -> Unit,
+    onSeeAllClick: (MediaType.Common) -> Unit,
     onMovieClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchMovies = uiState.searchMovies.collectAsLazyPagingItems()
     val searchTvShows = uiState.searchTvShows.collectAsLazyPagingItems()
     SearchScreen(
+        modifier = modifier,
         uiState = uiState,
         searchMovies = searchMovies,
         searchTvShows = searchTvShows,
@@ -92,8 +88,7 @@ internal fun SearchRoute(
         onMovieClick = onMovieClick,
         onTvShowClick = onTvShowClick,
         onRetry = { viewModel.onEvent(SearchEvent.Retry) },
-        onOfflineModeClick = { viewModel.onEvent(SearchEvent.ClearError) },
-        modifier = modifier
+        onOfflineModeClick = { viewModel.onEvent(SearchEvent.ClearError) }
     )
 }
 
@@ -106,15 +101,12 @@ private fun SearchScreen(
     searchTvShows: LazyPagingItems<TvShow>,
     onRefresh: () -> Unit,
     onQueryChange: (String) -> Unit,
-    onSeeAllClick: (ContentType.List) -> Unit,
+    onSeeAllClick: (MediaType.Common) -> Unit,
     onMovieClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
     onRetry: () -> Unit,
     onOfflineModeClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = uiState.isLoading
-    )
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -127,32 +119,28 @@ private fun SearchScreen(
         )
         AnimatedContent(targetState = uiState.isSearching) { isSearching ->
             if (isSearching) {
-                SearchResultsDisplay(
-                    searchMovies = searchMovies,
-                    searchTvShows = searchTvShows,
-                    onMovieClick = onMovieClick,
-                    onTvShowClick = onTvShowClick
+                MediaTabPager(
+                    moviesTabContent = {
+                        MoviesContainer(movies = searchMovies, onClick = onMovieClick)
+                    },
+                    tvShowsTabContent = {
+                        TvShowsContainer(tvShows = searchTvShows, onClick = onTvShowClick)
+                    }
                 )
             } else {
                 CinemaxSwipeRefresh(
-                    swipeRefreshState = swipeRefreshState,
+                    isRefreshing = uiState.isLoading,
                     onRefresh = onRefresh
                 ) {
-                    if (uiState.isError) {
-                        CinemaxCenteredBox(
-                            modifier = Modifier
-                                .padding(horizontal = CinemaxTheme.spacing.extraMedium)
-                                .fillMaxSize()
-                        ) {
-                            CinemaxErrorDisplay(
-                                errorMessage = uiState.requireError(),
-                                onRetry = onRetry,
-                                shouldShowOfflineMode = uiState.isOfflineModeAvailable,
-                                onOfflineModeClick = onOfflineModeClick
-                            )
-                        }
+                    if (uiState.error != null) {
+                        CinemaxCenteredError(
+                            errorMessage = uiState.error.asUserMessage(),
+                            onRetry = onRetry,
+                            shouldShowOfflineMode = uiState.isOfflineModeAvailable,
+                            onOfflineModeClick = onOfflineModeClick
+                        )
                     } else {
-                        SuggestionsDisplay(
+                        SuggestionsContent(
                             movies = uiState.movies,
                             tvShows = uiState.tvShows,
                             onSeeAllClick = onSeeAllClick,
@@ -166,6 +154,7 @@ private fun SearchScreen(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SearchTextField(
     query: String,
@@ -186,6 +175,19 @@ private fun SearchTextField(
         onValueChange = onQueryChange,
         placeholderResourceId = R.string.search_placeholder,
         iconResourceId = R.drawable.ic_search,
+        trailingIcon = {
+            AnimatedVisibility(
+                visible = query.isNotEmpty(),
+                enter = fadeIn() + scaleIn(),
+                exit = scaleOut() + fadeOut()
+            ) {
+                CinemaxIconButton(
+                    imageVector = Icons.Rounded.Close,
+                    contentDescription = stringResource(id = R.string.clear),
+                    onClick = { onQueryChange("") }
+                )
+            }
+        },
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Words,
             imeAction = ImeAction.Search
@@ -194,76 +196,11 @@ private fun SearchTextField(
     )
 }
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun SearchResultsDisplay(
-    searchMovies: LazyPagingItems<Movie>,
-    searchTvShows: LazyPagingItems<TvShow>,
-    onMovieClick: (Int) -> Unit,
-    onTvShowClick: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-    coroutineScope: CoroutineScope = rememberCoroutineScope()
-) {
-    val tabs = remember { SearchTab.values() }
-    val pagerState = rememberPagerState()
-    val selectedTabIndex = pagerState.currentPage
-    Column(modifier = modifier.fillMaxSize()) {
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-                    color = CinemaxTheme.colors.primaryBlue
-                )
-            }
-        ) {
-            tabs.forEach { tab ->
-                val index = tab.ordinal
-                val selected = selectedTabIndex == index
-                val color by animateColorAsState(
-                    targetValue = if (selected) {
-                        CinemaxTheme.colors.primaryBlue
-                    } else {
-                        CinemaxTheme.colors.textWhite
-                    }
-                )
-                Tab(
-                    selected = selected,
-                    onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-                    text = {
-                        Text(
-                            text = stringResource(id = tab.titleResourceId),
-                            style = CinemaxTheme.typography.medium.h4,
-                            color = color
-                        )
-                    }
-                )
-            }
-        }
-        HorizontalPager(
-            modifier = Modifier.fillMaxSize(),
-            state = pagerState,
-            count = tabs.size
-        ) { page ->
-            when (page) {
-                SearchTab.Movies.ordinal -> MoviesDisplay(
-                    movies = searchMovies,
-                    onClick = onMovieClick
-                )
-                SearchTab.TvShows.ordinal -> TvShowsDisplay(
-                    tvShows = searchTvShows,
-                    onClick = onTvShowClick
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun SuggestionsDisplay(
-    movies: Map<ContentType.Main, List<Movie>>,
-    tvShows: Map<ContentType.Main, List<TvShow>>,
-    onSeeAllClick: (ContentType.List) -> Unit,
+private fun SuggestionsContent(
+    movies: Map<MediaType.Movie, List<Movie>>,
+    tvShows: Map<MediaType.TvShow, List<TvShow>>,
+    onSeeAllClick: (MediaType.Common) -> Unit,
     onMovieClick: (Int) -> Unit,
     onTvShowClick: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -276,9 +213,9 @@ private fun SuggestionsDisplay(
         item {
             MoviesAndTvShowsContainer(
                 titleResourceId = R.string.discover,
-                onSeeAllClick = { onSeeAllClick(ContentType.List.Discover) },
-                movies = movies[ContentType.Main.DiscoverMovies].orEmpty(),
-                tvShows = tvShows[ContentType.Main.DiscoverTvShows].orEmpty(),
+                onSeeAllClick = { onSeeAllClick(MediaType.Common.Discover) },
+                movies = movies[MediaType.Movie.Discover].orEmpty(),
+                tvShows = tvShows[MediaType.TvShow.Discover].orEmpty(),
                 onMovieClick = onMovieClick,
                 onTvShowClick = onTvShowClick
             )
@@ -286,9 +223,9 @@ private fun SuggestionsDisplay(
         item {
             MoviesAndTvShowsContainer(
                 titleResourceId = R.string.trending,
-                onSeeAllClick = { onSeeAllClick(ContentType.List.Trending) },
-                movies = movies[ContentType.Main.TrendingMovies].orEmpty(),
-                tvShows = tvShows[ContentType.Main.TrendingTvShows].orEmpty(),
+                onSeeAllClick = { onSeeAllClick(MediaType.Common.Trending) },
+                movies = movies[MediaType.Movie.Trending].orEmpty(),
+                tvShows = tvShows[MediaType.TvShow.Trending].orEmpty(),
                 onMovieClick = onMovieClick,
                 onTvShowClick = onTvShowClick
             )

@@ -21,8 +21,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.details.DetailsRoute
 
 object DetailsDestination : CinemaxNavigationDestination {
@@ -30,15 +30,15 @@ object DetailsDestination : CinemaxNavigationDestination {
     override val destination = "details_destination"
 
     const val idArgument = "id"
-    const val contentTypeArgument = "contentType"
-    val routeWithArgument = "$route/{$idArgument}/{$contentTypeArgument}"
+    const val mediaTypeArgument = "mediaType"
+    val routeWithArguments = "$route/{$idArgument}/{$mediaTypeArgument}"
 
-    fun createNavigationRoute(contentType: ContentType.Details) =
-        "$route/${contentType.contentId}/${contentType.contentType}"
+    fun createNavigationRoute(mediaType: MediaType.Details) =
+        "$route/${mediaType.mediaId}/${mediaType.mediaType}"
 
-    fun fromSavedStateHandle(savedStateHandle: SavedStateHandle) = ContentType.Details.from(
-        id = checkNotNull(savedStateHandle[idArgument]) { CONTENT_ID_NULL_MESSAGE },
-        contentType = checkNotNull(savedStateHandle[contentTypeArgument]) { CONTENT_TYPE_NULL_MESSAGE }
+    fun fromSavedStateHandle(savedStateHandle: SavedStateHandle) = MediaType.Details.from(
+        id = checkNotNull(savedStateHandle[idArgument]) { MediaIdNullMessage },
+        mediaType = checkNotNull(savedStateHandle[mediaTypeArgument]) { MediaTypeNullMessage }
     )
 }
 
@@ -46,12 +46,12 @@ fun NavGraphBuilder.detailsGraph(
     onBackButtonClick: () -> Unit,
     onShowMessage: (String) -> Unit,
     onSetSystemBarsColorTransparent: () -> Unit,
-    onResetSystemBarsColor: () -> Unit,
+    onResetSystemBarsColor: () -> Unit
 ) = composable(
-    route = DetailsDestination.routeWithArgument,
+    route = DetailsDestination.routeWithArguments,
     arguments = listOf(
         navArgument(DetailsDestination.idArgument) { type = NavType.IntType },
-        navArgument(DetailsDestination.contentTypeArgument) { type = NavType.StringType }
+        navArgument(DetailsDestination.mediaTypeArgument) { type = NavType.StringType }
     )
 ) {
     DetailsRoute(
@@ -62,5 +62,5 @@ fun NavGraphBuilder.detailsGraph(
     )
 }
 
-private const val CONTENT_ID_NULL_MESSAGE = "Content id is null."
-private const val CONTENT_TYPE_NULL_MESSAGE = "Content type is null."
+private const val MediaIdNullMessage = "Media id is null."
+private const val MediaTypeNullMessage = "Media type is null."

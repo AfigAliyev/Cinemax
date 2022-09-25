@@ -15,15 +15,19 @@
  */
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    id(libs.plugins.java.library.get().pluginId)
+    id("cinemax.android.library")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
+android.namespace = "com.maximillianleonov.cinemax.core.data"
 
 dependencies {
-    api(project(":core:core-domain"))
+    implementation(project(":core:core-common"))
+    implementation(project(":core:core-database"))
+    implementation(project(":core:core-network"))
+    implementation(project(":core:core-domain"))
+
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.javax.inject)
+    implementation(libs.androidx.paging.common)
 }

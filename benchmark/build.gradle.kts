@@ -14,62 +14,12 @@
  * limitations under the License.
  */
 
-import com.android.build.api.dsl.ManagedVirtualDevice
-
 plugins {
-    alias(libs.plugins.android.test)
-    alias(libs.plugins.kotlin.android)
+    id("cinemax.android.benchmark")
 }
 
-android {
-    namespace = "com.maximillianleonov.cinemax.benchmark"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = 23
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    testOptions {
-        managedDevices {
-            devices {
-                create<ManagedVirtualDevice>("pixel2Api31") {
-                    device = "Pixel 2"
-                    apiLevel = 31
-                    systemImageSource = "aosp"
-                }
-            }
-        }
-    }
-
-    buildTypes {
-        create("benchmark") {
-            signingConfig = signingConfigs.getByName("debug")
-            matchingFallbacks.add("release")
-            isDebuggable = true
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    targetProjectPath = ":app"
-    experimentalProperties["android.experimental.self-instrumenting"] = true
-}
+android.namespace = "com.maximillianleonov.cinemax.benchmark"
 
 dependencies {
     implementation(libs.bundles.benchmark)
-}
-
-androidComponents {
-    beforeVariants {
-        it.enable = it.buildType == "benchmark"
-    }
 }

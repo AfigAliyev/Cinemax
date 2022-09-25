@@ -16,10 +16,8 @@
 
 package com.maximillianleonov.cinemax.feature.home
 
-import com.maximillianleonov.cinemax.core.ui.common.Event
-
-sealed class HomeEvent : Event {
-    object Refresh : HomeEvent()
-    object Retry : HomeEvent()
-    object ClearError : HomeEvent()
+sealed interface HomeEvent {
+    object Refresh : HomeEvent
+    object Retry : HomeEvent
+    object ClearError : HomeEvent
 }
