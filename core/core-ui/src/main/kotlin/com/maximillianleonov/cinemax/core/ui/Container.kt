@@ -66,26 +66,7 @@ fun MoviesAndTvShowsContainer(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = CinemaxTheme.spacing.extraMedium)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = titleResourceId),
-                style = CinemaxTheme.typography.semiBold.h4,
-                color = CinemaxTheme.colors.white
-            )
-            TextButton(onClick = onSeeAllClick) {
-                Text(
-                    text = stringResource(id = R.string.see_all),
-                    style = CinemaxTheme.typography.medium.h5,
-                    color = CinemaxTheme.colors.primaryBlue
-                )
-            }
-        }
+        ContainerTitleWithButton(titleResourceId = titleResourceId, onSeeAllClick = onSeeAllClick)
         Text(
             modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.extraMedium),
             text = stringResource(id = R.string.movies),
@@ -114,26 +95,7 @@ fun MoviesContainer(
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(modifier = modifier) {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = CinemaxTheme.spacing.extraMedium)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = titleResourceId),
-                style = CinemaxTheme.typography.semiBold.h4,
-                color = CinemaxTheme.colors.white
-            )
-            TextButton(onClick = onSeeAllClick) {
-                Text(
-                    text = stringResource(id = R.string.see_all),
-                    style = CinemaxTheme.typography.medium.h5,
-                    color = CinemaxTheme.colors.primaryBlue
-                )
-            }
-        }
+        ContainerTitleWithButton(titleResourceId = titleResourceId, onSeeAllClick = onSeeAllClick)
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
         content()
     }
@@ -330,6 +292,34 @@ private fun <T> ContainerContent(
             items(count = PlaceholderCount, itemContent = placeholderContent)
         } else {
             items(items = items, itemContent = itemContent)
+        }
+    }
+}
+
+@Composable
+private fun ContainerTitleWithButton(
+    @StringRes titleResourceId: Int,
+    onSeeAllClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .padding(horizontal = CinemaxTheme.spacing.extraMedium)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(id = titleResourceId),
+            style = CinemaxTheme.typography.semiBold.h4,
+            color = CinemaxTheme.colors.white
+        )
+        TextButton(onClick = onSeeAllClick) {
+            Text(
+                text = stringResource(id = R.string.see_all),
+                style = CinemaxTheme.typography.medium.h5,
+                color = CinemaxTheme.colors.primaryBlue
+            )
         }
     }
 }
