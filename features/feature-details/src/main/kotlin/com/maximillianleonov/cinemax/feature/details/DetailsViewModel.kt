@@ -19,22 +19,18 @@ package com.maximillianleonov.cinemax.feature.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.maximillianleonov.cinemax.core.common.result.handle
+import com.maximillianleonov.cinemax.core.domain.usecase.AddMovieToWishlistUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.AddTvShowToWishlistUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.GetMovieDetailsUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.GetTvShowDetailsUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.RemoveMovieFromWishlistUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.RemoveTvShowFromWishlistUseCase
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.model.UserMessage
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.common.EventHandler
-import com.maximillianleonov.cinemax.core.ui.mapper.toMovieDetails
-import com.maximillianleonov.cinemax.core.ui.mapper.toTvShowDetails
-import com.maximillianleonov.cinemax.core.ui.model.UserMessage
-import com.maximillianleonov.cinemax.core.ui.util.handle
-import com.maximillianleonov.cinemax.core.ui.util.toErrorMessage
-import com.maximillianleonov.cinemax.domain.model.MovieDetailsModel
-import com.maximillianleonov.cinemax.domain.model.TvShowDetailsModel
-import com.maximillianleonov.cinemax.domain.usecase.AddMovieToWishlistUseCase
-import com.maximillianleonov.cinemax.domain.usecase.AddTvShowToWishlistUseCase
-import com.maximillianleonov.cinemax.domain.usecase.GetMovieDetailsUseCase
-import com.maximillianleonov.cinemax.domain.usecase.GetTvShowDetailsUseCase
-import com.maximillianleonov.cinemax.domain.usecase.RemoveMovieFromWishlistUseCase
-import com.maximillianleonov.cinemax.domain.usecase.RemoveTvShowFromWishlistUseCase
+import com.maximillianleonov.cinemax.core.ui.mapper.asMovieDetails
+import com.maximillianleonov.cinemax.core.ui.mapper.asTvShowDetails
 import com.maximillianleonov.cinemax.feature.details.navigation.DetailsDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,13 +49,13 @@ class DetailsViewModel @Inject constructor(
     private val removeMovieFromWishlistUseCase: RemoveMovieFromWishlistUseCase,
     private val removeTvShowFromWishlistUseCase: RemoveTvShowFromWishlistUseCase,
     savedStateHandle: SavedStateHandle
-) : ViewModel(), EventHandler<DetailsEvent> {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(getInitialUiState(savedStateHandle))
     val uiState = _uiState.asStateFlow()
 
     private var contentJob = loadContent()
 
-    override fun onEvent(event: DetailsEvent) = when (event) {
+    fun onEvent(event: DetailsEvent) = when (event) {
         DetailsEvent.WishlistMovie -> onWishlistMovie()
         DetailsEvent.WishlistTvShow -> onWishlistTvShow()
         DetailsEvent.Refresh -> onRefresh()
@@ -69,13 +65,13 @@ class DetailsViewModel @Inject constructor(
     }
 
     private fun getInitialUiState(savedStateHandle: SavedStateHandle): DetailsUiState {
-        val contentType = DetailsDestination.fromSavedStateHandle(savedStateHandle)
-        return DetailsUiState(contentType = contentType)
+        val mediaType = DetailsDestination.fromSavedStateHandle(savedStateHandle)
+        return DetailsUiState(mediaType = mediaType)
     }
 
-    private fun loadContent() = when (val contentType = uiState.value.contentType) {
-        is ContentType.Details.Movie -> loadMovie(contentType.id)
-        is ContentType.Details.TvShow -> loadTvShow(contentType.id)
+    private fun loadContent() = when (val mediaType = uiState.value.mediaType) {
+        is MediaType.Details.Movie -> loadMovie(mediaType.id)
+        is MediaType.Details.TvShow -> loadTvShow(mediaType.id)
     }
 
     private fun onWishlistMovie() {
@@ -129,33 +125,34 @@ class DetailsViewModel @Inject constructor(
     private fun onClearUserMessage() = _uiState.update { it.copy(userMessage = null) }
 
     private fun loadMovie(id: Int) = viewModelScope.launch {
-        getMovieDetailsUseCase(id).handle(
-            onLoading = ::handleMovieLoading,
-            onSuccess = ::handleMovieSuccess,
-            onFailure = ::handleFailure
-        )
+        getMovieDetailsUseCase(id).handle {
+            onLoading { movie ->
+                _uiState.update { it.copy(movie = movie?.asMovieDetails(), isLoading = true) }
+            }
+            onSuccess { movie ->
+                _uiState.update { it.copy(movie = movie?.asMovieDetails(), isLoading = false) }
+            }
+            onFailure(::handleFailure)
+        }
     }
 
     private fun loadTvShow(id: Int) = viewModelScope.launch {
-        getTvShowDetailsUseCase(id).handle(
-            onLoading = ::handleTvShowLoading,
-            onSuccess = ::handleTvShowSuccess,
-            onFailure = ::handleFailure
-        )
+        getTvShowDetailsUseCase(id).handle {
+            onLoading { tvShow ->
+                _uiState.update { it.copy(tvShow = tvShow?.asTvShowDetails(), isLoading = true) }
+            }
+            onSuccess { tvShow ->
+                _uiState.update { it.copy(tvShow = tvShow?.asTvShowDetails(), isLoading = false) }
+            }
+            onFailure(::handleFailure)
+        }
     }
 
-    private fun handleMovieLoading(movie: MovieDetailsModel?) =
-        _uiState.update { it.copy(movie = movie?.toMovieDetails(), isLoading = true) }
-
-    private fun handleTvShowLoading(tvShow: TvShowDetailsModel?) =
-        _uiState.update { it.copy(tvShow = tvShow?.toTvShowDetails(), isLoading = true) }
-
-    private fun handleMovieSuccess(movie: MovieDetailsModel?) =
-        _uiState.update { it.copy(movie = movie?.toMovieDetails(), isLoading = false) }
-
-    private fun handleTvShowSuccess(tvShow: TvShowDetailsModel?) =
-        _uiState.update { it.copy(tvShow = tvShow?.toTvShowDetails(), isLoading = false) }
-
-    private fun handleFailure(error: Throwable) =
-        _uiState.update { it.copy(error = error.toErrorMessage(), isLoading = false) }
+    private fun handleFailure(error: Throwable) = _uiState.update {
+        it.copy(
+            error = error,
+            isOfflineModeAvailable = it.movie != null || it.tvShow != null,
+            isLoading = false
+        )
+    }
 }

@@ -18,54 +18,64 @@ package com.maximillianleonov.cinemax.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.common.EventHandler
-import com.maximillianleonov.cinemax.core.ui.mapper.toMovie
-import com.maximillianleonov.cinemax.core.ui.mapper.toTvShow
-import com.maximillianleonov.cinemax.core.ui.util.handle
-import com.maximillianleonov.cinemax.core.ui.util.toErrorMessage
-import com.maximillianleonov.cinemax.domain.model.MovieModel
-import com.maximillianleonov.cinemax.domain.model.TvShowModel
-import com.maximillianleonov.cinemax.domain.usecase.MovieUseCases
-import com.maximillianleonov.cinemax.domain.usecase.TvShowUseCases
+import com.maximillianleonov.cinemax.core.common.result.handle
+import com.maximillianleonov.cinemax.core.common.result.onEmpty
+import com.maximillianleonov.cinemax.core.domain.model.MovieModel
+import com.maximillianleonov.cinemax.core.domain.model.TvShowModel
+import com.maximillianleonov.cinemax.core.domain.usecase.GetMoviesUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.GetTvShowsUseCase
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.model.Movie
+import com.maximillianleonov.cinemax.core.model.TvShow
+import com.maximillianleonov.cinemax.core.ui.mapper.asMediaTypeModel
+import com.maximillianleonov.cinemax.core.ui.mapper.asMovie
+import com.maximillianleonov.cinemax.core.ui.mapper.asTvShow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val movieUseCases: MovieUseCases,
-    private val tvShowUseCases: TvShowUseCases
-) : ViewModel(), EventHandler<HomeEvent> {
+    private val getMoviesUseCase: GetMoviesUseCase,
+    private val getTvShowsUseCase: GetTvShowsUseCase
+) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
-    private var contentJobs = getContentJobs()
+    init {
+        loadContent()
+    }
 
-    override fun onEvent(event: HomeEvent) = when (event) {
+    fun onEvent(event: HomeEvent) = when (event) {
         HomeEvent.Refresh -> onRefresh()
         HomeEvent.Retry -> onRetry()
         HomeEvent.ClearError -> onClearError()
     }
 
-    private fun getContentJobs() = mapOf(
-        ContentType.Main.UpcomingMovies to loadUpcomingMovies(),
-        ContentType.Main.TopRatedMovies to loadTopRatedMovies(),
-        ContentType.Main.TopRatedTvShows to loadTopRatedTvShows(),
-        ContentType.Main.PopularMovies to loadPopularMovies(),
-        ContentType.Main.PopularTvShows to loadPopularTvShows(),
-        ContentType.Main.NowPlayingMovies to loadNowPlayingMovies(),
-        ContentType.Main.NowPlayingTvShows to loadNowPlayingTvShows()
-    )
+    private fun loadContent() {
+        val movieMediaTypes = listOf(
+            MediaType.Movie.Upcoming,
+            MediaType.Movie.TopRated,
+            MediaType.Movie.Popular,
+            MediaType.Movie.NowPlaying
+        )
+        movieMediaTypes.forEach(::loadMovies)
+
+        val tvShowMediaTypes = listOf(
+            MediaType.TvShow.TopRated,
+            MediaType.TvShow.Popular,
+            MediaType.TvShow.NowPlaying
+        )
+        tvShowMediaTypes.forEach(::loadTvShows)
+    }
 
     private fun onRefresh() {
-        contentJobs.values.forEach(Job::cancel)
-        contentJobs = getContentJobs()
+        viewModelScope.coroutineContext.cancelChildren()
+        loadContent()
     }
 
     private fun onRetry() {
@@ -75,170 +85,73 @@ class HomeViewModel @Inject constructor(
 
     private fun onClearError() = _uiState.update { it.copy(error = null) }
 
-    private fun loadUpcomingMovies() = viewModelScope.launch {
-        movieUseCases.getUpcomingMoviesUseCase().handle(
-            onLoading = ::handleUpcomingMoviesLoading,
-            onSuccess = ::handleUpcomingMoviesSuccess,
-            onFailure = ::handleUpcomingMoviesFailure
-        )
+    private fun loadMovies(mediaType: MediaType.Movie) = viewModelScope.launch {
+        getMoviesUseCase(mediaType.asMediaTypeModel()).handle {
+            onLoading { movies ->
+                _uiState.update {
+                    it.copy(
+                        movies = it.movies + (
+                            mediaType to movies?.map(MovieModel::asMovie).orEmpty()
+                            ),
+                        loadStates = it.loadStates + (mediaType to true)
+                    )
+                }
+            }
+            onSuccess { movies ->
+                _uiState.update {
+                    it.copy(
+                        movies = it.movies + (mediaType to movies.map(MovieModel::asMovie)),
+                        loadStates = it.loadStates + (mediaType to false)
+                    )
+                }
+            }
+            onFailure { error -> handleFailure(error = error, mediaType = mediaType) }
+            onEmpty(::refreshIfEmpty)
+        }
     }
 
-    private fun loadTopRatedMovies() = viewModelScope.launch {
-        movieUseCases.getTopRatedMoviesUseCase().handle(
-            onLoading = ::handleTopRatedMoviesLoading,
-            onSuccess = ::handleTopRatedMoviesSuccess,
-            onFailure = ::handleTopRatedMoviesFailure
-        )
+    private fun loadTvShows(mediaType: MediaType.TvShow) = viewModelScope.launch {
+        getTvShowsUseCase(mediaType.asMediaTypeModel()).handle {
+            onLoading { tvShows ->
+                _uiState.update {
+                    it.copy(
+                        tvShows = it.tvShows + (
+                            mediaType to tvShows?.map(TvShowModel::asTvShow).orEmpty()
+                            ),
+                        loadStates = it.loadStates + (mediaType to true)
+                    )
+                }
+            }
+            onSuccess { tvShows ->
+                _uiState.update {
+                    it.copy(
+                        tvShows = it.tvShows + (mediaType to tvShows.map(TvShowModel::asTvShow)),
+                        loadStates = it.loadStates + (mediaType to false)
+                    )
+                }
+            }
+            onFailure { error -> handleFailure(error = error, mediaType = mediaType) }
+            onEmpty(::refreshIfEmpty)
+        }
     }
 
-    private fun loadTopRatedTvShows() = viewModelScope.launch {
-        tvShowUseCases.getTopRatedTvShowsUseCase().handle(
-            onLoading = ::handleTopRatedTvShowsLoading,
-            onSuccess = ::handleTopRatedTvShowsSuccess,
-            onFailure = ::handleTopRatedTvShowsFailure
-        )
-    }
-
-    private fun loadPopularMovies() = viewModelScope.launch {
-        movieUseCases.getPopularMoviesUseCase().handle(
-            onLoading = ::handlePopularMoviesLoading,
-            onSuccess = ::handlePopularMoviesSuccess,
-            onFailure = ::handlePopularMoviesFailure
-        )
-    }
-
-    private fun loadPopularTvShows() = viewModelScope.launch {
-        tvShowUseCases.getPopularTvShowsUseCase().handle(
-            onLoading = ::handlePopularTvShowsLoading,
-            onSuccess = ::handlePopularTvShowsSuccess,
-            onFailure = ::handlePopularTvShowsFailure
-        )
-    }
-
-    private fun loadNowPlayingMovies() = viewModelScope.launch {
-        movieUseCases.getNowPlayingMoviesUseCase().handle(
-            onLoading = ::handleNowPlayingMoviesLoading,
-            onSuccess = ::handleNowPlayingMoviesSuccess,
-            onFailure = ::handleNowPlayingMoviesFailure
-        )
-    }
-
-    private fun loadNowPlayingTvShows() = viewModelScope.launch {
-        tvShowUseCases.getNowPlayingTvShowsUseCase().handle(
-            onLoading = ::handleNowPlayingTvShowsLoading,
-            onSuccess = ::handleNowPlayingTvShowsSuccess,
-            onFailure = ::handleNowPlayingTvShowsFailure
-        )
-    }
-
-    private fun handleUpcomingMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.UpcomingMovies, movies = movies)
-
-    private fun handleUpcomingMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.UpcomingMovies, movies = movies)
-
-    private fun handleUpcomingMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.UpcomingMovies, error = throwable)
-
-    private fun handleTopRatedMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.TopRatedMovies, movies = movies)
-
-    private fun handleTopRatedMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.TopRatedMovies, movies = movies)
-
-    private fun handleTopRatedMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.TopRatedMovies, error = throwable)
-
-    private fun handleTopRatedTvShowsLoading(tvShows: List<TvShowModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.TopRatedTvShows, tvShows = tvShows)
-
-    private fun handleTopRatedTvShowsSuccess(tvShows: List<TvShowModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.TopRatedTvShows, tvShows = tvShows)
-
-    private fun handleTopRatedTvShowsFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.TopRatedTvShows, error = throwable)
-
-    private fun handlePopularMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.PopularMovies, movies = movies)
-
-    private fun handlePopularMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.PopularMovies, movies = movies)
-
-    private fun handlePopularMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.PopularMovies, error = throwable)
-
-    private fun handlePopularTvShowsLoading(tvShows: List<TvShowModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.PopularTvShows, tvShows = tvShows)
-
-    private fun handlePopularTvShowsSuccess(tvShows: List<TvShowModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.PopularTvShows, tvShows = tvShows)
-
-    private fun handlePopularTvShowsFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.PopularTvShows, error = throwable)
-
-    private fun handleNowPlayingMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.NowPlayingMovies, movies = movies)
-
-    private fun handleNowPlayingMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.NowPlayingMovies, movies = movies)
-
-    private fun handleNowPlayingMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.NowPlayingMovies, error = throwable)
-
-    private fun handleNowPlayingTvShowsLoading(tvShows: List<TvShowModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.NowPlayingTvShows, tvShows = tvShows)
-
-    private fun handleNowPlayingTvShowsSuccess(tvShows: List<TvShowModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.NowPlayingTvShows, tvShows = tvShows)
-
-    private fun handleNowPlayingTvShowsFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.NowPlayingTvShows, error = throwable)
-
-    @JvmName("handleMoviesLoading")
-    private fun handleLoading(contentLoadType: ContentType.Main, movies: List<MovieModel>?) =
+    private fun handleFailure(error: Throwable, mediaType: MediaType) =
         _uiState.update {
             it.copy(
-                movies = it.movies + (
-                    contentLoadType to movies?.map(MovieModel::toMovie).orEmpty()
-                    ),
-                loadStates = it.loadStates + (contentLoadType to true)
+                error = error,
+                isOfflineModeAvailable = it.movies.values.all(List<Movie>::isNotEmpty) &&
+                    it.tvShows.values.all(List<TvShow>::isNotEmpty),
+                loadStates = it.loadStates + (mediaType to false)
             )
         }
 
-    @JvmName("handleTvShowsLoading")
-    private fun handleLoading(contentLoadType: ContentType.Main, tvShows: List<TvShowModel>?) =
-        _uiState.update {
-            it.copy(
-                tvShows = it.tvShows + (
-                    contentLoadType to tvShows?.map(TvShowModel::toTvShow).orEmpty()
-                    ),
-                loadStates = it.loadStates + (contentLoadType to true)
-            )
-        }
+    private fun refreshIfEmpty() {
+        val state = uiState.value
 
-    @JvmName("handleMoviesSuccess")
-    private fun handleSuccess(contentLoadType: ContentType.Main, movies: List<MovieModel>) =
-        _uiState.update {
-            it.copy(
-                movies = it.movies + (contentLoadType to movies.map(MovieModel::toMovie)),
-                loadStates = it.loadStates + (contentLoadType to false)
-            )
+        if (state.movies.values.all(List<Movie>::isEmpty) &&
+            state.tvShows.values.all(List<TvShow>::isEmpty)
+        ) {
+            onRefresh()
         }
-
-    @JvmName("handleTvShowsSuccess")
-    private fun handleSuccess(contentLoadType: ContentType.Main, tvShows: List<TvShowModel>) =
-        _uiState.update {
-            it.copy(
-                tvShows = it.tvShows + (contentLoadType to tvShows.map(TvShowModel::toTvShow)),
-                loadStates = it.loadStates + (contentLoadType to false)
-            )
-        }
-
-    private fun handleFailure(contentLoadType: ContentType.Main, error: Throwable) =
-        _uiState.update {
-            it.copy(
-                loadStates = it.loadStates + (contentLoadType to false),
-                error = error.toErrorMessage()
-            )
-        }
+    }
 }

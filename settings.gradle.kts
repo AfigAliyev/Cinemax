@@ -15,6 +15,7 @@
  */
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         gradlePluginPortal()
         google()
@@ -32,21 +33,20 @@ dependencyResolutionManagement {
 
 rootProject.name = "Cinemax"
 
-include(
-    ":app",
-    ":benchmark",
-    ":core:core-data",
-    ":core:core-data-local",
-    ":core:core-data-remote",
-    ":core:core-domain",
-    ":core:core-ui",
-    ":data:data-local",
-    ":data:data-remote",
-    ":domain",
-    ":features:feature-home",
-    ":features:feature-search",
-    ":features:feature-wishlist",
-    ":features:feature-settings",
-    ":features:feature-list",
-    ":features:feature-details"
-)
+include(":app")
+include(":benchmark")
+include(":core:core-common")
+include(":core:core-data")
+include(":core:core-database")
+include(":core:core-network")
+include(":core:core-domain")
+include(":core:core-model")
+include(":core:core-ui")
+include(":core:core-designsystem")
+include(":core:core-navigation")
+include(":features:feature-home")
+include(":features:feature-search")
+include(":features:feature-wishlist")
+include(":features:feature-settings")
+include(":features:feature-list")
+include(":features:feature-details")

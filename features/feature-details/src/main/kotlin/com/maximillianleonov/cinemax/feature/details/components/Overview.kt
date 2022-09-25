@@ -20,22 +20,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.shimmer
-import com.google.accompanist.placeholder.placeholder
+import com.maximillianleonov.cinemax.core.designsystem.component.cinemaxPlaceholder
+import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
 
 @Composable
 internal fun Overview(
     overview: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isPlaceholder: Boolean = false
 ) {
     Column(
         modifier = modifier
@@ -46,49 +43,26 @@ internal fun Overview(
         Text(
             text = stringResource(id = R.string.overview),
             style = CinemaxTheme.typography.semiBold.h4,
-            color = CinemaxTheme.colors.textWhite
+            color = CinemaxTheme.colors.white
         )
         Text(
+            modifier = if (isPlaceholder) {
+                Modifier
+                    .fillMaxWidth()
+                    .cinemaxPlaceholder(color = CinemaxTheme.colors.grey)
+            } else {
+                Modifier
+            },
             text = overview.ifEmpty { stringResource(id = R.string.no_overview) },
             style = CinemaxTheme.typography.regular.h5,
-            color = CinemaxTheme.colors.textWhiteGrey
+            color = CinemaxTheme.colors.whiteGrey
         )
     }
 }
 
 @Composable
-internal fun OverviewPlaceholder(
-    modifier: Modifier = Modifier,
-    color: Color = CinemaxTheme.colors.textGrey,
-    visible: Boolean = true,
-    shape: Shape = CinemaxTheme.shapes.medium,
-    highlight: PlaceholderHighlight = PlaceholderHighlight.shimmer()
-) {
-    Column(
-        modifier = modifier
-            .padding(horizontal = CinemaxTheme.spacing.extraMedium)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.small)
-    ) {
-        Text(
-            text = stringResource(id = R.string.overview),
-            style = CinemaxTheme.typography.semiBold.h4,
-            color = CinemaxTheme.colors.textWhite
-        )
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .placeholder(
-                    visible = visible,
-                    color = color,
-                    shape = shape,
-                    highlight = highlight
-                ),
-            text = PlaceholderText,
-            style = CinemaxTheme.typography.regular.h5,
-            color = CinemaxTheme.colors.textWhiteGrey
-        )
-    }
+internal fun OverviewPlaceholder(modifier: Modifier = Modifier) {
+    Overview(modifier = modifier, overview = PlaceholderText, isPlaceholder = true)
 }
 
 private const val PlaceholderText = ""

@@ -16,11 +16,10 @@
 
 package com.maximillianleonov.cinemax.feature.settings
 
-import com.maximillianleonov.cinemax.core.ui.common.State
-import com.maximillianleonov.cinemax.core.ui.model.UserMessage
-import com.maximillianleonov.cinemax.feature.settings.common.SettingsGroup
+import com.maximillianleonov.cinemax.core.model.UserMessage
+import com.maximillianleonov.cinemax.feature.settings.model.SettingsGroup
 
 data class SettingsUiState(
     val settingsGroups: List<SettingsGroup>,
     val userMessage: UserMessage? = null
-) : State
+)

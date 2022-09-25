@@ -19,21 +19,24 @@ package com.maximillianleonov.cinemax.feature.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.common.EventHandler
+import com.maximillianleonov.cinemax.core.common.result.handle
+import com.maximillianleonov.cinemax.core.common.result.onEmpty
+import com.maximillianleonov.cinemax.core.domain.model.MovieModel
+import com.maximillianleonov.cinemax.core.domain.model.TvShowModel
+import com.maximillianleonov.cinemax.core.domain.usecase.GetMoviesUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.GetTvShowsUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.SearchMoviesUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.SearchTvShowsUseCase
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.model.Movie
+import com.maximillianleonov.cinemax.core.model.TvShow
+import com.maximillianleonov.cinemax.core.ui.mapper.asMediaTypeModel
+import com.maximillianleonov.cinemax.core.ui.mapper.asMovie
+import com.maximillianleonov.cinemax.core.ui.mapper.asTvShow
 import com.maximillianleonov.cinemax.core.ui.mapper.pagingMap
-import com.maximillianleonov.cinemax.core.ui.mapper.toMovie
-import com.maximillianleonov.cinemax.core.ui.mapper.toTvShow
-import com.maximillianleonov.cinemax.core.ui.util.handle
-import com.maximillianleonov.cinemax.core.ui.util.toErrorMessage
-import com.maximillianleonov.cinemax.domain.model.MovieModel
-import com.maximillianleonov.cinemax.domain.model.TvShowModel
-import com.maximillianleonov.cinemax.domain.usecase.GetSearchMoviesPagingUseCase
-import com.maximillianleonov.cinemax.domain.usecase.GetSearchTvShowsPagingUseCase
-import com.maximillianleonov.cinemax.domain.usecase.MovieUseCases
-import com.maximillianleonov.cinemax.domain.usecase.TvShowUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -45,37 +48,33 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val movieUseCases: MovieUseCases,
-    private val tvShowUseCases: TvShowUseCases,
-    private val getSearchMoviesPagingUseCase: GetSearchMoviesPagingUseCase,
-    private val getSearchTvShowsPagingUseCase: GetSearchTvShowsPagingUseCase
-) : ViewModel(), EventHandler<SearchEvent> {
+    private val getMoviesUseCase: GetMoviesUseCase,
+    private val getTvShowsUseCase: GetTvShowsUseCase,
+    private val searchMoviesUseCase: SearchMoviesUseCase,
+    private val searchTvShowsUseCase: SearchTvShowsUseCase
+) : ViewModel() {
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
 
-    private var contentJobs = getContentJobs()
     private var searchJob: Job? = null
 
-    override fun onEvent(event: SearchEvent) = when (event) {
-        is SearchEvent.ChangeQuery -> onQueryChange(query = event.value)
+    init {
+        loadContent()
+    }
+
+    fun onEvent(event: SearchEvent) = when (event) {
+        is SearchEvent.ChangeQuery -> onQueryChange(event.value)
         SearchEvent.Refresh -> onRefresh()
         SearchEvent.Retry -> onRetry()
         SearchEvent.ClearError -> onClearError()
     }
-
-    private fun getContentJobs() = mapOf(
-        ContentType.Main.DiscoverMovies to loadDiscoverMovies(),
-        ContentType.Main.DiscoverTvShows to loadDiscoverTvShows(),
-        ContentType.Main.TrendingMovies to loadTrendingMovies(),
-        ContentType.Main.TrendingTvShows to loadTrendingTvShows()
-    )
 
     private fun onQueryChange(query: String) {
         val isSearching = query.isNotBlank()
         _uiState.update {
             it.copy(query = query, isSearching = isSearching)
         }
-        searchDebounced(query = query.trim())
+        searchDebounced(query)
     }
 
     private fun searchDebounced(query: String) {
@@ -88,16 +87,16 @@ class SearchViewModel @Inject constructor(
 
     private fun search(query: String) = _uiState.update {
         val searchMovies = if (it.isSearching) {
-            getSearchMoviesPagingUseCase(query)
-                .pagingMap(MovieModel::toMovie)
+            searchMoviesUseCase(query)
+                .pagingMap(MovieModel::asMovie)
                 .cachedIn(viewModelScope)
         } else {
             emptyFlow()
         }
 
         val searchTvShows = if (it.isSearching) {
-            getSearchTvShowsPagingUseCase(query)
-                .pagingMap(TvShowModel::toTvShow)
+            searchTvShowsUseCase(query)
+                .pagingMap(TvShowModel::asTvShow)
                 .cachedIn(viewModelScope)
         } else {
             emptyFlow()
@@ -109,9 +108,23 @@ class SearchViewModel @Inject constructor(
         )
     }
 
+    private fun loadContent() {
+        val movieMediaTypes = listOf(
+            MediaType.Movie.Discover,
+            MediaType.Movie.Trending
+        )
+        movieMediaTypes.forEach(::loadMovies)
+
+        val tvShowMediaTypes = listOf(
+            MediaType.TvShow.Discover,
+            MediaType.TvShow.Trending
+        )
+        tvShowMediaTypes.forEach(::loadTvShows)
+    }
+
     private fun onRefresh() {
-        contentJobs.values.forEach(Job::cancel)
-        contentJobs = getContentJobs()
+        viewModelScope.coroutineContext.cancelChildren()
+        loadContent()
     }
 
     private fun onRetry() {
@@ -121,121 +134,79 @@ class SearchViewModel @Inject constructor(
 
     private fun onClearError() = _uiState.update { it.copy(error = null) }
 
-    private fun loadDiscoverMovies() = viewModelScope.launch {
-        movieUseCases.getDiscoverMoviesUseCase().handle(
-            onLoading = ::handleDiscoverMoviesLoading,
-            onSuccess = ::handleDiscoverMoviesSuccess,
-            onFailure = ::handleDiscoverMoviesFailure
-        )
+    private fun loadMovies(mediaType: MediaType.Movie) = viewModelScope.launch {
+        getMoviesUseCase(mediaType.asMediaTypeModel()).handle {
+            onLoading { movies ->
+                _uiState.update {
+                    it.copy(
+                        movies = it.movies + (
+                            mediaType to movies?.map(MovieModel::asMovie).orEmpty()
+                            ),
+                        loadStates = it.loadStates + (mediaType to true)
+                    )
+                }
+            }
+            onSuccess { movies ->
+                _uiState.update {
+                    it.copy(
+                        movies = it.movies + (mediaType to movies.map(MovieModel::asMovie)),
+                        loadStates = it.loadStates + (mediaType to false)
+                    )
+                }
+
+                if (movies.isEmpty()) {
+                    onRefresh()
+                }
+            }
+            onFailure { error -> handleFailure(error = error, mediaType = mediaType) }
+            onEmpty(::refreshIfEmpty)
+        }
     }
 
-    private fun loadDiscoverTvShows() = viewModelScope.launch {
-        tvShowUseCases.getDiscoverTvShowsUseCase().handle(
-            onLoading = ::handleDiscoverTvShowsLoading,
-            onSuccess = ::handleDiscoverTvShowsSuccess,
-            onFailure = ::handleDiscoverTvShowsFailure
-        )
+    private fun loadTvShows(mediaType: MediaType.TvShow) = viewModelScope.launch {
+        getTvShowsUseCase(mediaType.asMediaTypeModel()).handle {
+            onLoading { tvShows ->
+                _uiState.update {
+                    it.copy(
+                        tvShows = it.tvShows + (
+                            mediaType to tvShows?.map(TvShowModel::asTvShow).orEmpty()
+                            ),
+                        loadStates = it.loadStates + (mediaType to true)
+                    )
+                }
+            }
+            onSuccess { tvShows ->
+                _uiState.update {
+                    it.copy(
+                        tvShows = it.tvShows + (mediaType to tvShows.map(TvShowModel::asTvShow)),
+                        loadStates = it.loadStates + (mediaType to false)
+                    )
+                }
+            }
+            onFailure { error -> handleFailure(error = error, mediaType = mediaType) }
+            onEmpty(::refreshIfEmpty)
+        }
     }
 
-    private fun loadTrendingMovies() = viewModelScope.launch {
-        movieUseCases.getTrendingMoviesUseCase().handle(
-            onLoading = ::handleTrendingMoviesLoading,
-            onSuccess = ::handleTrendingMoviesSuccess,
-            onFailure = ::handleTrendingMoviesFailure
-        )
+    private fun handleFailure(error: Throwable, mediaType: MediaType) =
+        _uiState.update {
+            it.copy(
+                error = error,
+                isOfflineModeAvailable = it.movies.values.all(List<Movie>::isNotEmpty) ||
+                    it.tvShows.values.all(List<TvShow>::isNotEmpty),
+                loadStates = it.loadStates + (mediaType to false)
+            )
+        }
+
+    private fun refreshIfEmpty() {
+        val state = uiState.value
+
+        if (state.movies.values.all(List<Movie>::isEmpty) &&
+            state.tvShows.values.all(List<TvShow>::isEmpty)
+        ) {
+            onRefresh()
+        }
     }
-
-    private fun loadTrendingTvShows() = viewModelScope.launch {
-        tvShowUseCases.getTrendingTvShowsUseCase().handle(
-            onLoading = ::handleTrendingTvShowsLoading,
-            onSuccess = ::handleTrendingTvShowsSuccess,
-            onFailure = ::handleTrendingTvShowsFailure
-        )
-    }
-
-    private fun handleDiscoverMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.DiscoverMovies, movies = movies)
-
-    private fun handleDiscoverMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.DiscoverMovies, movies = movies)
-
-    private fun handleDiscoverMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.DiscoverMovies, error = throwable)
-
-    private fun handleDiscoverTvShowsLoading(tvShows: List<TvShowModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.DiscoverTvShows, tvShows = tvShows)
-
-    private fun handleDiscoverTvShowsSuccess(tvShows: List<TvShowModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.DiscoverTvShows, tvShows = tvShows)
-
-    private fun handleDiscoverTvShowsFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.DiscoverTvShows, error = throwable)
-
-    private fun handleTrendingMoviesLoading(movies: List<MovieModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.TrendingMovies, movies = movies)
-
-    private fun handleTrendingMoviesSuccess(movies: List<MovieModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.TrendingMovies, movies = movies)
-
-    private fun handleTrendingMoviesFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.TrendingMovies, error = throwable)
-
-    private fun handleTrendingTvShowsLoading(tvShows: List<TvShowModel>?) =
-        handleLoading(contentLoadType = ContentType.Main.TrendingTvShows, tvShows = tvShows)
-
-    private fun handleTrendingTvShowsSuccess(tvShows: List<TvShowModel>) =
-        handleSuccess(contentLoadType = ContentType.Main.TrendingTvShows, tvShows = tvShows)
-
-    private fun handleTrendingTvShowsFailure(throwable: Throwable) =
-        handleFailure(contentLoadType = ContentType.Main.TrendingTvShows, error = throwable)
-
-    @JvmName("handleMoviesLoading")
-    private fun handleLoading(contentLoadType: ContentType.Main, movies: List<MovieModel>?) =
-        _uiState.update {
-            it.copy(
-                movies = it.movies + (
-                    contentLoadType to movies?.map(MovieModel::toMovie).orEmpty()
-                    ),
-                loadStates = it.loadStates + (contentLoadType to true)
-            )
-        }
-
-    @JvmName("handleTvShowsLoading")
-    private fun handleLoading(contentLoadType: ContentType.Main, tvShows: List<TvShowModel>?) =
-        _uiState.update {
-            it.copy(
-                tvShows = it.tvShows + (
-                    contentLoadType to tvShows?.map(TvShowModel::toTvShow).orEmpty()
-                    ),
-                loadStates = it.loadStates + (contentLoadType to true)
-            )
-        }
-
-    @JvmName("handleMoviesSuccess")
-    private fun handleSuccess(contentLoadType: ContentType.Main, movies: List<MovieModel>) =
-        _uiState.update {
-            it.copy(
-                movies = it.movies + (contentLoadType to movies.map(MovieModel::toMovie)),
-                loadStates = it.loadStates + (contentLoadType to false)
-            )
-        }
-
-    @JvmName("handleTvShowsSuccess")
-    private fun handleSuccess(contentLoadType: ContentType.Main, tvShows: List<TvShowModel>) =
-        _uiState.update {
-            it.copy(
-                tvShows = it.tvShows + (contentLoadType to tvShows.map(TvShowModel::toTvShow)),
-                loadStates = it.loadStates + (contentLoadType to false)
-            )
-        }
-
-    private fun handleFailure(contentLoadType: ContentType.Main, error: Throwable) =
-        _uiState.update {
-            it.copy(
-                loadStates = it.loadStates + (contentLoadType to false),
-                error = error.toErrorMessage()
-            )
-        }
 }
 
 private const val SEARCH_DEBOUNCE_DURATION = 500L

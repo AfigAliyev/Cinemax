@@ -16,36 +16,38 @@
 
 package com.maximillianleonov.cinemax.core.ui.mapper
 
-import com.maximillianleonov.cinemax.core.ui.model.Movie
-import com.maximillianleonov.cinemax.core.ui.model.MovieDetails
+import com.maximillianleonov.cinemax.core.domain.model.MovieDetailsModel
+import com.maximillianleonov.cinemax.core.domain.model.MovieModel
+import com.maximillianleonov.cinemax.core.model.Movie
+import com.maximillianleonov.cinemax.core.model.MovieDetails
 import com.maximillianleonov.cinemax.core.ui.util.roundToOneDecimal
-import com.maximillianleonov.cinemax.domain.model.MovieDetailsModel
-import com.maximillianleonov.cinemax.domain.model.MovieModel
 
-fun MovieModel.toMovie() = Movie(
+fun MovieModel.asMovie() = Movie(
     id = id,
     title = title,
     overview = overview,
     releaseDate = releaseDate,
-    genres = genres.toGenres(),
+    genres = genres.asGenres(),
     voteAverage = voteAverage.roundToOneDecimal(),
     posterPath = posterPath,
     backdropPath = backdropPath
 )
 
-fun MovieDetailsModel.toMovieDetails() = MovieDetails(
+fun MovieDetailsModel.asMovieDetails() = MovieDetails(
     id = id,
     title = title,
     overview = overview,
     backdropPath = backdropPath,
     budget = budget,
-    genres = genres.toGenres(),
+    genres = genres.asGenres(),
     posterPath = posterPath,
     releaseDate = releaseDate,
-    runtime = runtime ?: 0,
+    runtime = runtime ?: NoMovieRuntimeValue,
     video = video,
     voteAverage = voteAverage.roundToOneDecimal(),
     voteCount = voteCount,
-    credits = credits.toCredits(),
+    credits = credits.asCredits(),
     isWishlisted = isWishlisted
 )
+
+const val NoMovieRuntimeValue = 0

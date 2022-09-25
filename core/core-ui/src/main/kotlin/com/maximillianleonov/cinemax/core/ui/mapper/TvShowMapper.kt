@@ -16,36 +16,38 @@
 
 package com.maximillianleonov.cinemax.core.ui.mapper
 
-import com.maximillianleonov.cinemax.core.ui.model.TvShow
-import com.maximillianleonov.cinemax.core.ui.model.TvShowDetails
+import com.maximillianleonov.cinemax.core.domain.model.TvShowDetailsModel
+import com.maximillianleonov.cinemax.core.domain.model.TvShowModel
+import com.maximillianleonov.cinemax.core.model.TvShow
+import com.maximillianleonov.cinemax.core.model.TvShowDetails
 import com.maximillianleonov.cinemax.core.ui.util.roundToOneDecimal
-import com.maximillianleonov.cinemax.domain.model.TvShowDetailsModel
-import com.maximillianleonov.cinemax.domain.model.TvShowModel
 
-fun TvShowModel.toTvShow() = TvShow(
+fun TvShowModel.asTvShow() = TvShow(
     id = id,
     name = name,
     overview = overview,
     firstAirDate = firstAirDate,
-    genres = genres.toGenres(),
+    genres = genres.asGenres(),
     voteAverage = voteAverage.roundToOneDecimal(),
     posterPath = posterPath,
     backdropPath = backdropPath
 )
 
-fun TvShowDetailsModel.toTvShowDetails() = TvShowDetails(
+fun TvShowDetailsModel.asTvShowDetails() = TvShowDetails(
     id = id,
     name = name,
     backdropPath = backdropPath,
-    episodeRunTime = episodeRunTime.maxOrNull() ?: 0,
+    episodeRunTime = episodeRunTime.maxOrNull() ?: NoTvShowRuntimeValue,
     firstAirDate = firstAirDate,
-    genres = genres.toGenres(),
+    genres = genres.asGenres(),
     numberOfEpisodes = numberOfEpisodes,
     numberOfSeasons = numberOfSeasons,
     overview = overview,
     popularity = popularity,
     posterPath = posterPath,
     voteAverage = voteAverage.roundToOneDecimal(),
-    credits = credits.toCredits(),
+    credits = credits.asCredits(),
     isWishlisted = isWishlisted
 )
+
+const val NoTvShowRuntimeValue = 0

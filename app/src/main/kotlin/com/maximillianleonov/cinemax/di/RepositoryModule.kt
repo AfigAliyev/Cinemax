@@ -16,60 +16,45 @@
 
 package com.maximillianleonov.cinemax.di
 
-import com.maximillianleonov.cinemax.data.local.repository.DetailsRepositoryImpl
-import com.maximillianleonov.cinemax.data.local.repository.DiscoverRepositoryImpl
-import com.maximillianleonov.cinemax.data.local.repository.NowPlayingRepositoryImpl
-import com.maximillianleonov.cinemax.data.local.repository.PopularRepositoryImpl
-import com.maximillianleonov.cinemax.data.local.repository.SearchRepositoryImpl
-import com.maximillianleonov.cinemax.data.local.repository.SettingsRepositoryImpl
-import com.maximillianleonov.cinemax.data.local.repository.TopRatedRepositoryImpl
-import com.maximillianleonov.cinemax.data.local.repository.TrendingRepositoryImpl
-import com.maximillianleonov.cinemax.data.local.repository.UpcomingRepositoryImpl
-import com.maximillianleonov.cinemax.data.local.repository.WishlistRepositoryImpl
-import com.maximillianleonov.cinemax.domain.repository.DetailsRepository
-import com.maximillianleonov.cinemax.domain.repository.DiscoverRepository
-import com.maximillianleonov.cinemax.domain.repository.NowPlayingRepository
-import com.maximillianleonov.cinemax.domain.repository.PopularRepository
-import com.maximillianleonov.cinemax.domain.repository.SearchRepository
-import com.maximillianleonov.cinemax.domain.repository.SettingsRepository
-import com.maximillianleonov.cinemax.domain.repository.TopRatedRepository
-import com.maximillianleonov.cinemax.domain.repository.TrendingRepository
-import com.maximillianleonov.cinemax.domain.repository.UpcomingRepository
-import com.maximillianleonov.cinemax.domain.repository.WishlistRepository
+import com.maximillianleonov.cinemax.core.data.repository.MovieDetailsRepositoryImpl
+import com.maximillianleonov.cinemax.core.data.repository.MovieRepositoryImpl
+import com.maximillianleonov.cinemax.core.data.repository.SettingsRepositoryImpl
+import com.maximillianleonov.cinemax.core.data.repository.TvShowDetailsRepositoryImpl
+import com.maximillianleonov.cinemax.core.data.repository.TvShowRepositoryImpl
+import com.maximillianleonov.cinemax.core.data.repository.WishlistRepositoryImpl
+import com.maximillianleonov.cinemax.core.domain.repository.MovieDetailsRepository
+import com.maximillianleonov.cinemax.core.domain.repository.MovieRepository
+import com.maximillianleonov.cinemax.core.domain.repository.SettingsRepository
+import com.maximillianleonov.cinemax.core.domain.repository.TvShowDetailsRepository
+import com.maximillianleonov.cinemax.core.domain.repository.TvShowRepository
+import com.maximillianleonov.cinemax.core.domain.repository.WishlistRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
 @[Module InstallIn(ViewModelComponent::class)]
 interface RepositoryModule {
-    @Binds
-    fun bindUpcomingRepository(upcomingRepositoryImpl: UpcomingRepositoryImpl): UpcomingRepository
+    @[Binds ViewModelScoped]
+    fun bindMovieRepository(movieRepositoryImpl: MovieRepositoryImpl): MovieRepository
 
-    @Binds
-    fun bindTopRatedRepository(topRatedRepositoryImpl: TopRatedRepositoryImpl): TopRatedRepository
+    @[Binds ViewModelScoped]
+    fun bindTvShowRepository(tvShowRepositoryImpl: TvShowRepositoryImpl): TvShowRepository
 
-    @Binds
-    fun bindPopularRepository(popularRepositoryImpl: PopularRepositoryImpl): PopularRepository
+    @[Binds ViewModelScoped]
+    fun bindMovieDetailsRepository(
+        movieDetailsRepositoryImpl: MovieDetailsRepositoryImpl
+    ): MovieDetailsRepository
 
-    @Binds
-    fun bindNowPlayingRepository(nowPlayingRepositoryImpl: NowPlayingRepositoryImpl): NowPlayingRepository
+    @[Binds ViewModelScoped]
+    fun bindTvShowDetailsRepository(
+        tvShowDetailsRepositoryImpl: TvShowDetailsRepositoryImpl
+    ): TvShowDetailsRepository
 
-    @Binds
-    fun bindDiscoverRepository(discoverRepositoryImpl: DiscoverRepositoryImpl): DiscoverRepository
-
-    @Binds
-    fun bindTrendingRepository(trendingRepositoryImpl: TrendingRepositoryImpl): TrendingRepository
-
-    @Binds
-    fun bindSearchRepository(searchRepositoryImpl: SearchRepositoryImpl): SearchRepository
-
-    @Binds
-    fun bindDetailsRepository(detailsRepositoryImpl: DetailsRepositoryImpl): DetailsRepository
-
-    @Binds
+    @[Binds ViewModelScoped]
     fun bindWishlistRepository(wishlistRepositoryImpl: WishlistRepositoryImpl): WishlistRepository
 
-    @Binds
+    @[Binds ViewModelScoped]
     fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
 }

@@ -16,26 +16,26 @@
 
 package com.maximillianleonov.cinemax.core.ui.mapper
 
-import com.maximillianleonov.cinemax.core.ui.model.Cast
-import com.maximillianleonov.cinemax.core.ui.model.Credits
-import com.maximillianleonov.cinemax.core.ui.model.Crew
-import com.maximillianleonov.cinemax.domain.model.CastModel
-import com.maximillianleonov.cinemax.domain.model.CreditsModel
-import com.maximillianleonov.cinemax.domain.model.CrewModel
+import com.maximillianleonov.cinemax.core.domain.model.CastModel
+import com.maximillianleonov.cinemax.core.domain.model.CreditsModel
+import com.maximillianleonov.cinemax.core.domain.model.CrewModel
+import com.maximillianleonov.cinemax.core.model.Cast
+import com.maximillianleonov.cinemax.core.model.Credits
+import com.maximillianleonov.cinemax.core.model.Crew
 
-internal fun CreditsModel.toCredits() = Credits(
-    cast = cast.map(CastModel::toCast),
-    crew = crew.map(CrewModel::toCrew)
+internal fun CreditsModel.asCredits() = Credits(
+    cast = cast.map(CastModel::asCast),
+    crew = crew.map(CrewModel::asCrew)
 )
 
-private fun CastModel.toCast() = Cast(
+private fun CastModel.asCast() = Cast(
     id = id,
     name = name,
     character = character,
     profilePath = profilePath
 )
 
-private fun CrewModel.toCrew() = Crew(
+private fun CrewModel.asCrew() = Crew(
     id = id,
     name = name,
     job = job,

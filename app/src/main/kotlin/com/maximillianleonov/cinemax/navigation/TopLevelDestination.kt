@@ -18,8 +18,8 @@ package com.maximillianleonov.cinemax.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.home.navigation.HomeDestination
 import com.maximillianleonov.cinemax.feature.search.navigation.SearchDestination
 import com.maximillianleonov.cinemax.feature.settings.navigation.SettingsDestination

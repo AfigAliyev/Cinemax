@@ -17,21 +17,13 @@
 package com.maximillianleonov.cinemax.feature.list
 
 import androidx.paging.PagingData
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.common.State
-import com.maximillianleonov.cinemax.core.ui.model.ErrorMessage
-import com.maximillianleonov.cinemax.core.ui.model.Movie
-import com.maximillianleonov.cinemax.core.ui.model.TvShow
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.model.Movie
+import com.maximillianleonov.cinemax.core.model.TvShow
 import kotlinx.coroutines.flow.Flow
 
 data class ListUiState(
-    val contentType: ContentType.List,
+    val mediaType: MediaType.Common,
     val movies: Flow<PagingData<Movie>>,
-    val tvShows: Flow<PagingData<TvShow>>,
-    val isRetry: Boolean = false,
-    val error: ErrorMessage? = null
-) : State {
-    val isError: Boolean get() = error != null
-
-    fun requireError() = checkNotNull(error)
-}
+    val tvShows: Flow<PagingData<TvShow>>
+)

@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
+import com.maximillianleonov.cinemax.core.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.details.navigation.DetailsDestination
 import com.maximillianleonov.cinemax.feature.details.navigation.detailsGraph
 import com.maximillianleonov.cinemax.feature.home.navigation.homeGraph

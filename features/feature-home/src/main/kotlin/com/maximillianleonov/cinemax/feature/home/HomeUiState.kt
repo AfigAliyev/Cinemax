@@ -16,23 +16,16 @@
 
 package com.maximillianleonov.cinemax.feature.home
 
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.common.State
-import com.maximillianleonov.cinemax.core.ui.model.ErrorMessage
-import com.maximillianleonov.cinemax.core.ui.model.Movie
-import com.maximillianleonov.cinemax.core.ui.model.TvShow
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.model.Movie
+import com.maximillianleonov.cinemax.core.model.TvShow
 
 data class HomeUiState(
-    val movies: Map<ContentType.Main, List<Movie>> = emptyMap(),
-    val tvShows: Map<ContentType.Main, List<TvShow>> = emptyMap(),
-    val loadStates: Map<ContentType.Main, Boolean> = emptyMap(),
-    val error: ErrorMessage? = null
-) : State {
-    val isLoading: Boolean get() = loadStates.values.any { it }
-    val isError: Boolean get() = error != null
-    val isOfflineModeAvailable: Boolean
-        get() = movies.values.all(List<Movie>::isNotEmpty) &&
-            tvShows.values.all(List<TvShow>::isNotEmpty)
+    val movies: Map<MediaType.Movie, List<Movie>> = emptyMap(),
+    val tvShows: Map<MediaType.TvShow, List<TvShow>> = emptyMap(),
+    val loadStates: Map<MediaType, Boolean> = emptyMap(),
+    val error: Throwable? = null,
+    val isOfflineModeAvailable: Boolean = false
+)
 
-    fun requireError() = checkNotNull(error)
-}
+internal val HomeUiState.isLoading: Boolean get() = loadStates.values.any { it }

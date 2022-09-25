@@ -18,7 +18,7 @@ package com.maximillianleonov.cinemax.feature.settings.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
+import com.maximillianleonov.cinemax.core.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.settings.SettingsRoute
 
 object SettingsDestination : CinemaxNavigationDestination {

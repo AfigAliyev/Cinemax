@@ -17,19 +17,19 @@
 package com.maximillianleonov.cinemax.feature.list.util
 
 import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.model.MediaType.Common.Discover
+import com.maximillianleonov.cinemax.core.model.MediaType.Common.NowPlaying
+import com.maximillianleonov.cinemax.core.model.MediaType.Common.Popular
+import com.maximillianleonov.cinemax.core.model.MediaType.Common.TopRated
+import com.maximillianleonov.cinemax.core.model.MediaType.Common.Trending
+import com.maximillianleonov.cinemax.core.model.MediaType.Common.Upcoming
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.common.ContentType.List.Discover
-import com.maximillianleonov.cinemax.core.ui.common.ContentType.List.NowPlaying
-import com.maximillianleonov.cinemax.core.ui.common.ContentType.List.Popular
-import com.maximillianleonov.cinemax.core.ui.common.ContentType.List.TopRated
-import com.maximillianleonov.cinemax.core.ui.common.ContentType.List.Trending
-import com.maximillianleonov.cinemax.core.ui.common.ContentType.List.Upcoming
 
 @StringRes
-internal fun ContentType.List.toTitleResourceId() = contentTypesTitleResources.getValue(this)
+internal fun MediaType.Common.asTitleResourceId() = mediaTypesTitleResources.getValue(this)
 
-private val contentTypesTitleResources = mapOf(
+private val mediaTypesTitleResources = mapOf(
     Upcoming to R.string.upcoming_movies,
     TopRated to R.string.top_rated,
     Popular to R.string.most_popular,

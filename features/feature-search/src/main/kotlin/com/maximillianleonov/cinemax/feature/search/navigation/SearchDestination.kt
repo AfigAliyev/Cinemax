@@ -18,8 +18,8 @@ package com.maximillianleonov.cinemax.feature.search.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.maximillianleonov.cinemax.core.ui.common.ContentType
-import com.maximillianleonov.cinemax.core.ui.navigation.CinemaxNavigationDestination
+import com.maximillianleonov.cinemax.core.model.MediaType
+import com.maximillianleonov.cinemax.core.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.feature.search.SearchRoute
 
 object SearchDestination : CinemaxNavigationDestination {
@@ -28,12 +28,12 @@ object SearchDestination : CinemaxNavigationDestination {
 }
 
 fun NavGraphBuilder.searchGraph(
-    onNavigateToListDestination: (ContentType.List) -> Unit,
-    onNavigateToDetailsDestination: (ContentType.Details) -> Unit
+    onNavigateToListDestination: (MediaType.Common) -> Unit,
+    onNavigateToDetailsDestination: (MediaType.Details) -> Unit
 ) = composable(route = SearchDestination.route) {
     SearchRoute(
         onSeeAllClick = onNavigateToListDestination,
-        onMovieClick = { onNavigateToDetailsDestination(ContentType.Details.Movie(it)) },
-        onTvShowClick = { onNavigateToDetailsDestination(ContentType.Details.TvShow(it)) }
+        onMovieClick = { onNavigateToDetailsDestination(MediaType.Details.Movie(it)) },
+        onTvShowClick = { onNavigateToDetailsDestination(MediaType.Details.TvShow(it)) }
     )
 }

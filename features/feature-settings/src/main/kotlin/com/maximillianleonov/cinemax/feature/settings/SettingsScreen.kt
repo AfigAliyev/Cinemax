@@ -24,22 +24,24 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.maximillianleonov.cinemax.core.ui.components.SnackbarUserMessageHandler
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.core.ui.SnackbarUserMessageHandler
 import com.maximillianleonov.cinemax.feature.settings.components.SettingsGroupItem
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun SettingsRoute(
     onShowMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     SettingsScreen(
         uiState = uiState,
         onShowMessage = onShowMessage,

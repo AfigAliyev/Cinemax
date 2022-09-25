@@ -16,9 +16,7 @@
 
 package com.maximillianleonov.cinemax.feature.settings
 
-import com.maximillianleonov.cinemax.core.ui.common.Event
-
-sealed class SettingsEvent : Event {
-    object ClearCache : SettingsEvent()
-    object ClearUserMessage : SettingsEvent()
+sealed interface SettingsEvent {
+    object ClearCache : SettingsEvent
+    object ClearUserMessage : SettingsEvent
 }

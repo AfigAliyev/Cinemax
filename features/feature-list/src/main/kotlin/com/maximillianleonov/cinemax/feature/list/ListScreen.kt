@@ -16,44 +16,35 @@
 
 package com.maximillianleonov.cinemax.feature.list
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
-import com.maximillianleonov.cinemax.core.ui.common.ContentType.List.Upcoming
-import com.maximillianleonov.cinemax.core.ui.components.CinemaxTopAppBar
-import com.maximillianleonov.cinemax.core.ui.components.MoviesDisplay
-import com.maximillianleonov.cinemax.core.ui.components.TvShowsDisplay
-import com.maximillianleonov.cinemax.core.ui.model.Movie
-import com.maximillianleonov.cinemax.core.ui.model.TvShow
-import com.maximillianleonov.cinemax.core.ui.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.feature.list.common.ListTab
-import com.maximillianleonov.cinemax.feature.list.util.toTitleResourceId
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxTopAppBar
+import com.maximillianleonov.cinemax.core.model.MediaType.Common.Upcoming
+import com.maximillianleonov.cinemax.core.model.Movie
+import com.maximillianleonov.cinemax.core.model.TvShow
+import com.maximillianleonov.cinemax.core.ui.CinemaxBackButton
+import com.maximillianleonov.cinemax.core.ui.MediaTabPager
+import com.maximillianleonov.cinemax.core.ui.MoviesContainer
+import com.maximillianleonov.cinemax.core.ui.TvShowsContainer
+import com.maximillianleonov.cinemax.feature.list.util.asTitleResourceId
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun ListRoute(
     onBackButtonClick: () -> Unit,
@@ -62,20 +53,21 @@ internal fun ListRoute(
     modifier: Modifier = Modifier,
     viewModel: ListViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val movies = uiState.movies.collectAsLazyPagingItems()
     val tvShows = uiState.tvShows.collectAsLazyPagingItems()
     ListScreen(
+        modifier = modifier,
         uiState = uiState,
         movies = movies,
         tvShows = tvShows,
         onBackButtonClick = onBackButtonClick,
         onMovieClick = onMovieClick,
-        onTvShowClick = onTvShowClick,
-        modifier = modifier
+        onTvShowClick = onTvShowClick
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 private fun ListScreen(
     uiState: ListUiState,
@@ -87,94 +79,38 @@ private fun ListScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        modifier = modifier
-            .windowInsetsPadding(WindowInsets.safeDrawing)
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         topBar = {
             CinemaxTopAppBar(
-                titleResourceId = uiState.contentType.toTitleResourceId(),
-                onBackButtonClick = onBackButtonClick
+                titleResourceId = uiState.mediaType.asTitleResourceId(),
+                navigationIcon = { CinemaxBackButton(onClick = onBackButtonClick) }
             )
-        }
+        },
+        contentWindowInsets = WindowInsets.safeDrawing.only(
+            WindowInsetsSides.Horizontal + WindowInsetsSides.Top
+        )
     ) { innerPadding ->
-        when (uiState.contentType) {
-            Upcoming -> MoviesDisplay(
-                movies = movies,
-                onClick = onMovieClick,
-                modifier = Modifier.padding(innerPadding)
-            )
-            else -> MoviesAndTvShowsDisplay(
-                movies = movies,
-                tvShows = tvShows,
-                onMovieClick = onMovieClick,
-                onTvShowClick = onTvShowClick,
-                modifier = Modifier.padding(innerPadding)
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-private fun MoviesAndTvShowsDisplay(
-    movies: LazyPagingItems<Movie>,
-    tvShows: LazyPagingItems<TvShow>,
-    onMovieClick: (Int) -> Unit,
-    onTvShowClick: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-    coroutineScope: CoroutineScope = rememberCoroutineScope()
-) {
-    val tabs = remember { ListTab.values() }
-    val pagerState = rememberPagerState()
-    val selectedTabIndex = pagerState.currentPage
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-                    color = CinemaxTheme.colors.primaryBlue
-                )
-            }
-        ) {
-            tabs.forEach { tab ->
-                val index = tab.ordinal
-                val selected = selectedTabIndex == index
-                val color by animateColorAsState(
-                    targetValue = if (selected) {
-                        CinemaxTheme.colors.primaryBlue
-                    } else {
-                        CinemaxTheme.colors.textWhite
-                    }
-                )
-                Tab(
-                    selected = selected,
-                    onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-                    text = {
-                        Text(
-                            text = stringResource(id = tab.titleResourceId),
-                            style = CinemaxTheme.typography.medium.h4,
-                            color = color
-                        )
-                    }
-                )
-            }
-        }
-        HorizontalPager(
-            modifier = Modifier.fillMaxSize(),
-            state = pagerState,
-            count = tabs.size
-        ) { page ->
-            when (page) {
-                ListTab.Movies.ordinal -> MoviesDisplay(
+        when (uiState.mediaType) {
+            Upcoming -> {
+                MoviesContainer(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .consumedWindowInsets(innerPadding),
                     movies = movies,
                     onClick = onMovieClick
                 )
-                ListTab.TvShows.ordinal -> TvShowsDisplay(
-                    tvShows = tvShows,
-                    onClick = onTvShowClick
+            }
+            else -> {
+                MediaTabPager(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .consumedWindowInsets(innerPadding),
+                    moviesTabContent = {
+                        MoviesContainer(movies = movies, onClick = onMovieClick)
+                    },
+                    tvShowsTabContent = {
+                        TvShowsContainer(tvShows = tvShows, onClick = onTvShowClick)
+                    }
                 )
             }
         }
