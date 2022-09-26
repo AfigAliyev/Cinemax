@@ -64,6 +64,10 @@ gradlePlugin {
             id = "cinemax.android.lint"
             implementationClass = "AndroidLintConventionPlugin"
         }
+        register("androidSigningConfig") {
+            id = "cinemax.android.signingconfig"
+            implementationClass = "AndroidSigningConfigConventionPlugin"
+        }
         register("spotless") {
             id = "cinemax.spotless"
             implementationClass = "SpotlessConventionPlugin"

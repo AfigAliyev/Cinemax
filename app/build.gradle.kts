@@ -18,6 +18,7 @@ plugins {
     id("cinemax.android.application")
     id("cinemax.android.application.compose")
     id("cinemax.android.lint")
+    id("cinemax.android.signingconfig")
     id("cinemax.apikey.provider")
 
     alias(libs.plugins.kotlin.kapt)
