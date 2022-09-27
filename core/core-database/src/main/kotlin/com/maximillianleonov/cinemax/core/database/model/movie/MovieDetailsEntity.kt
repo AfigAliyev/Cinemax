@@ -67,7 +67,7 @@ data class MovieDetailsEntity(
     val releaseDate: LocalDate?,
 
     @ColumnInfo(name = Constants.Fields.REVENUE)
-    val revenue: Int,
+    val revenue: Long,
 
     @ColumnInfo(name = Constants.Fields.RUNTIME)
     val runtime: Int?,
