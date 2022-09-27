@@ -31,8 +31,8 @@ class TvShowDatabaseDataSource @Inject constructor(
     private val tvShowRemoteKeyDao: TvShowRemoteKeyDao,
     private val transactionProvider: CinemaxDatabaseTransactionProvider
 ) {
-    fun getByMediaType(mediaType: MediaType.TvShow): Flow<List<TvShowEntity>> =
-        tvShowDao.getByMediaType(mediaType)
+    fun getByMediaType(mediaType: MediaType.TvShow, pageSize: Int): Flow<List<TvShowEntity>> =
+        tvShowDao.getByMediaType(mediaType, pageSize)
 
     fun getPagingByMediaType(mediaType: MediaType.TvShow): PagingSource<Int, TvShowEntity> =
         tvShowDao.getPagingByMediaType(mediaType)

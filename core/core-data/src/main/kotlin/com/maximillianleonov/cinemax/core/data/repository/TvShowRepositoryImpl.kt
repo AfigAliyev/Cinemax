@@ -36,6 +36,7 @@ import com.maximillianleonov.cinemax.core.domain.model.TvShowModel
 import com.maximillianleonov.cinemax.core.domain.repository.TvShowRepository
 import com.maximillianleonov.cinemax.core.network.common.networkBoundResource
 import com.maximillianleonov.cinemax.core.network.source.TvShowNetworkDataSource
+import com.maximillianleonov.cinemax.core.network.util.PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -49,7 +50,10 @@ class TvShowRepositoryImpl @Inject constructor(
         val mediaType = mediaTypeModel.asMediaType()
         return networkBoundResource(
             query = {
-                databaseDataSource.getByMediaType(mediaType).listMap(TvShowEntity::asTvShowModel)
+                databaseDataSource.getByMediaType(
+                    mediaType = mediaType,
+                    pageSize = PAGE_SIZE
+                ).listMap(TvShowEntity::asTvShowModel)
             },
             fetch = { networkDataSource.getByMediaType(mediaType.asNetworkMediaType()) },
             saveFetchResult = { response ->
