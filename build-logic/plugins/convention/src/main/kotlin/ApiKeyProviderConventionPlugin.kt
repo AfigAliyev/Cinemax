@@ -18,13 +18,12 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import java.io.File
 import java.util.Properties
 
 class ApiKeyProviderConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         val localProperties = Properties()
-        val localPropertiesFile = File(rootDir, "local.properties")
+        val localPropertiesFile = rootProject.file("local.properties")
         if (localPropertiesFile.exists() && localPropertiesFile.isFile) {
             localPropertiesFile.inputStream().use { input ->
                 localProperties.load(input)

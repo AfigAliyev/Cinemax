@@ -47,5 +47,5 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
         dependencies.add("coreLibraryDesugaring", libs.desugar.jdk.libs.get())
     }
 
-fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) =
+private fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) =
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
