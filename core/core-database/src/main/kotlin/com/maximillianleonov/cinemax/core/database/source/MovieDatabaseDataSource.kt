@@ -31,8 +31,8 @@ class MovieDatabaseDataSource @Inject constructor(
     private val movieRemoteKeyDao: MovieRemoteKeyDao,
     private val transactionProvider: CinemaxDatabaseTransactionProvider
 ) {
-    fun getByMediaType(mediaType: MediaType.Movie): Flow<List<MovieEntity>> =
-        movieDao.getByMediaType(mediaType)
+    fun getByMediaType(mediaType: MediaType.Movie, pageSize: Int): Flow<List<MovieEntity>> =
+        movieDao.getByMediaType(mediaType, pageSize)
 
     fun getPagingByMediaType(mediaType: MediaType.Movie): PagingSource<Int, MovieEntity> =
         movieDao.getPagingByMediaType(mediaType)

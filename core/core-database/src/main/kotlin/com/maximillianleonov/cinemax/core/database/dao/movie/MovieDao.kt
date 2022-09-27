@@ -28,8 +28,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
-    @Query("SELECT * FROM $MOVIES WHERE media_type = :mediaType")
-    fun getByMediaType(mediaType: MediaType.Movie): Flow<List<MovieEntity>>
+    @Query("SELECT * FROM $MOVIES WHERE media_type = :mediaType LIMIT :pageSize")
+    fun getByMediaType(mediaType: MediaType.Movie, pageSize: Int): Flow<List<MovieEntity>>
 
     @Query("SELECT * FROM $MOVIES WHERE media_type = :mediaType")
     fun getPagingByMediaType(mediaType: MediaType.Movie): PagingSource<Int, MovieEntity>

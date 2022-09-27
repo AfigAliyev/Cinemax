@@ -36,6 +36,7 @@ import com.maximillianleonov.cinemax.core.domain.model.MovieModel
 import com.maximillianleonov.cinemax.core.domain.repository.MovieRepository
 import com.maximillianleonov.cinemax.core.network.common.networkBoundResource
 import com.maximillianleonov.cinemax.core.network.source.MovieNetworkDataSource
+import com.maximillianleonov.cinemax.core.network.util.PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -49,7 +50,10 @@ class MovieRepositoryImpl @Inject constructor(
         val mediaType = mediaTypeModel.asMediaType()
         return networkBoundResource(
             query = {
-                databaseDataSource.getByMediaType(mediaType).listMap(MovieEntity::asMovieModel)
+                databaseDataSource.getByMediaType(
+                    mediaType = mediaType,
+                    pageSize = PAGE_SIZE
+                ).listMap(MovieEntity::asMovieModel)
             },
             fetch = { networkDataSource.getByMediaType(mediaType.asNetworkMediaType()) },
             saveFetchResult = { response ->
