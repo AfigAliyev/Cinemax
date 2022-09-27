@@ -79,7 +79,7 @@ data class NetworkMovieDetails(
     val releaseDate: LocalDate?,
 
     @SerialName(Constants.Fields.REVENUE)
-    val revenue: Int,
+    val revenue: Long,
 
     @SerialName(Constants.Fields.RUNTIME)
     val runtime: Int?,

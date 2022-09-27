@@ -32,7 +32,7 @@ data class MovieDetailsModel(
     val popularity: Double,
     val posterPath: String?,
     val releaseDate: LocalDate?,
-    val revenue: Int,
+    val revenue: Long,
     val runtime: Int?,
     val status: String,
     val tagline: String?,
