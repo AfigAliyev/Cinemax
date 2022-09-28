@@ -16,20 +16,9 @@
 
 package com.maximillianleonov.cinemax.core.domain.usecase
 
-import com.maximillianleonov.cinemax.core.domain.model.WishlistModel
-import com.maximillianleonov.cinemax.core.domain.repository.MovieDetailsRepository
 import com.maximillianleonov.cinemax.core.domain.repository.WishlistRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
-class GetWishlistMoviesUseCase @Inject constructor(
-    private val wishlistRepository: WishlistRepository,
-    private val movieDetailsRepository: MovieDetailsRepository
-) {
-    @OptIn(ExperimentalCoroutinesApi::class)
-    operator fun invoke() = wishlistRepository.getMovies().flatMapLatest { wishlistMovies ->
-        val ids = wishlistMovies.map(WishlistModel::id)
-        movieDetailsRepository.getByIds(ids)
-    }
+class GetWishlistMoviesUseCase @Inject constructor(private val wishlistRepository: WishlistRepository) {
+    operator fun invoke() = wishlistRepository.getMovies()
 }

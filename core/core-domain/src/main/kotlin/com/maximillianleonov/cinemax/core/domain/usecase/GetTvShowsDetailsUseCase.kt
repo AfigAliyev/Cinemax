@@ -16,9 +16,9 @@
 
 package com.maximillianleonov.cinemax.core.domain.usecase
 
-import com.maximillianleonov.cinemax.core.domain.repository.WishlistRepository
+import com.maximillianleonov.cinemax.core.domain.repository.TvShowDetailsRepository
 import javax.inject.Inject
 
-class GetWishlistTvShowsUseCase @Inject constructor(private val wishlistRepository: WishlistRepository) {
-    operator fun invoke() = wishlistRepository.getTvShows()
+class GetTvShowsDetailsUseCase @Inject constructor(private val repository: TvShowDetailsRepository) {
+    operator fun invoke(ids: List<Int>) = repository.getByIds(ids)
 }

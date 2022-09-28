@@ -19,15 +19,21 @@ package com.maximillianleonov.cinemax.feature.wishlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maximillianleonov.cinemax.core.common.result.handle
+import com.maximillianleonov.cinemax.core.common.result.onEmpty
 import com.maximillianleonov.cinemax.core.domain.model.MovieDetailsModel
 import com.maximillianleonov.cinemax.core.domain.model.TvShowDetailsModel
+import com.maximillianleonov.cinemax.core.domain.model.WishlistModel
+import com.maximillianleonov.cinemax.core.domain.usecase.GetMoviesDetailsUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.GetTvShowsDetailsUseCase
 import com.maximillianleonov.cinemax.core.domain.usecase.GetWishlistMoviesUseCase
 import com.maximillianleonov.cinemax.core.domain.usecase.GetWishlistTvShowsUseCase
 import com.maximillianleonov.cinemax.core.ui.mapper.asMovieDetails
 import com.maximillianleonov.cinemax.core.ui.mapper.asTvShowDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +41,9 @@ import javax.inject.Inject
 @HiltViewModel
 class WishlistViewModel @Inject constructor(
     private val getWishlistMoviesUseCase: GetWishlistMoviesUseCase,
-    private val getWishlistTvShowsUseCase: GetWishlistTvShowsUseCase
+    private val getWishlistTvShowsUseCase: GetWishlistTvShowsUseCase,
+    private val getMoviesDetailsUseCase: GetMoviesDetailsUseCase,
+    private val getTvShowsDetailsUseCase: GetTvShowsDetailsUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(WishlistUiState())
     val uiState = _uiState.asStateFlow()
@@ -68,48 +76,64 @@ class WishlistViewModel @Inject constructor(
 
     private fun onClearError() = _uiState.update { it.copy(error = null) }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun getMoviesJob() = viewModelScope.launch {
-        getWishlistMoviesUseCase().handle {
-            onLoading { movies ->
-                _uiState.update {
-                    it.copy(
-                        movies = movies?.map(MovieDetailsModel::asMovieDetails).orEmpty(),
-                        isMoviesLoading = true
-                    )
-                }
+        getWishlistMoviesUseCase()
+            .flatMapLatest { wishlistMovies ->
+                val ids = wishlistMovies.map(WishlistModel::id)
+                _uiState.update { it.copy(moviesIds = ids) }
+                getMoviesDetailsUseCase(ids)
             }
-            onSuccess { movies ->
-                _uiState.update {
-                    it.copy(
-                        movies = movies.map(MovieDetailsModel::asMovieDetails),
-                        isMoviesLoading = false
-                    )
+            .handle {
+                onLoading { movies ->
+                    _uiState.update {
+                        it.copy(
+                            movies = movies?.map(MovieDetailsModel::asMovieDetails).orEmpty(),
+                            isMoviesLoading = true
+                        )
+                    }
                 }
+                onSuccess { movies ->
+                    _uiState.update {
+                        it.copy(
+                            movies = movies.map(MovieDetailsModel::asMovieDetails),
+                            isMoviesLoading = false
+                        )
+                    }
+                }
+                onFailure(::handleFailure)
+                onEmpty(::handleMoviesEmpty)
             }
-            onFailure(::handleFailure)
-        }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun getTvShowsJob() = viewModelScope.launch {
-        getWishlistTvShowsUseCase().handle {
-            onLoading { tvShows ->
-                _uiState.update {
-                    it.copy(
-                        tvShows = tvShows?.map(TvShowDetailsModel::asTvShowDetails).orEmpty(),
-                        isTvShowsLoading = true
-                    )
-                }
+        getWishlistTvShowsUseCase()
+            .flatMapLatest { wishlistTvShows ->
+                val ids = wishlistTvShows.map(WishlistModel::id)
+                _uiState.update { it.copy(tvShowsIds = ids) }
+                getTvShowsDetailsUseCase(ids)
             }
-            onSuccess { tvShows ->
-                _uiState.update {
-                    it.copy(
-                        tvShows = tvShows.map(TvShowDetailsModel::asTvShowDetails),
-                        isTvShowsLoading = false
-                    )
+            .handle {
+                onLoading { tvShows ->
+                    _uiState.update {
+                        it.copy(
+                            tvShows = tvShows?.map(TvShowDetailsModel::asTvShowDetails).orEmpty(),
+                            isTvShowsLoading = true
+                        )
+                    }
                 }
+                onSuccess { tvShows ->
+                    _uiState.update {
+                        it.copy(
+                            tvShows = tvShows.map(TvShowDetailsModel::asTvShowDetails),
+                            isTvShowsLoading = false
+                        )
+                    }
+                }
+                onFailure(::handleFailure)
+                onEmpty(::handleTvShowsEmpty)
             }
-            onFailure(::handleFailure)
-        }
     }
 
     private fun handleFailure(error: Throwable) = _uiState.update {
@@ -119,5 +143,20 @@ class WishlistViewModel @Inject constructor(
             isMoviesLoading = false,
             isTvShowsLoading = false
         )
+    }
+
+    private fun handleMoviesEmpty() {
+        val state = uiState.value
+
+        if (state.movies.size != state.moviesIds.size) {
+            onRefreshMovies()
+        }
+    }
+
+    private fun handleTvShowsEmpty() {
+        val state = uiState.value
+        if (state.tvShows.size != state.tvShowsIds.size) {
+            onRefreshTvShows()
+        }
     }
 }
