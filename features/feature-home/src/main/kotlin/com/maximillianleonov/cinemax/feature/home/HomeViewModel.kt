@@ -106,7 +106,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
             onFailure { error -> handleFailure(error = error, mediaType = mediaType) }
-            onEmpty(::refreshIfEmpty)
+            onEmpty(::handleEmpty)
         }
     }
 
@@ -131,7 +131,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
             onFailure { error -> handleFailure(error = error, mediaType = mediaType) }
-            onEmpty(::refreshIfEmpty)
+            onEmpty(::handleEmpty)
         }
     }
 
@@ -145,7 +145,7 @@ class HomeViewModel @Inject constructor(
             )
         }
 
-    private fun refreshIfEmpty() {
+    private fun handleEmpty() {
         val state = uiState.value
 
         if (state.movies.values.all(List<Movie>::isEmpty) &&
