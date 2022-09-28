@@ -4,7 +4,23 @@
 
 Cinemax is a Movies & TV Shows application for Android.
 
-## Build
+# Preview
+
+<p align="center">
+  <img src="docs/assets/home.png" width="24%">
+  <img src="docs/assets/home_2.png" width="24%">
+  <img src="docs/assets/list.png" width="24%">
+  <img src="docs/assets/details.png" width="24%">
+</p>
+
+<p align="center">
+  <img src="docs/assets/search.png" width="24%">
+  <img src="docs/assets/search_2.png" width="24%">
+  <img src="docs/assets/wishlist.png" width="24%">
+  <img src="docs/assets/settings.png" width="24%">
+</p>
+
+# Build
 
 - Generate an API key from [The Movie Database](https://www.themoviedb.org/).
 - Put the key in the `local.properties` file.
@@ -13,11 +29,11 @@ Cinemax is a Movies & TV Shows application for Android.
 cinemax.apikey=YOUR_API_KEY_HERE
 ```
 
-## Credits
+# Credits
 
 - Design on [Figma](https://www.figma.com/community/file/1088719884686291024).
 
-## License
+# License
 
 ```
 Copyright 2022 Maximillian Leonov
