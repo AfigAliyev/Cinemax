@@ -1,4 +1,4 @@
-![Cinemax](docs/assets/cinemax.svg)
+![Cinemax](docs/images/cinemax-splash.svg)
 
 # Cinemax
 
@@ -6,28 +6,80 @@ Cinemax is a Movies & TV Shows application for Android.
 
 # Preview
 
-<p align="center">
-  <img src="docs/assets/home.png" width="24%">
-  <img src="docs/assets/home_2.png" width="24%">
-  <img src="docs/assets/list.png" width="24%">
-  <img src="docs/assets/details.png" width="24%">
-</p>
+<img src="docs/images/screenshot-1-home.png" width="50%"><img src="docs/images/screenshot-2-home.png" width="50%">
+<img src="docs/images/screenshot-3-list.png" width="50%"><img src="docs/images/screenshot-4-details.png" width="50%">
+<img src="docs/images/screenshot-5-search.png" width="50%"><img src="docs/images/screenshot-6-search.png" width="50%">
+<img src="docs/images/screenshot-7-wishlist.png" width="50%"><img src="docs/images/screenshot-8-settings.png" width="50%">
 
-<p align="center">
-  <img src="docs/assets/search.png" width="24%">
-  <img src="docs/assets/search_2.png" width="24%">
-  <img src="docs/assets/wishlist.png" width="24%">
-  <img src="docs/assets/settings.png" width="24%">
-</p>
-
-# Build
+# Getting Started
 
 - Generate an API key from [The Movie Database](https://www.themoviedb.org/).
 - Put the key in the `local.properties` file.
 
-```
+```properties
 cinemax.apikey=YOUR_API_KEY_HERE
 ```
+
+# Development Environment
+
+**Cinemax** uses the Gradle build system and can be imported directly into the latest stable version
+of Android Studio (available [here](https://developer.android.com/studio)). The `debug`
+build can be built and run using the default configuration.
+
+Once you're up and running, you can refer to the learning journeys below to get a better
+understanding of which libraries and tools are being used, the reasoning behind the approaches to
+UI, testing, architecture and more, and how all of these different pieces of the project fit
+together to create a complete app.
+
+# Build
+
+The app contains the usual `debug` and `release` build variants.
+
+In addition, the `benchmark` variant of `app` is used to test startup performance and generate a
+baseline profile (see below for more information).
+
+For normal development use the `debug` variant. For UI performance testing use the `release`
+variant.
+
+# Architecture
+
+The **Cinemax** app follows the
+[official architecture guidance](https://developer.android.com/topic/architecture)
+and is described in detail in the
+[architecture learning journey](docs/ArchitectureLearningJourney.md).
+
+![Architecture diagram](docs/images/architecture-1-overall.png)
+
+# Modularization
+
+The **Cinemax** app has been fully modularized and you can find the detailed guidance and
+description of the modularization strategy used in
+[modularization learning journey](docs/ModularizationLearningJourney.md).
+
+![Modularization graph](docs/images/modularization-graph.png)
+
+# UI
+
+UI components are designed according to the custom design system and built entirely
+using [Jetpack Compose](https://developer.android.com/jetpack/compose).
+
+The app has one dark theme that uses predefined colors.
+
+Find out more about the [UI architecture here](docs/ArchitectureLearningJourney.md#ui-layer).
+
+# Baseline profiles
+
+The baseline profile for this app is located
+at [`app/src/main/baseline-prof.txt`](app/src/main/baseline-prof.txt). It contains rules that enable
+AOT compilation of the critical user path taken during app launch. For more information on baseline
+profiles, read [this document](https://developer.android.com/studio/profile/baselineprofiles).
+
+> **Note**: The baseline profile needs to be re-generated for release builds that touch code which changes app startup.
+
+To generate the baseline profile, select the `benchmark` build variant and run the
+`BaselineProfileGenerator` benchmark test on an AOSP Android Emulator. Then copy the resulting
+baseline profile from the emulator
+to [`app/src/main/baseline-prof.txt`](app/src/main/baseline-prof.txt).
 
 # Credits
 
