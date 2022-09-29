@@ -23,8 +23,6 @@ plugins {
 android.namespace = "com.maximillianleonov.cinemax.core.database"
 
 dependencies {
-    implementation(project(":core:core-common"))
-
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
     implementation(libs.bundles.androidx.room)

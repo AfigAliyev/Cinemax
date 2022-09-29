@@ -27,12 +27,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         }
 
         dependencies {
-            add("implementation", project(":core:core-common"))
-            add("implementation", project(":core:core-model"))
-            add("implementation", project(":core:core-domain"))
             add("implementation", project(":core:core-ui"))
-            add("implementation", project(":core:core-designsystem"))
-            add("implementation", project(":core:core-navigation"))
 
             add("implementation", libs.androidx.lifecycle.runtime.compose.get())
             add("implementation", libs.androidx.lifecycle.viewmodel.compose.get())

@@ -22,10 +22,10 @@ plugins {
 android.namespace = "com.maximillianleonov.cinemax.core.ui"
 
 dependencies {
-    implementation(project(":core:core-designsystem"))
-    implementation(project(":core:core-model"))
-    implementation(project(":core:core-common"))
-    implementation(project(":core:core-domain"))
+    api(project(":core:core-designsystem"))
+    api(project(":core:core-navigation"))
+    api(project(":core:core-model"))
+    api(project(":core:core-domain"))
 
     implementation(libs.kotlinx.datetime)
     implementation(libs.accompanist.pager)
