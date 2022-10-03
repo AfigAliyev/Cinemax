@@ -27,8 +27,8 @@ import org.gradle.kotlin.dsl.create
 class AndroidBenchmarkConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         with(pluginManager) {
-            apply("com.android.test")
-            apply("org.jetbrains.kotlin.android")
+            apply(libs.plugins.android.test.get().pluginId)
+            apply(libs.plugins.kotlin.android.get().pluginId)
         }
 
         extensions.configure<TestExtension> {
