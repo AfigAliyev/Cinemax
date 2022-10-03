@@ -29,13 +29,13 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         dependencies {
             add("implementation", project(":core:core-ui"))
 
-            add("implementation", libs.androidx.lifecycle.runtime.compose.get())
-            add("implementation", libs.androidx.lifecycle.viewmodel.compose.get())
-            add("implementation", libs.androidx.hilt.navigation.compose.get())
-            add("implementation", libs.kotlinx.coroutines.android.get())
+            add("implementation", libs.androidx.lifecycle.runtime.compose)
+            add("implementation", libs.androidx.lifecycle.viewmodel.compose)
+            add("implementation", libs.androidx.hilt.navigation.compose)
+            add("implementation", libs.kotlinx.coroutines.android)
 
-            add("implementation", libs.dagger.hilt.android.get())
-            add("kapt", libs.dagger.hilt.compiler.get())
+            add("implementation", libs.dagger.hilt.android)
+            add("kapt", libs.dagger.hilt.compiler)
         }
     }
 }
