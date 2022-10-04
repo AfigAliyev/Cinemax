@@ -3,7 +3,7 @@ android-compileSdk = "33"
 android-minSdk = "21"
 android-targetSdk = "33"
 
-kotlin = "1.7.10"
+kotlin = "1.7.20"
 android-gradle-plugin = "7.3.0"
 ksp = "1.7.20-1.0.6"
 spotless = "6.11.0"
