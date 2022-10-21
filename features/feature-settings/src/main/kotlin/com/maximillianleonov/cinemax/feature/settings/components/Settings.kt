@@ -16,6 +16,7 @@
 
 package com.maximillianleonov.cinemax.feature.settings.components
 
+import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -31,12 +32,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxCenteredBox
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxIcon
-import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxIconButton
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.feature.settings.model.Settings
@@ -44,15 +45,16 @@ import com.maximillianleonov.cinemax.feature.settings.model.Settings
 @Composable
 internal fun SettingsItem(
     settings: Settings,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    context: Context = LocalContext.current
 ) {
     Row(
         modifier = modifier
             .then(
-                if (settings is Settings.Action) {
-                    Modifier.clickable(onClick = settings.onClick)
-                } else {
-                    Modifier
+                when (settings) {
+                    is Settings.Action -> Modifier.clickable(onClick = settings.onClick)
+                    is Settings.IntentAction -> Modifier.clickable { context.startActivity(settings.intent) }
+                    is Settings.Info -> Modifier
                 }
             )
             .padding(CinemaxTheme.spacing.medium)
@@ -72,7 +74,7 @@ internal fun SettingsItem(
         }
         when (settings) {
             is Settings.Info -> ValueText(value = settings.value)
-            is Settings.Action -> ForwardButton(onClick = settings.onClick)
+            is Settings.Action, is Settings.IntentAction -> ForwardButton()
         }
     }
 }
@@ -128,15 +130,13 @@ private fun ValueText(
 
 @Composable
 private fun ForwardButton(
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     color: Color = CinemaxTheme.colors.accent
 ) {
-    CinemaxIconButton(
+    CinemaxIcon(
         modifier = modifier.size(IconShapeSize),
         iconResourceId = R.drawable.ic_arrow_forward,
         contentDescription = stringResource(id = R.string.forward),
-        onClick = onClick,
         tint = color
     )
 }

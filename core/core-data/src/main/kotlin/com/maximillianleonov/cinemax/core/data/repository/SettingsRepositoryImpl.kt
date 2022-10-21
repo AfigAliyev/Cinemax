@@ -23,5 +23,6 @@ import javax.inject.Inject
 class SettingsRepositoryImpl @Inject constructor(
     databaseDataSource: SettingsDatabaseDataSource
 ) : SettingsRepository {
+    override val privacyPolicyUrl = databaseDataSource.privacyPolicyUrl
     override val version = databaseDataSource.version
 }

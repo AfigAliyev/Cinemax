@@ -16,7 +16,10 @@
 
 package com.maximillianleonov.cinemax.feature.settings
 
+import android.content.Intent
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
+import com.maximillianleonov.cinemax.core.domain.usecase.GetSettingsPrivacyPolicyUrlUseCase
 import com.maximillianleonov.cinemax.core.domain.usecase.GetSettingsVersionUseCase
 import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.common.EventHandler
@@ -29,6 +32,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    private val getSettingsPrivacyPolicyUrlUseCase: GetSettingsPrivacyPolicyUrlUseCase,
     private val getSettingsVersionUseCase: GetSettingsVersionUseCase
 ) : ViewModel(), EventHandler<SettingsEvent> {
     private val _uiState = MutableStateFlow(getInitialUiState())
@@ -37,9 +41,15 @@ class SettingsViewModel @Inject constructor(
     override fun onEvent(event: SettingsEvent) = Unit
 
     private fun getInitialUiState(): SettingsUiState {
+        val privacyPolicyUrl = getSettingsPrivacyPolicyUrlUseCase().toUri()
         val version = getSettingsVersionUseCase()
 
         val aboutSettings = listOf(
+            Settings.IntentAction(
+                iconResourceId = R.drawable.ic_shield,
+                titleResourceId = R.string.privacy_policy,
+                intent = Intent(Intent.ACTION_VIEW, privacyPolicyUrl)
+            ),
             Settings.Info(
                 iconResourceId = R.drawable.ic_info,
                 titleResourceId = R.string.version,
