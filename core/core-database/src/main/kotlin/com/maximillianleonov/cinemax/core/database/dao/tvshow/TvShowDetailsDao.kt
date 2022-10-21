@@ -37,7 +37,4 @@ interface TvShowDetailsDao {
 
     @Query("DELETE FROM $TV_SHOW_DETAILS WHERE id = :id")
     suspend fun deleteById(id: Int)
-
-    @Query("DELETE FROM $TV_SHOW_DETAILS")
-    suspend fun deleteAll()
 }

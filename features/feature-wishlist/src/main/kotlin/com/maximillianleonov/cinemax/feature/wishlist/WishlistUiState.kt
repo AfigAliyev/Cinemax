@@ -22,8 +22,6 @@ import com.maximillianleonov.cinemax.core.model.TvShowDetails
 data class WishlistUiState(
     val movies: List<MovieDetails> = emptyList(),
     val tvShows: List<TvShowDetails> = emptyList(),
-    val moviesIds: List<Int> = emptyList(),
-    val tvShowsIds: List<Int> = emptyList(),
     val isMoviesLoading: Boolean = false,
     val isTvShowsLoading: Boolean = false,
     val error: Throwable? = null,

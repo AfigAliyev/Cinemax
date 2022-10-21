@@ -39,7 +39,4 @@ interface TvShowDao {
 
     @Query("DELETE FROM $TV_SHOWS WHERE media_type = :mediaType")
     suspend fun deleteByMediaType(mediaType: MediaType.TvShow)
-
-    @Query("DELETE FROM $TV_SHOWS")
-    suspend fun deleteAll()
 }

@@ -20,7 +20,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.maximillianleonov.cinemax.core.common.result.handle
-import com.maximillianleonov.cinemax.core.common.result.onEmpty
 import com.maximillianleonov.cinemax.core.domain.model.MovieModel
 import com.maximillianleonov.cinemax.core.domain.model.TvShowModel
 import com.maximillianleonov.cinemax.core.domain.usecase.GetMoviesUseCase
@@ -30,6 +29,7 @@ import com.maximillianleonov.cinemax.core.domain.usecase.SearchTvShowsUseCase
 import com.maximillianleonov.cinemax.core.model.MediaType
 import com.maximillianleonov.cinemax.core.model.Movie
 import com.maximillianleonov.cinemax.core.model.TvShow
+import com.maximillianleonov.cinemax.core.ui.common.EventHandler
 import com.maximillianleonov.cinemax.core.ui.mapper.asMediaTypeModel
 import com.maximillianleonov.cinemax.core.ui.mapper.asMovie
 import com.maximillianleonov.cinemax.core.ui.mapper.asTvShow
@@ -52,7 +52,7 @@ class SearchViewModel @Inject constructor(
     private val getTvShowsUseCase: GetTvShowsUseCase,
     private val searchMoviesUseCase: SearchMoviesUseCase,
     private val searchTvShowsUseCase: SearchTvShowsUseCase
-) : ViewModel() {
+) : ViewModel(), EventHandler<SearchEvent> {
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -62,7 +62,7 @@ class SearchViewModel @Inject constructor(
         loadContent()
     }
 
-    fun onEvent(event: SearchEvent) = when (event) {
+    override fun onEvent(event: SearchEvent) = when (event) {
         is SearchEvent.ChangeQuery -> onQueryChange(event.value)
         SearchEvent.Refresh -> onRefresh()
         SearchEvent.Retry -> onRetry()
@@ -159,7 +159,6 @@ class SearchViewModel @Inject constructor(
                 }
             }
             onFailure { error -> handleFailure(error = error, mediaType = mediaType) }
-            onEmpty(::refreshIfEmpty)
         }
     }
 
@@ -184,7 +183,6 @@ class SearchViewModel @Inject constructor(
                 }
             }
             onFailure { error -> handleFailure(error = error, mediaType = mediaType) }
-            onEmpty(::refreshIfEmpty)
         }
     }
 
@@ -197,16 +195,6 @@ class SearchViewModel @Inject constructor(
                 loadStates = it.loadStates + (mediaType to false)
             )
         }
-
-    private fun refreshIfEmpty() {
-        val state = uiState.value
-
-        if (state.movies.values.all(List<Movie>::isEmpty) &&
-            state.tvShows.values.all(List<TvShow>::isEmpty)
-        ) {
-            onRefresh()
-        }
-    }
 }
 
 private const val SEARCH_DEBOUNCE_DURATION = 500L

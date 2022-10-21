@@ -29,6 +29,7 @@ import com.maximillianleonov.cinemax.core.domain.usecase.RemoveTvShowFromWishlis
 import com.maximillianleonov.cinemax.core.model.MediaType
 import com.maximillianleonov.cinemax.core.model.UserMessage
 import com.maximillianleonov.cinemax.core.ui.R
+import com.maximillianleonov.cinemax.core.ui.common.EventHandler
 import com.maximillianleonov.cinemax.core.ui.mapper.asMovieDetails
 import com.maximillianleonov.cinemax.core.ui.mapper.asTvShowDetails
 import com.maximillianleonov.cinemax.feature.details.navigation.DetailsDestination
@@ -49,13 +50,13 @@ class DetailsViewModel @Inject constructor(
     private val removeMovieFromWishlistUseCase: RemoveMovieFromWishlistUseCase,
     private val removeTvShowFromWishlistUseCase: RemoveTvShowFromWishlistUseCase,
     savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : ViewModel(), EventHandler<DetailsEvent> {
     private val _uiState = MutableStateFlow(getInitialUiState(savedStateHandle))
     val uiState = _uiState.asStateFlow()
 
     private var contentJob = loadContent()
 
-    fun onEvent(event: DetailsEvent) = when (event) {
+    override fun onEvent(event: DetailsEvent) = when (event) {
         DetailsEvent.WishlistMovie -> onWishlistMovie()
         DetailsEvent.WishlistTvShow -> onWishlistTvShow()
         DetailsEvent.Refresh -> onRefresh()

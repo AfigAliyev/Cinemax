@@ -19,8 +19,6 @@ package com.maximillianleonov.cinemax.core.database.source
 import com.maximillianleonov.cinemax.core.database.util.CinemaxVersionProvider
 import javax.inject.Inject
 
-class SettingsDatabaseDataSource @Inject constructor(
-    private val versionProvider: CinemaxVersionProvider
-) {
-    fun getVersion() = versionProvider.version
+class SettingsDatabaseDataSource @Inject constructor(versionProvider: CinemaxVersionProvider) {
+    val version = versionProvider.version
 }

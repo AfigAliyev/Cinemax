@@ -31,37 +31,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.core.ui.SnackbarUserMessageHandler
 import com.maximillianleonov.cinemax.feature.settings.components.SettingsGroupItem
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun SettingsRoute(
-    onShowMessage: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    SettingsScreen(
-        uiState = uiState,
-        onShowMessage = onShowMessage,
-        onUserMessageDismiss = { viewModel.onEvent(SettingsEvent.ClearUserMessage) },
-        modifier = modifier
-    )
+    SettingsScreen(uiState = uiState, modifier = modifier)
 }
 
 @Composable
-private fun SettingsScreen(
-    uiState: SettingsUiState,
-    onShowMessage: (String) -> Unit,
-    onUserMessageDismiss: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    SnackbarUserMessageHandler(
-        userMessage = uiState.userMessage,
-        onShowMessage = onShowMessage,
-        onDismiss = onUserMessageDismiss
-    )
+private fun SettingsScreen(uiState: SettingsUiState, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .padding(CinemaxTheme.spacing.extraMedium)

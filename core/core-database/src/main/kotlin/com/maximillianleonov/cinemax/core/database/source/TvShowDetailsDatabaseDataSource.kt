@@ -41,8 +41,4 @@ class TvShowDetailsDatabaseDataSource @Inject constructor(
                 tvShowDetailsDao.insert(tvShowDetails)
             }
         }
-
-    suspend fun deleteAll() {
-        tvShowDetailsDao.deleteAll()
-    }
 }

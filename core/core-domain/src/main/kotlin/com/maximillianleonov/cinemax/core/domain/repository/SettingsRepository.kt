@@ -17,6 +17,5 @@
 package com.maximillianleonov.cinemax.core.domain.repository
 
 interface SettingsRepository {
-    fun getVersion(): String
-    suspend fun clearCache()
+    val version: String
 }

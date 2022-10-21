@@ -47,11 +47,6 @@ class MovieDatabaseDataSource @Inject constructor(
         movieDao.insertAll(movies)
     }
 
-    suspend fun deleteByMediaType(mediaType: MediaType.Movie) =
-        movieDao.deleteByMediaType(mediaType)
-
-    suspend fun deleteAll() = movieDao.deleteAll()
-
     suspend fun getRemoteKeyByIdAndMediaType(id: Int, mediaType: MediaType.Movie) =
         movieRemoteKeyDao.getByIdAndMediaType(id, mediaType)
 

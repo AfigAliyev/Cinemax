@@ -44,13 +44,3 @@ fun <T> CinemaxResult<T>.handle(builder: CinemaxResultHandler<T>.() -> Unit) {
 
 suspend fun <T> Flow<CinemaxResult<T>>.handle(builder: CinemaxResultHandler<T>.() -> Unit) =
     collect { result -> result.handle(builder = builder) }
-
-@JvmName("onEmptyT")
-fun <T> CinemaxResultHandler<T>.onEmpty(block: () -> Unit) {
-    onSuccess { value -> if (value == null) block() }
-}
-
-@JvmName("onEmptyListT")
-fun <T> CinemaxResultHandler<List<T>>.onEmpty(block: () -> Unit) {
-    onSuccess { value -> if (value.isEmpty()) block() }
-}
