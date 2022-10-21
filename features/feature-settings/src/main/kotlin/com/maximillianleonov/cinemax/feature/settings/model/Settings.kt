@@ -16,6 +16,7 @@
 
 package com.maximillianleonov.cinemax.feature.settings.model
 
+import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
@@ -36,5 +37,11 @@ sealed interface Settings {
         @DrawableRes override val iconResourceId: Int,
         @StringRes override val titleResourceId: Int,
         val onClick: () -> Unit
+    ) : Settings
+
+    data class IntentAction(
+        @DrawableRes override val iconResourceId: Int,
+        @StringRes override val titleResourceId: Int,
+        val intent: Intent
     ) : Settings
 }

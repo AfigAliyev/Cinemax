@@ -17,8 +17,10 @@
 package com.maximillianleonov.cinemax.core.database.source
 
 import com.maximillianleonov.cinemax.core.database.util.CinemaxVersionProvider
+import com.maximillianleonov.cinemax.core.database.util.Constants
 import javax.inject.Inject
 
 class SettingsDatabaseDataSource @Inject constructor(versionProvider: CinemaxVersionProvider) {
+    val privacyPolicyUrl = Constants.Urls.PRIVACY_POLICY_URL
     val version = versionProvider.version
 }

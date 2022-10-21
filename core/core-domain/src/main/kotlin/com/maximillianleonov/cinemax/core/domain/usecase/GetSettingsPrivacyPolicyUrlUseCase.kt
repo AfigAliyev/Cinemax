@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.domain.repository
+package com.maximillianleonov.cinemax.core.domain.usecase
 
-interface SettingsRepository {
-    val privacyPolicyUrl: String
-    val version: String
+import com.maximillianleonov.cinemax.core.domain.repository.SettingsRepository
+import javax.inject.Inject
+
+class GetSettingsPrivacyPolicyUrlUseCase @Inject constructor(private val repository: SettingsRepository) {
+    operator fun invoke() = repository.privacyPolicyUrl
 }

@@ -88,4 +88,9 @@ internal object Constants {
         internal const val PREV_PAGE = "prev_page"
         internal const val NEXT_PAGE = "next_page"
     }
+
+    internal object Urls {
+        private const val CINEMAX_PAGE_URL = "https://maximillianleonov.github.io/Cinemax"
+        internal const val PRIVACY_POLICY_URL = "$CINEMAX_PAGE_URL/privacy-policy.html"
+    }
 }
