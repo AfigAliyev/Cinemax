@@ -71,7 +71,7 @@ private fun SubcomposeAsyncImageScope.SubcomposeAsyncImageHandler() {
         AsyncImagePainter.State.Empty, is AsyncImagePainter.State.Error -> Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(CinemaxTheme.colors.primarySoft)
+                .background(CinemaxTheme.colors.primaryVariant)
         )
     }
 }

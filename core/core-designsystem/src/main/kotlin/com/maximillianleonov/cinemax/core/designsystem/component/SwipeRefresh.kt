@@ -33,8 +33,8 @@ fun CinemaxSwipeRefresh(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = CinemaxTheme.colors.primarySoft,
-    contentColor: Color = CinemaxTheme.colors.primaryBlue,
+    backgroundColor: Color = CinemaxTheme.colors.primaryVariant,
+    contentColor: Color = CinemaxTheme.colors.accent,
     indicatorPadding: PaddingValues = PaddingValues(0.dp),
     indicator: @Composable (state: SwipeRefreshState, refreshTrigger: Dp) -> Unit =
         { state, refreshTrigger ->

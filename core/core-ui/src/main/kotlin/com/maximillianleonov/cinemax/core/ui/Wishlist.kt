@@ -35,13 +35,13 @@ fun CinemaxWishlistButton(
         modifier = modifier
             .size(CinemaxWishlistButtonShapeSize)
             .background(
-                color = CinemaxTheme.colors.primarySoft,
+                color = CinemaxTheme.colors.primaryVariant,
                 shape = CinemaxTheme.shapes.smallMedium
             ),
         iconResourceId = R.drawable.ic_wishlist,
         contentDescription = stringResource(id = R.string.wishlist),
         onClick = onClick,
-        tint = CinemaxTheme.colors.secondaryRed.let { color ->
+        tint = CinemaxTheme.colors.error.let { color ->
             if (isWishlisted) color else color.copy(alpha = DisabledContentAlpha)
         }
     )

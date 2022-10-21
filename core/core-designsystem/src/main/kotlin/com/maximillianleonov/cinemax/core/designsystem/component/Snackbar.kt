@@ -31,9 +31,9 @@ fun CinemaxSnackbarHost(
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     shape: Shape = CinemaxTheme.shapes.small,
-    containerColor: Color = CinemaxTheme.colors.primarySoft,
-    contentColor: Color = CinemaxTheme.colors.whiteGrey,
-    actionColor: Color = CinemaxTheme.colors.primaryBlue
+    containerColor: Color = CinemaxTheme.colors.primaryVariant,
+    contentColor: Color = CinemaxTheme.colors.textPrimaryVariant,
+    actionColor: Color = CinemaxTheme.colors.accent
 ) {
     SnackbarHost(
         hostState = snackbarHostState,

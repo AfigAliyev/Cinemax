@@ -41,7 +41,7 @@ internal fun TopAppBar(
     onWishlistButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
-    titleColor: Color = CinemaxTheme.colors.white,
+    titleColor: Color = CinemaxTheme.colors.textPrimary,
     isPlaceholder: Boolean = false
 ) {
     CinemaxTopAppBar(
@@ -73,8 +73,8 @@ internal fun TopAppBar(
         windowInsets = windowInsets,
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color.Transparent,
-            titleContentColor = CinemaxTheme.colors.white,
-            navigationIconContentColor = CinemaxTheme.colors.white
+            titleContentColor = CinemaxTheme.colors.textPrimary,
+            navigationIconContentColor = CinemaxTheme.colors.textPrimary
         )
     )
 }
