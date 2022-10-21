@@ -37,7 +37,4 @@ interface MovieDetailsDao {
 
     @Query("DELETE FROM $MOVIE_DETAILS WHERE id = :id")
     suspend fun deleteById(id: Int)
-
-    @Query("DELETE FROM $MOVIE_DETAILS")
-    suspend fun deleteAll()
 }

@@ -20,5 +20,5 @@ import com.maximillianleonov.cinemax.core.domain.repository.SettingsRepository
 import javax.inject.Inject
 
 class GetSettingsVersionUseCase @Inject constructor(private val repository: SettingsRepository) {
-    operator fun invoke() = repository.getVersion()
+    operator fun invoke() = repository.version
 }

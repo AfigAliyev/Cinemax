@@ -39,7 +39,4 @@ interface MovieDao {
 
     @Query("DELETE FROM $MOVIES WHERE media_type = :mediaType")
     suspend fun deleteByMediaType(mediaType: MediaType.Movie)
-
-    @Query("DELETE FROM $MOVIES")
-    suspend fun deleteAll()
 }

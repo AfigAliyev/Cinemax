@@ -41,8 +41,4 @@ class MovieDetailsDatabaseDataSource @Inject constructor(
                 movieDetailsDao.insert(movieDetails)
             }
         }
-
-    suspend fun deleteAll() {
-        movieDetailsDao.deleteAll()
-    }
 }

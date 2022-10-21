@@ -16,27 +16,12 @@
 
 package com.maximillianleonov.cinemax.core.data.repository
 
-import com.maximillianleonov.cinemax.core.database.source.MovieDatabaseDataSource
-import com.maximillianleonov.cinemax.core.database.source.MovieDetailsDatabaseDataSource
 import com.maximillianleonov.cinemax.core.database.source.SettingsDatabaseDataSource
-import com.maximillianleonov.cinemax.core.database.source.TvShowDatabaseDataSource
-import com.maximillianleonov.cinemax.core.database.source.TvShowDetailsDatabaseDataSource
 import com.maximillianleonov.cinemax.core.domain.repository.SettingsRepository
 import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
-    private val databaseDataSource: SettingsDatabaseDataSource,
-    private val movieDatabaseDataSource: MovieDatabaseDataSource,
-    private val tvShowDatabaseDataSource: TvShowDatabaseDataSource,
-    private val movieDetailsDatabaseDataSource: MovieDetailsDatabaseDataSource,
-    private val tvShowDetailsDatabaseDataSource: TvShowDetailsDatabaseDataSource
+    databaseDataSource: SettingsDatabaseDataSource
 ) : SettingsRepository {
-    override fun getVersion(): String = databaseDataSource.getVersion()
-
-    override suspend fun clearCache() {
-        movieDatabaseDataSource.deleteAll()
-        tvShowDatabaseDataSource.deleteAll()
-        movieDetailsDatabaseDataSource.deleteAll()
-        tvShowDetailsDatabaseDataSource.deleteAll()
-    }
+    override val version = databaseDataSource.version
 }

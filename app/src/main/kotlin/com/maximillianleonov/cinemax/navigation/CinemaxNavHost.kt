@@ -76,7 +76,7 @@ fun CinemaxNavHost(
                 )
             }
         )
-        settingsGraph(onShowMessage = onShowMessage)
+        settingsGraph()
         listGraph(
             onBackButtonClick = onBackClick,
             onNavigateToDetailsDestination = {

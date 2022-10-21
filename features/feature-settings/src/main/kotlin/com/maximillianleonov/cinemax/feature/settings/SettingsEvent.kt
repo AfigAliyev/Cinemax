@@ -16,7 +16,4 @@
 
 package com.maximillianleonov.cinemax.feature.settings
 
-sealed interface SettingsEvent {
-    object ClearCache : SettingsEvent
-    object ClearUserMessage : SettingsEvent
-}
+sealed interface SettingsEvent

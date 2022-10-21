@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.domain.usecase
+package com.maximillianleonov.cinemax.core.ui.common
 
-import com.maximillianleonov.cinemax.core.domain.repository.TvShowDetailsRepository
-import javax.inject.Inject
-
-class GetTvShowsDetailsUseCase @Inject constructor(private val repository: TvShowDetailsRepository) {
-    operator fun invoke(ids: List<Int>) = repository.getByIds(ids)
+interface EventHandler<E> {
+    fun onEvent(event: E)
 }

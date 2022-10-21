@@ -47,11 +47,6 @@ class TvShowDatabaseDataSource @Inject constructor(
         tvShowDao.insertAll(tvShows)
     }
 
-    suspend fun deleteByMediaType(mediaType: MediaType.TvShow) =
-        tvShowDao.deleteByMediaType(mediaType)
-
-    suspend fun deleteAll() = tvShowDao.deleteAll()
-
     suspend fun getRemoteKeyByIdAndMediaType(id: Int, mediaType: MediaType.TvShow) =
         tvShowRemoteKeyDao.getByIdAndMediaType(id, mediaType)
 

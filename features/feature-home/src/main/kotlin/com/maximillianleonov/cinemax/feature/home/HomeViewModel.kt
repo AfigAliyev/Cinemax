@@ -19,7 +19,6 @@ package com.maximillianleonov.cinemax.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maximillianleonov.cinemax.core.common.result.handle
-import com.maximillianleonov.cinemax.core.common.result.onEmpty
 import com.maximillianleonov.cinemax.core.domain.model.MovieModel
 import com.maximillianleonov.cinemax.core.domain.model.TvShowModel
 import com.maximillianleonov.cinemax.core.domain.usecase.GetMoviesUseCase
@@ -27,6 +26,7 @@ import com.maximillianleonov.cinemax.core.domain.usecase.GetTvShowsUseCase
 import com.maximillianleonov.cinemax.core.model.MediaType
 import com.maximillianleonov.cinemax.core.model.Movie
 import com.maximillianleonov.cinemax.core.model.TvShow
+import com.maximillianleonov.cinemax.core.ui.common.EventHandler
 import com.maximillianleonov.cinemax.core.ui.mapper.asMediaTypeModel
 import com.maximillianleonov.cinemax.core.ui.mapper.asMovie
 import com.maximillianleonov.cinemax.core.ui.mapper.asTvShow
@@ -42,7 +42,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase,
     private val getTvShowsUseCase: GetTvShowsUseCase
-) : ViewModel() {
+) : ViewModel(), EventHandler<HomeEvent> {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -50,7 +50,7 @@ class HomeViewModel @Inject constructor(
         loadContent()
     }
 
-    fun onEvent(event: HomeEvent) = when (event) {
+    override fun onEvent(event: HomeEvent) = when (event) {
         HomeEvent.Refresh -> onRefresh()
         HomeEvent.Retry -> onRetry()
         HomeEvent.ClearError -> onClearError()
@@ -106,7 +106,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
             onFailure { error -> handleFailure(error = error, mediaType = mediaType) }
-            onEmpty(::handleEmpty)
         }
     }
 
@@ -131,7 +130,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
             onFailure { error -> handleFailure(error = error, mediaType = mediaType) }
-            onEmpty(::handleEmpty)
         }
     }
 
@@ -144,14 +142,4 @@ class HomeViewModel @Inject constructor(
                 loadStates = it.loadStates + (mediaType to false)
             )
         }
-
-    private fun handleEmpty() {
-        val state = uiState.value
-
-        if (state.movies.values.all(List<Movie>::isEmpty) &&
-            state.tvShows.values.all(List<TvShow>::isEmpty)
-        ) {
-            onRefresh()
-        }
-    }
 }
