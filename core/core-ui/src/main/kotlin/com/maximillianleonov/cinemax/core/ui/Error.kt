@@ -46,14 +46,14 @@ fun CinemaxError(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CinemaxTheme.shapes.medium,
-    containerColor: Color = CinemaxTheme.colors.primarySoft,
-    errorTextColor: Color = CinemaxTheme.colors.secondaryRed,
-    actionButtonColor: Color = CinemaxTheme.colors.primaryBlue,
+    containerColor: Color = CinemaxTheme.colors.primaryVariant,
+    errorTextColor: Color = CinemaxTheme.colors.error,
+    actionButtonColor: Color = CinemaxTheme.colors.accent,
     errorTextStyle: TextStyle = CinemaxTheme.typography.regular.h4,
     @StringRes actionButtonTextResourceId: Int = R.string.retry,
     shouldShowOfflineMode: Boolean = false,
     onOfflineModeClick: () -> Unit = {},
-    offlineModeButtonColor: Color = CinemaxTheme.colors.secondaryGreen,
+    offlineModeButtonColor: Color = CinemaxTheme.colors.secondary,
     @StringRes offlineModeButtonTextResourceId: Int = R.string.offline_mode
 ) {
     Column(
@@ -79,7 +79,7 @@ fun CinemaxError(
                     modifier = Modifier.fillMaxWidth(),
                     textResourceId = actionButtonTextResourceId,
                     onClick = onRetry,
-                    containerColor = CinemaxTheme.colors.primarySoft,
+                    containerColor = CinemaxTheme.colors.primaryVariant,
                     contentColor = actionButtonColor
                 )
             }
@@ -89,7 +89,7 @@ fun CinemaxError(
                 modifier = Modifier.fillMaxWidth(),
                 textResourceId = offlineModeButtonTextResourceId,
                 onClick = onOfflineModeClick,
-                containerColor = CinemaxTheme.colors.primaryDark,
+                containerColor = CinemaxTheme.colors.primary,
                 contentColor = offlineModeButtonColor
             )
         }
@@ -102,13 +102,13 @@ fun CinemaxCenteredError(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CinemaxTheme.shapes.medium,
-    containerColor: Color = CinemaxTheme.colors.primarySoft,
-    errorTextColor: Color = CinemaxTheme.colors.secondaryRed,
-    actionButtonColor: Color = CinemaxTheme.colors.primaryBlue,
+    containerColor: Color = CinemaxTheme.colors.primaryVariant,
+    errorTextColor: Color = CinemaxTheme.colors.error,
+    actionButtonColor: Color = CinemaxTheme.colors.accent,
     @StringRes actionButtonTextResourceId: Int = R.string.retry,
     shouldShowOfflineMode: Boolean = false,
     onOfflineModeClick: () -> Unit = {},
-    offlineModeButtonColor: Color = CinemaxTheme.colors.secondaryGreen,
+    offlineModeButtonColor: Color = CinemaxTheme.colors.secondary,
     @StringRes offlineModeButtonTextResourceId: Int = R.string.offline_mode
 ) {
     CinemaxCenteredBox(

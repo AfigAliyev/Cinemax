@@ -27,7 +27,7 @@ import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 @Composable
 fun CinemaxCircularProgressIndicator(
     modifier: Modifier = Modifier,
-    color: Color = CinemaxTheme.colors.primaryBlue,
+    color: Color = CinemaxTheme.colors.accent,
     strokeWidth: Dp = StrokeWidth
 ) {
     CircularProgressIndicator(

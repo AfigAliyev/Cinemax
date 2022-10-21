@@ -65,7 +65,7 @@ description of the modularization strategy used in
 UI components are designed according to the custom design system and built entirely
 using [Jetpack Compose](https://developer.android.com/jetpack/compose).
 
-The app has one dark theme that uses predefined colors.
+The app has a light and dark theme that uses predefined colors.
 
 Find out more about the [UI architecture here](docs/ArchitectureLearningJourney.md#ui-layer).
 

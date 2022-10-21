@@ -144,13 +144,13 @@ private fun UpcomingMovieItem(
                     modifier = if (isPlaceholder) {
                         Modifier
                             .fillMaxWidth()
-                            .cinemaxPlaceholder(color = CinemaxTheme.colors.white)
+                            .cinemaxPlaceholder(color = CinemaxTheme.colors.textOnMedia)
                     } else {
                         Modifier
                     },
                     text = title,
                     style = CinemaxTheme.typography.semiBold.h4,
-                    color = CinemaxTheme.colors.white
+                    color = CinemaxTheme.colors.textOnMedia
                 )
                 Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
                 Text(
@@ -159,7 +159,7 @@ private fun UpcomingMovieItem(
                             .fillMaxWidth(
                                 UpcomingMovieItemPlaceholderSecondTextMaxWidthFraction
                             )
-                            .cinemaxPlaceholder(color = CinemaxTheme.colors.grey)
+                            .cinemaxPlaceholder(color = CinemaxTheme.colors.textOnMediaVariant)
                     } else {
                         Modifier
                     },
@@ -170,7 +170,7 @@ private fun UpcomingMovieItem(
                         )
                     } ?: stringResource(id = R.string.no_release_date),
                     style = CinemaxTheme.typography.medium.h6,
-                    color = CinemaxTheme.colors.whiteGrey
+                    color = CinemaxTheme.colors.textOnMediaVariant
                 )
             }
         }

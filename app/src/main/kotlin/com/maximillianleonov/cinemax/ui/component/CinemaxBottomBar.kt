@@ -68,7 +68,7 @@ fun CinemaxBottomBar(
     currentDestination: TopLevelDestination,
     onNavigateToDestination: (TopLevelDestination) -> Unit,
     modifier: Modifier = Modifier,
-    color: Color = CinemaxTheme.colors.primaryDark
+    color: Color = CinemaxTheme.colors.primary
 ) {
     Surface(
         modifier = modifier,
@@ -91,9 +91,9 @@ fun CinemaxBottomBar(
                 val selected = destination == currentDestination
                 val tint by animateColorAsState(
                     if (selected) {
-                        CinemaxTheme.colors.primaryBlue
+                        CinemaxTheme.colors.accent
                     } else {
-                        CinemaxTheme.colors.grey
+                        CinemaxTheme.colors.textSecondary
                     }
                 )
 
@@ -286,7 +286,7 @@ private fun CinemaxBottomNavItemLayout(
 private fun CinemaxBottomNavIndicator(
     modifier: Modifier = Modifier,
     padding: Dp = CinemaxTheme.spacing.smallMedium,
-    color: Color = CinemaxTheme.colors.primarySoft,
+    color: Color = CinemaxTheme.colors.primaryVariant,
     shape: Shape = CinemaxTheme.shapes.medium
 ) {
     Spacer(

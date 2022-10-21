@@ -84,7 +84,7 @@ internal fun DetailsItem(
             if (isPlaceholder) {
                 Box(
                     modifier = Modifier
-                        .background(color = CinemaxTheme.colors.primarySoft)
+                        .background(color = CinemaxTheme.colors.primaryVariant)
                         .fillMaxSize()
                 )
             } else {
@@ -94,7 +94,7 @@ internal fun DetailsItem(
                     contentDescription = title
                 )
             }
-            CinemaxOverlay(color = CinemaxTheme.colors.primaryDark, alpha = BackdropAlpha)
+            CinemaxOverlay(color = CinemaxTheme.colors.primary, alpha = BackdropAlpha)
         }
 
         Scaffold(
@@ -173,7 +173,7 @@ internal fun DetailsItem(
                         if (isPlaceholder) {
                             RatingItem(
                                 modifier = Modifier.cinemaxPlaceholder(
-                                    color = CinemaxTheme.colors.secondaryOrange
+                                    color = CinemaxTheme.colors.secondaryVariant
                                 ),
                                 rating = PlaceholderRating
                             )

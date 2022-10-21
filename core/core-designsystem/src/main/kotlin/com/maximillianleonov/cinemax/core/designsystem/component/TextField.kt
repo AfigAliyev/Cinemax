@@ -56,20 +56,20 @@ fun CinemaxTextField(
     singleLine: Boolean = true,
     shape: Shape = CinemaxTheme.shapes.extraMedium,
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(
-        textColor = CinemaxTheme.colors.white,
-        cursorColor = CinemaxTheme.colors.primaryBlue,
+        textColor = CinemaxTheme.colors.textPrimary,
+        cursorColor = CinemaxTheme.colors.accent,
         selectionColors = TextSelectionColors(
-            handleColor = CinemaxTheme.colors.primaryBlue,
-            backgroundColor = CinemaxTheme.colors.primaryBlue.copy(
+            handleColor = CinemaxTheme.colors.accent,
+            backgroundColor = CinemaxTheme.colors.accent.copy(
                 alpha = TextSelectionColorsBackgroundColorAlpha
             )
         ),
-        containerColor = CinemaxTheme.colors.primarySoft,
-        focusedLeadingIconColor = CinemaxTheme.colors.grey,
-        unfocusedLeadingIconColor = CinemaxTheme.colors.grey,
-        focusedTrailingIconColor = CinemaxTheme.colors.grey,
-        unfocusedTrailingIconColor = CinemaxTheme.colors.grey,
-        placeholderColor = CinemaxTheme.colors.grey,
+        containerColor = CinemaxTheme.colors.primaryVariant,
+        focusedLeadingIconColor = CinemaxTheme.colors.textSecondary,
+        unfocusedLeadingIconColor = CinemaxTheme.colors.textSecondary,
+        focusedTrailingIconColor = CinemaxTheme.colors.textSecondary,
+        unfocusedTrailingIconColor = CinemaxTheme.colors.textSecondary,
+        placeholderColor = CinemaxTheme.colors.textSecondary,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent
     )

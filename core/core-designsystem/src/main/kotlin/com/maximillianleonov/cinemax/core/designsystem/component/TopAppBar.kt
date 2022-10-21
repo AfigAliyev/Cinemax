@@ -40,9 +40,9 @@ fun CinemaxTopAppBar(
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-        containerColor = CinemaxTheme.colors.primaryDark,
-        titleContentColor = CinemaxTheme.colors.white,
-        navigationIconContentColor = CinemaxTheme.colors.white
+        containerColor = CinemaxTheme.colors.primary,
+        titleContentColor = CinemaxTheme.colors.textPrimary,
+        navigationIconContentColor = CinemaxTheme.colors.textPrimary
     )
 ) {
     CenterAlignedTopAppBar(
@@ -70,7 +70,7 @@ fun CinemaxTopAppBar(
             Text(
                 text = stringResource(id = titleResourceId),
                 style = CinemaxTheme.typography.semiBold.h4,
-                color = CinemaxTheme.colors.white,
+                color = CinemaxTheme.colors.textPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
