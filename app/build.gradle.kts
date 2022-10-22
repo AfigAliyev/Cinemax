@@ -30,8 +30,8 @@ android {
 
     defaultConfig {
         applicationId = "com.maximillianleonov.cinemax"
-        versionCode = 3
-        versionName = "1.0.2"
+        versionCode = 4
+        versionName = "1.0.3"
     }
 }
 
