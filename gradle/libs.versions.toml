@@ -9,6 +9,7 @@ ksp = "1.7.20-1.0.7"
 spotless = "6.11.0"
 detekt = "1.21.0"
 kode-detekt-rules-compose = "1.2.2"
+twitter-compose-rules = "0.0.22"
 desugar-jdk-libs = "1.2.2"
 
 androidx-compose-bom = "2022.10.00"
@@ -109,6 +110,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 kode-detekt-rules-compose = { module = "ru.kode:detekt-rules-compose", version.ref = "kode-detekt-rules-compose" }
+twitter-compose-rules-detekt = { module = "com.twitter.compose.rules:detekt", version.ref = "twitter-compose-rules" }
 desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 
 # Dependencies of the included build-logic.

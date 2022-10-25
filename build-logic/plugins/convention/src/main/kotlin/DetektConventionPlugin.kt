@@ -37,6 +37,7 @@ class DetektConventionPlugin : Plugin<Project> {
         dependencies {
             add("detektPlugins", libs.detekt.formatting)
             add("detektPlugins", libs.kode.detekt.rules.compose)
+            add("detektPlugins", libs.twitter.compose.rules.detekt)
         }
 
         tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
