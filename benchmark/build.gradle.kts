@@ -21,5 +21,5 @@ plugins {
 android.namespace = "com.maximillianleonov.cinemax.benchmark"
 
 dependencies {
-    implementation(libs.bundles.benchmark)
+    implementation(libs.bundles.androidx.benchmark)
 }

@@ -63,6 +63,4 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
     implementation(libs.androidx.room.runtime)
-
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

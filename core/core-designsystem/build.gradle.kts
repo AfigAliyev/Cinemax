@@ -27,4 +27,5 @@ dependencies {
     api(libs.accompanist.placeholder.material)
     api(libs.coil.compose)
     debugApi(libs.androidx.compose.ui.tooling)
+    debugApi(libs.androidx.compose.ui.test.manifest)
 }

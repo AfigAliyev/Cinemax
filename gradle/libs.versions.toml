@@ -125,13 +125,13 @@ androidx-compose = [
     "androidx-compose-ui-util"
 ]
 androidx-room = ["androidx-room-runtime", "androidx-room-ktx", "androidx-room-paging"]
-retrofit = ["okhttp", "retrofit", "retrofit-kotlinx-serialization-converter"]
-benchmark = [
+androidx-benchmark = [
     "androidx-test-ext-junit",
     "androidx-test-espresso-core",
     "androidx-test-uiautomator",
     "androidx-benchmark-macro-junit4"
 ]
+retrofit = ["okhttp", "retrofit", "retrofit-kotlinx-serialization-converter"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
