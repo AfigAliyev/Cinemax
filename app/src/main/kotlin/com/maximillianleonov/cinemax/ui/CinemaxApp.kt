@@ -45,6 +45,7 @@ import com.maximillianleonov.cinemax.navigation.CinemaxNavHost
 import com.maximillianleonov.cinemax.ui.component.CinemaxBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Suppress("ModifierMissing")
 @Composable
 fun CinemaxApp(appState: CinemaxAppState = rememberCinemaxAppState()) {
     CinemaxTheme {
