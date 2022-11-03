@@ -17,6 +17,7 @@
 package com.maximillianleonov.cinemax.core.domain.repository
 
 interface SettingsRepository {
+    val repoUrl: String
     val privacyPolicyUrl: String
     val version: String
 }

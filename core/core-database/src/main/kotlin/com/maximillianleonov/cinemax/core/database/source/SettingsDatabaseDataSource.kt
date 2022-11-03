@@ -21,6 +21,7 @@ import com.maximillianleonov.cinemax.core.database.util.Constants
 import javax.inject.Inject
 
 class SettingsDatabaseDataSource @Inject constructor(versionProvider: CinemaxVersionProvider) {
+    val repoUrl = Constants.Urls.CINEMAX_REPO_URL
     val privacyPolicyUrl = Constants.Urls.PRIVACY_POLICY_URL
     val version = versionProvider.version
 }

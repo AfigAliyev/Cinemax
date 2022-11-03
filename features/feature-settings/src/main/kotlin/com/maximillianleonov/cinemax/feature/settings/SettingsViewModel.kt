@@ -20,6 +20,7 @@ import android.content.Intent
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import com.maximillianleonov.cinemax.core.domain.usecase.GetSettingsPrivacyPolicyUrlUseCase
+import com.maximillianleonov.cinemax.core.domain.usecase.GetSettingsRepoUrlUseCase
 import com.maximillianleonov.cinemax.core.domain.usecase.GetSettingsVersionUseCase
 import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.common.EventHandler
@@ -32,6 +33,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    private val getSettingsRepoUrlUseCase: GetSettingsRepoUrlUseCase,
     private val getSettingsPrivacyPolicyUrlUseCase: GetSettingsPrivacyPolicyUrlUseCase,
     private val getSettingsVersionUseCase: GetSettingsVersionUseCase
 ) : ViewModel(), EventHandler<SettingsEvent> {
@@ -41,10 +43,16 @@ class SettingsViewModel @Inject constructor(
     override fun onEvent(event: SettingsEvent) = Unit
 
     private fun getInitialUiState(): SettingsUiState {
+        val repoUrl = getSettingsRepoUrlUseCase().toUri()
         val privacyPolicyUrl = getSettingsPrivacyPolicyUrlUseCase().toUri()
         val version = getSettingsVersionUseCase()
 
         val aboutSettings = listOf(
+            Settings.IntentAction(
+                iconResourceId = R.drawable.ic_github,
+                titleResourceId = R.string.source_code_github,
+                intent = Intent(Intent.ACTION_VIEW, repoUrl)
+            ),
             Settings.IntentAction(
                 iconResourceId = R.drawable.ic_shield,
                 titleResourceId = R.string.privacy_policy,

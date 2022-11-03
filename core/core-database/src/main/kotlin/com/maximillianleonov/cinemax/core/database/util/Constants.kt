@@ -91,6 +91,7 @@ internal object Constants {
 
     internal object Urls {
         private const val CINEMAX_PAGE_URL = "https://maximillianleonov.github.io/Cinemax"
+        internal const val CINEMAX_REPO_URL = "https://github.com/MaximillianLeonov/Cinemax"
         internal const val PRIVACY_POLICY_URL = "$CINEMAX_PAGE_URL/privacy-policy.html"
     }
 }
