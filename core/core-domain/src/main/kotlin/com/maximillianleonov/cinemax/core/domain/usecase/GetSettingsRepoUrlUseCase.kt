@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.core.data.repository
+package com.maximillianleonov.cinemax.core.domain.usecase
 
-import com.maximillianleonov.cinemax.core.database.source.SettingsDatabaseDataSource
 import com.maximillianleonov.cinemax.core.domain.repository.SettingsRepository
 import javax.inject.Inject
 
-class SettingsRepositoryImpl @Inject constructor(
-    databaseDataSource: SettingsDatabaseDataSource
-) : SettingsRepository {
-    override val repoUrl = databaseDataSource.repoUrl
-    override val privacyPolicyUrl = databaseDataSource.privacyPolicyUrl
-    override val version = databaseDataSource.version
+class GetSettingsRepoUrlUseCase @Inject constructor(private val repository: SettingsRepository) {
+    operator fun invoke() = repository.repoUrl
 }
