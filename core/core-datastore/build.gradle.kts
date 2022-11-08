@@ -18,16 +18,9 @@ plugins {
     id("cinemax.android.library")
 }
 
-android.namespace = "com.maximillianleonov.cinemax.core.data"
+android.namespace = "com.maximillianleonov.cinemax.core.datastore"
 
 dependencies {
-    implementation(project(":core:core-database"))
-    implementation(project(":core:core-datastore"))
-    implementation(project(":core:core-network"))
-    implementation(project(":core:core-domain"))
-
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.javax.inject)
-    implementation(libs.androidx.paging.common)
 }
