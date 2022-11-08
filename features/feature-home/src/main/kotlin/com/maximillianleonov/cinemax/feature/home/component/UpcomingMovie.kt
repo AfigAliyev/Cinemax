@@ -42,10 +42,9 @@ import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxNetworkI
 import com.maximillianleonov.cinemax.core.designsystem.component.cinemaxPlaceholder
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.model.Movie
+import com.maximillianleonov.cinemax.core.model.ReleaseDate
 import com.maximillianleonov.cinemax.core.ui.MoviesContainer
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.core.ui.util.format
-import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -106,7 +105,7 @@ internal fun UpcomingMoviesContainer(
 private fun UpcomingMovieItem(
     title: String,
     backdropPath: String?,
-    releaseDate: LocalDate?,
+    releaseDate: ReleaseDate,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CinemaxTheme.shapes.medium,
@@ -163,12 +162,7 @@ private fun UpcomingMovieItem(
                     } else {
                         Modifier
                     },
-                    text = releaseDate?.let { releaseDate ->
-                        stringResource(
-                            id = R.string.upcoming_movie_release_date_text,
-                            releaseDate.format(UpcomingMovieItemDatePattern)
-                        )
-                    } ?: stringResource(id = R.string.no_release_date),
+                    text = releaseDate.fullDate.ifEmpty { stringResource(id = R.string.no_release_date) },
                     style = CinemaxTheme.typography.medium.h6,
                     color = CinemaxTheme.colors.textOnMediaVariant
                 )
@@ -183,14 +177,13 @@ private fun UpcomingMovieItemPlaceholder(modifier: Modifier = Modifier) {
         modifier = modifier,
         title = UpcomingMovieItemPlaceholderText,
         backdropPath = UpcomingMovieItemPlaceholderText,
-        releaseDate = null,
+        releaseDate = ReleaseDate(),
         onClick = {},
         isPlaceholder = true
     )
 }
 
 private val UpcomingMovieItemHeight = 154.dp
-private const val UpcomingMovieItemDatePattern = "MMMM d, yyyy"
 private const val UpcomingMovieItemPlaceholderSecondTextMaxWidthFraction = 0.5f
 private const val UpcomingMovieItemPlaceholderText = ""
 

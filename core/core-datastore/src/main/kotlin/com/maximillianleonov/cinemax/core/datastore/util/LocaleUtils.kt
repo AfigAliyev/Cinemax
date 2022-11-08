@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.settings.model
+package com.maximillianleonov.cinemax.core.datastore.util
 
-import androidx.annotation.StringRes
+import android.content.Context
+import androidx.core.os.ConfigurationCompat
 
-data class SettingsGroup(
-    @StringRes val titleResourceId: Int,
-    val settings: List<Settings>
-)
-
-enum class SettingsGroupNames { General, About }
+internal fun Context.getDefaultLanguage(): String {
+    val locale = checkNotNull(ConfigurationCompat.getLocales(resources.configuration)[0])
+    return locale.language
+}

@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.settings.model
+package com.maximillianleonov.cinemax.core.data.util
 
-import androidx.annotation.StringRes
-
-data class SettingsGroup(
-    @StringRes val titleResourceId: Int,
-    val settings: List<Settings>
-)
-
-enum class SettingsGroupNames { General, About }
+internal fun String.titlecase() = lowercase().replaceFirstChar { it.uppercase() }

@@ -19,6 +19,5 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.annotation)
 }

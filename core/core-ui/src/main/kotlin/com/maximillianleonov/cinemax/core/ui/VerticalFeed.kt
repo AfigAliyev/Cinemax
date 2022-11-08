@@ -45,7 +45,7 @@ import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxImagePla
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxNetworkImage
 import com.maximillianleonov.cinemax.core.designsystem.component.cinemaxPlaceholder
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
-import kotlinx.datetime.LocalDate
+import com.maximillianleonov.cinemax.core.model.ReleaseDate
 
 @Composable
 internal fun VerticalFeedItem(
@@ -53,7 +53,7 @@ internal fun VerticalFeedItem(
     overview: String,
     posterPath: String?,
     voteAverage: Double,
-    releaseDate: LocalDate?,
+    releaseDate: ReleaseDate,
     genres: List<String>,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -137,8 +137,7 @@ internal fun VerticalFeedItem(
                 } else {
                     VerticalFeedItemIconAndText(
                         iconResourceId = R.drawable.ic_calendar,
-                        text = releaseDate?.year?.toString()
-                            ?: stringResource(id = R.string.no_release_date)
+                        text = releaseDate.year.ifEmpty { stringResource(id = R.string.no_release_date) }
                     )
                     VerticalFeedItemIconAndText(
                         iconResourceId = R.drawable.ic_film,
@@ -159,7 +158,7 @@ internal fun VerticalFeedItemPlaceholder(modifier: Modifier = Modifier) {
         overview = FeedItemPlaceholderText,
         posterPath = FeedItemPlaceholderText,
         voteAverage = FeedItemPlaceholderRating,
-        releaseDate = null,
+        releaseDate = ReleaseDate(),
         genres = emptyList(),
         onClick = {},
         isPlaceholder = true

@@ -20,24 +20,26 @@ import com.maximillianleonov.cinemax.core.common.result.CinemaxResult
 import com.maximillianleonov.cinemax.core.network.api.service.MovieService
 import com.maximillianleonov.cinemax.core.network.model.common.NetworkMediaType
 import com.maximillianleonov.cinemax.core.network.model.response.MovieResponseDto
-import com.maximillianleonov.cinemax.core.network.util.Constants
+import com.maximillianleonov.cinemax.core.network.util.Constants.DEFAULT_PAGE
 import javax.inject.Inject
 
 class MovieNetworkDataSource @Inject constructor(private val movieService: MovieService) {
     suspend fun getByMediaType(
         mediaType: NetworkMediaType.Movie,
-        page: Int = Constants.DEFAULT_PAGE
+        language: String,
+        page: Int = DEFAULT_PAGE
     ): CinemaxResult<MovieResponseDto> = when (mediaType) {
-        NetworkMediaType.Movie.UPCOMING -> movieService.getUpcoming(page)
-        NetworkMediaType.Movie.TOP_RATED -> movieService.getTopRated(page)
-        NetworkMediaType.Movie.POPULAR -> movieService.getPopular(page)
-        NetworkMediaType.Movie.NOW_PLAYING -> movieService.getNowPlaying(page)
-        NetworkMediaType.Movie.DISCOVER -> movieService.getDiscover(page)
-        NetworkMediaType.Movie.TRENDING -> movieService.getTrending(page)
+        NetworkMediaType.Movie.UPCOMING -> movieService.getUpcoming(language, page)
+        NetworkMediaType.Movie.TOP_RATED -> movieService.getTopRated(language, page)
+        NetworkMediaType.Movie.POPULAR -> movieService.getPopular(language, page)
+        NetworkMediaType.Movie.NOW_PLAYING -> movieService.getNowPlaying(language, page)
+        NetworkMediaType.Movie.DISCOVER -> movieService.getDiscover(language, page)
+        NetworkMediaType.Movie.TRENDING -> movieService.getTrending(language, page)
     }
 
     suspend fun search(
         query: String,
-        page: Int = Constants.DEFAULT_PAGE
-    ): CinemaxResult<MovieResponseDto> = movieService.search(query, page)
+        language: String,
+        page: Int = DEFAULT_PAGE
+    ): CinemaxResult<MovieResponseDto> = movieService.search(query, language, page)
 }

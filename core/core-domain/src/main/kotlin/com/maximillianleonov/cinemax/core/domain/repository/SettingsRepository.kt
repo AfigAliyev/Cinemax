@@ -16,8 +16,14 @@
 
 package com.maximillianleonov.cinemax.core.domain.repository
 
+import kotlinx.coroutines.flow.Flow
+
 interface SettingsRepository {
     val repoUrl: String
     val privacyPolicyUrl: String
     val version: String
+
+    fun getAvailableLanguages(): Map<String, String>
+    fun getContentLanguage(): Flow<String>
+    suspend fun setContentLanguage(contentLanguage: String)
 }

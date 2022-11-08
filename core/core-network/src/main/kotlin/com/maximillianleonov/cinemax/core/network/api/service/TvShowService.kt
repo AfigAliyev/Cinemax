@@ -19,48 +19,66 @@ package com.maximillianleonov.cinemax.core.network.api.service
 import com.maximillianleonov.cinemax.core.common.result.CinemaxResult
 import com.maximillianleonov.cinemax.core.network.model.response.TvShowResponseDto
 import com.maximillianleonov.cinemax.core.network.model.tvshow.NetworkTvShowDetails
-import com.maximillianleonov.cinemax.core.network.util.Constants
+import com.maximillianleonov.cinemax.core.network.util.Constants.DEFAULT_PAGE
+import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.APPEND_TO_RESPONSE
+import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.DETAILS_APPEND_TO_RESPONSE
+import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.ID
+import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.LANGUAGE
+import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.PAGE
+import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.QUERY
+import com.maximillianleonov.cinemax.core.network.util.Constants.Path.DETAILS_TV_SHOW
+import com.maximillianleonov.cinemax.core.network.util.Constants.Path.DISCOVER_TV_SHOW
+import com.maximillianleonov.cinemax.core.network.util.Constants.Path.ON_THE_AIR_TV_SHOW
+import com.maximillianleonov.cinemax.core.network.util.Constants.Path.POPULAR_TV_SHOW
+import com.maximillianleonov.cinemax.core.network.util.Constants.Path.SEARCH_TV_SHOW
+import com.maximillianleonov.cinemax.core.network.util.Constants.Path.TOP_RATED_TV_SHOW
+import com.maximillianleonov.cinemax.core.network.util.Constants.Path.TRENDING_TV_SHOW
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TvShowService {
-    @GET(Constants.Path.TOP_RATED_TV_SHOW)
+    @GET(TOP_RATED_TV_SHOW)
     suspend fun getTopRated(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int = DEFAULT_PAGE
     ): CinemaxResult<TvShowResponseDto>
 
-    @GET(Constants.Path.POPULAR_TV_SHOW)
+    @GET(POPULAR_TV_SHOW)
     suspend fun getPopular(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int = DEFAULT_PAGE
     ): CinemaxResult<TvShowResponseDto>
 
-    @GET(Constants.Path.ON_THE_AIR_TV_SHOW)
+    @GET(ON_THE_AIR_TV_SHOW)
     suspend fun getOnTheAir(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int = DEFAULT_PAGE
     ): CinemaxResult<TvShowResponseDto>
 
-    @GET(Constants.Path.DISCOVER_TV_SHOW)
+    @GET(DISCOVER_TV_SHOW)
     suspend fun getDiscover(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int = DEFAULT_PAGE
     ): CinemaxResult<TvShowResponseDto>
 
-    @GET(Constants.Path.TRENDING_TV_SHOW)
+    @GET(TRENDING_TV_SHOW)
     suspend fun getTrending(
-        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int = DEFAULT_PAGE
     ): CinemaxResult<TvShowResponseDto>
 
-    @GET(Constants.Path.DETAILS_TV_SHOW)
+    @GET(DETAILS_TV_SHOW)
     suspend fun getDetailsById(
-        @Path(Constants.Fields.ID)
-        id: Int,
-        @Query(Constants.Fields.APPEND_TO_RESPONSE)
-        appendToResponse: String = Constants.Fields.DETAILS_APPEND_TO_RESPONSE
+        @Path(ID) id: Int,
+        @Query(LANGUAGE) language: String,
+        @Query(APPEND_TO_RESPONSE) appendToResponse: String = DETAILS_APPEND_TO_RESPONSE
     ): CinemaxResult<NetworkTvShowDetails>
 
-    @GET(Constants.Path.SEARCH_TV_SHOW)
+    @GET(SEARCH_TV_SHOW)
     suspend fun search(
-        @Query(Constants.Fields.QUERY) query: String,
-        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
+        @Query(QUERY) query: String,
+        @Query(LANGUAGE) language: String,
+        @Query(PAGE) page: Int = DEFAULT_PAGE
     ): CinemaxResult<TvShowResponseDto>
 }

@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.settings.model
+package com.maximillianleonov.cinemax.core.datastore.util
 
-import androidx.annotation.StringRes
+import androidx.datastore.preferences.core.stringPreferencesKey
 
-data class SettingsGroup(
-    @StringRes val titleResourceId: Int,
-    val settings: List<Settings>
-)
-
-enum class SettingsGroupNames { General, About }
+internal object Constants {
+    private const val CONTENT_LANGUAGE_NAME = "content_language"
+    internal val CONTENT_LANGUAGE_KEY = stringPreferencesKey(CONTENT_LANGUAGE_NAME)
+}

@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.settings.model
+package com.maximillianleonov.cinemax.core.ui.mapper
 
-import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.model.ReleaseDate
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.toJavaLocalDate
+import java.time.format.DateTimeFormatter
 
-data class SettingsGroup(
-    @StringRes val titleResourceId: Int,
-    val settings: List<Settings>
+internal fun LocalDate.asReleaseDate() = ReleaseDate(
+    fullDate = format(FullDatePattern),
+    year = year.toString()
 )
 
-enum class SettingsGroupNames { General, About }
+private fun LocalDate.format(pattern: String): String =
+    toJavaLocalDate().format(DateTimeFormatter.ofPattern(pattern))
+
+private const val FullDatePattern = "d MMMM, yyyy"
