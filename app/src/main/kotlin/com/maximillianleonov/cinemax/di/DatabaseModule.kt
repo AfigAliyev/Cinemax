@@ -28,9 +28,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@[Module InstallIn(SingletonComponent::class)]
+@Module
+@InstallIn(SingletonComponent::class)
 object DatabaseModule {
-    @[Provides Singleton]
+    @Provides
+    @Singleton
     fun provideCinemaxDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
         context,
         CinemaxDatabase::class.java,
