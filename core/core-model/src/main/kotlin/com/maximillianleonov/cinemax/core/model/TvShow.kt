@@ -16,13 +16,11 @@
 
 package com.maximillianleonov.cinemax.core.model
 
-import kotlinx.datetime.LocalDate
-
 data class TvShow(
     val id: Int,
     val name: String,
     val overview: String,
-    val firstAirDate: LocalDate?,
+    val firstAirDate: ReleaseDate,
     val genres: List<Genre>,
     val voteAverage: Double,
     val posterPath: String?,

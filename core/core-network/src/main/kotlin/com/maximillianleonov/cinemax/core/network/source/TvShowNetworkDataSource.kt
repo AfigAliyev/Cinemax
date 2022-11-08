@@ -20,23 +20,25 @@ import com.maximillianleonov.cinemax.core.common.result.CinemaxResult
 import com.maximillianleonov.cinemax.core.network.api.service.TvShowService
 import com.maximillianleonov.cinemax.core.network.model.common.NetworkMediaType
 import com.maximillianleonov.cinemax.core.network.model.response.TvShowResponseDto
-import com.maximillianleonov.cinemax.core.network.util.Constants
+import com.maximillianleonov.cinemax.core.network.util.Constants.DEFAULT_PAGE
 import javax.inject.Inject
 
 class TvShowNetworkDataSource @Inject constructor(private val tvShowService: TvShowService) {
     suspend fun getByMediaType(
         mediaType: NetworkMediaType.TvShow,
-        page: Int = Constants.DEFAULT_PAGE
+        language: String,
+        page: Int = DEFAULT_PAGE
     ): CinemaxResult<TvShowResponseDto> = when (mediaType) {
-        NetworkMediaType.TvShow.TOP_RATED -> tvShowService.getTopRated(page)
-        NetworkMediaType.TvShow.POPULAR -> tvShowService.getPopular(page)
-        NetworkMediaType.TvShow.NOW_PLAYING -> tvShowService.getOnTheAir(page)
-        NetworkMediaType.TvShow.DISCOVER -> tvShowService.getDiscover(page)
-        NetworkMediaType.TvShow.TRENDING -> tvShowService.getTrending(page)
+        NetworkMediaType.TvShow.TOP_RATED -> tvShowService.getTopRated(language, page)
+        NetworkMediaType.TvShow.POPULAR -> tvShowService.getPopular(language, page)
+        NetworkMediaType.TvShow.NOW_PLAYING -> tvShowService.getOnTheAir(language, page)
+        NetworkMediaType.TvShow.DISCOVER -> tvShowService.getDiscover(language, page)
+        NetworkMediaType.TvShow.TRENDING -> tvShowService.getTrending(language, page)
     }
 
     suspend fun search(
         query: String,
-        page: Int = Constants.DEFAULT_PAGE
-    ): CinemaxResult<TvShowResponseDto> = tvShowService.search(query, page)
+        language: String,
+        page: Int = DEFAULT_PAGE
+    ): CinemaxResult<TvShowResponseDto> = tvShowService.search(query, language, page)
 }

@@ -44,4 +44,16 @@ sealed interface Settings {
         @StringRes override val titleResourceId: Int,
         val intent: Intent
     ) : Settings
+
+    sealed interface Preferences : Settings {
+        data class Selection(
+            @DrawableRes override val iconResourceId: Int,
+            @StringRes override val titleResourceId: Int,
+            val name: PreferenceNames,
+            val value: String,
+            val values: Map<String, String>
+        ) : Preferences
+    }
 }
+
+enum class PreferenceNames { ContentLanguage }

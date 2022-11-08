@@ -51,6 +51,7 @@ fun CinemaxTextField(
         )
     },
     trailingIcon: @Composable (() -> Unit)? = null,
+    isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions(),
     singleLine: Boolean = true,
@@ -81,6 +82,7 @@ fun CinemaxTextField(
         placeholder = placeholder,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
+        isError = isError,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = singleLine,

@@ -22,19 +22,22 @@ import com.maximillianleonov.cinemax.core.data.mapper.asMovieDetailsModel
 import com.maximillianleonov.cinemax.core.data.mapper.listMap
 import com.maximillianleonov.cinemax.core.database.source.MovieDetailsDatabaseDataSource
 import com.maximillianleonov.cinemax.core.database.source.WishlistDatabaseDataSource
+import com.maximillianleonov.cinemax.core.datastore.PreferencesDataStoreDataSource
 import com.maximillianleonov.cinemax.core.domain.model.MovieDetailsModel
 import com.maximillianleonov.cinemax.core.domain.repository.MovieDetailsRepository
 import com.maximillianleonov.cinemax.core.network.common.networkBoundResource
 import com.maximillianleonov.cinemax.core.network.model.movie.NetworkMovieDetails
 import com.maximillianleonov.cinemax.core.network.source.MovieDetailsNetworkDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class MovieDetailsRepositoryImpl @Inject constructor(
     private val databaseDataSource: MovieDetailsDatabaseDataSource,
     private val networkDataSource: MovieDetailsNetworkDataSource,
-    private val wishlistDatabaseDataSource: WishlistDatabaseDataSource
+    private val wishlistDatabaseDataSource: WishlistDatabaseDataSource,
+    private val preferencesDataStoreDataSource: PreferencesDataStoreDataSource
 ) : MovieDetailsRepository {
     override fun getById(id: Int): Flow<CinemaxResult<MovieDetailsModel?>> = networkBoundResource(
         query = {
@@ -44,7 +47,12 @@ class MovieDetailsRepositoryImpl @Inject constructor(
                 )
             }
         },
-        fetch = { networkDataSource.getById(id) },
+        fetch = {
+            networkDataSource.getById(
+                id = id,
+                language = preferencesDataStoreDataSource.getContentLanguage().first()
+            )
+        },
         saveFetchResult = { response ->
             databaseDataSource.deleteAndInsert(response.asMovieDetailsEntity())
         }
@@ -59,7 +67,12 @@ class MovieDetailsRepositoryImpl @Inject constructor(
                     )
                 }
             },
-            fetch = { networkDataSource.getByIds(ids) },
+            fetch = {
+                networkDataSource.getByIds(
+                    ids = ids,
+                    language = preferencesDataStoreDataSource.getContentLanguage().first()
+                )
+            },
             saveFetchResult = { response ->
                 databaseDataSource.deleteAndInsertAll(
                     response.map(NetworkMovieDetails::asMovieDetailsEntity)

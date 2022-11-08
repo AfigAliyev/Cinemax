@@ -16,61 +16,69 @@
 
 package com.maximillianleonov.cinemax.feature.settings
 
-import android.content.Intent
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
-import com.maximillianleonov.cinemax.core.domain.usecase.GetSettingsPrivacyPolicyUrlUseCase
-import com.maximillianleonov.cinemax.core.domain.usecase.GetSettingsRepoUrlUseCase
-import com.maximillianleonov.cinemax.core.domain.usecase.GetSettingsVersionUseCase
-import com.maximillianleonov.cinemax.core.ui.R
+import androidx.lifecycle.viewModelScope
 import com.maximillianleonov.cinemax.core.ui.common.EventHandler
-import com.maximillianleonov.cinemax.feature.settings.model.Settings
-import com.maximillianleonov.cinemax.feature.settings.model.SettingsGroup
+import com.maximillianleonov.cinemax.feature.settings.model.PreferenceNames
+import com.maximillianleonov.cinemax.feature.settings.model.SettingsGroupNames.About
+import com.maximillianleonov.cinemax.feature.settings.model.SettingsGroupNames.General
+import com.maximillianleonov.cinemax.feature.settings.util.SettingsHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val getSettingsRepoUrlUseCase: GetSettingsRepoUrlUseCase,
-    private val getSettingsPrivacyPolicyUrlUseCase: GetSettingsPrivacyPolicyUrlUseCase,
-    private val getSettingsVersionUseCase: GetSettingsVersionUseCase
+    private val settingsHolder: SettingsHolder
 ) : ViewModel(), EventHandler<SettingsEvent> {
-    private val _uiState = MutableStateFlow(getInitialUiState())
+    private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = _uiState.asStateFlow()
 
-    override fun onEvent(event: SettingsEvent) = Unit
+    init {
+        loadSettings()
+    }
 
-    private fun getInitialUiState(): SettingsUiState {
-        val repoUrl = getSettingsRepoUrlUseCase().toUri()
-        val privacyPolicyUrl = getSettingsPrivacyPolicyUrlUseCase().toUri()
-        val version = getSettingsVersionUseCase()
+    override fun onEvent(event: SettingsEvent) {
+        when (event) {
+            is SettingsEvent.PreferencesSelection -> onPreferencesSelection(event)
+        }
+    }
 
-        val aboutSettings = listOf(
-            Settings.IntentAction(
-                iconResourceId = R.drawable.ic_github,
-                titleResourceId = R.string.source_code_github,
-                intent = Intent(Intent.ACTION_VIEW, repoUrl)
-            ),
-            Settings.IntentAction(
-                iconResourceId = R.drawable.ic_shield,
-                titleResourceId = R.string.privacy_policy,
-                intent = Intent(Intent.ACTION_VIEW, privacyPolicyUrl)
-            ),
-            Settings.Info(
-                iconResourceId = R.drawable.ic_info,
-                titleResourceId = R.string.version,
-                value = version
+    private fun onPreferencesSelection(event: SettingsEvent.PreferencesSelection) =
+        when (event.name) {
+            PreferenceNames.ContentLanguage -> onChangeContentLanguage(event.value)
+        }
+
+    private fun onChangeContentLanguage(contentLanguage: String) = viewModelScope.launch {
+        settingsHolder.changeContentLanguage(contentLanguage)
+    }
+
+    private fun loadSettings() {
+        loadGeneralSettings()
+        loadAboutSettings()
+    }
+
+    private fun loadGeneralSettings() = viewModelScope.launch {
+        _uiState.update {
+            it.copy(
+                settingsGroups = it.settingsGroups + (General to settingsHolder.generalSettingsGroup)
             )
-        )
+        }
+        settingsHolder.subscribeGeneralSettings { generalSettingsGroup ->
+            _uiState.update {
+                it.copy(
+                    settingsGroups = it.settingsGroups + (General to generalSettingsGroup)
+                )
+            }
+        }
+    }
 
-        val aboutSettingsGroup = SettingsGroup(
-            titleResourceId = R.string.about,
-            settings = aboutSettings
+    private fun loadAboutSettings() = _uiState.update {
+        it.copy(
+            settingsGroups = it.settingsGroups + (About to settingsHolder.aboutSettingsGroup)
         )
-
-        val settingsGroups = listOf(aboutSettingsGroup)
-        return SettingsUiState(settingsGroups = settingsGroups)
     }
 }

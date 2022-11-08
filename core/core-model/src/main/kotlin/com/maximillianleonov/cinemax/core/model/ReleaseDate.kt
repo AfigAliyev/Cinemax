@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.settings.model
+package com.maximillianleonov.cinemax.core.model
 
-import androidx.annotation.StringRes
-
-data class SettingsGroup(
-    @StringRes val titleResourceId: Int,
-    val settings: List<Settings>
+data class ReleaseDate(
+    val fullDate: String = "",
+    val year: String = ""
 )
-
-enum class SettingsGroupNames { General, About }

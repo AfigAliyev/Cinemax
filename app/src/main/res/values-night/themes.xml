@@ -21,5 +21,7 @@
         <item name="android:navigationBarColor">@color/primaryDark</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:dialogTheme">@style/Theme.Cinemax.Dialog</item>
     </style>
+
 </resources>

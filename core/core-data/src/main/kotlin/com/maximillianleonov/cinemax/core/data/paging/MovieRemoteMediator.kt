@@ -33,13 +33,16 @@ import com.maximillianleonov.cinemax.core.database.model.common.MediaType
 import com.maximillianleonov.cinemax.core.database.model.movie.MovieEntity
 import com.maximillianleonov.cinemax.core.database.model.movie.MovieRemoteKeyEntity
 import com.maximillianleonov.cinemax.core.database.source.MovieDatabaseDataSource
+import com.maximillianleonov.cinemax.core.datastore.PreferencesDataStoreDataSource
 import com.maximillianleonov.cinemax.core.network.source.MovieNetworkDataSource
+import kotlinx.coroutines.flow.first
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class MovieRemoteMediator(
     private val databaseDataSource: MovieDatabaseDataSource,
     private val networkDataSource: MovieNetworkDataSource,
+    private val preferencesDataStoreDataSource: PreferencesDataStoreDataSource,
     private val mediaType: MediaType.Movie
 ) : RemoteMediator<Int, MovieEntity>() {
     @Suppress("ReturnCount")
@@ -71,6 +74,7 @@ class MovieRemoteMediator(
 
             val response = networkDataSource.getByMediaType(
                 mediaType = mediaType.asNetworkMediaType(),
+                language = preferencesDataStoreDataSource.getContentLanguage().first(),
                 page = currentPage
             )
 

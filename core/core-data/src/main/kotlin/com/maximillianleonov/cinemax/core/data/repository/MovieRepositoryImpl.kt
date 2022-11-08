@@ -31,6 +31,7 @@ import com.maximillianleonov.cinemax.core.data.paging.SearchMoviePagingSource
 import com.maximillianleonov.cinemax.core.data.util.defaultPagingConfig
 import com.maximillianleonov.cinemax.core.database.model.movie.MovieEntity
 import com.maximillianleonov.cinemax.core.database.source.MovieDatabaseDataSource
+import com.maximillianleonov.cinemax.core.datastore.PreferencesDataStoreDataSource
 import com.maximillianleonov.cinemax.core.domain.model.MediaTypeModel
 import com.maximillianleonov.cinemax.core.domain.model.MovieModel
 import com.maximillianleonov.cinemax.core.domain.repository.MovieRepository
@@ -38,11 +39,13 @@ import com.maximillianleonov.cinemax.core.network.common.networkBoundResource
 import com.maximillianleonov.cinemax.core.network.source.MovieNetworkDataSource
 import com.maximillianleonov.cinemax.core.network.util.PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
     private val databaseDataSource: MovieDatabaseDataSource,
-    private val networkDataSource: MovieNetworkDataSource
+    private val networkDataSource: MovieNetworkDataSource,
+    private val preferencesDataStoreDataSource: PreferencesDataStoreDataSource
 ) : MovieRepository {
     override fun getByMediaType(
         mediaTypeModel: MediaTypeModel.Movie
@@ -55,7 +58,12 @@ class MovieRepositoryImpl @Inject constructor(
                     pageSize = PAGE_SIZE
                 ).listMap(MovieEntity::asMovieModel)
             },
-            fetch = { networkDataSource.getByMediaType(mediaType.asNetworkMediaType()) },
+            fetch = {
+                networkDataSource.getByMediaType(
+                    mediaType = mediaType.asNetworkMediaType(),
+                    language = preferencesDataStoreDataSource.getContentLanguage().first()
+                )
+            },
             saveFetchResult = { response ->
                 databaseDataSource.deleteByMediaTypeAndInsertAll(
                     mediaType = mediaType,
@@ -72,13 +80,24 @@ class MovieRepositoryImpl @Inject constructor(
         val mediaType = mediaTypeModel.asMediaType()
         return Pager(
             config = defaultPagingConfig,
-            remoteMediator = MovieRemoteMediator(databaseDataSource, networkDataSource, mediaType),
+            remoteMediator = MovieRemoteMediator(
+                databaseDataSource = databaseDataSource,
+                networkDataSource = networkDataSource,
+                preferencesDataStoreDataSource = preferencesDataStoreDataSource,
+                mediaType = mediaType
+            ),
             pagingSourceFactory = { databaseDataSource.getPagingByMediaType(mediaType) }
         ).flow.pagingMap(MovieEntity::asMovieModel)
     }
 
     override fun search(query: String): Flow<PagingData<MovieModel>> = Pager(
         config = defaultPagingConfig,
-        pagingSourceFactory = { SearchMoviePagingSource(query, networkDataSource) }
+        pagingSourceFactory = {
+            SearchMoviePagingSource(
+                query = query,
+                networkDataSource = networkDataSource,
+                preferencesDataStoreDataSource = preferencesDataStoreDataSource
+            )
+        }
     ).flow
 }

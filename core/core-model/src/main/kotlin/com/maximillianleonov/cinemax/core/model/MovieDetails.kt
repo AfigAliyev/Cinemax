@@ -16,8 +16,6 @@
 
 package com.maximillianleonov.cinemax.core.model
 
-import kotlinx.datetime.LocalDate
-
 data class MovieDetails(
     val id: Int,
     val title: String,
@@ -26,7 +24,7 @@ data class MovieDetails(
     val budget: Int,
     val genres: List<Genre>,
     val posterPath: String?,
-    val releaseDate: LocalDate?,
+    val releaseDate: ReleaseDate,
     val runtime: Int,
     val video: Boolean,
     val voteAverage: Double,

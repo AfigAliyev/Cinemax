@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package com.maximillianleonov.cinemax.feature.settings.model
+package com.maximillianleonov.cinemax.core.domain.usecase
 
-import androidx.annotation.StringRes
+import com.maximillianleonov.cinemax.core.domain.repository.SettingsRepository
+import javax.inject.Inject
 
-data class SettingsGroup(
-    @StringRes val titleResourceId: Int,
-    val settings: List<Settings>
-)
-
-enum class SettingsGroupNames { General, About }
+class GetSettingsAvailableLanguagesUseCase @Inject constructor(private val repository: SettingsRepository) {
+    operator fun invoke() = repository.getAvailableLanguages()
+}

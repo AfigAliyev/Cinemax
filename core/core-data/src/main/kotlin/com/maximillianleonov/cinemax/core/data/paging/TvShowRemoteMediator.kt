@@ -33,13 +33,16 @@ import com.maximillianleonov.cinemax.core.database.model.common.MediaType
 import com.maximillianleonov.cinemax.core.database.model.tvshow.TvShowEntity
 import com.maximillianleonov.cinemax.core.database.model.tvshow.TvShowRemoteKeyEntity
 import com.maximillianleonov.cinemax.core.database.source.TvShowDatabaseDataSource
+import com.maximillianleonov.cinemax.core.datastore.PreferencesDataStoreDataSource
 import com.maximillianleonov.cinemax.core.network.source.TvShowNetworkDataSource
+import kotlinx.coroutines.flow.first
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class TvShowRemoteMediator(
     private val databaseDataSource: TvShowDatabaseDataSource,
     private val networkDataSource: TvShowNetworkDataSource,
+    private val preferencesDataStoreDataSource: PreferencesDataStoreDataSource,
     private val mediaType: MediaType.TvShow
 ) : RemoteMediator<Int, TvShowEntity>() {
     @Suppress("ReturnCount")
@@ -71,6 +74,7 @@ class TvShowRemoteMediator(
 
             val response = networkDataSource.getByMediaType(
                 mediaType = mediaType.asNetworkMediaType(),
+                language = preferencesDataStoreDataSource.getContentLanguage().first(),
                 page = currentPage
             )
 

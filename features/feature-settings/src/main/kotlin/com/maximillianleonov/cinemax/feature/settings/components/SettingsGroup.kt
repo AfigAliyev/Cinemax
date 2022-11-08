@@ -30,11 +30,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
+import com.maximillianleonov.cinemax.feature.settings.model.PreferenceNames
 import com.maximillianleonov.cinemax.feature.settings.model.SettingsGroup
 
 @Composable
 internal fun SettingsGroupItem(
     settingsGroup: SettingsGroup,
+    onPreferencesSelection: (PreferenceNames, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -56,7 +58,10 @@ internal fun SettingsGroupItem(
             Spacer(modifier = Modifier.height(CinemaxTheme.spacing.small))
 
             settingsGroup.settings.forEachIndexed { index, settingsItem ->
-                SettingsItem(settings = settingsItem)
+                SettingsItem(
+                    settings = settingsItem,
+                    onPreferencesSelection = onPreferencesSelection
+                )
 
                 if (index < settingsGroup.settings.lastIndex) {
                     Divider(
