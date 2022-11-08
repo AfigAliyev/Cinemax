@@ -34,27 +34,34 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 
-@[Module InstallIn(ViewModelComponent::class)]
+@Module
+@InstallIn(ViewModelComponent::class)
 interface RepositoryModule {
-    @[Binds ViewModelScoped]
+    @Binds
+    @ViewModelScoped
     fun bindMovieRepository(movieRepositoryImpl: MovieRepositoryImpl): MovieRepository
 
-    @[Binds ViewModelScoped]
+    @Binds
+    @ViewModelScoped
     fun bindTvShowRepository(tvShowRepositoryImpl: TvShowRepositoryImpl): TvShowRepository
 
-    @[Binds ViewModelScoped]
+    @Binds
+    @ViewModelScoped
     fun bindMovieDetailsRepository(
         movieDetailsRepositoryImpl: MovieDetailsRepositoryImpl
     ): MovieDetailsRepository
 
-    @[Binds ViewModelScoped]
+    @Binds
+    @ViewModelScoped
     fun bindTvShowDetailsRepository(
         tvShowDetailsRepositoryImpl: TvShowDetailsRepositoryImpl
     ): TvShowDetailsRepository
 
-    @[Binds ViewModelScoped]
+    @Binds
+    @ViewModelScoped
     fun bindWishlistRepository(wishlistRepositoryImpl: WishlistRepositoryImpl): WishlistRepository
 
-    @[Binds ViewModelScoped]
+    @Binds
+    @ViewModelScoped
     fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
 }
