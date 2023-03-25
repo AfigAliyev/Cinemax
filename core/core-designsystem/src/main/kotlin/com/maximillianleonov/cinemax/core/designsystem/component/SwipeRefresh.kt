@@ -16,18 +16,21 @@
 
 package com.maximillianleonov.cinemax.core.designsystem.component
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
-import com.google.accompanist.swiperefresh.SwipeRefreshState
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CinemaxSwipeRefresh(
     isRefreshing: Boolean,
@@ -36,24 +39,23 @@ fun CinemaxSwipeRefresh(
     backgroundColor: Color = CinemaxTheme.colors.primaryVariant,
     contentColor: Color = CinemaxTheme.colors.accent,
     indicatorPadding: PaddingValues = PaddingValues(0.dp),
-    indicator: @Composable (state: SwipeRefreshState, refreshTrigger: Dp) -> Unit =
-        { state, refreshTrigger ->
-            SwipeRefreshIndicator(
-                state = state,
-                refreshTriggerDistance = refreshTrigger,
-                backgroundColor = backgroundColor,
-                contentColor = contentColor
-            )
-        },
-    swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+    indicatorAlignment: Alignment = Alignment.TopCenter,
+    scale: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    SwipeRefresh(
-        modifier = modifier,
-        state = swipeRefreshState,
-        onRefresh = onRefresh,
-        indicatorPadding = indicatorPadding,
-        indicator = indicator,
-        content = content
-    )
+    val state = rememberPullRefreshState(refreshing = isRefreshing, onRefresh = onRefresh)
+    Box(modifier = modifier.pullRefresh(state = state)) {
+        content()
+
+        PullRefreshIndicator(
+            modifier = Modifier
+                .padding(indicatorPadding)
+                .align(indicatorAlignment),
+            refreshing = isRefreshing,
+            state = state,
+            backgroundColor = backgroundColor,
+            contentColor = contentColor,
+            scale = scale
+        )
+    }
 }

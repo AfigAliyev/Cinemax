@@ -23,9 +23,11 @@ android.namespace = "com.maximillianleonov.cinemax.core.designsystem"
 
 dependencies {
     api(libs.bundles.androidx.compose)
-    api(libs.accompanist.swiperefresh)
     api(libs.accompanist.placeholder.material)
     api(libs.coil.compose)
+
+    implementation(libs.androidx.compose.material)
+
     debugApi(libs.androidx.compose.ui.tooling)
     debugApi(libs.androidx.compose.ui.test.manifest)
 }
