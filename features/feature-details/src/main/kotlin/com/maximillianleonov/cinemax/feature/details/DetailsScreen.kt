@@ -19,7 +19,7 @@ package com.maximillianleonov.cinemax.feature.details
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.consumedWindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,7 +30,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxSwipeRefresh
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxTopAppBar
@@ -45,7 +44,6 @@ import com.maximillianleonov.cinemax.feature.details.components.MovieDetailsItem
 import com.maximillianleonov.cinemax.feature.details.components.TvShowDetailsItem
 import com.maximillianleonov.cinemax.feature.details.components.TvShowDetailsItemPlaceholder
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun DetailsRoute(
     onBackButtonClick: () -> Unit,
@@ -142,6 +140,7 @@ private fun DetailsContent(
                     )
                 }
             }
+
             is MediaType.Details.TvShow -> {
                 if (uiState.tvShow == null) {
                     TvShowDetailsItemPlaceholder(
@@ -182,7 +181,7 @@ private fun ErrorContent(
         CinemaxCenteredError(
             modifier = Modifier
                 .padding(innerPadding)
-                .consumedWindowInsets(innerPadding),
+                .consumeWindowInsets(innerPadding),
             errorMessage = errorMessage,
             onRetry = onRetry,
             shouldShowOfflineMode = isOfflineModeAvailable,

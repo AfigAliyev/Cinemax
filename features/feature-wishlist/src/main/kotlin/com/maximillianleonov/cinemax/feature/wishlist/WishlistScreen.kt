@@ -30,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxMessage
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxSwipeRefresh
@@ -46,7 +45,6 @@ import com.maximillianleonov.cinemax.core.ui.VerticalTvShowItem
 import com.maximillianleonov.cinemax.core.ui.VerticalTvShowItemPlaceholder
 import com.maximillianleonov.cinemax.core.ui.mapper.asUserMessage
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun WishlistRoute(
     onMovieClick: (Int) -> Unit,

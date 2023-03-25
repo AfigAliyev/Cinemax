@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxSwipeRefresh
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
@@ -40,7 +39,6 @@ import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.mapper.asUserMessage
 import com.maximillianleonov.cinemax.feature.home.component.UpcomingMoviesContainer
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun HomeRoute(
     onSeeAllClick: (MediaType.Common) -> Unit,
