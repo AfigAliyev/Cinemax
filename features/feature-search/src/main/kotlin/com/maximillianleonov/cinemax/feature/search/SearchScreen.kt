@@ -46,7 +46,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -65,7 +64,6 @@ import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.TvShowsContainer
 import com.maximillianleonov.cinemax.core.ui.mapper.asUserMessage
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun SearchRoute(
     onSeeAllClick: (MediaType.Common) -> Unit,

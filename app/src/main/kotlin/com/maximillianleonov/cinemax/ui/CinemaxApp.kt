@@ -24,7 +24,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.consumedWindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -91,7 +91,7 @@ fun CinemaxApp(appState: CinemaxAppState = rememberCinemaxAppState()) {
                 CinemaxNavHost(
                     modifier = Modifier
                         .padding(paddingValues = innerPadding)
-                        .consumedWindowInsets(paddingValues = innerPadding),
+                        .consumeWindowInsets(paddingValues = innerPadding),
                     navController = appState.navController,
                     startDestination = appState.startDestination,
                     onNavigateToDestination = appState::navigate,

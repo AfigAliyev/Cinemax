@@ -24,7 +24,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.consumedWindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -121,7 +121,7 @@ internal fun DetailsItem(
             LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .consumedWindowInsets(innerPadding)
+                    .consumeWindowInsets(innerPadding)
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium)

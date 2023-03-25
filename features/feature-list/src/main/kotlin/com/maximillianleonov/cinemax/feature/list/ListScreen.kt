@@ -19,7 +19,7 @@ package com.maximillianleonov.cinemax.feature.list
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.consumedWindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -30,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -44,7 +43,6 @@ import com.maximillianleonov.cinemax.core.ui.MoviesContainer
 import com.maximillianleonov.cinemax.core.ui.TvShowsContainer
 import com.maximillianleonov.cinemax.feature.list.util.asTitleResourceId
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun ListRoute(
     onBackButtonClick: () -> Unit,
@@ -95,16 +93,17 @@ private fun ListScreen(
                 MoviesContainer(
                     modifier = Modifier
                         .padding(innerPadding)
-                        .consumedWindowInsets(innerPadding),
+                        .consumeWindowInsets(innerPadding),
                     movies = movies,
                     onClick = onMovieClick
                 )
             }
+
             else -> {
                 MediaTabPager(
                     modifier = Modifier
                         .padding(innerPadding)
-                        .consumedWindowInsets(innerPadding),
+                        .consumeWindowInsets(innerPadding),
                     moviesTabContent = {
                         MoviesContainer(movies = movies, onClick = onMovieClick)
                     },

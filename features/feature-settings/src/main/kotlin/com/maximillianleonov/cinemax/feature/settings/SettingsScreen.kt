@@ -28,13 +28,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.feature.settings.components.SettingsGroupItem
 import com.maximillianleonov.cinemax.feature.settings.model.PreferenceNames
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 internal fun SettingsRoute(
     modifier: Modifier = Modifier,
