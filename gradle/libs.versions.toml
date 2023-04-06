@@ -44,7 +44,7 @@ retrofit-kotlinx-serialization-converter = "0.8.0"
 
 javax-inject = "1"
 
-accompanist = "0.30.0"
+accompanist = "0.30.1"
 coil = "2.3.0"
 
 [libraries]
