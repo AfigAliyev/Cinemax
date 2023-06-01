@@ -33,7 +33,7 @@ androidx-test-uiautomator = "2.2.0"
 junit = "4.13.2"
 mockk = "1.13.5"
 
-kotlinx-coroutines = "1.7.0"
+kotlinx-coroutines = "1.7.1"
 kotlinx-serialization = "1.5.1"
 kotlinx-datetime = "0.4.0"
 
