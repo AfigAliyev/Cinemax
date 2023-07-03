@@ -17,6 +17,5 @@
 package com.maximillianleonov.cinemax.feature.settings
 
 import com.maximillianleonov.cinemax.feature.settings.model.SettingsGroup
-import com.maximillianleonov.cinemax.feature.settings.model.SettingsGroupNames
 
-data class SettingsUiState(val settingsGroups: Map<SettingsGroupNames, SettingsGroup> = emptyMap())
+data class SettingsUiState(val settingsGroups: List<SettingsGroup>)

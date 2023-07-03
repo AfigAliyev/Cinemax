@@ -22,22 +22,19 @@ import com.maximillianleonov.cinemax.core.data.mapper.asTvShowDetailsModel
 import com.maximillianleonov.cinemax.core.data.mapper.listMap
 import com.maximillianleonov.cinemax.core.database.source.TvShowDetailsDatabaseDataSource
 import com.maximillianleonov.cinemax.core.database.source.WishlistDatabaseDataSource
-import com.maximillianleonov.cinemax.core.datastore.PreferencesDataStoreDataSource
 import com.maximillianleonov.cinemax.core.domain.model.TvShowDetailsModel
 import com.maximillianleonov.cinemax.core.domain.repository.TvShowDetailsRepository
 import com.maximillianleonov.cinemax.core.network.common.networkBoundResource
 import com.maximillianleonov.cinemax.core.network.model.tvshow.NetworkTvShowDetails
 import com.maximillianleonov.cinemax.core.network.source.TvShowDetailsNetworkDataSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class TvShowDetailsRepositoryImpl @Inject constructor(
     private val databaseDataSource: TvShowDetailsDatabaseDataSource,
     private val networkDataSource: TvShowDetailsNetworkDataSource,
-    private val wishlistDatabaseDataSource: WishlistDatabaseDataSource,
-    private val preferencesDataStoreDataSource: PreferencesDataStoreDataSource
+    private val wishlistDatabaseDataSource: WishlistDatabaseDataSource
 ) : TvShowDetailsRepository {
     override fun getById(id: Int): Flow<CinemaxResult<TvShowDetailsModel?>> = networkBoundResource(
         query = {
@@ -47,12 +44,7 @@ class TvShowDetailsRepositoryImpl @Inject constructor(
                 )
             }
         },
-        fetch = {
-            networkDataSource.getById(
-                id = id,
-                language = preferencesDataStoreDataSource.getContentLanguage().first()
-            )
-        },
+        fetch = { networkDataSource.getById(id) },
         saveFetchResult = { response ->
             databaseDataSource.deleteAndInsert(response.asTvShowDetailsEntity())
         }
@@ -67,12 +59,7 @@ class TvShowDetailsRepositoryImpl @Inject constructor(
                     )
                 }
             },
-            fetch = {
-                networkDataSource.getByIds(
-                    ids = ids,
-                    language = preferencesDataStoreDataSource.getContentLanguage().first()
-                )
-            },
+            fetch = { networkDataSource.getByIds(ids) },
             saveFetchResult = { response ->
                 databaseDataSource.deleteAndInsertAll(
                     response.map(NetworkTvShowDetails::asTvShowDetailsEntity)

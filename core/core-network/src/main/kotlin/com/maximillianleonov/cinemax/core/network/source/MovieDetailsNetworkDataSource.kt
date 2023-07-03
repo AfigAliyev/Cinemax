@@ -21,25 +21,22 @@ import com.maximillianleonov.cinemax.core.common.result.isFailure
 import com.maximillianleonov.cinemax.core.common.result.isSuccess
 import com.maximillianleonov.cinemax.core.network.api.service.MovieService
 import com.maximillianleonov.cinemax.core.network.model.movie.NetworkMovieDetails
-import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.DETAILS_APPEND_TO_RESPONSE
+import com.maximillianleonov.cinemax.core.network.util.Constants
 import com.maximillianleonov.cinemax.core.network.util.MESSAGE_UNHANDLED_STATE
 import javax.inject.Inject
 
 class MovieDetailsNetworkDataSource @Inject constructor(private val movieService: MovieService) {
     suspend fun getById(
         id: Int,
-        language: String,
-        appendToResponse: String = DETAILS_APPEND_TO_RESPONSE
-    ): CinemaxResult<NetworkMovieDetails> =
-        movieService.getDetailsById(id, language, appendToResponse)
+        appendToResponse: String = Constants.Fields.DETAILS_APPEND_TO_RESPONSE
+    ): CinemaxResult<NetworkMovieDetails> = movieService.getDetailsById(id, appendToResponse)
 
     suspend fun getByIds(
         ids: List<Int>,
-        language: String,
-        appendToResponse: String = DETAILS_APPEND_TO_RESPONSE
+        appendToResponse: String = Constants.Fields.DETAILS_APPEND_TO_RESPONSE
     ): CinemaxResult<List<NetworkMovieDetails>> {
         val movies = ids.map { id ->
-            val response = movieService.getDetailsById(id, language, appendToResponse)
+            val response = movieService.getDetailsById(id, appendToResponse)
 
             when {
                 response.isSuccess() -> response.value

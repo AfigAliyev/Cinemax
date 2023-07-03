@@ -21,7 +21,6 @@
         <item name="android:navigationBarColor">@color/primaryLight</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
-        <item name="android:dialogTheme">@style/Theme.Cinemax.Dialog</item>
     </style>
 
     <style name="Theme.Cinemax.Splash" parent="Theme.SplashScreen">
@@ -29,9 +28,4 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
         <item name="postSplashScreenTheme">@style/Theme.Cinemax</item>
     </style>
-
-    <style name="Theme.Cinemax.Dialog" parent="android:Theme.Material.Light.Dialog">
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
 </resources>

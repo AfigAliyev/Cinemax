@@ -16,33 +16,14 @@
 
 package com.maximillianleonov.cinemax.core.data.repository
 
-import com.maximillianleonov.cinemax.core.data.util.titlecase
 import com.maximillianleonov.cinemax.core.database.source.SettingsDatabaseDataSource
-import com.maximillianleonov.cinemax.core.datastore.PreferencesDataStoreDataSource
 import com.maximillianleonov.cinemax.core.domain.repository.SettingsRepository
-import java.util.Locale
 import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
-    databaseDataSource: SettingsDatabaseDataSource,
-    private val preferencesDataStoreDataSource: PreferencesDataStoreDataSource
+    databaseDataSource: SettingsDatabaseDataSource
 ) : SettingsRepository {
     override val repoUrl = databaseDataSource.repoUrl
     override val privacyPolicyUrl = databaseDataSource.privacyPolicyUrl
     override val version = databaseDataSource.version
-
-    override fun getAvailableLanguages(): Map<String, String> {
-        val languages = mutableMapOf<String, String>()
-        Locale.getAvailableLocales()
-            .sortedBy(Locale::getDisplayLanguage)
-            .forEach { locale ->
-                languages[locale.language] = locale.displayLanguage.titlecase()
-            }
-        return languages
-    }
-
-    override fun getContentLanguage() = preferencesDataStoreDataSource.getContentLanguage()
-    override suspend fun setContentLanguage(contentLanguage: String) {
-        preferencesDataStoreDataSource.setContentLanguage(contentLanguage)
-    }
 }

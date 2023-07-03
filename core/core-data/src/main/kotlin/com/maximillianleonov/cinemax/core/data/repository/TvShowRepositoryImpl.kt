@@ -31,7 +31,6 @@ import com.maximillianleonov.cinemax.core.data.paging.TvShowRemoteMediator
 import com.maximillianleonov.cinemax.core.data.util.defaultPagingConfig
 import com.maximillianleonov.cinemax.core.database.model.tvshow.TvShowEntity
 import com.maximillianleonov.cinemax.core.database.source.TvShowDatabaseDataSource
-import com.maximillianleonov.cinemax.core.datastore.PreferencesDataStoreDataSource
 import com.maximillianleonov.cinemax.core.domain.model.MediaTypeModel
 import com.maximillianleonov.cinemax.core.domain.model.TvShowModel
 import com.maximillianleonov.cinemax.core.domain.repository.TvShowRepository
@@ -39,13 +38,11 @@ import com.maximillianleonov.cinemax.core.network.common.networkBoundResource
 import com.maximillianleonov.cinemax.core.network.source.TvShowNetworkDataSource
 import com.maximillianleonov.cinemax.core.network.util.PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class TvShowRepositoryImpl @Inject constructor(
     private val databaseDataSource: TvShowDatabaseDataSource,
-    private val networkDataSource: TvShowNetworkDataSource,
-    private val preferencesDataStoreDataSource: PreferencesDataStoreDataSource
+    private val networkDataSource: TvShowNetworkDataSource
 ) : TvShowRepository {
     override fun getByMediaType(
         mediaTypeModel: MediaTypeModel.TvShow
@@ -58,12 +55,7 @@ class TvShowRepositoryImpl @Inject constructor(
                     pageSize = PAGE_SIZE
                 ).listMap(TvShowEntity::asTvShowModel)
             },
-            fetch = {
-                networkDataSource.getByMediaType(
-                    mediaType = mediaType.asNetworkMediaType(),
-                    language = preferencesDataStoreDataSource.getContentLanguage().first()
-                )
-            },
+            fetch = { networkDataSource.getByMediaType(mediaType.asNetworkMediaType()) },
             saveFetchResult = { response ->
                 databaseDataSource.deleteByMediaTypeAndInsertAll(
                     mediaType = mediaType,
@@ -80,24 +72,13 @@ class TvShowRepositoryImpl @Inject constructor(
         val mediaType = mediaTypeModel.asMediaType()
         return Pager(
             config = defaultPagingConfig,
-            remoteMediator = TvShowRemoteMediator(
-                databaseDataSource = databaseDataSource,
-                networkDataSource = networkDataSource,
-                preferencesDataStoreDataSource = preferencesDataStoreDataSource,
-                mediaType = mediaType
-            ),
+            remoteMediator = TvShowRemoteMediator(databaseDataSource, networkDataSource, mediaType),
             pagingSourceFactory = { databaseDataSource.getPagingByMediaType(mediaType) }
         ).flow.pagingMap(TvShowEntity::asTvShowModel)
     }
 
     override fun search(query: String): Flow<PagingData<TvShowModel>> = Pager(
         config = defaultPagingConfig,
-        pagingSourceFactory = {
-            SearchTvShowPagingSource(
-                query = query,
-                networkDataSource = networkDataSource,
-                preferencesDataStoreDataSource = preferencesDataStoreDataSource
-            )
-        }
+        pagingSourceFactory = { SearchTvShowPagingSource(query, networkDataSource) }
     ).flow
 }

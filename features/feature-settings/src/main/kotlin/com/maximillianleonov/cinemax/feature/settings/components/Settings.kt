@@ -22,53 +22,38 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxCenteredBox
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxIcon
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
-import com.maximillianleonov.cinemax.core.ui.CinemaxSelectionDialog
 import com.maximillianleonov.cinemax.core.ui.R
-import com.maximillianleonov.cinemax.feature.settings.model.PreferenceNames
 import com.maximillianleonov.cinemax.feature.settings.model.Settings
 
-@Suppress("UnnecessaryEventHandlerParameter")
 @Composable
 internal fun SettingsItem(
     settings: Settings,
-    onPreferencesSelection: (PreferenceNames, String) -> Unit,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current
 ) {
-    var selectionExpanded by remember { mutableStateOf(false) }
-
     Row(
         modifier = modifier
             .then(
                 when (settings) {
                     is Settings.Action -> Modifier.clickable(onClick = settings.onClick)
                     is Settings.IntentAction -> Modifier.clickable { context.startActivity(settings.intent) }
-                    is Settings.Preferences -> Modifier.clickable { selectionExpanded = true }
                     is Settings.Info -> Modifier
                 }
             )
@@ -87,19 +72,9 @@ internal fun SettingsItem(
             )
             TitleText(titleResourceId = settings.titleResourceId)
         }
-
-        Spacer(modifier = Modifier.width(CinemaxTheme.spacing.medium))
-
         when (settings) {
             is Settings.Info -> ValueText(value = settings.value)
             is Settings.Action, is Settings.IntentAction -> ForwardButton()
-            is Settings.Preferences.Selection -> Selection(
-                expanded = selectionExpanded,
-                onDismiss = { selectionExpanded = false },
-                value = settings.value,
-                values = settings.values,
-                onSelect = { onPreferencesSelection(settings.name, it) }
-            )
         }
     }
 }
@@ -143,17 +118,13 @@ private fun ValueText(
     value: String,
     modifier: Modifier = Modifier,
     style: TextStyle = CinemaxTheme.typography.medium.h5,
-    color: Color = CinemaxTheme.colors.textPrimary,
-    overflow: TextOverflow = TextOverflow.Ellipsis,
-    maxLines: Int = 1
+    color: Color = CinemaxTheme.colors.textPrimary
 ) {
     Text(
         modifier = modifier,
         text = value,
         style = style,
-        color = color,
-        overflow = overflow,
-        maxLines = maxLines
+        color = color
     )
 }
 
@@ -168,27 +139,6 @@ private fun ForwardButton(
         contentDescription = stringResource(id = R.string.forward),
         tint = color
     )
-}
-
-@Composable
-private fun Selection(
-    expanded: Boolean,
-    onDismiss: () -> Unit,
-    value: String,
-    values: Map<String, String>,
-    onSelect: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(modifier = modifier) {
-        ValueText(value = value)
-
-        CinemaxSelectionDialog(
-            expanded = expanded,
-            onDismiss = onDismiss,
-            values = values.toList(),
-            onSelect = onSelect
-        )
-    }
 }
 
 private val IconShapeSize = 32.dp
