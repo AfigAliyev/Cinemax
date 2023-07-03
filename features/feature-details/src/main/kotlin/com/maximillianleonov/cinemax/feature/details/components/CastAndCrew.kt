@@ -120,7 +120,7 @@ private fun CastAndCrewContainer(
             modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.extraMedium),
             text = stringResource(id = titleResourceId),
             style = CinemaxTheme.typography.semiBold.h4,
-            color = CinemaxTheme.colors.textPrimary
+            color = CinemaxTheme.colors.white
         )
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
@@ -164,25 +164,25 @@ private fun CastAndCrewItem(
                 modifier = if (isPlaceholder) {
                     Modifier
                         .width(PlaceholderTextWidth)
-                        .cinemaxPlaceholder(color = CinemaxTheme.colors.textSecondary)
+                        .cinemaxPlaceholder(color = CinemaxTheme.colors.grey)
                 } else {
                     Modifier
                 },
                 text = name,
                 style = CinemaxTheme.typography.semiBold.h5,
-                color = CinemaxTheme.colors.textPrimary
+                color = CinemaxTheme.colors.white
             )
             Text(
                 modifier = if (isPlaceholder) {
                     Modifier
                         .width(PlaceholderTextWidth)
-                        .cinemaxPlaceholder(color = CinemaxTheme.colors.textSecondary)
+                        .cinemaxPlaceholder(color = CinemaxTheme.colors.grey)
                 } else {
                     Modifier
                 },
                 text = description,
                 style = CinemaxTheme.typography.medium.h7,
-                color = CinemaxTheme.colors.textSecondary
+                color = CinemaxTheme.colors.grey
             )
         }
     }

@@ -52,7 +52,7 @@ fun DefaultHorizontalPagerIndicator(
     modifier: Modifier = Modifier,
     pageCount: Int = pagerState.pageCount,
     pageIndexMapping: (Int) -> Int = { it },
-    activeColor: Color = CinemaxTheme.colors.accent,
+    activeColor: Color = CinemaxTheme.colors.primaryBlue,
     inactiveColor: Color = activeColor.copy(PagerIndicatorInactiveColorAlpha),
     activeIndicatorWidth: Dp = CinemaxTheme.spacing.extraMedium,
     indicatorWidth: Dp = CinemaxTheme.spacing.small,

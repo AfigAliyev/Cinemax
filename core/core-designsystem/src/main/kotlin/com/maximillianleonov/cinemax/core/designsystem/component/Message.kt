@@ -49,7 +49,7 @@ fun CinemaxMessage(
             Text(
                 text = stringResource(id = messageResourceId),
                 style = CinemaxTheme.typography.medium.h3,
-                color = CinemaxTheme.colors.textPrimary,
+                color = CinemaxTheme.colors.white,
                 textAlign = TextAlign.Center
             )
         }

@@ -42,7 +42,8 @@ internal fun rememberCinemaxRipple(
     color: Color = RippleColor
 ) = rememberRipple(bounded = bounded, radius = radius, color = color)
 
-private val RippleColor @Composable get() = CinemaxTheme.colors.accent
+private val RippleColor: Color
+    @Composable get() = CinemaxTheme.colors.primaryBlue
 
 private val RippleAlpha = RippleAlpha(
     draggedAlpha = 0.16f,

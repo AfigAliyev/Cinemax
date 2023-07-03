@@ -17,42 +17,37 @@
 package com.maximillianleonov.cinemax.core.designsystem.theme
 
 import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ripple.LocalRippleTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 
 @Composable
 fun CinemaxTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    colorScheme: ColorScheme = DarkColorScheme,
+    shapes: Shapes = Shapes,
+    typography: Typography = Typography,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
-        shapes = Shapes,
-        typography = Typography
+        colorScheme = colorScheme,
+        shapes = shapes,
+        typography = typography
     ) { ProvideCinemaxThemeDependencies(content = content) }
 }
 
 @Composable
-private fun ProvideCinemaxThemeDependencies(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-) {
+private fun ProvideCinemaxThemeDependencies(content: @Composable () -> Unit) {
     CompositionLocalProvider(
-        LocalCinemaxColors provides if (darkTheme) DarkCinemaxColors else LightCinemaxColors,
+        LocalCinemaxColors provides CinemaxColors(),
         LocalCinemaxShapes provides CinemaxShapes(),
         LocalCinemaxTypography provides CinemaxTypography(),
-        LocalCinemaxSpacing provides CinemaxSpacing()
-    ) { ProvideMaterialThemeDependencies(content = content) }
-}
-
-@Composable
-private fun ProvideMaterialThemeDependencies(content: @Composable () -> Unit) {
-    CompositionLocalProvider(
+        LocalCinemaxSpacing provides CinemaxSpacing(),
         LocalIndication provides rememberCinemaxRipple(),
         LocalRippleTheme provides CinemaxRippleTheme
     ) {

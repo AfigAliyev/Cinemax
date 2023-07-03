@@ -30,13 +30,13 @@ import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 fun CinemaxBackButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    tint: Color = CinemaxTheme.colors.textPrimary
+    tint: Color = CinemaxTheme.colors.white
 ) {
     CinemaxIconButton(
         modifier = modifier
             .size(CinemaxBackButtonShapeSize)
             .background(
-                color = CinemaxTheme.colors.primaryVariant,
+                color = CinemaxTheme.colors.primarySoft,
                 shape = CinemaxTheme.shapes.smallMedium
             ),
         iconResourceId = R.drawable.ic_arrow_back,

@@ -88,12 +88,12 @@ private fun IconBox(
     CinemaxCenteredBox(
         modifier = modifier
             .size(IconShapeSize)
-            .background(color = CinemaxTheme.colors.primaryVariant, shape = CircleShape)
+            .background(color = CinemaxTheme.colors.primarySoft, shape = CircleShape)
     ) {
         CinemaxIcon(
             iconResourceId = iconResourceId,
             contentDescription = contentDescription,
-            tint = CinemaxTheme.colors.textSecondary
+            tint = CinemaxTheme.colors.grey
         )
     }
 }
@@ -103,7 +103,7 @@ private fun TitleText(
     @StringRes titleResourceId: Int,
     modifier: Modifier = Modifier,
     style: TextStyle = CinemaxTheme.typography.medium.h5,
-    color: Color = CinemaxTheme.colors.textPrimary
+    color: Color = CinemaxTheme.colors.white
 ) {
     ValueText(
         modifier = modifier,
@@ -118,7 +118,7 @@ private fun ValueText(
     value: String,
     modifier: Modifier = Modifier,
     style: TextStyle = CinemaxTheme.typography.medium.h5,
-    color: Color = CinemaxTheme.colors.textPrimary
+    color: Color = CinemaxTheme.colors.white
 ) {
     Text(
         modifier = modifier,
@@ -131,7 +131,7 @@ private fun ValueText(
 @Composable
 private fun ForwardButton(
     modifier: Modifier = Modifier,
-    color: Color = CinemaxTheme.colors.accent
+    color: Color = CinemaxTheme.colors.primaryBlue
 ) {
     CinemaxIcon(
         modifier = modifier.size(IconShapeSize),

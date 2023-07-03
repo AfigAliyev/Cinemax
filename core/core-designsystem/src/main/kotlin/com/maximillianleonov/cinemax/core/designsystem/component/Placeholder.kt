@@ -28,7 +28,7 @@ import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 @Composable
 fun CinemaxImagePlaceholder(
     modifier: Modifier = Modifier,
-    color: Color = CinemaxTheme.colors.primaryVariant
+    color: Color = CinemaxTheme.colors.primarySoft
 ) {
     Box(
         modifier = modifier
@@ -38,7 +38,7 @@ fun CinemaxImagePlaceholder(
 }
 
 fun Modifier.cinemaxPlaceholder() = composed {
-    cinemaxPlaceholder(color = CinemaxTheme.colors.primaryVariant)
+    cinemaxPlaceholder(color = CinemaxTheme.colors.primarySoft)
 }
 
 fun Modifier.cinemaxPlaceholder(color: Color) = composed {
