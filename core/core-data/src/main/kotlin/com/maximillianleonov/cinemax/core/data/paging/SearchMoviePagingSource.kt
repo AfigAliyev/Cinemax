@@ -23,18 +23,15 @@ import com.maximillianleonov.cinemax.core.common.result.isFailure
 import com.maximillianleonov.cinemax.core.common.result.isSuccess
 import com.maximillianleonov.cinemax.core.data.mapper.asMovieModel
 import com.maximillianleonov.cinemax.core.data.util.Constants
-import com.maximillianleonov.cinemax.core.datastore.PreferencesDataStoreDataSource
 import com.maximillianleonov.cinemax.core.domain.model.MovieModel
 import com.maximillianleonov.cinemax.core.network.model.movie.NetworkMovie
 import com.maximillianleonov.cinemax.core.network.source.MovieNetworkDataSource
 import com.maximillianleonov.cinemax.core.network.util.DEFAULT_PAGE
-import kotlinx.coroutines.flow.first
 import java.io.IOException
 
 class SearchMoviePagingSource(
     private val query: String,
-    private val networkDataSource: MovieNetworkDataSource,
-    private val preferencesDataStoreDataSource: PreferencesDataStoreDataSource
+    private val networkDataSource: MovieNetworkDataSource
 ) : PagingSource<Int, MovieModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, MovieModel>) = state.anchorPosition
@@ -43,11 +40,7 @@ class SearchMoviePagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieModel> {
         return try {
             val currentPage = params.key ?: DEFAULT_PAGE
-            val response = networkDataSource.search(
-                query = query,
-                language = preferencesDataStoreDataSource.getContentLanguage().first(),
-                page = currentPage
-            )
+            val response = networkDataSource.search(query = query, page = currentPage)
 
             when {
                 response.isSuccess() -> {

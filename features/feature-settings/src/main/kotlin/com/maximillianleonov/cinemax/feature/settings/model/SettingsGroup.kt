@@ -22,5 +22,3 @@ data class SettingsGroup(
     @StringRes val titleResourceId: Int,
     val settings: List<Settings>
 )
-
-enum class SettingsGroupNames { General, About }

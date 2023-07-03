@@ -50,9 +50,9 @@ import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxOverlay
 import com.maximillianleonov.cinemax.core.designsystem.component.cinemaxPlaceholder
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.model.Credits
-import com.maximillianleonov.cinemax.core.model.ReleaseDate
 import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.RatingItem
+import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Suppress("LongParameterList")
@@ -61,7 +61,7 @@ internal fun DetailsItem(
     title: String,
     overview: String,
     posterPath: String?,
-    releaseDate: ReleaseDate,
+    releaseDate: LocalDate?,
     runtime: String,
     genres: List<String>,
     voteAverage: Double,
@@ -159,7 +159,8 @@ internal fun DetailsItem(
                             } else {
                                 IconAndText(
                                     iconResourceId = R.drawable.ic_calendar,
-                                    text = releaseDate.year.ifEmpty { stringResource(id = R.string.no_release_date) }
+                                    text = releaseDate?.year?.toString()
+                                        ?: stringResource(id = R.string.no_release_date)
                                 )
                                 IconAndText(iconResourceId = R.drawable.ic_clock, text = runtime)
                                 IconAndText(
@@ -206,7 +207,7 @@ internal fun DetailsItemPlaceholder(
         title = PlaceholderText,
         overview = PlaceholderText,
         posterPath = null,
-        releaseDate = ReleaseDate(),
+        releaseDate = null,
         runtime = PlaceholderText,
         genres = emptyList(),
         voteAverage = PlaceholderRating,

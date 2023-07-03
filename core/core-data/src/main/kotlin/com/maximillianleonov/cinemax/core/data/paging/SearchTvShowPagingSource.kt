@@ -23,18 +23,15 @@ import com.maximillianleonov.cinemax.core.common.result.isFailure
 import com.maximillianleonov.cinemax.core.common.result.isSuccess
 import com.maximillianleonov.cinemax.core.data.mapper.asTvShowModel
 import com.maximillianleonov.cinemax.core.data.util.Constants
-import com.maximillianleonov.cinemax.core.datastore.PreferencesDataStoreDataSource
 import com.maximillianleonov.cinemax.core.domain.model.TvShowModel
 import com.maximillianleonov.cinemax.core.network.model.tvshow.NetworkTvShow
 import com.maximillianleonov.cinemax.core.network.source.TvShowNetworkDataSource
 import com.maximillianleonov.cinemax.core.network.util.DEFAULT_PAGE
-import kotlinx.coroutines.flow.first
 import java.io.IOException
 
 class SearchTvShowPagingSource(
     private val query: String,
-    private val networkDataSource: TvShowNetworkDataSource,
-    private val preferencesDataStoreDataSource: PreferencesDataStoreDataSource
+    private val networkDataSource: TvShowNetworkDataSource
 ) : PagingSource<Int, TvShowModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, TvShowModel>) = state.anchorPosition
@@ -43,11 +40,7 @@ class SearchTvShowPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShowModel> {
         return try {
             val currentPage = params.key ?: DEFAULT_PAGE
-            val response = networkDataSource.search(
-                query = query,
-                language = preferencesDataStoreDataSource.getContentLanguage().first(),
-                page = currentPage
-            )
+            val response = networkDataSource.search(query = query, page = currentPage)
 
             when {
                 response.isSuccess() -> {

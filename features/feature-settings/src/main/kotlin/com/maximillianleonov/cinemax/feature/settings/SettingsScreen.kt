@@ -31,7 +31,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.feature.settings.components.SettingsGroupItem
-import com.maximillianleonov.cinemax.feature.settings.model.PreferenceNames
 
 @Composable
 internal fun SettingsRoute(
@@ -39,23 +38,11 @@ internal fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    SettingsScreen(
-        uiState = uiState,
-        onPreferencesSelection = { name, value ->
-            viewModel.onEvent(SettingsEvent.PreferencesSelection(name, value))
-        },
-        modifier = modifier
-    )
+    SettingsScreen(uiState = uiState, modifier = modifier)
 }
 
 @Composable
-private fun SettingsScreen(
-    uiState: SettingsUiState,
-    onPreferencesSelection: (PreferenceNames, String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val settingsGroups = uiState.settingsGroups.values.toList()
-
+private fun SettingsScreen(uiState: SettingsUiState, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .padding(CinemaxTheme.spacing.extraMedium)
@@ -63,11 +50,8 @@ private fun SettingsScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(CinemaxTheme.spacing.extraMedium)
     ) {
-        items(settingsGroups) { settingsGroup ->
-            SettingsGroupItem(
-                settingsGroup = settingsGroup,
-                onPreferencesSelection = onPreferencesSelection
-            )
+        items(uiState.settingsGroups) { settingsGroup ->
+            SettingsGroupItem(settingsGroup = settingsGroup)
         }
     }
 }

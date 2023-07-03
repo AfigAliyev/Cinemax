@@ -16,6 +16,7 @@
 
 package com.maximillianleonov.cinemax.feature.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maximillianleonov.cinemax.core.common.result.handle
@@ -141,5 +142,5 @@ class HomeViewModel @Inject constructor(
                     it.tvShows.values.all(List<TvShow>::isNotEmpty),
                 loadStates = it.loadStates + (mediaType to false)
             )
-        }
+        }.apply { Log.e("AAA", "Error caught $error") }
 }

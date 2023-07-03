@@ -20,14 +20,13 @@ import com.maximillianleonov.cinemax.core.domain.model.MovieDetailsModel
 import com.maximillianleonov.cinemax.core.domain.model.MovieModel
 import com.maximillianleonov.cinemax.core.model.Movie
 import com.maximillianleonov.cinemax.core.model.MovieDetails
-import com.maximillianleonov.cinemax.core.model.ReleaseDate
 import com.maximillianleonov.cinemax.core.ui.util.roundToOneDecimal
 
 fun MovieModel.asMovie() = Movie(
     id = id,
     title = title,
     overview = overview,
-    releaseDate = releaseDate?.asReleaseDate() ?: ReleaseDate(),
+    releaseDate = releaseDate,
     genres = genres.asGenres(),
     voteAverage = voteAverage.roundToOneDecimal(),
     posterPath = posterPath,
@@ -42,7 +41,7 @@ fun MovieDetailsModel.asMovieDetails() = MovieDetails(
     budget = budget,
     genres = genres.asGenres(),
     posterPath = posterPath,
-    releaseDate = releaseDate?.asReleaseDate() ?: ReleaseDate(),
+    releaseDate = releaseDate,
     runtime = runtime ?: NoMovieRuntimeValue,
     video = video,
     voteAverage = voteAverage.roundToOneDecimal(),

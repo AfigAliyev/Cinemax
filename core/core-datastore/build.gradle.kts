@@ -21,6 +21,6 @@ plugins {
 android.namespace = "com.maximillianleonov.cinemax.core.datastore"
 
 dependencies {
-    api(libs.androidx.datastore.preferences)
-    implementation(libs.dagger.hilt.android)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.javax.inject)
 }

@@ -19,73 +19,53 @@ package com.maximillianleonov.cinemax.core.network.api.service
 import com.maximillianleonov.cinemax.core.common.result.CinemaxResult
 import com.maximillianleonov.cinemax.core.network.model.movie.NetworkMovieDetails
 import com.maximillianleonov.cinemax.core.network.model.response.MovieResponseDto
-import com.maximillianleonov.cinemax.core.network.util.Constants.DEFAULT_PAGE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.APPEND_TO_RESPONSE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.DETAILS_APPEND_TO_RESPONSE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.ID
-import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.LANGUAGE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.PAGE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Fields.QUERY
-import com.maximillianleonov.cinemax.core.network.util.Constants.Path.DETAILS_MOVIE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Path.DISCOVER_MOVIE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Path.NOW_PLAYING_MOVIE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Path.POPULAR_MOVIE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Path.SEARCH_MOVIE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Path.TOP_RATED_MOVIE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Path.TRENDING_MOVIE
-import com.maximillianleonov.cinemax.core.network.util.Constants.Path.UPCOMING_MOVIE
+import com.maximillianleonov.cinemax.core.network.util.Constants
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MovieService {
-    @GET(UPCOMING_MOVIE)
+    @GET(Constants.Path.UPCOMING_MOVIE)
     suspend fun getUpcoming(
-        @Query(LANGUAGE) language: String,
-        @Query(PAGE) page: Int = DEFAULT_PAGE
+        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
     ): CinemaxResult<MovieResponseDto>
 
-    @GET(TOP_RATED_MOVIE)
+    @GET(Constants.Path.TOP_RATED_MOVIE)
     suspend fun getTopRated(
-        @Query(LANGUAGE) language: String,
-        @Query(PAGE) page: Int = DEFAULT_PAGE
+        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
     ): CinemaxResult<MovieResponseDto>
 
-    @GET(POPULAR_MOVIE)
+    @GET(Constants.Path.POPULAR_MOVIE)
     suspend fun getPopular(
-        @Query(LANGUAGE) language: String,
-        @Query(PAGE) page: Int = DEFAULT_PAGE
+        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
     ): CinemaxResult<MovieResponseDto>
 
-    @GET(NOW_PLAYING_MOVIE)
+    @GET(Constants.Path.NOW_PLAYING_MOVIE)
     suspend fun getNowPlaying(
-        @Query(LANGUAGE) language: String,
-        @Query(PAGE) page: Int = DEFAULT_PAGE
+        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
     ): CinemaxResult<MovieResponseDto>
 
-    @GET(DISCOVER_MOVIE)
+    @GET(Constants.Path.DISCOVER_MOVIE)
     suspend fun getDiscover(
-        @Query(LANGUAGE) language: String,
-        @Query(PAGE) page: Int = DEFAULT_PAGE
+        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
     ): CinemaxResult<MovieResponseDto>
 
-    @GET(TRENDING_MOVIE)
+    @GET(Constants.Path.TRENDING_MOVIE)
     suspend fun getTrending(
-        @Query(LANGUAGE) language: String,
-        @Query(PAGE) page: Int = DEFAULT_PAGE
+        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
     ): CinemaxResult<MovieResponseDto>
 
-    @GET(DETAILS_MOVIE)
+    @GET(Constants.Path.DETAILS_MOVIE)
     suspend fun getDetailsById(
-        @Path(ID) id: Int,
-        @Query(LANGUAGE) language: String,
-        @Query(APPEND_TO_RESPONSE) appendToResponse: String = DETAILS_APPEND_TO_RESPONSE
+        @Path(Constants.Fields.ID)
+        id: Int,
+        @Query(Constants.Fields.APPEND_TO_RESPONSE)
+        appendToResponse: String = Constants.Fields.DETAILS_APPEND_TO_RESPONSE
     ): CinemaxResult<NetworkMovieDetails>
 
-    @GET(SEARCH_MOVIE)
+    @GET(Constants.Path.SEARCH_MOVIE)
     suspend fun search(
-        @Query(QUERY) query: String,
-        @Query(LANGUAGE) language: String,
-        @Query(PAGE) page: Int = DEFAULT_PAGE
+        @Query(Constants.Fields.QUERY) query: String,
+        @Query(Constants.Fields.PAGE) page: Int = Constants.DEFAULT_PAGE
     ): CinemaxResult<MovieResponseDto>
 }

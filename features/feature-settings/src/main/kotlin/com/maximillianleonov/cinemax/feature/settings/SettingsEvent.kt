@@ -16,8 +16,4 @@
 
 package com.maximillianleonov.cinemax.feature.settings
 
-import com.maximillianleonov.cinemax.feature.settings.model.PreferenceNames
-
-sealed interface SettingsEvent {
-    data class PreferencesSelection(val name: PreferenceNames, val value: String) : SettingsEvent
-}
+sealed interface SettingsEvent

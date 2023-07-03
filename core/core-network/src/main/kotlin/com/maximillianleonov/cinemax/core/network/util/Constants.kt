@@ -117,7 +117,6 @@ internal object Constants {
         internal const val ISO_639_1 = "iso_639_1"
         internal const val APPEND_TO_RESPONSE = "append_to_response"
         internal const val QUERY = "query"
-        internal const val LANGUAGE = "language"
 
         internal val DETAILS_APPEND_TO_RESPONSE = buildAppendToResponse(CREDITS)
 

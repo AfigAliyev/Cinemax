@@ -16,7 +16,13 @@
 
 package com.maximillianleonov.cinemax.core.ui.util
 
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.toJavaLocalDate
+import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
+
+fun LocalDate.format(pattern: String): String =
+    toJavaLocalDate().format(DateTimeFormatter.ofPattern(pattern))
 
 internal fun Double.roundToOneDecimal() =
     (this * ONE_DECIMAL_ARGUMENT).roundToInt() / ONE_DECIMAL_ARGUMENT
