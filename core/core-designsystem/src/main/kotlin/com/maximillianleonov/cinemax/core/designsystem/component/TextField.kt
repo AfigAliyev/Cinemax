@@ -56,8 +56,9 @@ fun CinemaxTextField(
     keyboardActions: KeyboardActions = KeyboardActions(),
     singleLine: Boolean = true,
     shape: Shape = CinemaxTheme.shapes.extraMedium,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(
-        textColor = CinemaxTheme.colors.textPrimary,
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        focusedTextColor = CinemaxTheme.colors.textPrimary,
+        unfocusedTextColor = CinemaxTheme.colors.textPrimary,
         cursorColor = CinemaxTheme.colors.accent,
         selectionColors = TextSelectionColors(
             handleColor = CinemaxTheme.colors.accent,
@@ -65,12 +66,14 @@ fun CinemaxTextField(
                 alpha = TextSelectionColorsBackgroundColorAlpha
             )
         ),
-        containerColor = CinemaxTheme.colors.primaryVariant,
+        focusedContainerColor = CinemaxTheme.colors.primaryVariant,
+        unfocusedContainerColor = CinemaxTheme.colors.primaryVariant,
         focusedLeadingIconColor = CinemaxTheme.colors.textSecondary,
         unfocusedLeadingIconColor = CinemaxTheme.colors.textSecondary,
         focusedTrailingIconColor = CinemaxTheme.colors.textSecondary,
         unfocusedTrailingIconColor = CinemaxTheme.colors.textSecondary,
-        placeholderColor = CinemaxTheme.colors.textSecondary,
+        focusedPlaceholderColor = CinemaxTheme.colors.textSecondary,
+        unfocusedPlaceholderColor = CinemaxTheme.colors.textSecondary,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent
     )
