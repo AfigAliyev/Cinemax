@@ -22,7 +22,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -110,7 +110,7 @@ private fun CinemaxIconButtonContent(
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
-        LocalMinimumTouchTargetEnforcement provides false
+        LocalMinimumInteractiveComponentEnforcement provides false
     ) {
         IconButton(modifier = modifier, onClick = onClick, content = content)
     }
