@@ -38,7 +38,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.items
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxCenteredBox
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxCircularProgressIndicator
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxMessage
@@ -135,7 +134,8 @@ fun MoviesContainer(
         ) {
             when {
                 movies.isNotEmpty() -> {
-                    items(movies) { movie ->
+                    items(count = movies.itemCount) { index ->
+                        val movie = movies[index]
                         if (movie == null) {
                             VerticalMovieItemPlaceholder()
                         } else {
@@ -208,7 +208,8 @@ fun TvShowsContainer(
         ) {
             when {
                 tvShows.isNotEmpty() -> {
-                    items(tvShows) { tvShow ->
+                    items(count = tvShows.itemCount) { index ->
+                        val tvShow = tvShows[index]
                         if (tvShow == null) {
                             VerticalTvShowItemPlaceholder()
                         } else {
