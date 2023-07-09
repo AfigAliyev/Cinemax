@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Maximillian Leonov
+ * Copyright 2022 Afig Aliyev
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.maximillianleonov.cinemax.core.database.converter
 
 import androidx.room.TypeConverter
 import com.maximillianleonov.cinemax.core.database.model.common.Genre
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
