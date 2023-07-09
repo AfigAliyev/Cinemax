@@ -17,6 +17,7 @@
 package com.maximillianleonov.cinemax.feature.home.component
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,20 +39,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerScope
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DefaultHorizontalPagerIndicator(
     pagerState: PagerState,
+    pageCount: Int,
     modifier: Modifier = Modifier,
-    pageCount: Int = pagerState.pageCount,
     pageIndexMapping: (Int) -> Int = { it },
     activeColor: Color = CinemaxTheme.colors.accent,
     inactiveColor: Color = activeColor.copy(PagerIndicatorInactiveColorAlpha),
@@ -88,7 +86,7 @@ fun DefaultHorizontalPagerIndicator(
             Modifier
                 .offset {
                     val position = pageIndexMapping(pagerState.currentPage)
-                    val offset = pagerState.currentPageOffset
+                    val offset = pagerState.currentPageOffsetFraction
                     val next = pageIndexMapping(pagerState.currentPage + offset.sign.toInt())
                     val scrollPosition = ((next - position) * offset.absoluteValue + position)
                         .coerceIn(
@@ -109,12 +107,12 @@ fun DefaultHorizontalPagerIndicator(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 fun Modifier.pagerTransition(
-    pagerScope: PagerScope,
+    pagerState: PagerState,
     page: Int
 ) = graphicsLayer {
-    val pageOffset = pagerScope.calculateCurrentOffsetForPage(page).absoluteValue
+    val pageOffset = pagerState.calculatePageOffset(page)
 
     lerp(
         start = 0.85f,
@@ -131,5 +129,9 @@ fun Modifier.pagerTransition(
         fraction = 1f - pageOffset.coerceIn(0f, 1f)
     )
 }
+
+@OptIn(ExperimentalFoundationApi::class)
+private fun PagerState.calculatePageOffset(page: Int) =
+    ((currentPage - page) + currentPageOffsetFraction).absoluteValue
 
 private const val PagerIndicatorInactiveColorAlpha = 0.32f

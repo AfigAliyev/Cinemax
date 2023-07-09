@@ -28,7 +28,6 @@ dependencies {
     api(project(":core:core-domain"))
 
     implementation(libs.kotlinx.datetime)
-    implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
     implementation(libs.androidx.paging.compose)
 }
