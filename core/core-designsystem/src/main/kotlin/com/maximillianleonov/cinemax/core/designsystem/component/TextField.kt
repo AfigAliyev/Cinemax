@@ -56,23 +56,23 @@ fun CinemaxTextField(
     singleLine: Boolean = true,
     shape: Shape = CinemaxTheme.shapes.extraMedium,
     colors: TextFieldColors = TextFieldDefaults.colors(
-        focusedTextColor = CinemaxTheme.colors.textPrimary,
-        unfocusedTextColor = CinemaxTheme.colors.textPrimary,
-        cursorColor = CinemaxTheme.colors.accent,
+        focusedTextColor = CinemaxTheme.colors.white,
+        unfocusedTextColor = CinemaxTheme.colors.white,
+        cursorColor = CinemaxTheme.colors.primaryBlue,
         selectionColors = TextSelectionColors(
-            handleColor = CinemaxTheme.colors.accent,
-            backgroundColor = CinemaxTheme.colors.accent.copy(
+            handleColor = CinemaxTheme.colors.primaryBlue,
+            backgroundColor = CinemaxTheme.colors.primaryBlue.copy(
                 alpha = TextSelectionColorsBackgroundColorAlpha
             )
         ),
-        focusedContainerColor = CinemaxTheme.colors.primaryVariant,
-        unfocusedContainerColor = CinemaxTheme.colors.primaryVariant,
-        focusedLeadingIconColor = CinemaxTheme.colors.textSecondary,
-        unfocusedLeadingIconColor = CinemaxTheme.colors.textSecondary,
-        focusedTrailingIconColor = CinemaxTheme.colors.textSecondary,
-        unfocusedTrailingIconColor = CinemaxTheme.colors.textSecondary,
-        focusedPlaceholderColor = CinemaxTheme.colors.textSecondary,
-        unfocusedPlaceholderColor = CinemaxTheme.colors.textSecondary,
+        focusedContainerColor = CinemaxTheme.colors.primarySoft,
+        unfocusedContainerColor = CinemaxTheme.colors.primarySoft,
+        focusedLeadingIconColor = CinemaxTheme.colors.grey,
+        unfocusedLeadingIconColor = CinemaxTheme.colors.grey,
+        focusedTrailingIconColor = CinemaxTheme.colors.grey,
+        unfocusedTrailingIconColor = CinemaxTheme.colors.grey,
+        focusedPlaceholderColor = CinemaxTheme.colors.grey,
+        unfocusedPlaceholderColor = CinemaxTheme.colors.grey,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent
     )

@@ -47,11 +47,13 @@ import com.maximillianleonov.cinemax.ui.component.CinemaxBottomBar
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Suppress("ModifierMissing")
 @Composable
-fun CinemaxApp(appState: CinemaxAppState = rememberCinemaxAppState()) {
-    CinemaxTheme {
-        val systemBarsColor = CinemaxTheme.colors.primary
-        LaunchedEffect(systemBarsColor) { appState.setSystemBarsColor(systemBarsColor) }
+fun CinemaxApp(
+    appState: CinemaxAppState = rememberCinemaxAppState(),
+    systemBarsColor: Color = CinemaxTheme.colors.primaryDark
+) {
+    LaunchedEffect(systemBarsColor) { appState.setSystemBarsColor(systemBarsColor) }
 
+    CinemaxTheme {
         CompositionLocalProvider(
             LocalSnackbarHostState provides appState.snackbarHostState
         ) {

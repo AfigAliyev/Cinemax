@@ -15,6 +15,5 @@
      limitations under the License.
 -->
 <resources>
-    <color name="primaryLight">#DFD8FF</color>
     <color name="primaryDark">#1F1D2B</color>
 </resources>

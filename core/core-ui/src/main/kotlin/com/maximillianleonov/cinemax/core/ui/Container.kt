@@ -71,7 +71,7 @@ fun MoviesAndTvShowsContainer(
             modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.extraMedium),
             text = stringResource(id = R.string.movies),
             style = CinemaxTheme.typography.semiBold.h5,
-            color = CinemaxTheme.colors.textPrimaryVariant
+            color = CinemaxTheme.colors.whiteGrey
         )
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.small))
         MoviesContainer(movies = movies, onClick = onMovieClick)
@@ -80,7 +80,7 @@ fun MoviesAndTvShowsContainer(
             modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.extraMedium),
             text = stringResource(id = R.string.tv_shows),
             style = CinemaxTheme.typography.semiBold.h5,
-            color = CinemaxTheme.colors.textPrimaryVariant
+            color = CinemaxTheme.colors.whiteGrey
         )
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.small))
         TvShowsContainer(tvShows = tvShows, onClick = onTvShowClick)
@@ -312,13 +312,13 @@ private fun ContainerTitleWithButton(
         Text(
             text = stringResource(id = titleResourceId),
             style = CinemaxTheme.typography.semiBold.h4,
-            color = CinemaxTheme.colors.textPrimary
+            color = CinemaxTheme.colors.white
         )
         TextButton(onClick = onSeeAllClick) {
             Text(
                 text = stringResource(id = R.string.see_all),
                 style = CinemaxTheme.typography.medium.h5,
-                color = CinemaxTheme.colors.accent
+                color = CinemaxTheme.colors.primaryBlue
             )
         }
     }

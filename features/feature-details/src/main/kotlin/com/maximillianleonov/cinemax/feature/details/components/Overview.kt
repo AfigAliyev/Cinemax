@@ -43,19 +43,19 @@ internal fun Overview(
         Text(
             text = stringResource(id = R.string.overview),
             style = CinemaxTheme.typography.semiBold.h4,
-            color = CinemaxTheme.colors.textPrimary
+            color = CinemaxTheme.colors.white
         )
         Text(
             modifier = if (isPlaceholder) {
                 Modifier
                     .fillMaxWidth()
-                    .cinemaxPlaceholder(color = CinemaxTheme.colors.textSecondary)
+                    .cinemaxPlaceholder(color = CinemaxTheme.colors.grey)
             } else {
                 Modifier
             },
             text = overview.ifEmpty { stringResource(id = R.string.no_overview) },
             style = CinemaxTheme.typography.regular.h5,
-            color = CinemaxTheme.colors.textPrimaryVariant
+            color = CinemaxTheme.colors.whiteGrey
         )
     }
 }

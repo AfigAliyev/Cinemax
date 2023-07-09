@@ -44,9 +44,9 @@ fun MediaTabPager(
     tvShowsTabContent: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    backgroundColor: Color = CinemaxTheme.colors.primary,
-    selectedContentColor: Color = CinemaxTheme.colors.accent,
-    unselectedContentColor: Color = CinemaxTheme.colors.textPrimary
+    backgroundColor: Color = CinemaxTheme.colors.primaryDark,
+    selectedContentColor: Color = CinemaxTheme.colors.primaryBlue,
+    unselectedContentColor: Color = CinemaxTheme.colors.white
 ) {
     val tabs = remember { MediaTab.values() }
     val pagerState = rememberPagerState()
@@ -58,11 +58,11 @@ fun MediaTabPager(
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
                     modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-                    color = CinemaxTheme.colors.accent
+                    color = CinemaxTheme.colors.primaryBlue
                 )
             },
             backgroundColor = backgroundColor,
-            divider = { TabRowDefaults.Divider(color = CinemaxTheme.colors.primaryVariant) }
+            divider = { TabRowDefaults.Divider(color = CinemaxTheme.colors.primarySoft) }
         ) {
             tabs.forEach { tab ->
                 val index = tab.ordinal

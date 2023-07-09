@@ -39,7 +39,7 @@ internal fun IconAndText(
     @DrawableRes iconResourceId: Int,
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = CinemaxTheme.colors.textSecondary,
+    color: Color = CinemaxTheme.colors.grey,
     isPlaceholder: Boolean = false
 ) {
     Row(

@@ -50,7 +50,7 @@ internal fun HorizontalFeedItem(
     voteAverage: Double,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = CinemaxTheme.colors.primaryVariant,
+    containerColor: Color = CinemaxTheme.colors.primarySoft,
     shape: Shape = CinemaxTheme.shapes.smallMedium,
     isPlaceholder: Boolean = false
 ) {
@@ -83,7 +83,7 @@ internal fun HorizontalFeedItem(
                         .align(Alignment.TopEnd)
                         .then(
                             if (isPlaceholder) {
-                                Modifier.cinemaxPlaceholder(color = CinemaxTheme.colors.secondaryVariant)
+                                Modifier.cinemaxPlaceholder(color = CinemaxTheme.colors.secondaryOrange)
                             } else {
                                 Modifier
                             }
@@ -99,7 +99,7 @@ internal fun HorizontalFeedItem(
                             Modifier
                                 .fillMaxWidth()
                                 .cinemaxPlaceholder(
-                                    color = CinemaxTheme.colors.textPrimary
+                                    color = CinemaxTheme.colors.white
                                 )
                         } else {
                             Modifier
@@ -107,7 +107,7 @@ internal fun HorizontalFeedItem(
                     ),
                 text = title,
                 style = CinemaxTheme.typography.semiBold.h5,
-                color = CinemaxTheme.colors.textPrimary,
+                color = CinemaxTheme.colors.white,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -125,7 +125,7 @@ internal fun HorizontalFeedItem(
                                 .fillMaxWidth(
                                     HorizontalFeedItemPlaceholderSecondTextMaxWidthFraction
                                 )
-                                .cinemaxPlaceholder(color = CinemaxTheme.colors.textSecondary)
+                                .cinemaxPlaceholder(color = CinemaxTheme.colors.grey)
                         } else {
                             Modifier
                         }
@@ -133,7 +133,7 @@ internal fun HorizontalFeedItem(
                 text = genres.joinToString(separator = FeedItemGenreSeparator)
                     .ifEmpty { stringResource(id = R.string.no_genre) },
                 style = CinemaxTheme.typography.medium.h7,
-                color = CinemaxTheme.colors.textSecondary,
+                color = CinemaxTheme.colors.grey,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

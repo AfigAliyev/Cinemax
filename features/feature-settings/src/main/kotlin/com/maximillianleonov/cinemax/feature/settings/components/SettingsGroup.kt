@@ -39,9 +39,9 @@ internal fun SettingsGroupItem(
 ) {
     Card(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = CinemaxTheme.colors.primary),
+        colors = CardDefaults.cardColors(containerColor = CinemaxTheme.colors.primaryDark),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        border = BorderStroke(width = 1.dp, color = CinemaxTheme.colors.primaryVariant)
+        border = BorderStroke(width = 1.dp, color = CinemaxTheme.colors.primarySoft)
     ) {
         Column {
             Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraMedium))
@@ -50,7 +50,7 @@ internal fun SettingsGroupItem(
                 modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.medium),
                 text = stringResource(id = settingsGroup.titleResourceId),
                 style = CinemaxTheme.typography.semiBold.h3,
-                color = CinemaxTheme.colors.textPrimary
+                color = CinemaxTheme.colors.white
             )
 
             Spacer(modifier = Modifier.height(CinemaxTheme.spacing.small))
@@ -60,7 +60,7 @@ internal fun SettingsGroupItem(
 
                 if (index < settingsGroup.settings.lastIndex) {
                     Divider(
-                        color = CinemaxTheme.colors.primaryVariant,
+                        color = CinemaxTheme.colors.primarySoft,
                         thickness = 1.dp
                     )
                 }

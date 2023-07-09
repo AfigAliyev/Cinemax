@@ -42,8 +42,8 @@ fun CinemaxOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CinemaxTheme.shapes.medium,
-    containerColor: Color = CinemaxTheme.colors.primaryVariant,
-    contentColor: Color = CinemaxTheme.colors.accent,
+    containerColor: Color = CinemaxTheme.colors.primarySoft,
+    contentColor: Color = CinemaxTheme.colors.primaryBlue,
     borderColor: Color = contentColor,
     textStyle: TextStyle = CinemaxTheme.typography.medium.h5
 ) {

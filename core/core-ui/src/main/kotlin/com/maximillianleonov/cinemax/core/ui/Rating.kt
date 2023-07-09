@@ -40,8 +40,8 @@ fun RatingItem(
         modifier = modifier,
         shape = CinemaxTheme.shapes.small,
         colors = CardDefaults.cardColors(
-            containerColor = CinemaxTheme.colors.primaryVariant.copy(alpha = RatingItemContainerColorAlpha),
-            contentColor = CinemaxTheme.colors.secondaryVariant
+            containerColor = CinemaxTheme.colors.primarySoft.copy(alpha = RatingItemContainerColorAlpha),
+            contentColor = CinemaxTheme.colors.secondaryOrange
         )
     ) {
         Row(

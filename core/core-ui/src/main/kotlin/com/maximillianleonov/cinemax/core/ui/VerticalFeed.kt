@@ -94,7 +94,7 @@ internal fun VerticalFeedItem(
                     .align(Alignment.TopStart)
                     .then(
                         if (isPlaceholder) {
-                            Modifier.cinemaxPlaceholder(color = CinemaxTheme.colors.secondaryVariant)
+                            Modifier.cinemaxPlaceholder(color = CinemaxTheme.colors.secondaryOrange)
                         } else {
                             Modifier
                         }
@@ -106,13 +106,13 @@ internal fun VerticalFeedItem(
                 modifier = if (isPlaceholder) {
                     Modifier
                         .fillMaxWidth()
-                        .cinemaxPlaceholder(color = CinemaxTheme.colors.textPrimaryVariant)
+                        .cinemaxPlaceholder(color = CinemaxTheme.colors.whiteGrey)
                 } else {
                     Modifier
                 },
                 text = title,
                 style = CinemaxTheme.typography.semiBold.h4,
-                color = CinemaxTheme.colors.textPrimary,
+                color = CinemaxTheme.colors.white,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -120,13 +120,13 @@ internal fun VerticalFeedItem(
                 modifier = if (isPlaceholder) {
                     Modifier
                         .fillMaxWidth()
-                        .cinemaxPlaceholder(color = CinemaxTheme.colors.textSecondary)
+                        .cinemaxPlaceholder(color = CinemaxTheme.colors.grey)
                 } else {
                     Modifier
                 },
                 text = overview.ifEmpty { stringResource(id = R.string.no_overview) },
                 style = CinemaxTheme.typography.medium.h5,
-                color = CinemaxTheme.colors.textSecondary,
+                color = CinemaxTheme.colors.grey,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -171,7 +171,7 @@ private fun VerticalFeedItemIconAndText(
     @DrawableRes iconResourceId: Int,
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = CinemaxTheme.colors.textSecondary,
+    color: Color = CinemaxTheme.colors.grey,
     isPlaceholder: Boolean = false
 ) {
     Row(
@@ -190,7 +190,7 @@ private fun VerticalFeedItemIconAndText(
                 Modifier
                     .fillMaxWidth()
                     .height(VerticalFeedItemIconAndTextPlaceholderHeight)
-                    .cinemaxPlaceholder(color = CinemaxTheme.colors.textSecondary)
+                    .cinemaxPlaceholder(color = CinemaxTheme.colors.grey)
             } else {
                 Modifier
             },
@@ -207,7 +207,7 @@ private fun VerticalFeedItemIconAndText(
 private fun VerticalFeedItemIconAndTextPlaceholder(
     @DrawableRes iconResourceId: Int,
     modifier: Modifier = Modifier,
-    color: Color = CinemaxTheme.colors.textSecondary
+    color: Color = CinemaxTheme.colors.grey
 ) {
     VerticalFeedItemIconAndText(
         iconResourceId = iconResourceId,
