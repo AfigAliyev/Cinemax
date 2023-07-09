@@ -33,6 +33,8 @@ android {
         versionCode = 5
         versionName = "1.0.4"
     }
+
+    buildFeatures.buildConfig = true
 }
 
 dependencies {
