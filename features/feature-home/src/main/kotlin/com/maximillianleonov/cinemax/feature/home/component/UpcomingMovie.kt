@@ -16,6 +16,7 @@
 
 package com.maximillianleonov.cinemax.feature.home.component
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,9 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxImagePlaceholder
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxNetworkImage
 import com.maximillianleonov.cinemax.core.designsystem.component.cinemaxPlaceholder
@@ -47,7 +47,7 @@ import com.maximillianleonov.cinemax.core.ui.R
 import com.maximillianleonov.cinemax.core.ui.util.format
 import kotlinx.datetime.LocalDate
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun UpcomingMoviesContainer(
     movies: List<Movie>,
@@ -57,7 +57,7 @@ internal fun UpcomingMoviesContainer(
 ) {
     val pagerState = rememberPagerState()
     val shouldShowPlaceholder = movies.isEmpty()
-    val count = if (shouldShowPlaceholder) {
+    val pageCount = if (shouldShowPlaceholder) {
         PlaceholderCount
     } else {
         movies.size
@@ -70,18 +70,18 @@ internal fun UpcomingMoviesContainer(
     ) {
         HorizontalPager(
             state = pagerState,
-            count = count,
+            pageCount = pageCount,
             contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.extraLarge)
         ) { page ->
             if (shouldShowPlaceholder) {
                 UpcomingMovieItemPlaceholder(
-                    modifier = Modifier.pagerTransition(pagerScope = this, page = page)
+                    modifier = Modifier.pagerTransition(pagerState = pagerState, page = page)
                 )
             } else {
                 with(movies[page]) {
                     UpcomingMovieItem(
                         modifier = Modifier.pagerTransition(
-                            pagerScope = this@HorizontalPager,
+                            pagerState = pagerState,
                             page = page
                         ),
                         title = title,
@@ -97,7 +97,8 @@ internal fun UpcomingMoviesContainer(
             modifier = Modifier
                 .padding(horizontal = CinemaxTheme.spacing.extraMedium)
                 .align(Alignment.CenterHorizontally),
-            pagerState = pagerState
+            pagerState = pagerState,
+            pageCount = pageCount
         )
     }
 }

@@ -24,6 +24,4 @@ android.namespace = "com.maximillianleonov.cinemax.feature.home"
 
 dependencies {
     implementation(libs.kotlinx.datetime)
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicators)
 }
