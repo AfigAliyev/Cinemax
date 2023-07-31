@@ -37,7 +37,7 @@ kotlinx-coroutines = "1.7.3"
 kotlinx-serialization = "1.5.1"
 kotlinx-datetime = "0.4.0"
 
-dagger = "2.46.1"
+dagger = "2.47"
 okhttp = "4.11.0"
 retrofit = "2.9.0"
 retrofit-kotlinx-serialization-converter = "1.0.0"
