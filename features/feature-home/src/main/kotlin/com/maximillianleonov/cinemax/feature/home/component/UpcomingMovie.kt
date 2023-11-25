@@ -55,13 +55,13 @@ internal fun UpcomingMoviesContainer(
     onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val pagerState = rememberPagerState()
     val shouldShowPlaceholder = movies.isEmpty()
     val pageCount = if (shouldShowPlaceholder) {
         PlaceholderCount
     } else {
         movies.size
     }
+    val pagerState = rememberPagerState(pageCount = { pageCount })
 
     MoviesContainer(
         titleResourceId = R.string.upcoming_movies,
@@ -70,7 +70,6 @@ internal fun UpcomingMoviesContainer(
     ) {
         HorizontalPager(
             state = pagerState,
-            pageCount = pageCount,
             contentPadding = PaddingValues(horizontal = CinemaxTheme.spacing.extraLarge)
         ) { page ->
             if (shouldShowPlaceholder) {

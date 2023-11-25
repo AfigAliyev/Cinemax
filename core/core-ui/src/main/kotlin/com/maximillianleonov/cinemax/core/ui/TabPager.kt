@@ -31,14 +31,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.ui.common.MediaTab
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MediaTabPager(
     moviesTabContent: @Composable () -> Unit,
@@ -50,7 +49,7 @@ fun MediaTabPager(
     unselectedContentColor: Color = CinemaxTheme.colors.white
 ) {
     val tabs = remember { MediaTab.values() }
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = tabs::size)
     val selectedTabIndex = pagerState.currentPage
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -86,8 +85,7 @@ fun MediaTabPager(
 
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
-            state = pagerState,
-            pageCount = tabs.size
+            state = pagerState
         ) { page ->
             when (page) {
                 MediaTab.Movies.ordinal -> moviesTabContent()
