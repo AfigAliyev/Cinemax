@@ -35,7 +35,7 @@ mockk = "1.13.8"
 
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization = "1.6.1"
-kotlinx-datetime = "0.4.1"
+kotlinx-datetime = "0.5.0"
 
 dagger = "2.48.1"
 okhttp = "4.12.0"
