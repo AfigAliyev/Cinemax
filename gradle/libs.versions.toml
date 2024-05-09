@@ -4,7 +4,7 @@ android-minSdk = "21"
 android-targetSdk = "34"
 
 kotlin = "1.9.24"
-android-gradle-plugin = "8.2.0"
+android-gradle-plugin = "8.4.0"
 ksp = "1.9.24-1.0.20"
 spotless = "6.25.0"
 detekt = "1.23.4"
