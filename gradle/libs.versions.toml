@@ -39,7 +39,7 @@ kotlinx-datetime = "0.5.0"
 
 dagger = "2.51.1"
 okhttp = "4.12.0"
-retrofit = "2.11.0"
+retrofit = "2.12.0"
 retrofit-kotlinx-serialization-converter = "1.0.0"
 
 javax-inject = "1"
