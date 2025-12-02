@@ -10,7 +10,7 @@ spotless = "8.1.0"
 detekt = "1.23.8"
 kode-detekt-rules-compose = "1.4.0"
 twitter-compose-rules = "0.0.26"
-desugar-jdk-libs = "2.0.4"
+desugar-jdk-libs = "2.1.5"
 
 androidx-compose-bom = "2025.11.01"
 androidx-compose-compiler = "1.5.15"
