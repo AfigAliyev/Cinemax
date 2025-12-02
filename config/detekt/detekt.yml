@@ -29,8 +29,6 @@ compose:
     active: true
   ComposableEventParameterNaming:
     active: true
-  ComposableParametersOrdering:
-    active: true
   ModifierHeightWithText:
     active: true
   ModifierParameterPosition:
@@ -66,8 +64,6 @@ TwitterCompose:
   MutableParams:
     active: true
   ComposableNaming:
-    active: true
-  ComposableParamOrder:
     active: true
   PreviewNaming:
     active: true
