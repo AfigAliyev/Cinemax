@@ -29,7 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxSwipeRefresh
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxTopAppBar
@@ -48,12 +48,11 @@ import com.maximillianleonov.cinemax.feature.details.components.TvShowDetailsIte
 internal fun DetailsRoute(
     onBackButtonClick: () -> Unit,
     onShowMessage: (String) -> Unit,
-    onSetSystemBarsColorTransparent: () -> Unit,
-    onResetSystemBarsColor: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     DetailsScreen(
         uiState = uiState,
         onShowMessage = onShowMessage,
@@ -66,11 +65,6 @@ internal fun DetailsRoute(
         onUserMessageDismiss = { viewModel.onEvent(DetailsEvent.ClearUserMessage) },
         modifier = modifier
     )
-
-    DisposableEffect(onSetSystemBarsColorTransparent, onResetSystemBarsColor) {
-        onSetSystemBarsColorTransparent()
-        onDispose { onResetSystemBarsColor() }
-    }
 }
 
 @Composable
@@ -159,7 +153,6 @@ private fun DetailsContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 private fun ErrorContent(
     errorMessage: UserMessage,

@@ -44,15 +44,8 @@ import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.navigation.CinemaxNavHost
 import com.maximillianleonov.cinemax.ui.component.CinemaxBottomBar
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
-@Suppress("ModifierMissing")
 @Composable
-fun CinemaxApp(
-    appState: CinemaxAppState = rememberCinemaxAppState(),
-    systemBarsColor: Color = CinemaxTheme.colors.primaryDark
-) {
-    LaunchedEffect(systemBarsColor) { appState.setSystemBarsColor(systemBarsColor) }
-
+fun CinemaxApp(appState: CinemaxAppState = rememberCinemaxAppState()) {
     CinemaxTheme {
         CompositionLocalProvider(
             LocalSnackbarHostState provides appState.snackbarHostState
@@ -98,9 +91,7 @@ fun CinemaxApp(
                     startDestination = appState.startDestination,
                     onNavigateToDestination = appState::navigate,
                     onBackClick = appState::onBackClick,
-                    onShowMessage = { message -> appState.showMessage(message) },
-                    onSetSystemBarsColorTransparent = { appState.setSystemBarsColor(Color.Transparent) },
-                    onResetSystemBarsColor = { appState.setSystemBarsColor(systemBarsColor) }
+                    onShowMessage = { message -> appState.showMessage(message) }
                 )
             }
         }

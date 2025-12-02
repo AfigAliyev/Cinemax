@@ -16,11 +16,13 @@
 
 package com.maximillianleonov.cinemax
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import com.maximillianleonov.cinemax.ui.CinemaxApp
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,12 +30,16 @@ import dagger.hilt.android.AndroidEntryPoint
 class CinemaxActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(DefaultDarkScrim),
+            navigationBarStyle = SystemBarStyle.dark(DefaultDarkScrim)
+        )
         super.onCreate(savedInstanceState)
-
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             CinemaxApp()
         }
     }
 }
+
+private const val DefaultDarkScrim = 0

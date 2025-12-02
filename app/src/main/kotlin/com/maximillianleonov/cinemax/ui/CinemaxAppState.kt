@@ -24,14 +24,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.maximillianleonov.cinemax.core.navigation.CinemaxNavigationDestination
 import com.maximillianleonov.cinemax.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
@@ -41,20 +38,17 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun rememberCinemaxAppState(
-    systemUiController: SystemUiController = rememberSystemUiController(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
     startDestination: TopLevelDestination = TopLevelDestination.Home
 ) = remember(
-    systemUiController,
     snackbarHostState,
     coroutineScope,
     navController,
     startDestination
 ) {
     CinemaxAppState(
-        systemUiController = systemUiController,
         snackbarHostState = snackbarHostState,
         coroutineScope = coroutineScope,
         navController = navController,
@@ -64,7 +58,6 @@ fun rememberCinemaxAppState(
 
 @Stable
 class CinemaxAppState(
-    val systemUiController: SystemUiController,
     val snackbarHostState: SnackbarHostState,
     val coroutineScope: CoroutineScope,
     val navController: NavHostController,
@@ -141,8 +134,6 @@ class CinemaxAppState(
         }
 
     fun onBackClick() = navController.popBackStack()
-
-    fun setSystemBarsColor(color: Color) = systemUiController.setSystemBarsColor(color = color)
 
     fun showMessage(message: String) = snackbarMessages.update { it + message }
 }

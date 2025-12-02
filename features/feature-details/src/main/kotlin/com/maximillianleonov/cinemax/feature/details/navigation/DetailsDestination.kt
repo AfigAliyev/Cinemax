@@ -44,9 +44,7 @@ object DetailsDestination : CinemaxNavigationDestination {
 
 fun NavGraphBuilder.detailsGraph(
     onBackButtonClick: () -> Unit,
-    onShowMessage: (String) -> Unit,
-    onSetSystemBarsColorTransparent: () -> Unit,
-    onResetSystemBarsColor: () -> Unit
+    onShowMessage: (String) -> Unit
 ) = composable(
     route = DetailsDestination.routeWithArguments,
     arguments = listOf(
@@ -56,9 +54,7 @@ fun NavGraphBuilder.detailsGraph(
 ) {
     DetailsRoute(
         onBackButtonClick = onBackButtonClick,
-        onShowMessage = onShowMessage,
-        onSetSystemBarsColorTransparent = onSetSystemBarsColorTransparent,
-        onResetSystemBarsColor = onResetSystemBarsColor
+        onShowMessage = onShowMessage
     )
 }
 
