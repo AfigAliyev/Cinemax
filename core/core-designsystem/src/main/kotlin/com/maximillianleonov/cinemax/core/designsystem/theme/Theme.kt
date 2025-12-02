@@ -17,7 +17,6 @@
 package com.maximillianleonov.cinemax.core.designsystem.theme
 
 import androidx.compose.foundation.LocalIndication
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
@@ -48,8 +47,7 @@ private fun ProvideCinemaxThemeDependencies(content: @Composable () -> Unit) {
         LocalCinemaxShapes provides CinemaxShapes(),
         LocalCinemaxTypography provides CinemaxTypography(),
         LocalCinemaxSpacing provides CinemaxSpacing(),
-        LocalIndication provides rememberCinemaxRipple(),
-        LocalRippleTheme provides CinemaxRippleTheme
+        LocalIndication provides cinemaxRipple()
     ) {
         ProvideTextStyle(value = CinemaxTheme.typography.regular.h4, content = content)
     }
