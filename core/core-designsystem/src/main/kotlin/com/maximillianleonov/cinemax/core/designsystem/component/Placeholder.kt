@@ -42,6 +42,7 @@ fun Modifier.cinemaxPlaceholder() = composed {
 }
 
 fun Modifier.cinemaxPlaceholder(color: Color) = composed {
+    @Suppress("DEPRECATION")
     placeholder(
         visible = true,
         color = color,

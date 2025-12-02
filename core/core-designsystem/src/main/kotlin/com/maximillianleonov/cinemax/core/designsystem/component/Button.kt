@@ -19,10 +19,9 @@ package com.maximillianleonov.cinemax.core.designsystem.component
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +33,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 
 @Composable
@@ -55,7 +55,7 @@ fun CinemaxOutlinedButton(
             containerColor = containerColor,
             contentColor = contentColor
         ),
-        border = ButtonDefaults.outlinedButtonBorder.copy(brush = SolidColor(borderColor))
+        border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(brush = SolidColor(borderColor))
     ) {
         Text(text = stringResource(id = textResourceId), style = textStyle)
     }
@@ -101,7 +101,6 @@ fun CinemaxIconButton(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ReusedModifierInstance")
 @Composable
 private fun CinemaxIconButtonContent(
@@ -110,7 +109,7 @@ private fun CinemaxIconButtonContent(
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
-        LocalMinimumInteractiveComponentEnforcement provides false
+        LocalMinimumInteractiveComponentSize provides 0.dp
     ) {
         IconButton(modifier = modifier, onClick = onClick, content = content)
     }

@@ -39,7 +39,7 @@ fun CinemaxTopAppBar(
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
-    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
         containerColor = CinemaxTheme.colors.primaryDark,
         titleContentColor = CinemaxTheme.colors.white,
         navigationIconContentColor = CinemaxTheme.colors.white
@@ -55,7 +55,6 @@ fun CinemaxTopAppBar(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CinemaxTopAppBar(
     @StringRes titleResourceId: Int,
