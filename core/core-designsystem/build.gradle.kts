@@ -25,6 +25,7 @@ dependencies {
     api(libs.bundles.androidx.compose)
     api(libs.accompanist.placeholder.material)
     api(libs.coil.compose)
+    api(libs.androidx.compose.material.icons.core)
 
     implementation(libs.androidx.compose.material)
 
