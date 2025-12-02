@@ -27,8 +27,6 @@ internal fun Project.configureAndroidCompose(commonExtension: CommonExtension<*,
     with(commonExtension) {
         defaultConfig.vectorDrawables.useSupportLibrary = true
         buildFeatures.compose = true
-        composeOptions.kotlinCompilerExtensionVersion =
-            libs.versions.androidx.compose.compiler.get()
 
         dependencies {
             val bom = libs.androidx.compose.bom

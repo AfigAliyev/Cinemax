@@ -23,6 +23,7 @@ group = "com.maximillianleonov.cinemax.buildlogic"
 dependencies {
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
+    compileOnly(libs.compose.compiler.gradle.plugin)
     compileOnly(libs.spotless.gradle.plugin)
     compileOnly(libs.detekt.gradle.plugin)
 
