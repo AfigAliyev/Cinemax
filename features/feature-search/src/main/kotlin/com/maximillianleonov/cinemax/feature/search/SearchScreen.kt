@@ -18,7 +18,6 @@ package com.maximillianleonov.cinemax.feature.search
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -45,7 +44,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -75,6 +74,7 @@ internal fun SearchRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchMovies = uiState.searchMovies.collectAsLazyPagingItems()
     val searchTvShows = uiState.searchTvShows.collectAsLazyPagingItems()
+
     SearchScreen(
         modifier = modifier,
         uiState = uiState,
@@ -91,7 +91,6 @@ internal fun SearchRoute(
 }
 
 @Suppress("LongParameterList")
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SearchScreen(
     uiState: SearchUiState,
@@ -152,7 +151,6 @@ private fun SearchScreen(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SearchTextField(
     query: String,
