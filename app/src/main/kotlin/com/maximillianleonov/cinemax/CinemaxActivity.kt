@@ -16,7 +16,6 @@
 
 package com.maximillianleonov.cinemax
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle

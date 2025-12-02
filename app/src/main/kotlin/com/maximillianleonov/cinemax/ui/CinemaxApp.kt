@@ -21,7 +21,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -29,14 +28,11 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.maximillianleonov.cinemax.core.designsystem.component.CinemaxSnackbarHost
 import com.maximillianleonov.cinemax.core.designsystem.component.LocalSnackbarHostState
@@ -44,6 +40,7 @@ import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.navigation.CinemaxNavHost
 import com.maximillianleonov.cinemax.ui.component.CinemaxBottomBar
 
+@Suppress("ModifierMissing")
 @Composable
 fun CinemaxApp(appState: CinemaxAppState = rememberCinemaxAppState()) {
     CinemaxTheme {

@@ -105,7 +105,7 @@ internal fun CastAndCrewPlaceholder(modifier: Modifier = Modifier) {
     )
 }
 
-@Suppress("ModifierParameterPosition", "ComposableParametersOrdering")
+@Suppress("ModifierParameterPosition")
 @Composable
 private fun CastAndCrewContainer(
     @StringRes titleResourceId: Int,
