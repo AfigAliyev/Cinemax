@@ -17,8 +17,8 @@
 package com.maximillianleonov.cinemax.feature.wishlist
 
 sealed interface WishlistEvent {
-    object RefreshMovies : WishlistEvent
-    object RefreshTvShows : WishlistEvent
-    object Retry : WishlistEvent
-    object ClearError : WishlistEvent
+    data object RefreshMovies : WishlistEvent
+    data object RefreshTvShows : WishlistEvent
+    data object Retry : WishlistEvent
+    data object ClearError : WishlistEvent
 }
