@@ -23,7 +23,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -59,7 +59,7 @@ internal fun SettingsGroupItem(
                 SettingsItem(settings = settingsItem)
 
                 if (index < settingsGroup.settings.lastIndex) {
-                    Divider(
+                    HorizontalDivider(
                         color = CinemaxTheme.colors.primarySoft,
                         thickness = 1.dp
                     )
