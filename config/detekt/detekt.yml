@@ -43,6 +43,8 @@ compose:
     active: true
   ComposeFunctionName:
     active: true
+  ComposableParametersOrdering:
+    active: false
 
 TwitterCompose:
   CompositionLocalAllowlist:
