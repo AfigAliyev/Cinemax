@@ -16,28 +16,36 @@
 
 package com.maximillianleonov.cinemax.core.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Tab
+import androidx.compose.material.TabPosition
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import com.google.accompanist.pager.pagerTabIndicatorOffset
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.lerp
 import com.maximillianleonov.cinemax.core.designsystem.theme.CinemaxTheme
 import com.maximillianleonov.cinemax.core.ui.common.MediaTab
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MediaTabPager(
     moviesTabContent: @Composable () -> Unit,
@@ -48,7 +56,7 @@ fun MediaTabPager(
     selectedContentColor: Color = CinemaxTheme.colors.primaryBlue,
     unselectedContentColor: Color = CinemaxTheme.colors.white
 ) {
-    val tabs = remember { MediaTab.values() }
+    val tabs = remember { MediaTab.entries }
     val pagerState = rememberPagerState(pageCount = tabs::size)
     val selectedTabIndex = pagerState.currentPage
 
@@ -94,3 +102,24 @@ fun MediaTabPager(
         }
     }
 }
+
+/**
+ * Custom pager tab indicator offset that replaces the deprecated accompanist version.
+ * This modifier animates the tab indicator position based on the pager state.
+ */
+private fun Modifier.pagerTabIndicatorOffset(
+    pagerState: PagerState,
+    tabPositions: List<TabPosition>
+): Modifier = this
+    .fillMaxWidth()
+    .wrapContentSize(Alignment.BottomStart)
+    .offset {
+        val currentPage = pagerState.currentPage.coerceIn(0, tabPositions.lastIndex)
+        val nextPage = (currentPage + 1).coerceIn(0, tabPositions.lastIndex)
+        val fraction = pagerState.currentPageOffsetFraction.absoluteValue
+        val currentTab = tabPositions[currentPage]
+        val nextTab = tabPositions[nextPage]
+        val offset = lerp(currentTab.left, nextTab.left, fraction)
+        IntOffset(offset.roundToPx(), 0)
+    }
+    .width(tabPositions.getOrNull(pagerState.currentPage)?.width ?: Dp.Unspecified)

@@ -66,22 +66,29 @@ fun MoviesAndTvShowsContainer(
 ) {
     Column(modifier = modifier) {
         ContainerTitleWithButton(titleResourceId = titleResourceId, onSeeAllClick = onSeeAllClick)
+
         Text(
             modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.extraMedium),
             text = stringResource(id = R.string.movies),
             style = CinemaxTheme.typography.semiBold.h5,
             color = CinemaxTheme.colors.whiteGrey
         )
+
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.small))
+
         MoviesContainer(movies = movies, onClick = onMovieClick)
+
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.smallMedium))
+
         Text(
             modifier = Modifier.padding(horizontal = CinemaxTheme.spacing.extraMedium),
             text = stringResource(id = R.string.tv_shows),
             style = CinemaxTheme.typography.semiBold.h5,
             color = CinemaxTheme.colors.whiteGrey
         )
+
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.small))
+
         TvShowsContainer(tvShows = tvShows, onClick = onTvShowClick)
     }
 }
@@ -95,7 +102,9 @@ fun MoviesContainer(
 ) {
     Column(modifier = modifier) {
         ContainerTitleWithButton(titleResourceId = titleResourceId, onSeeAllClick = onSeeAllClick)
+
         Spacer(modifier = Modifier.height(CinemaxTheme.spacing.extraSmall))
+
         content()
     }
 }
@@ -142,24 +151,26 @@ fun MoviesContainer(
                             VerticalMovieItem(movie = movie, onClick = onClick)
                         }
                     }
+
                     if (movies.loadState.refresh.isError) {
-                        item { errorContent(errorMessage = movies.loadState.refresh.error.asUserMessage()) }
+                        item { errorContent(movies.loadState.refresh.error.asUserMessage()) }
                     }
                 }
+
                 movies.loadState.refresh.isLoading -> {
                     items(PlaceholderCount) { VerticalMovieItemPlaceholder() }
                 }
+
                 movies.loadState.refresh.isFinished -> {
                     if (movies.isEmpty()) {
                         item(content = emptyContent)
                     }
                 }
+
                 movies.loadState.refresh.isError -> {
                     item {
                         CinemaxCenteredBox(modifier = Modifier.fillParentMaxSize()) {
-                            errorContent(
-                                errorMessage = movies.loadState.refresh.error.asUserMessage()
-                            )
+                            errorContent(movies.loadState.refresh.error.asUserMessage())
                         }
                     }
                 }
@@ -168,7 +179,7 @@ fun MoviesContainer(
                 item { CinemaxCenteredBox(modifier = Modifier.fillMaxWidth()) { loadingContent() } }
             }
             if (movies.loadState.append.isError) {
-                item { errorContent(errorMessage = movies.loadState.append.error.asUserMessage()) }
+                item { errorContent(movies.loadState.append.error.asUserMessage()) }
             }
         }
     }
@@ -216,24 +227,26 @@ fun TvShowsContainer(
                             VerticalTvShowItem(tvShow = tvShow, onClick = onClick)
                         }
                     }
+
                     if (tvShows.loadState.refresh.isError) {
-                        item { errorContent(errorMessage = tvShows.loadState.refresh.error.asUserMessage()) }
+                        item { errorContent(tvShows.loadState.refresh.error.asUserMessage()) }
                     }
                 }
+
                 tvShows.loadState.refresh.isLoading -> {
                     items(PlaceholderCount) { VerticalTvShowItemPlaceholder() }
                 }
+
                 tvShows.loadState.refresh.isFinished -> {
                     if (tvShows.isEmpty()) {
                         item(content = emptyContent)
                     }
                 }
+
                 tvShows.loadState.refresh.isError -> {
                     item {
                         CinemaxCenteredBox(modifier = Modifier.fillParentMaxSize()) {
-                            errorContent(
-                                errorMessage = tvShows.loadState.refresh.error.asUserMessage()
-                            )
+                            errorContent(tvShows.loadState.refresh.error.asUserMessage())
                         }
                     }
                 }
@@ -242,7 +255,7 @@ fun TvShowsContainer(
                 item { CinemaxCenteredBox(modifier = Modifier.fillMaxWidth()) { loadingContent() } }
             }
             if (tvShows.loadState.append.isError) {
-                item { errorContent(errorMessage = tvShows.loadState.append.error.asUserMessage()) }
+                item { errorContent(tvShows.loadState.append.error.asUserMessage()) }
             }
         }
     }
