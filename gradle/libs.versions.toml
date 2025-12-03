@@ -12,7 +12,7 @@ kode-detekt-rules-compose = "1.4.0"
 twitter-compose-rules = "0.0.26"
 desugar-jdk-libs = "2.1.5"
 
-androidx-compose-bom = "2025.11.01"
+androidx-compose-bom = "2025.12.00"
 androidx-benchmark = "1.4.1"
 androidx-profileinstaller = "1.4.1"
 androidx-core = "1.17.0"
